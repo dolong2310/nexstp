@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { ListFilterIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { CustomCategory } from "../types";
-import CategoryDropdown from "./category-dropdown";
 import CategoriesSidebar from "./categories-sidebar";
+import CategoryDropdown from "./category-dropdown";
 
-type Props = { data: CustomCategory[] };
+type Props = { data: CategoriesGetManyOutput };
 
 const Categories = ({ data }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null); // Container chứa categories hiển thị
@@ -69,11 +69,7 @@ const Categories = ({ data }: Props) => {
 
   return (
     <div className="relative w-full">
-      <CategoriesSidebar
-        data={data}
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-      />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
       {/* Div ẩn để đo kích thước tất cả categories */}
       <div

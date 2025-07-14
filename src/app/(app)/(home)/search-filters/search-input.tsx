@@ -1,27 +1,22 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ListFilterIcon, SearchIcon } from "lucide-react";
-import React, { useState } from "react";
-import { CustomCategory } from "../types";
+import { useState } from "react";
 import CategoriesSidebar from "./categories-sidebar";
-import { Button } from "@/components/ui/button";
 
 type Props = {
-  data: CustomCategory[];
   disabled?: boolean;
 };
 
-const SearchInput = ({ data, disabled }: Props) => {
+const SearchInput = ({ disabled }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="flex items-center gap-2 w-full">
-      <CategoriesSidebar
-        data={data}
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-      />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
+
       <div className="relative w-full">
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
         <Input
@@ -30,6 +25,7 @@ const SearchInput = ({ data, disabled }: Props) => {
           disabled={disabled}
         />
       </div>
+
       {/* Categories view all button in mobile */}
       <Button
         variant="elevated"
@@ -38,6 +34,7 @@ const SearchInput = ({ data, disabled }: Props) => {
       >
         <ListFilterIcon />
       </Button>
+
       {/* TODO: Add library button */}
     </div>
   );
