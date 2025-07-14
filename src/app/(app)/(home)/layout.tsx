@@ -1,10 +1,11 @@
+import { Category } from "@/payload-types";
+import configPromise from "@payload-config";
+import { getPayload } from "payload";
 import React from "react";
 import Footer from "./footer";
 import Navbar from "./navbar";
 import SearchFilters from "./search-filters";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
-import { Category } from "@/payload-types";
+import { CustomCategory } from "./types";
 
 type Props = {
   children: React.ReactNode;
@@ -24,9 +25,10 @@ const HomeLayout = async ({ children }: Props) => {
         exists: false, // Only fetch top-level categories
       },
     },
+    sort: "name", // Sort categories by name
   });
 
-  const formattedData = data.docs.map((doc) => ({
+  const formattedData: CustomCategory[] = data.docs.map((doc) => ({
     ...doc,
     subcategories: (doc.subcategories?.docs || []).map((subDoc) => ({
       // Because of "depth: 1" we are confident "doc" will be a type of Category
@@ -34,8 +36,6 @@ const HomeLayout = async ({ children }: Props) => {
       subcategories: undefined, // Prevent further nesting
     })),
   }));
-
-  console.log({ data, formattedData });
 
   return (
     <div className="flex flex-col min-h-screen">
