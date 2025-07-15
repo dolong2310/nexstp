@@ -7,10 +7,13 @@ import { ListFilterIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import CategoriesSidebar from "./categories-sidebar";
 import CategoryDropdown from "./category-dropdown";
+import { useParams } from "next/navigation";
 
 type Props = { data: CategoriesGetManyOutput };
 
 const Categories = ({ data }: Props) => {
+  const params = useParams();
+
   const containerRef = useRef<HTMLDivElement>(null); // Container chứa categories hiển thị
   const measureRef = useRef<HTMLDivElement>(null); // Div ẩn dùng để đo kích thước items
   const viewAllRef = useRef<HTMLDivElement>(null); // Button "View All"
@@ -19,7 +22,8 @@ const Categories = ({ data }: Props) => {
   const [isAnyHovered, setIsAnyHovered] = useState(false); // Trạng thái hover navigation
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Trạng thái đóng/mở sidebar
 
-  const activeCategory = "all";
+  const categoryParam = params.category as string | undefined;
+  const activeCategory = categoryParam || "all";
   const activeCategoryIndex = data.findIndex(
     (cate) => cate.slug === activeCategory
   ); // Tìm index của category đang active
@@ -108,6 +112,7 @@ const Categories = ({ data }: Props) => {
 
         <div ref={viewAllRef} className="shrink-0">
           <Button
+            variant="elevated"
             className={cn(
               "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
               // Highlight button nếu category active bị ẩn và không hover
