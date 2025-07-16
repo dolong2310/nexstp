@@ -7,9 +7,11 @@ import ProductSort from "../ui/components/product-sort";
 
 type Props = {
   category?: string | null;
+  tenantSlug?: string | null;
+  narrowView?: boolean;
 };
 
-const ProductListView = ({ category }: Props) => {
+const ProductListView = ({ category, tenantSlug, narrowView }: Props) => {
   return (
     <div className="flex flex-col gap-4 px-4 lg:px-12 py-8">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2 lg:gap-y-0">
@@ -23,8 +25,12 @@ const ProductListView = ({ category }: Props) => {
         </div>
 
         <div className="lg:col-span-4 xl:col-span-6">
-          <Suspense fallback={<ProductListSkeleton />}>
-            <ProductList category={category} />
+          <Suspense fallback={<ProductListSkeleton narrowView={narrowView} />}>
+            <ProductList
+              category={category}
+              tenantSlug={tenantSlug}
+              narrowView={narrowView}
+            />
           </Suspense>
         </div>
       </div>

@@ -1,6 +1,8 @@
+import { generateTenantUrl } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {
@@ -24,6 +26,15 @@ const ProductCard = ({
   reviewCount,
   price,
 }: Props) => {
+  const router = useRouter();
+
+  const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    router.push(generateTenantUrl(authorUsername));
+  };
+
   return (
     <Link href={`/products/${id}`} className="no-underline">
       <div className="flex flex-col border rounded-md bg-white overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -38,7 +49,7 @@ const ProductCard = ({
 
         <div className="flex flex-col gap-3 flex-1 border-y p-4">
           <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
-          <div className="flex items-center gap-2" onClick={() => {}}>
+          <div className="flex items-center gap-2" onClick={handleUserClick}>
             {authorImageUrl && (
               <Image
                 src={authorImageUrl}

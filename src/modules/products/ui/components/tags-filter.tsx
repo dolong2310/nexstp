@@ -36,31 +36,42 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
     }
   };
 
-  return (
-    <div className="flex flex-col gap-2">
-      {isLoading ? (
+  const renderContent = () => {
+    if (isLoading) {
+      return (
         <div className="flex items-center justify-center p-4">
           <LoaderIcon className="size-4 animate-spin" />
         </div>
-      ) : (
-        data?.pages.map((page) => {
-          return page.docs.map((tag) => {
-            return (
-              <div
-                key={tag.id}
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => onClick(tag.name)}
-              >
-                <p className="font-medium">{tag.name}</p>
-                <Checkbox
-                  checked={values?.includes(tag.name)}
-                  onCheckedChange={() => onClick(tag.name)}
-                />
-              </div>
-            );
-          });
-        })
-      )}
+      );
+    }
+
+    // If no tags are available, show a message
+    if (data?.pages?.[0]?.docs.length === 0) {
+      return <p className="text-center text-gray-500">No tags available</p>;
+    }
+
+    return data?.pages.map((page) => {
+      return page.docs.map((tag) => {
+        return (
+          <div
+            key={tag.id}
+            className="flex items-center justify-between cursor-pointer"
+            onClick={() => onClick(tag.name)}
+          >
+            <p className="font-medium">{tag.name}</p>
+            <Checkbox
+              checked={values?.includes(tag.name)}
+              onCheckedChange={() => onClick(tag.name)}
+            />
+          </div>
+        );
+      });
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      {renderContent()}
 
       {hasNextPage && (
         <button
