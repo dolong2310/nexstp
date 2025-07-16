@@ -8,3 +8,11 @@ export function cn(...inputs: ClassValue[]) {
 export function generateTenantUrl(slug: string) {
   return `/tenants/${slug}`;
 }
+
+export function formatCurrency(value: number | string) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(Number(value));
+}
