@@ -1,3 +1,4 @@
+import ProductFilters from "@/modules/products/ui/components/product-filters";
 import ProductList, {
   ProductListSkeleton,
 } from "@/modules/products/ui/components/product-list";
@@ -20,15 +21,21 @@ const CategoryPage = async ({ params }: Props) => {
   );
 
   return (
-    <div>
-      <h1>Category: {category}</h1>
-      <br />
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList category={category} />
-        </Suspense>
-      </HydrationBoundary>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="flex flex-col gap-4 px-4 lg:px-12 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-8 gap-y-6 gap-x-12">
+          <div className="lg:col-span-2 xl:col-span-2">
+            <ProductFilters />
+          </div>
+
+          <div className="lg:col-span-4 xl:col-span-6">
+            <Suspense fallback={<ProductListSkeleton />}>
+              <ProductList category={category} />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    </HydrationBoundary>
   );
 };
 
