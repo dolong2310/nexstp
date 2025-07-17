@@ -35,7 +35,7 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
       )
     );
 
-  if (data.pages?.[0]?.docs.length === 0) {
+  if (data.pages?.[0]?.totalDocs === 0) {
     return <ProductListEmpty />;
   }
 
@@ -80,7 +80,7 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
   );
 };
 
-const ProductListEmpty = () => {
+export const ProductListEmpty = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-white border border-black border-dashed p-8">
       <InboxIcon />
