@@ -7,14 +7,14 @@ type Props = {
   totalPrice: number;
   isPending?: boolean;
   isCanceled?: boolean;
-  onCheckout: () => void;
+  onPurchase: () => void;
 };
 
 const CheckoutSidebar = ({
   totalPrice,
   isPending,
   isCanceled,
-  onCheckout,
+  onPurchase,
 }: Props) => {
   return (
     <div className="flex flex-col rounded-md border overflow-hidden bg-white">
@@ -28,7 +28,7 @@ const CheckoutSidebar = ({
           size="lg"
           disabled={isPending}
           className="text-base w-full text-white bg-primary hover:bg-pink-400 hover:text-primary"
-          onClick={onCheckout}
+          onClick={onPurchase}
         >
           Checkout
         </Button>

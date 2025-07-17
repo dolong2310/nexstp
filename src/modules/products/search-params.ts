@@ -14,21 +14,15 @@ export const sortValues = [
 ] as const;
 
 const params = {
-  minPrice: parseAsString
-    .withOptions({
-      clearOnDefault: true,
-    })
-    .withDefault(""),
-  maxPrice: parseAsString
-    .withOptions({
-      clearOnDefault: true,
-    })
-    .withDefault(""),
-  tags: parseAsArrayOf(parseAsString)
-    .withOptions({
-      clearOnDefault: true,
-    })
-    .withDefault([]),
+  minPrice: parseAsString.withDefault("").withOptions({
+    clearOnDefault: true,
+  }),
+  maxPrice: parseAsString.withDefault("").withOptions({
+    clearOnDefault: true,
+  }),
+  tags: parseAsArrayOf(parseAsString).withDefault([]).withOptions({
+    clearOnDefault: true,
+  }),
   sort: parseAsStringLiteral(sortValues).withDefault("curated"),
 };
 
