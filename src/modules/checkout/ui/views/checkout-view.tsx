@@ -1,7 +1,7 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import useCart from "../../hooks/use-cart";
 import { toast } from "sonner";
@@ -10,13 +10,20 @@ import CheckoutItem from "../components/checkout-item";
 import CheckoutSidebar from "../components/checkout-sidebar";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { LoaderIcon } from "lucide-react";
+import useCheckoutState from "../../hooks/use-checkout-state";
+import { useRouter } from "next/navigation";
 
 type Props = {
   tenantSlug: string;
 };
 
 const CheckoutView = ({ tenantSlug }: Props) => {
+  const router = useRouter();
+
+  const [states, setStates] = useCheckoutState();
+
   const cart = useCart(tenantSlug);
+
   const trpc = useTRPC();
   const {
     data: products,
@@ -28,12 +35,37 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     })
   );
 
+  const purchase = useMutation(
+    trpc.checkout.purchase.mutationOptions({
+      onMutate: () => {
+        setStates({ success: false, cancel: false });
+      },
+      onSuccess: (data) => {
+        window.location.href = data.url;
+      },
+      onError: (error) => {
+        if (error.data?.code === "UNAUTHORIZED") {
+          router.push("/sign-in");
+        }
+        toast.error(error.message);
+      },
+    })
+  );
+
+  useEffect(() => {
+    if (states.success) {
+      setStates({ success: false, cancel: false });
+      cart.clearCart();
+      router.push("/products");
+    }
+  }, [states.success, cart.clearCart, router, setStates]);
+
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
-      cart.clearAllCarts();
+      cart.clearCart();
       toast.warning("Invalid products in the cart. Please update your cart.");
     }
-  }, [error]);
+  }, [error, cart.clearCart]);
 
   if (isLoading) {
     return (
@@ -78,9 +110,11 @@ const CheckoutView = ({ tenantSlug }: Props) => {
         <div className="lg:col-span-3">
           <CheckoutSidebar
             totalPrice={products?.totalPrice || 0}
-            isPending={false}
-            isCanceled={false}
-            onCheckout={() => {}}
+            isPending={purchase.isPending}
+            isCanceled={states.cancel}
+            onPurchase={() =>
+              purchase.mutate({ productIds: cart.productIds, tenantSlug })
+            }
           />
         </div>
       </div>
