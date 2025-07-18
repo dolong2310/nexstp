@@ -4,6 +4,7 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const StripeVerifyPage = () => {
   const trpc = useTRPC();
@@ -13,7 +14,10 @@ const StripeVerifyPage = () => {
         window.location.href = data.url;
       },
       onError: (error) => {
-        window.location.href = "/";
+        toast.error(`Failed to verify account: ${error.message}`);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 3000);
       },
     })
   );

@@ -95,7 +95,6 @@ export async function POST(request: Request) {
           break;
         case "account.updated":
           data = event.data.object as Stripe.Account;
-          console.log(123123);
 
           await payload.update({
             collection: "tenants",
