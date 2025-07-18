@@ -56,8 +56,8 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
               imageUrl={product.image?.url}
               authorUsername={product.tenant.slug}
               authorImageUrl={product.tenant.image?.url}
-              reviewRating={5}
-              reviewCount={3}
+              reviewRating={product.reviewRating}
+              reviewCount={product.reviewCount}
               price={product.price}
             />
           ));
