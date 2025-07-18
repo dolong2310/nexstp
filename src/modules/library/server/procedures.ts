@@ -93,9 +93,43 @@ export const libraryRouter = createTRPCRouter({
         },
       });
 
+      // Thêm thông tin tóm tắt reviews (rating trung bình và số lượng reviews) cho mỗi product
+      const dataWithSummarizedReviews = await Promise.all(
+        productsData.docs.map(async (product) => {
+          // Lấy tất cả reviews của product hiện tại
+          const reviewsData = await ctx.db.find({
+            collection: "reviews",
+            pagination: false, // Lấy tất cả reviews (không phân trang)
+            where: {
+              product: {
+                equals: product.id, // Chỉ lấy reviews thuộc về product này
+              },
+            },
+          });
+
+          // Khởi tạo rating trung bình = 0 (mặc định khi không có reviews)
+          let reviewRating = 0;
+
+          // Tính rating trung bình nếu có reviews
+          if (reviewsData.docs.length > 0) {
+            // Tính tổng tất cả ratings và chia cho số lượng reviews
+            reviewRating =
+              reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) / // Tổng ratings
+              reviewsData.totalDocs; // Chia cho tổng số reviews
+          }
+
+          // Trả về product với thông tin reviews đã được tóm tắt
+          return {
+            ...product,
+            reviewCount: reviewsData.totalDocs, // Thêm số lượng reviews
+            reviewRating, // Thêm rating trung bình
+          };
+        })
+      );
+
       return {
         ...productsData,
-        docs: productsData.docs.map((doc) => ({
+        docs: dataWithSummarizedReviews.map((doc) => ({
           ...doc,
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & { image: Media | null },

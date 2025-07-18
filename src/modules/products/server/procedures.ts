@@ -44,12 +44,81 @@ export const productsRouter = createTRPCRouter({
         // isPurchased = ordersData.totalDocs > 0;
       }
 
+      const reviewsData = await ctx.db.find({
+        collection: "reviews",
+        pagination: false, // Lấy tất cả reviews (không phân trang)
+        where: {
+          product: {
+            equals: product.id, // Chỉ lấy reviews thuộc về product này
+          },
+        },
+      });
+
+      // Khởi tạo rating trung bình = 0 (mặc định khi không có reviews)
+      let reviewRating = 0;
+
+      // Tính rating trung bình nếu có reviews
+      if (reviewsData.docs.length > 0) {
+        // Tính tổng tất cả ratings và chia cho số lượng reviews
+        reviewRating =
+          reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) / // Tổng ratings
+          reviewsData.totalDocs; // Chia cho tổng số reviews
+      }
+
+      /**
+       * Khởi tạo object để đếm phân bố rating (1-5 sao)
+       * Key: số sao (1,2,3,4,5), Value: số lượng reviews có rating đó
+       * Phân bố theo %
+       * ratingDistribution: {
+       *   5: 60,  // 60% reviews 5 sao
+       *   4: 25,  // 25% reviews 4 sao
+       *   3: 10,  // 10% reviews 3 sao
+       *   2: 3,   // 3% reviews 2 sao
+       *   1: 2    // 2% reviews 1 sao
+       * };
+       */
+      const ratingDistribution: Record<number, number> = {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0,
+      };
+
+      // Chỉ tính phân bố nếu có reviews
+      if (reviewsData.totalDocs > 0) {
+        // Lặp qua từng review để đếm số lượng theo rating
+        reviewsData.docs.forEach((review) => {
+          const rating = review.rating;
+
+          // Kiểm tra rating hợp lệ (1-5)
+          if (rating >= 1 && rating <= 5) {
+            // Tăng counter cho rating tương ứng
+            ratingDistribution[rating] = (ratingDistribution[rating] || 0) + 1;
+          }
+        });
+      }
+
+      // Chuyển đổi từ số lượng thành phần trăm
+      Object.keys(ratingDistribution).forEach((key) => {
+        const rating = Number(key);
+        const count = ratingDistribution[rating] || 0; // Số lượng reviews cho rating này
+        // Tính phần trăm: (số reviews rating này / tổng reviews) * 100
+        // Math.round để làm tròn thành số nguyên
+        ratingDistribution[rating] = Math.round(
+          (count / reviewsData.totalDocs) * 100
+        );
+      });
+
       return {
         ...product,
         isPurchased,
         image: product.image as Media | null,
         cover: product.cover as Media | null,
         tenant: product.tenant as Tenant & { image: Media | null },
+        reviewRating, // Rating trung bình (VD: 4.2)
+        reviewCount: reviewsData.totalDocs, // Tổng số reviews (VD: 150)
+        ratingDistribution, // Phân bố rating theo % (VD: {5:60, 4:25, 3:10, 2:3, 1:2})
       };
     }),
   getMany: baseProcedure
@@ -153,9 +222,43 @@ export const productsRouter = createTRPCRouter({
         limit: input.limit,
       });
 
+      // Thêm thông tin tóm tắt reviews (rating trung bình và số lượng reviews) cho mỗi product
+      const dataWithSummarizedReviews = await Promise.all(
+        data.docs.map(async (product) => {
+          // Lấy tất cả reviews của product hiện tại
+          const reviewsData = await ctx.db.find({
+            collection: "reviews",
+            pagination: false, // Lấy tất cả reviews (không phân trang)
+            where: {
+              product: {
+                equals: product.id, // Chỉ lấy reviews thuộc về product này
+              },
+            },
+          });
+
+          // Khởi tạo rating trung bình = 0 (mặc định khi không có reviews)
+          let reviewRating = 0;
+
+          // Tính rating trung bình nếu có reviews
+          if (reviewsData.docs.length > 0) {
+            // Tính tổng tất cả ratings và chia cho số lượng reviews
+            reviewRating =
+              reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) / // Tổng ratings
+              reviewsData.totalDocs; // Chia cho tổng số reviews
+          }
+
+          // Trả về product với thông tin reviews đã được tóm tắt
+          return {
+            ...product,
+            reviewCount: reviewsData.totalDocs, // Thêm số lượng reviews
+            reviewRating, // Thêm rating trung bình
+          };
+        })
+      );
+
       return {
         ...data,
-        docs: data.docs.map((doc) => ({
+        docs: dataWithSummarizedReviews.map((doc) => ({
           ...doc,
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & { image: Media | null },
