@@ -9,6 +9,8 @@ import sharp from "sharp";
 import { fileURLToPath } from "url";
 import { Config } from "./payload-types";
 
+import { isSuperAdmin } from "./lib/access";
+
 import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
 import { Orders } from "./collections/Orders";
@@ -28,7 +30,16 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products, Tags, Tenants, Orders, Reviews],
+  collections: [
+    Users,
+    Media,
+    Categories,
+    Products,
+    Tags,
+    Tenants,
+    Orders,
+    Reviews,
+  ],
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
@@ -48,8 +59,7 @@ export default buildConfig({
       tenantsArrayField: {
         includeDefaultField: false,
       },
-      userHasAccessToAllTenants: (user) =>
-        Boolean(user?.roles?.includes("super-admin")),
+      userHasAccessToAllTenants: (user) => isSuperAdmin(user),
     }),
     // storage-adapter-placeholder
   ],

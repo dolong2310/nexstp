@@ -1,7 +1,15 @@
+import { isSuperAdmin } from "@/lib/access";
 import type { CollectionConfig } from "payload";
 
 export const Reviews: CollectionConfig = {
   slug: "reviews",
+  // This collection is only accessible to super admins, because reviews have library screen to manage them
+  access: {
+    read: ({ req }) => isSuperAdmin(req.user),
+    create: ({ req }) => isSuperAdmin(req.user),
+    update: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+  },
   admin: {
     useAsTitle: "description",
   },

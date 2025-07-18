@@ -17,6 +17,9 @@ export const productsRouter = createTRPCRouter({
         collection: "products",
         id: input.id,
         depth: 2, // Load the "product.image", "product.tenant" and "product.tenant.image"
+        select: {
+          content: false, // Exclude content field
+        },
       });
 
       let isPurchased = false;
@@ -220,6 +223,9 @@ export const productsRouter = createTRPCRouter({
         sort,
         page: input.cursor,
         limit: input.limit,
+        select: {
+          content: false, // Exclude content field
+        },
       });
 
       // Thêm thông tin tóm tắt reviews (rating trung bình và số lượng reviews) cho mỗi product
