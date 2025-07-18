@@ -1,10 +1,11 @@
+import { DEFAULT_LIMIT } from "@/constants";
 import { Category, Media, Tenant } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import { TRPCError } from "@trpc/server";
+import { headers as getHeaders } from "next/headers";
 import type { Sort, Where } from "payload";
 import z from "zod";
 import { sortValues } from "../search-params";
-import { DEFAULT_LIMIT } from "@/constants";
-import { headers as getHeaders } from "next/headers";
 
 export const productsRouter = createTRPCRouter({
   getOne: baseProcedure
@@ -21,6 +22,13 @@ export const productsRouter = createTRPCRouter({
           content: false, // Exclude content field
         },
       });
+
+      if (product.isArchived) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Product not found",
+        });
+      }
 
       let isPurchased = false;
 
@@ -138,7 +146,13 @@ export const productsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const where: Where = {};
+      const where: Where = {
+        isArchived: {
+          // tại sao không dùng "equals: false"? vì "defaultValue: false" (ở collection Products) và nếu ẩn "defaultValue" thì nó là "undefined"
+          // khi tạo sản phẩm mới sẽ không có trường này, và khi đó sẽ không lọc được sản phẩm đã lưu trữ
+          not_equals: true, // Chỉ lấy các sản phẩm chưa bị lưu trữ
+        },
+      };
       let sort: Sort = "-createdAt";
 
       if (input.sort === "curated") {

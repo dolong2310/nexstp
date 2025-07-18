@@ -11,6 +11,7 @@ export const Products: CollectionConfig = {
       const tenant = req.user?.tenants?.[0]?.tenant as Tenant;
       return Boolean(tenant?.stripeDetailsSubmitted);
     },
+    delete: ({ req }) => isSuperAdmin(req.user),
   },
   admin: {
     useAsTitle: "name",
@@ -70,6 +71,16 @@ export const Products: CollectionConfig = {
       admin: {
         description:
           "Protected content only visible to customers after purchase. Add product documentation, downloadable files, getting started guides, and bonus materials. Supports Markdown formatting.",
+      },
+    },
+    {
+      name: "isArchived",
+      label: "Archive",
+      type: "checkbox",
+      defaultValue: false,
+      admin: {
+        description:
+          "If checked, this product will be archived and not visible to customers.",
       },
     },
   ],
