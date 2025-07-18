@@ -1,17 +1,17 @@
 "use client";
 
-import { useTRPC } from "@/trpc/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import useCart from "../../hooks/use-cart";
-import { toast } from "sonner";
 import { generateTenantUrl } from "@/lib/utils";
+import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
+import { useTRPC } from "@/trpc/client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { LoaderIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import useCart from "../../hooks/use-cart";
+import useCheckoutState from "../../hooks/use-checkout-state";
 import CheckoutItem from "../components/checkout-item";
 import CheckoutSidebar from "../components/checkout-sidebar";
-import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
-import { LoaderIcon } from "lucide-react";
-import useCheckoutState from "../../hooks/use-checkout-state";
-import { useRouter } from "next/navigation";
 
 type Props = {
   tenantSlug: string;
@@ -19,6 +19,7 @@ type Props = {
 
 const CheckoutView = ({ tenantSlug }: Props) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [states, setStates] = useCheckoutState();
 
@@ -56,9 +57,21 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     if (states.success) {
       setStates({ success: false, cancel: false });
       cart.clearCart();
-      router.push("/products");
+
+      // prefetch library products
+      queryClient.invalidateQueries(
+        trpc.library.getMany.infiniteQueryOptions({})
+      );
+      router.push("/library");
     }
-  }, [states.success, cart.clearCart, router, setStates]);
+  }, [
+    states.success,
+    cart.clearCart,
+    router,
+    setStates,
+    queryClient,
+    trpc.library.getMany,
+  ]);
 
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
