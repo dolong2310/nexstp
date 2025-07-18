@@ -2,14 +2,30 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import { LoaderIcon } from "lucide-react";
+import Link from "next/link";
 
 type Props = {
   tenantSlug: string;
   productId: string;
+  isPurchased?: boolean;
 };
 
-const CartButton = ({ tenantSlug, productId }: Props) => {
+const CartButton = ({ tenantSlug, productId, isPurchased }: Props) => {
   const cart = useCart(tenantSlug);
+
+  if (isPurchased) {
+    return (
+      <Button
+        asChild
+        variant="elevated"
+        className="flex-1 font-medium bg-white"
+      >
+        <Link prefetch href={`/library/${productId}`}>
+          View in Library
+        </Link>
+      </Button>
+    );
+  }
 
   return (
     <Button
