@@ -14,6 +14,9 @@ const sortValues = [
 ] as const;
 
 export const params = {
+  search: parseAsString.withDefault("").withOptions({
+    clearOnDefault: true,
+  }),
   minPrice: parseAsString.withDefault("").withOptions({
     clearOnDefault: true,
   }),
