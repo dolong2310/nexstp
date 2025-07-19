@@ -30,6 +30,7 @@ const CategoryDropdown = ({
 
   // TODO: Potentially improve mobile
   const toggleDropdown = () => {
+    // @ts-ignore
     if (category.subcategories?.docs?.length) {
       setIsOpen(!isOpen);
     }

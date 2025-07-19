@@ -3,7 +3,9 @@ import LibraryView from "@/modules/library/ui/views/library-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
-const LibraryPage = async () => {
+export const dynamic = "force-dynamic"; // Force dynamic rendering for this page
+
+const LibraryPage = () => {
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.library.getMany.infiniteQueryOptions({
