@@ -1,6 +1,7 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
@@ -47,7 +48,7 @@ const ProductView = ({ productId }: Props) => {
           </div>
           <div className="lg:col-span-5">
             {product.content ? (
-              <p>{product.content}</p>
+              <RichText data={product.content} />
             ) : (
               <p className="font-medium italic text-muted-foreground">
                 No special content

@@ -45,6 +45,16 @@ export default buildConfig({
   ],
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),
+  // editor: lexicalEditor({
+  //   features: ({ defaultFeatures }) => [
+  //     ...defaultFeatures,
+  //     UploadFeature({
+  //       collections: {
+  //         media: { fields: [{ name: "alt", type: "text" }] },
+  //       },
+  //     }),
+  //   ],
+  // }),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
@@ -58,6 +68,7 @@ export default buildConfig({
     multiTenantPlugin<Config>({
       collections: {
         products: {},
+        // media: {},
       },
       tenantsArrayField: {
         includeDefaultField: false,
