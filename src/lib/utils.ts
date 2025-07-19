@@ -6,15 +6,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateTenantUrl(slug: string) {
-  // In development mode, use normal routing
-  if (process.env.NODE_ENV === "development") {
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const enableSubdomainRouting = process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING === "true";
+
+  // In development mode or subdomain routing disabled, use normal routing
+  if (isDevelopment || !enableSubdomainRouting) {
     return `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${slug}`;
   }
 
   const protocol = "https";
   const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN!;
 
-  // if (process.env.NODE_ENV === "development") {
+  // if (isDevelopment || !enableSubdomainRouting) {) {
   //   protocol = "http";
   // }
 
