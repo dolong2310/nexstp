@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "multitenant-ecommerce",
+      "name": "nexstp",
       "dependencies": {
         "@hookform/resolvers": "^5.1.1",
         "@payloadcms/db-mongodb": "3.33.0",
