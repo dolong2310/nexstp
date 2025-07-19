@@ -186,6 +186,13 @@ export const productsRouter = createTRPCRouter({
         where["tenant.slug"] = {
           equals: input.tenantSlug,
         };
+      } else {
+        // If we are loading products for public storefront (no tenantSlug)
+        // Make sure to not load products set to "isPrivate: true" (using reverse not_equals logic)
+        // These products are exclusive private to the tenant store
+        where["isPrivate"] = {
+          not_equals: true, // Chỉ lấy các sản phẩm công khai
+        };
       }
 
       if (input.category) {
