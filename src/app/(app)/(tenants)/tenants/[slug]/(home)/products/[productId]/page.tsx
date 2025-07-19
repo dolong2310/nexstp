@@ -1,4 +1,6 @@
-import ProductView from "@/modules/products/views/product-view";
+import ProductView, {
+  ProductViewSkeleton,
+} from "@/modules/products/views/product-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
@@ -14,12 +16,12 @@ const ProductDetailPage = async ({ params }: Props) => {
   const { slug, productId: id } = await params;
 
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.products.getOne.queryOptions({ id }));
-  // void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
+  // void queryClient.prefetchQuery(trpc.products.getOne.queryOptions({ id }));
+  void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<ProductViewSkeleton />}>
         <ProductView productId={id} tenantSlug={slug} />
       </Suspense>
     </HydrationBoundary>
