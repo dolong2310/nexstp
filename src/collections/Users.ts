@@ -1,3 +1,4 @@
+import { IS_PRODUCTION } from "@/constants";
 import { isSuperAdmin } from "@/lib/access";
 import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
 import type { CollectionConfig } from "payload";
@@ -33,7 +34,15 @@ export const Users: CollectionConfig = {
     useAsTitle: "email",
     hidden: ({ user }) => !isSuperAdmin(user),
   },
-  auth: true,
+  auth: {
+    cookies: {
+      ...(IS_PRODUCTION && {
+        sameSite: "None",
+        domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+        secure: true,
+      }),
+    },
+  },
   fields: [
     {
       name: "username",
