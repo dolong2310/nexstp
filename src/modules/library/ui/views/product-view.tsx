@@ -4,8 +4,9 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import ReviewSidebar from "../components/review-sidebar";
 import { Suspense } from "react";
+import { ReviewFormSkeleton } from "../components/review-form";
+import ReviewSidebar from "../components/review-sidebar";
 
 type Props = {
   productId: string;
@@ -39,7 +40,7 @@ const ProductView = ({ productId }: Props) => {
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
           <div className="lg:col-span-2">
             <div className="p-4 bg-white rounded-md border gap-4">
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<ReviewFormSkeleton />}>
                 <ReviewSidebar productId={productId} />
               </Suspense>
             </div>
@@ -55,6 +56,19 @@ const ProductView = ({ productId }: Props) => {
           </div>
         </div>
       </section>
+    </div>
+  );
+};
+
+export const ProductViewSkeleton = () => {
+  return (
+    <div className="min-h-screen bg-white">
+      <nav className="w-full p-4 border-b bg-[#F4F4F0]">
+        <div className="flex items-center gap-2">
+          <ArrowLeftIcon className="size-4" />
+          <span className="text font-medium">Back to Library</span>
+        </div>
+      </nav>
     </div>
   );
 };
