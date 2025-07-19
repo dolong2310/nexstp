@@ -7,8 +7,6 @@ import useProductFilter from "../../hooks/use-product-filter";
 import PriceFilter from "./price-filter";
 import TagsFilter from "./tags-filter";
 
-type Props = {};
-
 type FilterItemProps = {
   title: string;
   className?: string;
@@ -34,7 +32,7 @@ const FilterItem = ({ title, className, children }: FilterItemProps) => {
   );
 };
 
-const ProductFilters = (props: Props) => {
+const ProductFilters = () => {
   const [filters, setFilters] = useProductFilter();
 
   const hasAnyFilters = Object.entries(filters).some(([key, value]) => {

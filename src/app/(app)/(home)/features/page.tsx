@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-const FeaturesPage = (props: Props) => {
+const FeaturesPage = () => {
   return <div>FeaturesPage</div>;
 };
 

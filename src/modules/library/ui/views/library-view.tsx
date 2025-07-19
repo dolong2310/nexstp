@@ -3,9 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import ProductList, { ProductListSkeleton } from "../components/product-list";
 
-type Props = {};
-
-const LibraryView = (props: Props) => {
+const LibraryView = () => {
   return (
     <div className="min-h-screen bg-white">
       <nav className="w-full p-4 border-b bg-[#F4F4F0]">

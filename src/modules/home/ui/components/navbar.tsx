@@ -24,9 +24,7 @@ const navbarItems = [
   { href: "/contact", children: "Contact" },
 ];
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
   const pathname = usePathname();
   const trpc = useTRPC();
   const session = useQuery(trpc.auth.session.queryOptions());

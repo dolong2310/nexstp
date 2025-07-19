@@ -4,9 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useProductFilter from "../../hooks/use-product-filter";
 
-type Props = {};
-
-const ProductSort = (props: Props) => {
+const ProductSort = () => {
   const [filters, setFilters] = useProductFilter();
 
   return (

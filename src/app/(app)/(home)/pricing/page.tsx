@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-const PricingPage = (props: Props) => {
+const PricingPage = () => {
   return <div>PricingPage</div>;
 };
 
