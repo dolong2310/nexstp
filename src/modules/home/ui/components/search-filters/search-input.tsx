@@ -2,22 +2,37 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useDebounce from "@/hooks/useDebounce";
+import useProductFilter from "@/modules/products/hooks/use-product-filter";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
-import { useState } from "react";
-import CategoriesSidebar from "./categories-sidebar";
 import Link from "next/link";
+import { ChangeEvent, useEffect, useState } from "react";
+import CategoriesSidebar from "./categories-sidebar";
 
 type Props = {
+  value?: string;
+  onChange?: (value: string) => void;
   disabled?: boolean;
 };
 
-const SearchInput = ({ disabled }: Props) => {
+const SearchInput = ({ value, onChange, disabled }: Props) => {
   const trpc = useTRPC();
   const session = useQuery(trpc.auth.session.queryOptions());
 
+  const [searchTerm, setSearchTerm] = useState(value || "");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  useEffect(() => {
+    onChange?.(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="flex items-center gap-2 w-full">
@@ -29,6 +44,8 @@ const SearchInput = ({ disabled }: Props) => {
           className="pl-8"
           placeholder="Search products"
           disabled={disabled}
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
       </div>
 

@@ -7,13 +7,14 @@ import { useParams } from "next/navigation";
 import Categories from "./categories";
 import SearchInput from "./search-input";
 import BreadcrumbNavigation from "./breadcrumb-navigation";
+import useProductFilter from "@/modules/products/hooks/use-product-filter";
 
-type Props = {};
-
-const SearchFilters = ({}: Props) => {
+const SearchFilters = () => {
   const params = useParams();
   const categoryParam = params.category as string | undefined;
   const activeSubcategory = params.subcategory as string | undefined;
+
+  const [filters, setFilters] = useProductFilter();
 
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
@@ -28,12 +29,16 @@ const SearchFilters = ({}: Props) => {
       (subcate) => subcate.slug === activeSubcategory
     )?.name || null;
 
+  const handleSearchChange = (value: string) => {
+    setFilters({ ...filters, search: value });
+  };
+
   return (
     <div
       className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full"
       style={{ backgroundColor: activeCategoryColor }}
     >
-      <SearchInput />
+      <SearchInput value={filters.search} onChange={handleSearchChange} />
       <div className="hidden lg:block">
         <Categories data={data} />
       </div>
