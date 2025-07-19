@@ -1,3 +1,4 @@
+import { IS_PRODUCTION } from "@/constants";
 import { cookies as getCookies } from "next/headers";
 
 export const generateAuthCookie = async ({
@@ -14,10 +15,10 @@ export const generateAuthCookie = async ({
     value,
     httpOnly: true,
     path: "/",
-    sameSite: "none",
-    domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
-    secure: process.env.NODE_ENV === "production",
-    // nexstp.com -> initial cookie
-    // longdoo.nexstp.com -> cookie does not exist here
+    ...(IS_PRODUCTION && {
+      sameSite: "none",
+      domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+      secure: true,
+    }),
   });
 };
