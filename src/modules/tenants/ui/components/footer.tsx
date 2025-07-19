@@ -12,7 +12,7 @@ const Footer = () => {
     <footer className="border-t font-medium bg-white">
       <div className="max-w-screen-lg mx-auto px-4 lg:px-12 py-6 flex items-center gap-2 h-full">
         <p>Powered by</p>
-        <Link href="/">
+        <Link href={process.env.NEXT_PUBLIC_APP_URL!}>
           <span className={cn("text-2xl font-semibold", poppins.className)}>
             Nexstp
           </span>
