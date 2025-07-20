@@ -85,7 +85,7 @@ const SignInView = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
-      <div className="h-screen w-full lg:col-span-3 overflow-auto bg-[#F4F4F0]">
+      <div className="h-screen w-full lg:col-span-3 overflow-auto bg-third">
         <Form {...form}>
           <form
             className="flex flex-col gap-8 p-4 lg:p-16"
@@ -144,7 +144,7 @@ const SignInView = () => {
               type="submit"
               variant="elevated"
               size="lg"
-              className="bg-black text-white hover:bg-pink-400 hover:text-primary"
+              className="bg-black text-white hover:bg-feature hover:text-primary"
               disabled={loginMutation.isPending}
             >
               Login

@@ -208,7 +208,10 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-  color?: string | null;
+  color?: {
+    light?: string | null;
+    dark?: string | null;
+  };
   parent?: (string | null) | Category;
   subcategories?: {
     docs?: (string | Category)[];
@@ -455,7 +458,12 @@ export interface MediaSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
-  color?: T;
+  color?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
   parent?: T;
   subcategories?: T;
   updatedAt?: T;

@@ -83,7 +83,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   if (isLoading) {
     return (
       <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-        <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-white border border-black border-dashed p-8">
+        <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-background border border-black border-dashed p-8">
           <LoaderIcon className="size-4 animate-spin" />
         </div>
       </div>
@@ -102,7 +102,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
         <div className="lg:col-span-4">
-          <div className="border rounded-md overflow-hidden bg-white">
+          <div className="border rounded-md overflow-hidden bg-background">
             {products?.docs.map((product, index) => {
               return (
                 <CheckoutItem

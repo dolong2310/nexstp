@@ -116,9 +116,8 @@ export const productsRouter = createTRPCRouter({
         const count = ratingDistribution[rating] || 0; // Số lượng reviews cho rating này
         // Tính phần trăm: (số reviews rating này / tổng reviews) * 100
         // Math.round để làm tròn thành số nguyên
-        ratingDistribution[rating] = Math.round(
-          (count / reviewsData.totalDocs) * 100
-        );
+        const percentage = Math.round((count / reviewsData.totalDocs) * 100);
+        ratingDistribution[rating] = isNaN(percentage) ? 0 : percentage;
       });
 
       return {

@@ -6,9 +6,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { DEFAULT_BG_COLOR, ThemeMode } from "@/modules/home/constants";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -30,7 +32,10 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
 
   // If we have parent categories, show those, otherwise show root categories
   const currentCategories = parentCategories ?? data ?? [];
-  const backgroundColor = selectedCategory?.color || "white";
+
+  const { theme } = useTheme();
+  const themeKey = theme as ThemeMode;
+  const backgroundColor = selectedCategory?.color?.[themeKey] || DEFAULT_BG_COLOR[themeKey];
 
   const handleOpenChange = (open: boolean) => {
     setSelectedCategory(null);

@@ -1,3 +1,4 @@
+import ThemeButton from "@/components/theme-button";
 import React from "react";
 
 const Footer = () => {
@@ -6,6 +7,8 @@ const Footer = () => {
       <div className="flex items-center gap-2">
         <p>nexstp, Inc.</p>
       </div>
+
+      <ThemeButton />
     </footer>
   );
 };

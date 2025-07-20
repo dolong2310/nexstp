@@ -19,7 +19,7 @@ const CheckoutButton = ({ className, hideIfEmpty, tenantSlug }: Props) => {
   }
 
   return (
-    <Button asChild variant="elevated" className={cn("bg-white", className)}>
+    <Button asChild variant="elevated" className={cn("bg-background", className)}>
       <Link href={`${generateTenantUrl(tenantSlug)}/checkout`}>
         <ShoppingCartIcon /> {totalItems > 0 ? totalItems : ""}
       </Link>
@@ -29,7 +29,7 @@ const CheckoutButton = ({ className, hideIfEmpty, tenantSlug }: Props) => {
 
 export const CheckoutButtonSkeleton = () => {
   return (
-    <Button disabled variant="elevated" className="bg-white">
+    <Button disabled variant="elevated" className="bg-background">
       <ShoppingCartIcon className="fill-black" />
       <LoaderIcon className="size-4 animate-spin" />
     </Button>

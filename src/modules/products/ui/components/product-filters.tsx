@@ -64,7 +64,7 @@ const ProductFilters = () => {
   };
 
   return (
-    <div className="border rounded-md bg-white">
+    <div className="border rounded-md bg-background">
       <div className="flex items-center justify-between border-b p-4">
         <p className="font-medium">Filters</p>
         {hasAnyFilters && (

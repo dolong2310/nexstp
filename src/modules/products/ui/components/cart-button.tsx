@@ -18,7 +18,7 @@ const CartButton = ({ tenantSlug, productId, isPurchased }: Props) => {
       <Button
         asChild
         variant="elevated"
-        className="flex-1 font-medium bg-white"
+        className="flex-1 font-medium bg-background"
       >
         <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library/${productId}`}>
           View in Library
@@ -31,8 +31,8 @@ const CartButton = ({ tenantSlug, productId, isPurchased }: Props) => {
     <Button
       variant="elevated"
       className={cn(
-        "flex-1 bg-pink-400",
-        cart.isProductInCart(productId) && "bg-white"
+        "flex-1 bg-feature",
+        cart.isProductInCart(productId) && "bg-background"
       )}
       onClick={() => cart.toggleProduct(productId)}
     >
@@ -43,7 +43,7 @@ const CartButton = ({ tenantSlug, productId, isPurchased }: Props) => {
 
 export const CartButtonSkeleton = () => {
   return (
-    <Button disabled variant="elevated" className="flex-1 bg-pink-400">
+    <Button disabled variant="elevated" className="flex-1 bg-feature">
       <LoaderIcon className="size-4 animate-spin" />
     </Button>
   );

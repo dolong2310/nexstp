@@ -1,0 +1,21 @@
+import { TRPCReactProvider } from "@/trpc/client";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import React from "react";
+import { ThemeProvider } from "./theme-provider";
+
+type Props = {
+  children: React.ReactNode;
+};
+
+const Providers = ({ children }: Props) => {
+  return (
+    <NuqsAdapter>
+      <TRPCReactProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+        {/* {children} */}
+      </TRPCReactProvider>
+    </NuqsAdapter>
+  );
+};
+
+export default Providers;

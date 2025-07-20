@@ -28,7 +28,17 @@ export const Categories: CollectionConfig = {
     },
     {
       name: "color",
-      type: "text",
+      type: "group",
+      fields: [
+        {
+          name: "light",
+          type: "text",
+        },
+        {
+          name: "dark",
+          type: "text",
+        },
+      ],
     },
     {
       name: "parent",

@@ -11,7 +11,7 @@ const CheckoutLayout = async ({ children, params }: Props) => {
   const { slug } = await params;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F4F4F0]">
+    <div className="min-h-screen flex flex-col bg-third">
       <Navbar slug={slug} />
       <div className="flex-1">
         <div className="max-w-screen-lg mx-auto">{children}</div>

@@ -13,7 +13,7 @@ const ProductSort = () => {
         variant="secondary"
         size="sm"
         className={cn(
-          "rounded-full bg-white hover:bg-white",
+          "rounded-full bg-background hover:bg-background",
           filters.sort !== "curated" &&
             "bg-transparent border-transparent hover:border-border hover:bg-transparent"
         )}
@@ -26,7 +26,7 @@ const ProductSort = () => {
         variant="secondary"
         size="sm"
         className={cn(
-          "rounded-full bg-white hover:bg-white",
+          "rounded-full bg-background hover:bg-background",
           filters.sort !== "trending" &&
             "bg-transparent border-transparent hover:border-border hover:bg-transparent"
         )}
@@ -39,7 +39,7 @@ const ProductSort = () => {
         variant="secondary"
         size="sm"
         className={cn(
-          "rounded-full bg-white hover:bg-white",
+          "rounded-full bg-background hover:bg-background",
           filters.sort !== "hot_and_new" &&
             "bg-transparent border-transparent hover:border-border hover:bg-transparent"
         )}

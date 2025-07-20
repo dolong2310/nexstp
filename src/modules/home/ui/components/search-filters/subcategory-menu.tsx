@@ -1,5 +1,7 @@
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { DEFAULT_BG_COLOR, ThemeMode } from "@/modules/home/constants";
 import { Category } from "@/payload-types";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 
 type Props = {
@@ -16,14 +18,16 @@ const SubcategoryMenu = ({ category, isOpen }: Props) => {
     return null; // Don't render if not open or no subcategories
   }
 
-  const backgroundColor = category.color || "#F5F5F5";
+  const { theme } = useTheme();
+  const themeKey = theme as ThemeMode;
+  const backgroundColor = category.color?.[themeKey] || DEFAULT_BG_COLOR[themeKey];
 
   return (
     <div className="absolute z-100" style={{ top: "100%", left: 0 }}>
       {/* Invisible bridge to maintain hover */}
       <div className="h-3 w-60" />
       <div
-        className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-[2px] -translate-y-[2px]"
+        className="w-60 text-black dark:text-white rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] -translate-x-[2px] -translate-y-[2px]"
         style={{ backgroundColor }}
       >
         <div className="">

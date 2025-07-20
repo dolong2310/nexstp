@@ -32,7 +32,7 @@ const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <nav className="h-20 flex border-b justify-between font-medium bg-white ">
+    <nav className="h-20 flex border-b justify-between font-medium bg-background ">
       <Link href="/" className="pl-6 flex items-center">
         <span className={cn("text-5xl font-semibold", poppins.className)}>
           nexstp
@@ -62,7 +62,7 @@ const Navbar = () => {
           <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 hover:text-black transition-colors text-lg"
+            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
           >
             <Link href="/admin">Dashboard</Link>
           </Button>
@@ -72,7 +72,7 @@ const Navbar = () => {
           <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg"
+            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-background hover:bg-feature transition-colors duration-200 text-lg"
           >
             <Link prefetch href="/sign-in">
               Log in
@@ -81,7 +81,7 @@ const Navbar = () => {
           <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 hover:text-black transition-colors text-lg"
+            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
           >
             <Link prefetch href="/sign-up">
               Start selling
@@ -93,7 +93,7 @@ const Navbar = () => {
       <div className="flex lg:hidden items-center justify-center">
         <Button
           variant="ghost"
-          className="size-12 border-transparent bg-white"
+          className="size-12 border-transparent bg-background"
           onClick={() => setIsSidebarOpen(true)}
         >
           <MenuIcon />
@@ -118,7 +118,8 @@ const NavbarItem = ({
       variant="outline"
       className={cn(
         "bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent px-4 text-lg",
-        isActive && "bg-black text-white hover:bg-black hover:text-white"
+        isActive &&
+          "bg-black text-white dark:bg-white dark:text-black hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
       )}
     >
       <Link href={href}>{children}</Link>

@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { ListFilterIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import CategoriesSidebar from "./categories-sidebar";
-import CategoryDropdown from "./category-dropdown";
+import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import CategoryDropdown from "./category-dropdown";
+
+const CategoriesSidebar = dynamic(() => import("./categories-sidebar"), {
+  ssr: false,
+});
 
 type Props = { data: CategoriesGetManyOutput };
 
@@ -114,11 +118,11 @@ const Categories = ({ data }: Props) => {
           <Button
             variant="elevated"
             className={cn(
-              "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
+              "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-background hover:border-primary text-foreground",
               // Highlight button nếu category active bị ẩn và không hover
               isActiveCategoryHidden &&
                 !isAnyHovered &&
-                "bg-white border-primary"
+                "bg-background border-primary"
             )}
             onClick={() => setIsSidebarOpen(true)}
           >

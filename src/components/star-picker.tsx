@@ -42,8 +42,8 @@ const StarPicker = ({ value = 0, disabled, className, onChange }: Props) => {
               className={cn(
                 "size-5",
                 (hoverValue || value) >= star
-                  ? "fill-black stroke-black"
-                  : "stroke-black" // stroke: màu viền, fill: màu nền
+                  ? "fill-black stroke-black dark:fill-white dark:stroke-white"
+                  : "stroke-black dark:stroke-white" // stroke: màu viền, fill: màu nền
               )}
             />
           </button>

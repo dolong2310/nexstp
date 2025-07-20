@@ -22,15 +22,15 @@ const ProductView = ({ productId }: Props) => {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="w-full p-4 border-b bg-[#F4F4F0]">
+    <div className="min-h-screen bg-background">
+      <nav className="w-full p-4 border-b bg-third">
         <Link prefetch href="/library" className="flex items-center gap-2">
           <ArrowLeftIcon className="size-4" />
           <span className="text font-medium">Back to Library</span>
         </Link>
       </nav>
 
-      <header className="py-8 border-b bg-[#F4F4F0]">
+      <header className="py-8 border-b bg-third">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-12">
           <h1 className="text-4xl font-medium">{product.name}</h1>
           <p className="font-medium">Your purchased and reviews</p>
@@ -40,7 +40,7 @@ const ProductView = ({ productId }: Props) => {
       <section className="max-w-screen-xl mx-auto px-4 lg:px-12 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
           <div className="lg:col-span-2">
-            <div className="p-4 bg-white rounded-md border gap-4">
+            <div className="p-4 bg-background rounded-md border gap-4">
               <Suspense fallback={<ReviewFormSkeleton />}>
                 <ReviewSidebar productId={productId} />
               </Suspense>
@@ -63,8 +63,8 @@ const ProductView = ({ productId }: Props) => {
 
 export const ProductViewSkeleton = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="w-full p-4 border-b bg-[#F4F4F0]">
+    <div className="min-h-screen bg-background">
+      <nav className="w-full p-4 border-b bg-third">
         <div className="flex items-center gap-2">
           <ArrowLeftIcon className="size-4" />
           <span className="text font-medium">Back to Library</span>

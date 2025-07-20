@@ -9,7 +9,10 @@ const categories = [
   },
   {
     name: "Business & Money",
-    color: "#FFB347",
+    color: {
+      light: "#FFB347",
+      dark: "#CC5500"
+    },
     slug: "business-money",
     subcategories: [
       { name: "Accounting", slug: "accounting" },
@@ -31,7 +34,10 @@ const categories = [
   },
   {
     name: "Software Development",
-    color: "#7EC8E3",
+    color: {
+      light: "#7EC8E3",
+      dark: "#2E86AB"
+    },
     slug: "software-development",
     subcategories: [
       { name: "Web Development", slug: "web-development" },
@@ -43,7 +49,10 @@ const categories = [
   },
   {
     name: "Writing & Publishing",
-    color: "#D8B5FF",
+    color: {
+      light: "#D8B5FF",
+      dark: "#8B5A96"
+    },
     slug: "writing-publishing",
     subcategories: [
       { name: "Fiction", slug: "fiction" },
@@ -59,7 +68,10 @@ const categories = [
   },
   {
     name: "Education",
-    color: "#FFE066",
+    color: {
+      light: "#FFE066",
+      dark: "#B8860B"
+    },
     slug: "education",
     subcategories: [
       { name: "Online Courses", slug: "online-courses" },
@@ -70,7 +82,10 @@ const categories = [
   },
   {
     name: "Self Improvement",
-    color: "#96E6B3",
+    color: {
+      light: "#96E6B3",
+      dark: "#228B22"
+    },
     slug: "self-improvement",
     subcategories: [
       { name: "Productivity", slug: "productivity" },
@@ -81,7 +96,10 @@ const categories = [
   },
   {
     name: "Fitness & Health",
-    color: "#FF9AA2",
+    color: {
+      light: "#FF9AA2",
+      dark: "#CD5C5C"
+    },
     slug: "fitness-health",
     subcategories: [
       { name: "Workout Plans", slug: "workout-plans" },
@@ -92,7 +110,10 @@ const categories = [
   },
   {
     name: "Design",
-    color: "#B5B9FF",
+    color: {
+      light: "#B5B9FF",
+      dark: "#4B0082"
+    },
     slug: "design",
     subcategories: [
       { name: "UI/UX", slug: "ui-ux" },
@@ -103,7 +124,10 @@ const categories = [
   },
   {
     name: "Drawing & Painting",
-    color: "#FFCAB0",
+    color: {
+      light: "#FFCAB0",
+      dark: "#D2691E"
+    },
     slug: "drawing-painting",
     subcategories: [
       { name: "Watercolor", slug: "watercolor" },
@@ -115,7 +139,10 @@ const categories = [
   },
   {
     name: "Music",
-    color: "#FFD700",
+    color: {
+      light: "#FFD700",
+      dark: "#B8860B"
+    },
     slug: "music",
     subcategories: [
       { name: "Songwriting", slug: "songwriting" },
@@ -126,7 +153,10 @@ const categories = [
   },
   {
     name: "Photography",
-    color: "#FF6B6B",
+    color: {
+      light: "#FF6B6B",
+      dark: "#DC143C"
+    },
     slug: "photography",
     subcategories: [
       { name: "Portrait", slug: "portrait" },

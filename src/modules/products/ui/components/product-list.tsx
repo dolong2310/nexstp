@@ -67,7 +67,7 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
       <div className="flex justify-center pt-8">
         {hasNextPage && (
           <Button
-            className="text-base font-medium bg-white disabled:opacity-50"
+            className="text-base font-medium bg-background disabled:opacity-50"
             variant="elevated"
             disabled={isFetchingNextPage}
             onClick={() => fetchNextPage()}
@@ -82,7 +82,7 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
 
 export const ProductListEmpty = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-white border border-black border-dashed p-8">
+    <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-background border border-black border-dashed p-8">
       <InboxIcon />
       <p className="text-base font-medium">No products found</p>
     </div>

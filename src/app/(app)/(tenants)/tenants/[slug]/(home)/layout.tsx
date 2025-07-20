@@ -20,7 +20,7 @@ const TenantsLayout = async ({ children, params }: Props) => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F4F4F0]">
+    <div className="min-h-screen flex flex-col bg-third">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<NavbarSkeleton />}>
           <Navbar slug={slug} />

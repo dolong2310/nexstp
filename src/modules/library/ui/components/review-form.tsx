@@ -143,7 +143,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
             variant="elevated"
             size="lg"
             disabled={createReview.isPending || updateReview.isPending}
-            className="w-fit bg-black text-white hover:bg-pink-400 hover:text-primary"
+            className="w-fit bg-black text-white hover:bg-feature hover:text-primary"
           >
             {initialData ? "Update review" : "Post review"}
           </Button>
@@ -176,7 +176,7 @@ export const ReviewFormSkeleton = () => {
         variant="elevated"
         size="lg"
         disabled
-        className="w-fit bg-black text-white hover:bg-pink-400 hover:text-primary"
+        className="w-fit bg-black text-white hover:bg-feature hover:text-primary"
       >
         Post review
       </Button>

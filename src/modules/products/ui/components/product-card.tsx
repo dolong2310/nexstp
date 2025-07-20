@@ -40,7 +40,7 @@ const ProductCard = ({
       href={`${generateTenantUrl(authorUsername)}/products/${id}`}
       className="no-underline"
     >
-      <div className="flex flex-col border rounded-md bg-white overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
         <div className="relative aspect-square">
           <Image
             src={imageUrl || "/placeholder-bg.jpg"}
@@ -76,7 +76,7 @@ const ProductCard = ({
         </div>
 
         <div className="p-4">
-          <div className="relative px-2 py-1 border bg-pink-400 w-fit">
+          <div className="relative px-2 py-1 border bg-feature w-fit">
             <p className="text-sm font-medium">{formatCurrency(price)}</p>
           </div>
         </div>

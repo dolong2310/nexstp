@@ -48,7 +48,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 
   return (
     <div className="px-4 lg:px-12 py-10">
-      <div className="border rounded-sm bg-white overflow-hidden">
+      <div className="border rounded-sm bg-background overflow-hidden">
         <div className="relative aspect-[3.9] border-b">
           <Image
             src={product.cover?.url || "/placeholder-bg.jpg"}
@@ -66,7 +66,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 
             <div className="flex border-y">
               <div className="flex items-center justify-center border-r px-6 py-4">
-                <div className="px-2 py-1 border bg-pink-400 w-fit">
+                <div className="px-2 py-1 border bg-feature w-fit">
                   <p className="text-base font-medium">
                     {formatCurrency(product.price)}
                   </p>
@@ -187,7 +187,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 export const ProductViewSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-10">
-      <div className="border rounded-sm bg-white overflow-hidden">
+      <div className="border rounded-sm bg-background overflow-hidden">
         <div className="relative aspect-[3.9] border-b">
           <Image
             src="/placeholder-bg.jpg"

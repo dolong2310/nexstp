@@ -23,7 +23,7 @@ const ProductCard = ({
 }: Props) => {
   return (
     <Link prefetch href={`/library/${id}`} className="no-underline">
-      <div className="flex flex-col border rounded-md bg-white overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
         <div className="relative aspect-square">
           <Image
             src={imageUrl || "/placeholder-bg.jpg"}
