@@ -1,4 +1,5 @@
 import {
+  metadataOpenGraphDefaultImage,
   metadataKeywords,
   metadataOpenGraph,
   metadataRobots,
@@ -52,6 +53,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...metadataOpenGraph,
       title: `${subcategoryData.name} Products`,
       description,
+      images: [
+        {
+          ...metadataOpenGraphDefaultImage,
+          alt: `${subcategoryData.name} products`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",

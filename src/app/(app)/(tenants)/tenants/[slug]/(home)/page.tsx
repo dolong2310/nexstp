@@ -1,4 +1,5 @@
 import {
+  metadataOpenGraphDefaultImage,
   metadataKeywords,
   metadataOpenGraph,
   metadataRobots,
@@ -55,7 +56,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
               alt: `${tenant.name} store logo`,
             },
           ]
-        : [],
+        : [
+            {
+              ...metadataOpenGraphDefaultImage,
+              alt: `${tenant.name} store`,
+            },
+          ],
       url: generateTenantUrl(slug),
     },
     twitter: {
