@@ -1,8 +1,11 @@
+import { metadataOpenGraph } from "@/app/(app)/shared-metadata";
+import { getProductForMetadata } from "@/lib/server-actions/products";
 import ProductView, {
   ProductViewSkeleton,
 } from "@/modules/products/views/product-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 type Props = {
@@ -11,6 +14,48 @@ type Props = {
     productId: string;
   }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { productId } = await params;
+
+  const product = await getProductForMetadata(productId);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+      description: "The requested product could not be found",
+    };
+  }
+
+  const description =
+    product.plainTextDescription || `Browse ${product.name} in the library`;
+
+  return {
+    title: `${product.name}`,
+    description: description,
+    openGraph: {
+      ...metadataOpenGraph,
+      title: product.name,
+      description: description,
+      images: product.image?.url
+        ? [
+            {
+              url: product.image.url,
+              width: 1200,
+              height: 630,
+              alt: product.name,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description: description,
+      images: product.image?.url ? [product.image.url] : [],
+    },
+  };
+}
 
 const ProductDetailPage = async ({ params }: Props) => {
   const { slug, productId: id } = await params;
