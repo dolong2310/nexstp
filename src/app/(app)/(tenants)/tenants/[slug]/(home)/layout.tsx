@@ -2,11 +2,20 @@ import Footer from "@/modules/tenants/ui/components/footer";
 import Navbar, { NavbarSkeleton } from "@/modules/tenants/ui/components/navbar";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Metadata } from "next";
 import React, { Suspense } from "react";
 
 type Props = {
   params: Promise<{ slug: string }>;
   children: React.ReactNode;
+};
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Store",
+    default: "Store",
+  },
+  description: "Browse amazing products from our store",
 };
 
 const TenantsLayout = async ({ children, params }: Props) => {

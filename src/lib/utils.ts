@@ -17,10 +17,6 @@ export function generateTenantUrl(slug: string) {
   const protocol = "https";
   const domain = process.env.NEXT_PUBLIC_ROOT_DOMAIN!;
 
-  // if (IS_DEVELOPMENT || !enableSubdomainRouting) {) {
-  //   protocol = "http";
-  // }
-
   // In production, use the subdomain routing (e.g: "https://something.nexstp.com")
   return `${protocol}://${slug}.${domain}`;
 }
