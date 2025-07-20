@@ -9,6 +9,7 @@ import {
   metadataKeywords,
   metadataRobots,
   metadataOpenGraph,
+  metadataOpenGraphDefaultImage,
 } from "../shared-metadata";
 
 type Props = {
@@ -24,6 +25,12 @@ export const metadata: Metadata = {
     title: "Home",
     description:
       "Discover amazing products from various stores in our marketplace",
+    images: [
+      {
+        ...metadataOpenGraphDefaultImage,
+        alt: `Nexstp`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
