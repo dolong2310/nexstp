@@ -1,3 +1,4 @@
+import LogoutButton from "@/components/logout-button";
 import ThemeButton from "@/components/theme-button";
 import React from "react";
 
@@ -8,7 +9,10 @@ const Footer = () => {
         <p>nexstp, Inc.</p>
       </div>
 
-      <ThemeButton />
+      <div className="flex items-center gap-4">
+        <ThemeButton />
+        <LogoutButton />
+      </div>
     </footer>
   );
 };

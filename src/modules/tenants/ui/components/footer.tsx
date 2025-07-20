@@ -1,3 +1,4 @@
+import LogoutButton from "@/components/logout-button";
 import ThemeButton from "@/components/theme-button";
 import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
@@ -21,7 +22,10 @@ const Footer = () => {
           </Link>
         </div>
 
-        <ThemeButton />
+        <div className="flex items-center gap-4">
+          <ThemeButton />
+          <LogoutButton />
+        </div>
       </div>
     </footer>
   );
