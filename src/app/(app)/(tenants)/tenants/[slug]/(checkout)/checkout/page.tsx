@@ -1,4 +1,7 @@
-import { metadataOpenGraph } from "@/app/(app)/shared-metadata";
+import {
+  metadataOpenGraph,
+  metadataOpenGraphDefaultImage,
+} from "@/app/(app)/shared-metadata";
 import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import CheckoutView from "@/modules/checkout/ui/views/checkout-view";
 import { Metadata } from "next";
@@ -33,6 +36,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...metadataOpenGraph,
       title,
       description,
+      images: [
+        {
+          ...metadataOpenGraphDefaultImage,
+          alt: `Checkout at ${tenant.name}`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",

@@ -1,3 +1,9 @@
+export const metadataOpenGraphDefaultImage = {
+  url: `${process.env.NEXT_PUBLIC_APP_URL}/auth-bg.jpg`,
+  width: 1200,
+  height: 630,
+};
+
 export const metadataOpenGraph = {
   url: process.env.NEXT_PUBLIC_APP_URL!,
   locale: "vi_VN",

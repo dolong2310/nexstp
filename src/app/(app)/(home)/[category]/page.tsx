@@ -7,6 +7,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
 import {
+  metadataOpenGraphDefaultImage,
   metadataKeywords,
   metadataOpenGraph,
   metadataRobots,
@@ -45,6 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...metadataOpenGraph,
       title: `${categoryData.name} Products`,
       description,
+      images: [
+        {
+          ...metadataOpenGraphDefaultImage,
+          alt: `${categoryData.name} category`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
