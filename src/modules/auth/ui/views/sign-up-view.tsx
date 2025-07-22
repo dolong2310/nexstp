@@ -108,7 +108,6 @@ const SignUpView = () => {
                   <FormDescription
                     className={cn("hidden", showPreview && "block")}
                   >
-                    {/* TODO: Use proper method to generate preview url */}
                     Your store will be available at&nbsp;
                     <strong>{username}</strong>.nexstp.com
                   </FormDescription>
