@@ -49,6 +49,7 @@ const CategoryDropdown = ({
     >
       <div className="relative">
         <Button
+          asChild
           variant="elevated"
           className={cn(
             "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-background hover:border-primary text-foreground",

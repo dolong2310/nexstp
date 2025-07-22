@@ -110,7 +110,7 @@ const SignUpView = () => {
                   >
                     {/* TODO: Use proper method to generate preview url */}
                     Your store will be available at&nbsp;
-                    <strong>{username}</strong>.shop.com
+                    <strong>{username}</strong>.nexstp.com
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

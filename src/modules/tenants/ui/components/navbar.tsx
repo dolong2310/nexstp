@@ -54,6 +54,7 @@ export const NavbarSkeleton = () => {
   return (
     <nav className="h-20 border-b font-medium bg-background">
       <div className="max-w-screen-lg mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
+        <div />
         <CheckoutButtonSkeleton />
       </div>
     </nav>
