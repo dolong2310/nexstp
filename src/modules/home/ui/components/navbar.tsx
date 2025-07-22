@@ -8,7 +8,7 @@ import { MenuIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";
 
 const poppins = Poppins({
@@ -31,6 +31,12 @@ const Navbar = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const _pathname = useMemo(() => {
+    const navbarHref = navbarItems.map((i) => i.href);
+    if (!navbarHref.includes(pathname)) return "/";
+    return pathname;
+  }, [pathname, navbarItems]);
+
   return (
     <nav className="h-20 flex border-b justify-between font-medium bg-background ">
       <Link href="/" className="pl-6 flex items-center">
@@ -50,7 +56,7 @@ const Navbar = () => {
           <NavbarItem
             key={item.href}
             href={item.href}
-            isActive={pathname === item.href}
+            isActive={_pathname === item.href}
           >
             {item.children}
           </NavbarItem>
