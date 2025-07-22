@@ -10,8 +10,8 @@
     "lint": "next lint",
     "gen:types": "payload generate:types",
     "db:fresh": "payload migrate:fresh",
-    "db:seed": "bun run src/seed.ts",
-    "db:reset": "bun run db:fresh && bun run db:seed"
+    "db:seed": "tsx --env-file=.env src/seed.ts",
+    "db:reset": "pnpm run db:fresh && pnpm run db:seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -21,6 +21,7 @@
     "@payloadcms/plugin-multi-tenant": "3.33.0",
     "@payloadcms/richtext-lexical": "3.33.0",
     "@payloadcms/storage-vercel-blob": "3.33.0",
+    "@payloadcms/ui": "3.33.0",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
@@ -71,6 +72,7 @@
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.2",
     "server-only": "0.0.1",
+    "sharp": "^0.34.3",
     "sonner": "^2.0.3",
     "stripe": "^18.0.0",
     "superjson": "^2.2.2",
@@ -81,14 +83,16 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
-    "@eslint/eslintrc": "^3"
-  }
+    "tailwindcss": "^4",
+    "tsx": "^4.20.3",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }
