@@ -7,7 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateTenantUrl(slug: string) {
-  const enableSubdomainRouting = process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING === "true";
+  const enableSubdomainRouting =
+    process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING === "true";
 
   // In development mode or subdomain routing disabled, use normal routing
   if (IS_DEVELOPMENT || !enableSubdomainRouting) {
@@ -27,4 +28,12 @@ export function formatCurrency(value: number | string) {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(Number(value));
+}
+
+export function formatName(name: string): string {
+  if (!name) return "";
+  const words = name.trim().split(/\s+/);
+  if (words.length === 1) return words[0]?.[0]?.toUpperCase() || "";
+  const initials = (words[0]?.[0] || "") + (words[words.length - 1]?.[0] || "");
+  return initials.toUpperCase();
 }
