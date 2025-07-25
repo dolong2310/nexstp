@@ -1,18 +1,29 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import useOtherUser from "@/modules/chat/hooks/use-other-user";
 import useActiveList from "@/modules/chat/store/use-active-list";
-import { ChatUser, Conversation } from "@prisma/client";
+import { ChatConversation, ChatUser } from "@/payload-types";
 import { format } from "date-fns";
-import { PanelLeftCloseIcon } from "lucide-react";
+import { SquareXIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import CustomAvatar from "../CustomAvatar";
-import CustomAvatarGroup from "../CustomAvatarGroup";
-import ConfirmModal from "./ConfirmModal";
+import dynamic from "next/dynamic";
+import { CustomAvatarSkeleton } from "../CustomAvatar";
+import { CustomAvatarGroupSkeleton } from "../CustomAvatarGroup";
+import ConfirmModal from "../modals/ConfirmModal";
+
+const CustomAvatar = dynamic(() => import("../CustomAvatar"), {
+  ssr: false,
+  loading: () => <CustomAvatarSkeleton className="size-16" />,
+});
+const CustomAvatarGroup = dynamic(() => import("../CustomAvatarGroup"), {
+  ssr: false,
+  loading: () => <CustomAvatarGroupSkeleton />,
+});
 
 type Props = {
-  conversation: Conversation & { users: ChatUser[] };
+  conversation: ChatConversation & { users: ChatUser[] };
   isOpen: boolean;
   onClose: () => void;
 };
@@ -48,13 +59,10 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
         <DrawerContent className="py-3 px-4 sm:px-6">
           <DrawerTitle className="sr-only"></DrawerTitle>
           <div className="flex items-start justify-end mt-2">
-            <button
-              className="rounded-md bg-background text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
-              onClick={onClose}
-            >
+            <Button variant="elevated" size="icon" onClick={onClose}>
               <span className="sr-only">Close panel</span>
-              <PanelLeftCloseIcon size={24} />
-            </button>
+              <SquareXIcon />
+            </Button>
           </div>
 
           <div className="relative mt-6 flex-1 px-4 sm:px-6">
@@ -67,7 +75,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                 )}
               </div>
               <div>{title}</div>
-              <div className="text-sm text-gray-500">{statusText}</div>
+              <div className="text-sm text-muted-foreground">{statusText}</div>
               <div className="flex gap-10 my-8">
                 <ConfirmModal
                   isOpen={isConfirmOpen}
@@ -79,21 +87,19 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                 <dl className="space-y-8 px-4 sm:space-y-6">
                   {conversation.isGroup && (
                     <div>
-                      <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:shrink-0">
+                      <dt className="text-sm font-medium text-muted-foreground sm:w-40 sm:shrink-0">
                         Emails
                       </dt>
                       <dd className="mt-1 text-sm text-foreground sm:col-span-2">
-                        {conversation.users
-                          .map((user) => user.email)
-                          .map((email) => (
-                            <p key={email}>- {email}</p>
-                          ))}
+                        {conversation.users.map((user: ChatUser) => (
+                          <p key={user.name}> - {user.email}</p>
+                        ))}
                       </dd>
                     </div>
                   )}
                   {!conversation.isGroup && (
                     <div>
-                      <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:shrink-0">
+                      <dt className="text-sm font-medium text-muted-foreground sm:w-40 sm:shrink-0">
                         Email
                       </dt>
                       <dd className="mt-1 text-sm text-foreground sm:col-span-2">
@@ -105,7 +111,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                     <>
                       <hr />
                       <div>
-                        <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:shrink-0">
+                        <dt className="text-sm font-medium text-muted-foreground sm:w-40 sm:shrink-0">
                           Joined
                         </dt>
                         <dd className="mt-1 text-sm text-foreground sm:col-span-2">

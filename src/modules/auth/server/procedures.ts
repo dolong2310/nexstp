@@ -4,7 +4,6 @@ import { cookies as getCookies, headers as getHeaders } from "next/headers";
 import { loginSchema, registerSchema } from "../schemas";
 import { generateAuthCookie } from "../utils";
 import { stripe } from "@/lib/stripe";
-import prisma from "@/lib/prisma-chat";
 
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
@@ -64,15 +63,6 @@ export const authRouter = createTRPCRouter({
               tenant: tenant.id,
             },
           ],
-        },
-      });
-
-      // register for user chat
-      await prisma.chatUser.create({
-        data: {
-          name: input.username,
-          email: input.email,
-          payloadId: tenant.id,
         },
       });
 

@@ -20,6 +20,9 @@ import { Reviews } from "./collections/Reviews";
 import { Tags } from "./collections/Tags";
 import { Tenants } from "./collections/Tenants";
 import { Users } from "./collections/Users";
+import { ChatUsers } from "./collections/ChatUsers";
+import { ChatConversations } from "./collections/ChatConversations";
+import { ChatMessages } from "./collections/ChatMessages";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -43,6 +46,9 @@ export default buildConfig({
     Tenants,
     Orders,
     Reviews,
+    ChatUsers,
+    ChatConversations,
+    ChatMessages,
   ],
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),
@@ -69,7 +75,7 @@ export default buildConfig({
     multiTenantPlugin<Config>({
       collections: {
         products: {},
-        media: {},
+        // media: {},
       },
       tenantsArrayField: {
         includeDefaultField: false,

@@ -1,6 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
-import { twMerge } from "tailwind-merge";
 
 type Props = {
   label: string;
@@ -15,18 +16,12 @@ const DesktopItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
     onClick && onClick();
   };
   return (
-    <li onClick={handleClick}>
-      <Link
-        href={href}
-        className={twMerge(
-          "group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold text-gray-500 hover:text-foreground hover:bg-primary-foreground",
-          active && "bg-primary-foreground text-foreground",
-        )}
-      >
-        <Icon className="h-6 w-6 shrink-0" />
+    <Button asChild variant="elevated" size="icon" onClick={handleClick}>
+      <Link href={href} className={cn(active && "bg-feature")}>
+        <Icon className={cn(active && "fill-white")} />
         <span className="sr-only">{label}</span>
       </Link>
-    </li>
+    </Button>
   );
 };
 

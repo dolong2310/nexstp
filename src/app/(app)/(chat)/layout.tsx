@@ -5,8 +5,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-const RootLayout = ({ children }: Props) => {
+const ChatLayout = ({ children }: Props) => {
   return <StatusProvider>{children}</StatusProvider>;
 };
 
-export default RootLayout;
+export default ChatLayout;

@@ -1,33 +1,42 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { pusherClient } from "@/lib/pusher";
-import { ChatUser } from "@prisma/client";
-import { GroupIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import useConversation from "../../hooks/use-conversation";
+import useSession from "../../hooks/use-session";
 import { FullConversationType } from "../../types";
-import ConversationBox from "./ConversationBox";
+// import ConversationBox from "./ConversationBox";
 import GroupChatModal from "./GroupChatModal";
+import dynamic from "next/dynamic";
+import { ConversationBoxSkeleton } from "./ConversationBox";
 
-type Props = {
-  initialItems: FullConversationType[];
-  users: ChatUser[];
-};
+const ConversationBox = dynamic(() => import("./ConversationBox"), {
+  ssr: false,
+});
 
-const ConversationList = ({ initialItems, users }: Props) => {
+const ConversationList = () => {
   const router = useRouter();
-  // const session = useSession();
-
+  const trpc = useTRPC();
+  const { session } = useSession();
   const { conversationId, isOpen } = useConversation();
 
-  const [items, setItems] = useState<FullConversationType[]>(initialItems);
+  const { data: users } = useSuspenseQuery(trpc.chat.getUsers.queryOptions());
+  const { data: conversations } = useSuspenseQuery(
+    trpc.chat.getConversations.queryOptions()
+  );
+
+  const [items, setItems] = useState<FullConversationType[]>(conversations);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const pusherKey = useMemo(() => {
-    return ""; // session.data?.user?.email || "";
-  }, []);
+    return session?.user?.email || "";
+  }, [session?.user?.email]);
 
   useEffect(() => {
     if (pusherKey) {
@@ -86,20 +95,21 @@ const ConversationList = ({ initialItems, users }: Props) => {
   return (
     <>
       <aside
-        className={twMerge(
+        className={cn(
           "fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-back border-r",
           isOpen ? "hidden" : "block w-full left-0"
         )}
       >
-        <div className="px-5">
-          <div className="flex justify-between mb-4 pt-4">
+        <div className="flex flex-col gap-y-3 px-5">
+          <div className="flex justify-between py-4">
             <div className="text-2xl font-bold text-foreground">Messages</div>
-            <div
-              className="rounded-full p-2 bg-primary-foreground text-foreground cursor-pointer hover:opacity-75 transition"
+            <Button
+              variant="elevated"
+              size="icon"
               onClick={() => setIsModalOpen(true)}
             >
-              <GroupIcon size={20} />
-            </div>
+              <UserPlus />
+            </Button>
           </div>
 
           {items.map((item) => (
@@ -117,6 +127,27 @@ const ConversationList = ({ initialItems, users }: Props) => {
         users={users}
       />
     </>
+  );
+};
+
+export const ConversationListSkeleton = () => {
+  return (
+    <aside className="fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-back border-r block w-full left-0">
+      <div className="flex flex-col gap-y-3 px-5">
+        <div className="flex justify-between py-4">
+          <div className="text-2xl font-bold text-foreground">Messages</div>
+          <Button variant="elevated" size="icon" disabled>
+            <UserPlus />
+          </Button>
+        </div>
+
+        <div className="animate-pulse flex flex-col gap-y-3">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <ConversationBoxSkeleton key={index} />
+          ))}
+        </div>
+      </div>
+    </aside>
   );
 };
 

@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
-import useProductFilter from "@/modules/products/hooks/use-product-filter";
-import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import useSession from "@/modules/chat/hooks/use-session";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -18,8 +16,7 @@ type Props = {
 };
 
 const SearchInput = ({ value, onChange, disabled }: Props) => {
-  const trpc = useTRPC();
-  const session = useQuery(trpc.auth.session.queryOptions());
+  const { session } = useSession();
 
   const [searchTerm, setSearchTerm] = useState(value || "");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -59,7 +56,7 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
       </Button>
 
       {/* TODO: Add library button */}
-      {session.data?.user && (
+      {session?.user && (
         <Button variant="elevated" asChild>
           <Link prefetch href="/library">
             <BookmarkCheckIcon />

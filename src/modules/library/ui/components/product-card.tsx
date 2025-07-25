@@ -1,5 +1,5 @@
+import Media from "@/components/media";
 import { StarIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
@@ -25,7 +25,7 @@ const ProductCard = ({
     <Link prefetch href={`/library/${id}`} className="no-underline">
       <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
         <div className="relative aspect-square">
-          <Image
+          <Media
             src={imageUrl || "/placeholder-bg.jpg"}
             alt={name}
             fill
@@ -37,7 +37,7 @@ const ProductCard = ({
           <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
           <div className="flex items-center gap-2">
             {authorImageUrl && (
-              <Image
+              <Media
                 src={authorImageUrl}
                 alt={authorUsername}
                 width={16}

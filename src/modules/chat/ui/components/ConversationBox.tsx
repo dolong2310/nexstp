@@ -1,13 +1,24 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
-import { twMerge } from "tailwind-merge";
 import useOtherUser from "../../hooks/use-other-user";
+import useSession from "../../hooks/use-session";
 import { FullConversationType } from "../../types";
-import CustomAvatar from "./CustomAvatar";
-import CustomAvatarGroup from "./CustomAvatarGroup";
+import { CustomAvatarSkeleton } from "./CustomAvatar";
+import { CustomAvatarGroupSkeleton } from "./CustomAvatarGroup";
+
+const CustomAvatar = dynamic(() => import("./CustomAvatar"), {
+  ssr: false,
+  loading: () => <CustomAvatarSkeleton />,
+});
+const CustomAvatarGroup = dynamic(() => import("./CustomAvatarGroup"), {
+  ssr: false,
+  loading: () => <CustomAvatarGroupSkeleton />,
+});
 
 type Props = {
   conversation: FullConversationType;
@@ -16,8 +27,8 @@ type Props = {
 
 const ConversationBox = ({ conversation, selected }: Props) => {
   const router = useRouter();
+  const { session } = useSession();
   const otherUser = useOtherUser(conversation);
-  // const session = useSession();
 
   const handleClick = useCallback(() => {
     router.push(`/conversations/${conversation.id}`);
@@ -29,8 +40,8 @@ const ConversationBox = ({ conversation, selected }: Props) => {
   }, [conversation.messages]);
 
   const userEmail = useMemo(() => {
-    return ""; // session.data?.user?.email;
-  }, []);
+    return session?.user?.email || "";
+  }, [session?.user?.email]);
 
   const hasSeen = useMemo(() => {
     if (!lastMessage) return false;
@@ -53,8 +64,9 @@ const ConversationBox = ({ conversation, selected }: Props) => {
 
   return (
     <div
-      className={twMerge(
-        "w-full relative flex items-center space-x-3 p-3 rounded-lg hover:bg-primary-foreground transition cursor-pointer"
+      className={cn(
+        "w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border transition",
+        "bg-background hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px]"
       )}
       onClick={handleClick}
     >
@@ -67,23 +79,40 @@ const ConversationBox = ({ conversation, selected }: Props) => {
         <div className="focus:outline-none">
           <div className="flex items-center justify-between mb-1">
             <p className="text-md font-medium text-foreground">
-              {conversation.name || otherUser.name || "User"}
+              {conversation?.name || otherUser?.name || "User"}
             </p>
             {lastMessage?.createdAt && (
-              <p className="text-xs text-gray-400 font-light">
+              <p className="text-xs text-muted-foreground/80 font-light">
                 {format(new Date(lastMessage.createdAt), "p")}
               </p>
             )}
           </div>
 
           <p
-            className={twMerge(
+            className={cn(
               "truncate text-sm",
-              hasSeen ? "text-gray-500" : "text-foreground font-bold"
+              hasSeen ? "text-muted-foreground" : "text-foreground font-bold"
             )}
           >
             {lastMessageText}
           </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ConversationBoxSkeleton = () => {
+  return (
+    <div className="w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border bg-background">
+      <CustomAvatarSkeleton />
+      <div className="min-w-0 flex-1">
+        <div className="focus:outline-none">
+          <div className="flex items-center justify-between mb-2">
+            <div className="h-5 bg-muted rounded-md w-32" />
+            <div className="h-3 bg-muted rounded-md w-16" />
+          </div>
+          <div className="h-5 bg-muted rounded-md w-full" />
         </div>
       </div>
     </div>

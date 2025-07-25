@@ -1,18 +1,25 @@
-import React from "react";
-import DesktopSidebar from "./DesktopSidebar";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import React, { Suspense } from "react";
+import DesktopSidebar, { DesktopSidebarSkeleton } from "./DesktopSidebar";
 import MobileFooter from "./MobileFooter";
-import getCurrentUser from "@/lib/server-actions/chat/getCurrentUser";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const Sidebar = async ({ children }: Props) => {
-  const currentUser = await getCurrentUser();
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(trpc.chat.getCurrentUser.queryOptions());
 
   return (
     <div className="h-full">
-      <DesktopSidebar currentUser={currentUser!} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<DesktopSidebarSkeleton />}>
+          <DesktopSidebar />
+        </Suspense>
+      </HydrationBoundary>
+
       <MobileFooter />
       <main className="lg:pl-20 h-full">{children}</main>
     </div>

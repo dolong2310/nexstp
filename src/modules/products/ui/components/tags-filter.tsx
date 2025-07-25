@@ -47,7 +47,7 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
 
     // If no tags are available, show a message
     if (data?.pages?.[0]?.docs.length === 0) {
-      return <p className="text-center text-gray-500">No tags available</p>;
+      return <p className="text-center text-muted-foreground">No tags available</p>;
     }
 
     return data?.pages.map((page) => {

@@ -1,23 +1,23 @@
-import { ChatUser } from "@prisma/client";
+import { ChatUser } from "@/payload-types";
 import { useMemo } from "react";
 import { FullConversationType } from "../types";
+import useSession from "./use-session";
 
 const useOtherUser = (
   conversation: FullConversationType | { users: ChatUser[] }
 ) => {
-  // const session = useSession();
+  const { session } = useSession();
 
   const otherUser = useMemo(() => {
     // lấy user khác với user hiện tại
-    const currentUserEmail = ""; // session.data?.user?.email;
+    const currentUserEmail = session?.user?.email || "";
     const otherUser = conversation.users.filter(
       (user) => user.email !== currentUserEmail
     );
-    return otherUser[0]; // trả về user khác đầu tiên (vì conversation chỉ có 2 user)
-  }, [conversation.users]);
+    return otherUser[0] as ChatUser; // trả về user khác đầu tiên (vì conversation chỉ có 2 user)
+  }, [conversation.users, session?.user?.email]);
 
-  // TODO: remove as ChatUser after check useSession
-  return useMemo(() => otherUser as ChatUser, [otherUser]);
+  return useMemo(() => otherUser, [otherUser]);
 };
 
 export default useOtherUser;

@@ -1,13 +1,14 @@
 "use client";
 
 import { pusherClient } from "@/lib/pusher";
-import axios from "axios";
+import useConversation from "@/modules/chat/hooks/use-conversation";
+import { FullMessageType } from "@/modules/chat/types";
+import { useTRPC } from "@/trpc/client";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { find } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import MessageBox from "./MessageBox";
+import MessageBox, { MessageBoxSkeleton } from "./MessageBox";
 import TypingBox from "./TypingBox";
-import { FullMessageType } from "@/modules/chat/types";
-import useConversation from "@/modules/chat/hooks/use-conversation";
 
 export type UserProps = {
   email: string;
@@ -15,20 +16,25 @@ export type UserProps = {
   image: string;
 };
 
-type Props = {
-  initialMessages: FullMessageType[];
-};
-
-const ConversationContent = ({ initialMessages }: Props) => {
+const ConversationContent = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
-
+  const trpc = useTRPC();
   const { conversationId } = useConversation();
+  const { data: initialMessages } = useSuspenseQuery(
+    trpc.chat.getMessages.queryOptions({ conversationId })
+  );
 
   const [typingUsers, setTypingUsers] = useState<UserProps[]>([]);
   const [messages, setMessages] = useState<FullMessageType[]>(initialMessages);
 
+  const markMessageSeen = useMutation(
+    trpc.chat.markMessageSeen.mutationOptions({})
+  );
+
   useEffect(() => {
-    axios.post(`/api/conversations/${conversationId}/seen`);
+    markMessageSeen.mutate({
+      conversationId,
+    });
   }, [conversationId]);
 
   useEffect(() => {
@@ -36,7 +42,9 @@ const ConversationContent = ({ initialMessages }: Props) => {
     bottomRef.current?.scrollIntoView();
 
     const messageHandler = (message: FullMessageType) => {
-      axios.post(`/api/conversations/${conversationId}/seen`);
+      markMessageSeen.mutate({
+        conversationId,
+      });
 
       setMessages((current) => {
         if (find(current, { id: message.id })) {
@@ -94,6 +102,18 @@ const ConversationContent = ({ initialMessages }: Props) => {
       ))}
       <TypingBox typingUsers={typingUsers} />
       <div ref={bottomRef} className="pt-24" />
+    </div>
+  );
+};
+
+export const ConversationContentSkeleton = () => {
+  return (
+    <div className="flex-1 overflow-y-auto">
+      <div className="animate-pulse flex flex-col gap-4 p-4">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <MessageBoxSkeleton key={index} isReverse={index % 2 === 0} />
+        ))}
+      </div>
     </div>
   );
 };

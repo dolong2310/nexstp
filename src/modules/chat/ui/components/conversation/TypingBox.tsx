@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/lib/utils";
+import useSession from "@/modules/chat/hooks/use-session";
+import { useMemo } from "react";
 import { UserProps } from "./ConversationContent";
 
 type Props = {
@@ -7,8 +8,8 @@ type Props = {
 };
 
 const TypingBox = ({ typingUsers }: Props) => {
-  // const session = useSession();
-  const myEmail = ""; // session?.data?.user?.email;
+  const { session } = useSession();
+  const myEmail = session?.user?.email;
 
   const othersTyping = useMemo(
     () => typingUsers.filter((user) => user.email !== myEmail),
@@ -26,8 +27,8 @@ const TypingBox = ({ typingUsers }: Props) => {
 
   return (
     <div
-      className={twMerge(
-        "text-xs text-gray-400 px-4 pb-2",
+      className={cn(
+        "text-xs text-muted-foreground/80 px-4 pb-2",
         othersTyping.length === 0 ? "text-right" : "text-left"
       )}
     >

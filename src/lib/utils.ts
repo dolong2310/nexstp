@@ -1,4 +1,5 @@
 import { IS_DEVELOPMENT } from "@/constants";
+import { Media } from "@/payload-types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -37,3 +38,32 @@ export function formatName(name: string): string {
   const initials = (words[0]?.[0] || "") + (words[words.length - 1]?.[0] || "");
   return initials.toUpperCase();
 }
+
+export const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      // Remove data:image/png;base64, prefix
+      const base64Data = base64.split(",")[1];
+      if (!base64Data) {
+        reject(new Error("Invalid base64 format"));
+        return;
+      }
+      resolve(base64Data);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};
+
+export const getCurrentImageUrl = (image: string | Media | undefined) => {
+  const fallback = "/default-avatar.png";
+  if (typeof image === "string" && image && image.startsWith("http")) {
+    return image;
+  }
+  if (image && typeof image === "object" && "url" in image) {
+    return process.env.NEXT_PUBLIC_APP_URL! + (image as Media)?.url || fallback;
+  }
+  return fallback;
+};

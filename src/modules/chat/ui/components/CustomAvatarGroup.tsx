@@ -1,7 +1,7 @@
-import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChatUser } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import { formatName } from "@/lib/utils";
+import { ChatUser, Media } from "@/payload-types";
 
 type Props = {
   users: ChatUser[];
@@ -17,20 +17,37 @@ const CustomAvatarGroup = ({ users }: Props) => {
   return (
     <div className="*:data-[slot=avatar]:ring-background flex -space-x-4 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
       {showUsers.map((user) => (
-        <Avatar key={user.id}>
-          <AvatarImage
-            src={user.image || "/images/default-avatar.png"}
-            alt={user.name || "Avatar"}
-          />
-          <AvatarFallback>{formatName(user.name || "User")}</AvatarFallback>
-        </Avatar>
+        <Button key={user.id} asChild variant="outline" size="icon">
+          <Avatar>
+            <AvatarImage
+              src={
+                (user.image as Media)?.url ||
+                (user.image as string) ||
+                "/images/default-avatar.png"
+              }
+              alt={user.name || "Avatar"}
+            />
+            <AvatarFallback>{formatName(user.name || "User")}</AvatarFallback>
+          </Avatar>
+        </Button>
       ))}
       {users.length > MAX_DISPLAY && (
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-600 text-sm font-medium z-10">
+        <div className="flex items-center justify-center border size-6 -mt-2 rounded-md bg-feature text-white text-sm font-medium z-10">
           +{remaining}
         </div>
       )}
     </div>
+  );
+};
+
+export const CustomAvatarGroupSkeleton = () => {
+  return (
+    <Button asChild variant="outline" size="icon">
+      <Avatar>
+        <AvatarImage src="/images/default-avatar.png" alt="Avatar" />
+        <AvatarFallback>{formatName("User")}</AvatarFallback>
+      </Avatar>
+    </Button>
   );
 };
 

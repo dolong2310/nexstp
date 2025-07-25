@@ -1,3 +1,4 @@
+import { MultiSelect } from "@/components/multi-select";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,32 +8,44 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ChatUser } from "@prisma/client";
-import axios from "axios";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { ChatUser } from "@/payload-types";
+import { useTRPC } from "@/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import InputForm from "./InputForm";
-import SelectForm from "./SelectForm";
+import z from "zod";
 
-type Props = {
+interface Props {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   users: ChatUser[];
-};
+}
+
+const conversationSchema = z.object({
+  name: z.string().trim(),
+  members: z
+    .array(z.object({ value: z.string() }))
+    .min(2, "At least 2 members are required"),
+});
 
 const GroupChatModal = ({ isOpen, onOpenChange, users }: Props) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const trpc = useTRPC();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const form = useForm<z.infer<typeof conversationSchema>>({
+    resolver: zodResolver(conversationSchema),
     defaultValues: {
       name: "",
       members: [],
@@ -40,77 +53,109 @@ const GroupChatModal = ({ isOpen, onOpenChange, users }: Props) => {
     mode: "onChange",
   });
 
-  const members = watch("members");
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-
-    axios
-      .post("/api/conversations", {
-        ...data,
-        isGroup: true,
-      })
-      .then(() => {
+  const createConversation = useMutation(
+    trpc.chat.createConversation.mutationOptions({
+      onSuccess: () => {
         router.refresh();
         onOpenChange(false);
-      })
-      .catch((error) => {
-        toast.error("Something went wrong!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      },
+      onError: (error) => {
+        toast.error(error.message || "Something went wrong!");
+      },
+    })
+  );
+
+  const handleModalOpenChange = (open: boolean) => {
+    onOpenChange(open);
+    if (!open) {
+      form.reset();
+    }
+  };
+
+  const onSubmit: SubmitHandler<z.infer<typeof conversationSchema>> = (
+    data
+  ) => {
+    createConversation.mutate({
+      ...data,
+      isGroup: true,
+    });
   };
 
   return (
     <div>
-      <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>
-              <DialogTitle>Create a group chat</DialogTitle>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                Create a chat with more than 2 people.
-              </p>
+      <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
+        <DialogContent showCloseButton={false}>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <DialogHeader>
+                <DialogTitle>Create a group chat</DialogTitle>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Create a chat with more than 2 people.
+                </p>
 
-              <div className="flex flex-col mt-8 gap-y-8">
-                <InputForm
-                  id="name"
-                  label="Name"
-                  register={register}
-                  // required
-                  errors={errors}
-                  disabled={isLoading}
-                />
+                <div className="flex flex-col mt-4 gap-y-6">
+                  <FormField
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-base">Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <SelectForm
-                  label="Members"
-                  options={users.map((user) => ({
-                    label: user.name || "",
-                    value: user.id,
-                  }))}
-                  onChange={(value) => {
-                    console.log("value: ", value);
-                    setValue("members", value, {
-                      shouldValidate: true,
-                    });
-                  }}
-                  value={members}
-                  // register={register}
-                  disabled={isLoading}
-                />
-              </div>
-            </DialogHeader>
+                  <FormItem>
+                    <FormLabel className="text-base">Members</FormLabel>
+                    <MultiSelect
+                      // defaultValue={["", ""]}
+                      placeholder=""
+                      maxCount={3}
+                      disabled={createConversation.isPending}
+                      options={users.map((user) => ({
+                        label: user.name || "",
+                        value: user.id,
+                      }))}
+                      onValueChange={(value) => {
+                        console.log("value: ", value);
+                        form.setValue(
+                          "members",
+                          value.map((v) => ({ value: v })),
+                          {
+                            shouldValidate: true,
+                          }
+                        );
+                      }}
+                    />
+                  </FormItem>
+                </div>
+              </DialogHeader>
 
-            <DialogFooter className="mt-6 border-t border-gray-200 pt-6">
-              <DialogClose asChild>
-                <Button variant="ghost">Cancel</Button>
-              </DialogClose>
-              <Button type="submit" variant="default" disabled={isLoading}>
-                {isLoading ? "Creating..." : "Create"}
-              </Button>
-            </DialogFooter>
-          </form>
+              <DialogFooter className="mt-8">
+                <DialogClose asChild>
+                  <Button variant="elevated">Cancel</Button>
+                </DialogClose>
+                <Button
+                  type="submit"
+                  variant="elevated"
+                  className="bg-feature"
+                  disabled={
+                    createConversation.isPending ||
+                    !form.formState.isValid ||
+                    !form.formState.isDirty
+                  }
+                >
+                  {createConversation.isPending ? (
+                    <LoaderIcon className="size-4 animate-spin" />
+                  ) : (
+                    "Create"
+                  )}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

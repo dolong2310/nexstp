@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import useSession from "@/modules/chat/hooks/use-session";
 import { MenuIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
@@ -26,8 +25,7 @@ const navbarItems = [
 
 const Navbar = () => {
   const pathname = usePathname();
-  const trpc = useTRPC();
-  const session = useQuery(trpc.auth.session.queryOptions());
+  const { session } = useSession();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -63,7 +61,7 @@ const Navbar = () => {
         ))}
       </div>
 
-      {session.data?.user ? (
+      {session?.user ? (
         <div className="hidden lg:flex">
           <Button
             asChild

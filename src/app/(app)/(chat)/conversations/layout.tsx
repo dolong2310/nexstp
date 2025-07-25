@@ -1,21 +1,30 @@
-import getConversations from "@/lib/server-actions/chat/getConversations";
-import getUsers from "@/lib/server-actions/chat/getUsers";
-import ConversationList from "@/modules/chat/ui/components/ConversationList";
+import ConversationList, {
+  ConversationListSkeleton,
+} from "@/modules/chat/ui/components/ConversationList";
 import Sidebar from "@/modules/chat/ui/components/sidebar/Sidebar";
-import React from "react";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import React, { Suspense } from "react";
 
 type Props = {
   children: React.ReactNode;
 };
 
+export const dynamic = "force-dynamic";
+
 const ConversationsLayout = async ({ children }: Props) => {
-  const conversations = await getConversations();
-  const users = await getUsers();
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(trpc.chat.getUsers.queryOptions());
+  void queryClient.prefetchQuery(trpc.chat.getConversations.queryOptions());
 
   return (
     <Sidebar>
       <div className="h-full">
-        <ConversationList initialItems={conversations} users={users} />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <Suspense fallback={<ConversationListSkeleton />}>
+            <ConversationList />
+          </Suspense>
+        </HydrationBoundary>
         {children}
       </div>
     </Sidebar>

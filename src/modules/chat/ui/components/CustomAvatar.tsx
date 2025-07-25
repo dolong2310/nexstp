@@ -1,8 +1,9 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatName } from "@/lib/utils";
-import { ChatUser } from "@prisma/client";
+import { ChatUser, Media } from "@/payload-types";
 import { useMemo } from "react";
 import useActiveList from "../../store/use-active-list";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   src?: string;
@@ -22,10 +23,30 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
   }, [members, user?.email, isOnline]);
 
   return (
-    <Avatar className={className} isOnline={isActive}>
-      <AvatarImage src={src || user?.image || "/images/default-avatar.png"} />
-      <AvatarFallback>{formatName(user?.name || "User")}</AvatarFallback>
-    </Avatar>
+    <Button asChild variant="outline" size="icon">
+      <Avatar className={className} isOnline={isActive}>
+        <AvatarImage
+          src={
+            src ||
+            (user?.image as Media)?.url ||
+            (user?.image as string) ||
+            "/images/default-avatar.png"
+          }
+        />
+        <AvatarFallback>{formatName(user?.name || "User")}</AvatarFallback>
+      </Avatar>
+    </Button>
+  );
+};
+
+export const CustomAvatarSkeleton = ({ className }: { className?: string }) => {
+  return (
+    <Button asChild variant="outline" size="icon">
+      <Avatar className={className}>
+        <AvatarImage src="/images/default-avatar.png" />
+        <AvatarFallback>{formatName("User")}</AvatarFallback>
+      </Avatar>
+    </Button>
   );
 };
 

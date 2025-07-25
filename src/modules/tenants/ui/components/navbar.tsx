@@ -1,11 +1,11 @@
 "use client";
 
+import Media from "@/components/media";
 import { generateTenantUrl } from "@/lib/utils";
 import { CheckoutButtonSkeleton } from "@/modules/checkout/ui/components/checkout-button";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 
 const CheckoutButton = dynamic(
@@ -33,7 +33,7 @@ const Navbar = ({ slug }: Props) => {
           className="flex items-center gap-2"
         >
           {data.image?.url && (
-            <Image
+            <Media
               src={data.image.url}
               alt={data.name}
               width={32}

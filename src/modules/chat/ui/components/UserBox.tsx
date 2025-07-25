@@ -1,42 +1,54 @@
 "use client";
 
-import { ChatUser } from "@prisma/client";
-import axios from "axios";
+import LoadingFullPage from "@/components/LoadingFullPage";
+import { cn } from "@/lib/utils";
+import { ChatUser } from "@/payload-types";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import CustomAvatar from "./CustomAvatar";
-import LoadingModal from "./LoadingModal";
+import { useCallback } from "react";
+import { toast } from "sonner";
+import { CustomAvatarSkeleton } from "./CustomAvatar";
 
-type Props = {
+const CustomAvatar = dynamic(() => import("./CustomAvatar"), {
+  ssr: false,
+  loading: () => <CustomAvatarSkeleton />,
+});
+
+interface Props {
   user: ChatUser;
-};
+}
 
 const UserBox = ({ user }: Props) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const trpc = useTRPC();
+
+  const createConversation = useMutation(
+    trpc.chat.createConversation.mutationOptions({
+      onSuccess: (data) => {
+        router.push(`/conversations/${data.id}`);
+      },
+      onError: (error) => {
+        toast.error(error.message || "Something went wrong!");
+      },
+    })
+  );
 
   const handleClick = useCallback(async () => {
-    setIsLoading(true);
-    axios
-      .post("/api/conversations", {
-        userId: user.id,
-      })
-      .then((data) => {
-        router.push(`/conversations/${data.data.id}`);
-      })
-      .catch((error) => {
-        console.error("Failed to create conversation:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    createConversation.mutate({
+      userId: user.id,
+    });
   }, [user.id, router]);
 
   return (
     <>
-      {isLoading && <LoadingModal />}
+      {createConversation.isPending && <LoadingFullPage />}
       <div
-        className="w-full relative flex items-center space-x-3 bg-background p-3 hover:bg-primary-foreground rounded-lg transition cursor-pointer"
+        className={cn(
+          "w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border transition",
+          "bg-background hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px]"
+        )}
         onClick={handleClick}
       >
         <CustomAvatar user={user} />
@@ -49,6 +61,26 @@ const UserBox = ({ user }: Props) => {
         </div>
       </div>
     </>
+  );
+};
+
+export const UserBoxSkeleton = () => {
+  return (
+    <div
+      className={cn(
+        "w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border transition",
+        "bg-background hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px]"
+      )}
+    >
+      <CustomAvatarSkeleton />
+      <div className="min-w-0 flex-1">
+        <div className="focus:outline-none">
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-sm font-medium text-foreground bg-muted w-full h-4 rounded-md" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

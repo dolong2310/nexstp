@@ -1,136 +1,170 @@
 "use client";
 
-import axios from "axios";
-import { CldUploadButton } from "next-cloudinary";
-import React, { useRef } from "react";
-import {
-  FieldErrors,
-  FieldValues,
-  SubmitHandler,
-  useForm,
-  UseFormRegister,
-} from "react-hook-form";
-// import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
-import useConversation from "@/modules/chat/hooks/use-conversation";
-import { SendIcon, UploadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MAX_FILE_SIZE } from "@/modules/chat/constants";
+import useConversation from "@/modules/chat/hooks/use-conversation";
+import useSession from "@/modules/chat/hooks/use-session";
+import useUploadMedia from "@/modules/chat/hooks/use-upload-media";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+import { LoaderIcon, SendIcon, UploadIcon } from "lucide-react";
+import React, { useRef } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import z from "zod";
+import PreviewImageModal from "../modals/PreviewImageModal";
+
+const messageSchema = z.object({
+  conversationId: z.string(),
+  message: z.string().optional(),
+  image: z.string().optional(),
+});
 
 const ConversationForm = () => {
   const typingRef = useRef(false);
-
-  // const session = useSession();
+  const trpc = useTRPC();
+  const { session } = useSession();
   const { conversationId } = useConversation();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const form = useForm<z.infer<typeof messageSchema>>({
     defaultValues: {
       message: "",
     },
   });
 
+  const sendMessage = useMutation(trpc.chat.sendMessage.mutationOptions({}));
+  const sendTyping = useMutation(trpc.chat.sendTyping.mutationOptions({}));
+  const stopTyping = useMutation(trpc.chat.stopTyping.mutationOptions({}));
+
+  // Use upload media hook with preview-confirm mode
+  const uploadMediaHook = useUploadMedia({
+    maxFileSize: MAX_FILE_SIZE,
+    allowedTypes: ["image/*"],
+    uploadMode: "preview-confirm", // Preview and confirm mode
+    onUploadSuccess: async (mediaUrl) => {
+      try {
+        await sendMessage.mutateAsync({
+          image: mediaUrl,
+          conversationId,
+        });
+        uploadMediaHook.handleCancelPreview();
+      } catch (error) {
+        console.error("Failed to send message:", error);
+      }
+    },
+  });
+
   const handleTriggerTyping = (isTyping: boolean) => {
     typingRef.current = isTyping;
-    const endpoint = `/api/pusher/${isTyping ? "typing" : "stop_typing"}`;
-    // axios.post(endpoint, { conversationId, user: session.data?.user });
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setValue("message", "", { shouldValidate: true });
-
-    if (typingRef.current) {
-      typingRef.current = false;
-      handleTriggerTyping(false);
-    }
-
-    axios.post("/api/messages", {
-      ...data,
+    const mutation = isTyping ? sendTyping : stopTyping;
+    mutation.mutate({
       conversationId,
+      user: {
+        id: session?.user?.id || "",
+        name: session?.user?.username || "",
+        email: session?.user?.email || "",
+      },
     });
   };
 
-  const handleUpload = (result: any) => {
-    axios.post("/api/messages", {
-      image: result?.info?.secure_url,
-      conversationId,
-    });
-  };
-
-  const handleTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleTyping = (value: string) => {
     const isTyping = Boolean(value);
-
     if (isTyping !== typingRef.current) {
       typingRef.current = isTyping;
       handleTriggerTyping(isTyping);
     }
   };
 
+  const onSubmit: SubmitHandler<z.infer<typeof messageSchema>> = (data) => {
+    form.setValue("message", "", { shouldValidate: true });
+
+    if (typingRef.current) {
+      typingRef.current = false;
+      handleTriggerTyping(false);
+    }
+
+    sendMessage.mutate({
+      ...data,
+      conversationId,
+    });
+  };
+
   return (
-    <div className="p-4 bg-background border-t flex items-center gap-2 lg:gap-4 w-full">
-      <CldUploadButton
-        options={{ maxFiles: 1 }}
-        uploadPreset="messenger"
-        onSuccess={handleUpload}
-      >
-        <UploadIcon size={30} className="text-sky-500" />
-      </CldUploadButton>
-      <form
-        className="flex items-center gap-2 lg:gap-4 w-full"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <MessageInput
-          id="message"
-          register={register}
-          errors={errors}
-          required
-          placeholder="Write a message"
-          onChange={handleTyping}
-        />
+    <>
+      <div className="p-4 bg-background border-t flex items-center gap-2 lg:gap-4 w-full">
+        <div className="flex items-center gap-4">
+          <Button
+            type="button"
+            variant="elevated"
+            onClick={uploadMediaHook.openFileDialog}
+            disabled={sendMessage.isPending || uploadMediaHook.isUploading}
+          >
+            {sendMessage.isPending || uploadMediaHook.isUploading ? (
+              <LoaderIcon className="size-4 animate-spin mr-2" />
+            ) : (
+              <UploadIcon className="size-4" />
+            )}
+          </Button>
+          <input
+            ref={uploadMediaHook.fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={uploadMediaHook.handleFileChange}
+            className="hidden"
+          />
+        </div>
 
-        <Button
-          type="submit"
-          className="rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition"
-        >
-          <SendIcon size={18} className="text-white" />
-        </Button>
-      </form>
-    </div>
-  );
-};
+        <Form {...form}>
+          <form
+            autoComplete="off"
+            className="flex items-center gap-2 lg:gap-4 w-full"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <FormField
+              name="message"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder="Write a message"
+                      value={field.value}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const value = e.target.value;
+                        handleTyping(value);
+                        field.onChange(value);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-type MessageInputProps = {
-  id: string;
-  type?: string;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors;
-  required?: boolean;
-  placeholder?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-};
+            <Button type="submit" variant="elevated">
+              Send <SendIcon size={18} />
+            </Button>
+          </form>
+        </Form>
+      </div>
 
-const MessageInput = ({
-  id,
-  type = "text",
-  register,
-  errors,
-  required,
-  placeholder,
-  onChange,
-}: MessageInputProps) => {
-  return (
-    <Input
-      id={id}
-      type={type}
-      autoComplete={id}
-      className="text-foreground font-light py-2 px-4 bg-neutral-100 w-full rounded-full focus:outline-none"
-      placeholder={placeholder}
-      {...register(id, { required, onChange: (e) => onChange?.(e) })}
-    />
+      <PreviewImageModal
+        open={uploadMediaHook.isPreviewOpen}
+        src={uploadMediaHook.previewImage?.url}
+        isLoading={sendMessage.isPending || uploadMediaHook.isUploading}
+        onOpenChange={() => uploadMediaHook.handleCancelPreview()}
+        handleSendImage={uploadMediaHook.handleSendImage}
+        handleCancelPreview={uploadMediaHook.handleCancelPreview}
+      />
+    </>
   );
 };
 

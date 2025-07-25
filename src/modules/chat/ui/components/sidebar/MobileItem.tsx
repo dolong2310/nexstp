@@ -1,6 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
-import { twMerge } from "tailwind-merge";
 
 type Props = {
   label: string;
@@ -15,16 +16,18 @@ const MobileItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
     onClick && onClick();
   };
   return (
-    <Link
-      href={href}
-      onClick={handleClick}
-      className={twMerge(
-        "group w-full flex justify-center gap-x-3 p-4 text-sm leading-6 font-semibold text-gray-500 hover:text-foreground hover:bg-primary-foreground",
-        active && "bg-primary-foreground text-foreground"
-      )}
-    >
-      <Icon className="h-6 w-6 shrink-0" />
-    </Link>
+    <Button asChild variant="elevated">
+      <Link
+        href={href}
+        className={cn(
+          "group flex-1 flex items-center justify-center p-4",
+          active && "bg-feature"
+        )}
+        onClick={handleClick}
+      >
+        <Icon className={cn("h-6 w-6 shrink-0", active && "fill-white")} />
+      </Link>
+    </Button>
   );
 };
 
