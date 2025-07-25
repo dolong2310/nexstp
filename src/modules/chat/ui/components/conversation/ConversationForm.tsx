@@ -107,7 +107,7 @@ const ConversationForm = () => {
             disabled={sendMessage.isPending || uploadMediaHook.isUploading}
           >
             {sendMessage.isPending || uploadMediaHook.isUploading ? (
-              <LoaderIcon className="size-4 animate-spin mr-2" />
+              <LoaderIcon className="size-4 animate-spin" />
             ) : (
               <UploadIcon className="size-4" />
             )}

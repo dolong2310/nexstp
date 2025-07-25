@@ -29,7 +29,7 @@ const PreviewImageModal = ({
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>Send Image</DialogTitle>
         </DialogHeader>

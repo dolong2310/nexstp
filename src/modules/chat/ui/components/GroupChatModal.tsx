@@ -34,7 +34,7 @@ interface Props {
 }
 
 const conversationSchema = z.object({
-  name: z.string().trim(),
+  name: z.string().min(1, "Name is required"),
   members: z
     .array(z.object({ value: z.string() }))
     .min(2, "At least 2 members are required"),
@@ -82,83 +82,81 @@ const GroupChatModal = ({ isOpen, onOpenChange, users }: Props) => {
   };
 
   return (
-    <div>
-      <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
-        <DialogContent showCloseButton={false}>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <DialogHeader>
-                <DialogTitle>Create a group chat</DialogTitle>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  Create a chat with more than 2 people.
-                </p>
+    <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
+      <DialogContent showCloseButton={false}>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>Create a group chat</DialogTitle>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                Create a chat with more than 2 people.
+              </p>
 
-                <div className="flex flex-col mt-4 gap-y-6">
-                  <FormField
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base">Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormItem>
-                    <FormLabel className="text-base">Members</FormLabel>
-                    <MultiSelect
-                      // defaultValue={["", ""]}
-                      placeholder=""
-                      maxCount={3}
-                      disabled={createConversation.isPending}
-                      options={users.map((user) => ({
-                        label: user.name || "",
-                        value: user.id,
-                      }))}
-                      onValueChange={(value) => {
-                        console.log("value: ", value);
-                        form.setValue(
-                          "members",
-                          value.map((v) => ({ value: v })),
-                          {
-                            shouldValidate: true,
-                          }
-                        );
-                      }}
-                    />
-                  </FormItem>
-                </div>
-              </DialogHeader>
-
-              <DialogFooter className="mt-8">
-                <DialogClose asChild>
-                  <Button variant="elevated">Cancel</Button>
-                </DialogClose>
-                <Button
-                  type="submit"
-                  variant="elevated"
-                  className="bg-feature"
-                  disabled={
-                    createConversation.isPending ||
-                    !form.formState.isValid ||
-                    !form.formState.isDirty
-                  }
-                >
-                  {createConversation.isPending ? (
-                    <LoaderIcon className="size-4 animate-spin" />
-                  ) : (
-                    "Create"
+              <div className="flex flex-col mt-4 gap-y-6">
+                <FormField
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-    </div>
+                />
+
+                <FormItem>
+                  <FormLabel className="text-base">Members</FormLabel>
+                  <MultiSelect
+                    // defaultValue={["", ""]}
+                    placeholder=""
+                    maxCount={3}
+                    disabled={createConversation.isPending}
+                    options={users.map((user) => ({
+                      label: user.name || "",
+                      value: user.id,
+                    }))}
+                    onValueChange={(value) => {
+                      console.log("value: ", value);
+                      form.setValue(
+                        "members",
+                        value.map((v) => ({ value: v })),
+                        {
+                          shouldValidate: true,
+                        }
+                      );
+                    }}
+                  />
+                </FormItem>
+              </div>
+            </DialogHeader>
+
+            <DialogFooter className="mt-8">
+              <DialogClose asChild>
+                <Button variant="elevated">Cancel</Button>
+              </DialogClose>
+              <Button
+                type="submit"
+                variant="elevated"
+                className="bg-feature"
+                disabled={
+                  createConversation.isPending ||
+                  !form.formState.isValid ||
+                  !form.formState.isDirty
+                }
+              >
+                {createConversation.isPending ? (
+                  <LoaderIcon className="size-4 animate-spin" />
+                ) : (
+                  "Create"
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
