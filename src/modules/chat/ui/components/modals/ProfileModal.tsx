@@ -142,8 +142,8 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Profile</DialogTitle>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              <DialogTitle className="text-2xl">Profile</DialogTitle>
+              <p className="text-sm leading-6 text-muted-foreground">
                 Edit your public information
               </p>
 

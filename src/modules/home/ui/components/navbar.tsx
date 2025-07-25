@@ -37,17 +37,11 @@ const Navbar = () => {
 
   return (
     <nav className="h-20 flex border-b justify-between font-medium bg-background ">
-      <Link href="/" className="pl-6 flex items-center">
+      <Link href="/" className="pl-4 lg:pl-6 flex items-center">
         <span className={cn("text-5xl font-semibold", poppins.className)}>
           nexstp
         </span>
       </Link>
-
-      <NavbarSidebar
-        items={navbarItems}
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-      />
 
       <div className="items-center gap-4 hidden lg:flex">
         {navbarItems.map((item) => (
@@ -66,9 +60,16 @@ const Navbar = () => {
           <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
+            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-background hover:bg-feature transition-colors duration-200 text-lg"
           >
             <Link href="/admin">Dashboard</Link>
+          </Button>
+          <Button
+            asChild
+            variant="secondary"
+            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
+          >
+            <Link href="/conversations">Conversation</Link>
           </Button>
         </div>
       ) : (
@@ -76,7 +77,7 @@ const Navbar = () => {
           <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-background hover:bg-feature transition-colors duration-200 text-lg"
+            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-background hover:bg-feature transition-colors duration-200 text-lg"
           >
             <Link prefetch href="/sign-in">
               Log in
@@ -85,7 +86,7 @@ const Navbar = () => {
           <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
+            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
           >
             <Link prefetch href="/sign-up">
               Start selling
@@ -94,10 +95,16 @@ const Navbar = () => {
         </div>
       )}
 
-      <div className="flex lg:hidden items-center justify-center">
+      <NavbarSidebar
+        items={navbarItems}
+        open={isSidebarOpen}
+        onOpenChange={setIsSidebarOpen}
+      />
+
+      <div className="flex lg:hidden items-center justify-center pr-4">
         <Button
-          variant="ghost"
-          className="size-12 border-transparent bg-background"
+          variant="elevated"
+          size="icon"
           onClick={() => setIsSidebarOpen(true)}
         >
           <MenuIcon />

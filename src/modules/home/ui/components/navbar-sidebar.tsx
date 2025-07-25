@@ -1,16 +1,14 @@
-import React from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import useSession from "@/modules/chat/hooks/use-session";
 import Link from "next/link";
+import React from "react";
 
 type NavbarItem = {
   href: string;
@@ -24,11 +22,13 @@ type Props = {
 };
 
 const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
+  const { session } = useSession();
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="left" className="p-0 transition-none">
+      <SheetContent side="left" className="p-0 transition-none" closeIconClassName="top-3.5">
         <SheetHeader className="p-4 border-b">
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle className="text-2xl">Nexstp</SheetTitle>
         </SheetHeader>
 
         <ScrollArea className="flex flex-col overflow-y-auto h-full pb-2">
@@ -42,22 +42,42 @@ const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
               {item.children}
             </Link>
           ))}
-          <div className="border-t">
-            <Link
-              href="/sign-in"
-              className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
-              onClick={() => onOpenChange(false)}
-            >
-              Log in
-            </Link>
-            <Link
-              href="/sign-up"
-              className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
-              onClick={() => onOpenChange(false)}
-            >
-              Start selling
-            </Link>
-          </div>
+          <Separator className="my-4" />
+          {session?.user ? (
+            <>
+              <Link
+                href="/admin"
+                className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                onClick={() => onOpenChange(false)}
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/conversations"
+                className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                onClick={() => onOpenChange(false)}
+              >
+                Conversation
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/sign-in"
+                className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                onClick={() => onOpenChange(false)}
+              >
+                Log in
+              </Link>
+              <Link
+                href="/sign-up"
+                className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+                onClick={() => onOpenChange(false)}
+              >
+                Start selling
+              </Link>
+            </>
+          )}
         </ScrollArea>
       </SheetContent>
     </Sheet>

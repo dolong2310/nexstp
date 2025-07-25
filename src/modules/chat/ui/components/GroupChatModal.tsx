@@ -87,8 +87,10 @@ const GroupChatModal = ({ isOpen, onOpenChange, users }: Props) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Create a group chat</DialogTitle>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              <DialogTitle className="text-2xl">
+                Create a group chat
+              </DialogTitle>
+              <p className="text-sm leading-6 text-muted-foreground">
                 Create a chat with more than 2 people.
               </p>
 

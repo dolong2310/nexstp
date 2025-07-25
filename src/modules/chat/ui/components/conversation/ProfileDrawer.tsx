@@ -6,7 +6,7 @@ import useOtherUser from "@/modules/chat/hooks/use-other-user";
 import useActiveList from "@/modules/chat/store/use-active-list";
 import { ChatConversation, ChatUser } from "@/payload-types";
 import { format } from "date-fns";
-import { SquareXIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { CustomAvatarSkeleton } from "../CustomAvatar";
@@ -61,7 +61,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
           <div className="flex items-start justify-end mt-2">
             <Button variant="elevated" size="icon" onClick={onClose}>
               <span className="sr-only">Close panel</span>
-              <SquareXIcon />
+              <XIcon />
             </Button>
           </div>
 
