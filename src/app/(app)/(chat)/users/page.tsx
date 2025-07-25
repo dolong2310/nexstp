@@ -1,4 +1,4 @@
-import EmptyState from "@/modules/chat/ui/components/EmptyState";
+import EmptyState from "@/modules/chat/ui/components/empty-state";
 
 const UserPage = () => {
   return (

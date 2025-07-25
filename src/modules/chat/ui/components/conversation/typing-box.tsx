@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import useSession from "@/modules/chat/hooks/use-session";
 import { useMemo } from "react";
-import { UserProps } from "./ConversationContent";
+import { UserProps } from "./conversation-content";
 
 type Props = {
   typingUsers: UserProps[];

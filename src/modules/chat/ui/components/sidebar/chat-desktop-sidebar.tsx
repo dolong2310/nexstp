@@ -7,16 +7,16 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { CustomAvatarSkeleton } from "../CustomAvatar";
-import ProfileModal from "../modals/ProfileModal";
-import DesktopItem from "./DesktopItem";
+import { CustomAvatarSkeleton } from "../custom-avatar";
+import ProfileModal from "../modals/profile-modal";
+import ChatDesktopItem from "./chat-desktop-item";
 
-const CustomAvatar = dynamic(() => import("../CustomAvatar"), {
+const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton />,
 });
 
-const DesktopSidebar = () => {
+const ChatDesktopSidebar = () => {
   const routes = useRoutes();
   const trpc = useTRPC();
   const { data: currentUser } = useSuspenseQuery(
@@ -30,7 +30,7 @@ const DesktopSidebar = () => {
       <nav className="mt-4 flex flex-col justify-between">
         <div role="list" className="flex flex-col items-center space-y-3">
           {routes.map((item) => (
-            <DesktopItem key={item.href} {...item} />
+            <ChatDesktopItem key={item.href} {...item} />
           ))}
         </div>
       </nav>
@@ -57,7 +57,7 @@ const DesktopSidebar = () => {
   );
 };
 
-export const DesktopSidebarSkeleton = () => {
+export const ChatDesktopSidebarSkeleton = () => {
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-20 xl:px-6 lg:overflow-auto lg:bg-background lg:border-r-[1px] lg:pb-4 lg:flex lg:flex-col justify-between">
       <nav className="mt-4 flex flex-col justify-between">
@@ -80,4 +80,4 @@ export const DesktopSidebarSkeleton = () => {
   );
 };
 
-export default DesktopSidebar;
+export default ChatDesktopSidebar;

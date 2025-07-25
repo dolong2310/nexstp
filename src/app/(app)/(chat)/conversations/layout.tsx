@@ -1,7 +1,7 @@
 import ConversationList, {
   ConversationListSkeleton,
-} from "@/modules/chat/ui/components/ConversationList";
-import Sidebar from "@/modules/chat/ui/components/sidebar/Sidebar";
+} from "@/modules/chat/ui/components/conversation-list";
+import ChatSidebar from "@/modules/chat/ui/components/sidebar/chat-sidebar";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
@@ -18,7 +18,7 @@ const ConversationsLayout = async ({ children }: Props) => {
   void queryClient.prefetchQuery(trpc.chat.getConversations.queryOptions());
 
   return (
-    <Sidebar>
+    <ChatSidebar>
       <div className="h-full">
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Suspense fallback={<ConversationListSkeleton />}>
@@ -27,7 +27,7 @@ const ConversationsLayout = async ({ children }: Props) => {
         </HydrationBoundary>
         {children}
       </div>
-    </Sidebar>
+    </ChatSidebar>
   );
 };
 

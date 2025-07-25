@@ -11,7 +11,7 @@ type Props = {
   onClick?: () => void;
 };
 
-const MobileItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
+const ChatMobileItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
   const handleClick = () => {
     onClick && onClick();
   };
@@ -31,4 +31,4 @@ const MobileItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
   );
 };
 
-export default MobileItem;
+export default ChatMobileItem;

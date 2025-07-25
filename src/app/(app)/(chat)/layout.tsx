@@ -1,4 +1,4 @@
-import StatusProvider from "@/modules/chat/ui/components/providers/StatusProvider";
+import ChatStatusProvider from "@/modules/chat/ui/components/providers/status-provider";
 import React from "react";
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
 };
 
 const ChatLayout = ({ children }: Props) => {
-  return <StatusProvider>{children}</StatusProvider>;
+  return <ChatStatusProvider>{children}</ChatStatusProvider>;
 };
 
 export default ChatLayout;

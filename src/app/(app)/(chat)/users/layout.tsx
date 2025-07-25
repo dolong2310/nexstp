@@ -1,7 +1,7 @@
-import Sidebar from "@/modules/chat/ui/components/sidebar/Sidebar";
+import ChatSidebar from "@/modules/chat/ui/components/sidebar/chat-sidebar";
 import UserList, {
   UserListSkeleton,
-} from "@/modules/chat/ui/components/UserList";
+} from "@/modules/chat/ui/components/user-list";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
@@ -15,14 +15,14 @@ const UsersLayout = async ({ children }: Props) => {
   void queryClient.prefetchQuery(trpc.chat.getUsers.queryOptions());
 
   return (
-    <Sidebar>
+    <ChatSidebar>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<UserListSkeleton />}>
           <UserList />
         </Suspense>
       </HydrationBoundary>
       <div className="h-full">{children}</div>
-    </Sidebar>
+    </ChatSidebar>
   );
 };
 

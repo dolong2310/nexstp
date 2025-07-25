@@ -8,10 +8,10 @@ import { ChatUser, User } from "@/payload-types";
 import { format } from "date-fns";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { CustomAvatarSkeleton } from "../CustomAvatar";
-import ImageModal from "../modals/ImageModal";
+import { CustomAvatarSkeleton } from "../custom-avatar";
+import ImageModal from "../modals/image-modal";
 
-const CustomAvatar = dynamic(() => import("../CustomAvatar"), {
+const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton />,
 });

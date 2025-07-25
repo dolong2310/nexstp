@@ -11,7 +11,7 @@ type Props = {
   onClick?: () => void;
 };
 
-const DesktopItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
+const ChatDesktopItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
   const handleClick = () => {
     onClick && onClick();
   };
@@ -25,4 +25,4 @@ const DesktopItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
   );
 };
 
-export default DesktopItem;
+export default ChatDesktopItem;

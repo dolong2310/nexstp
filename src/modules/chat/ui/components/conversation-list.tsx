@@ -6,17 +6,16 @@ import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import useConversation from "../../hooks/use-conversation";
 import useSession from "../../hooks/use-session";
 import { FullConversationType } from "../../types";
-// import ConversationBox from "./ConversationBox";
-import GroupChatModal from "./GroupChatModal";
-import dynamic from "next/dynamic";
-import { ConversationBoxSkeleton } from "./ConversationBox";
+import { ConversationBoxSkeleton } from "./conversation-box";
+import GroupChatModal from "./modals/group-chat-modal";
 
-const ConversationBox = dynamic(() => import("./ConversationBox"), {
+const ConversationBox = dynamic(() => import("./conversation-box"), {
   ssr: false,
 });
 

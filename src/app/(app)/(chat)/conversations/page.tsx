@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import useConversation from "@/modules/chat/hooks/use-conversation";
-import EmptyState from "@/modules/chat/ui/components/EmptyState";
+import EmptyState from "@/modules/chat/ui/components/empty-state";
 
 const ConversationsPage = () => {
   const { isOpen } = useConversation();

@@ -10,15 +10,15 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { CustomAvatarSkeleton } from "../CustomAvatar";
-import { CustomAvatarGroupSkeleton } from "../CustomAvatarGroup";
-import ProfileDrawer from "./ProfileDrawer";
+import { CustomAvatarSkeleton } from "../custom-avatar";
+import { CustomAvatarGroupSkeleton } from "../custom-avatar-group";
+import ProfileDrawer from "./profile-drawer";
 
-const CustomAvatar = dynamic(() => import("../CustomAvatar"), {
+const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton />,
 });
-const CustomAvatarGroup = dynamic(() => import("../CustomAvatarGroup"), {
+const CustomAvatarGroup = dynamic(() => import("../custom-avatar-group"), {
   ssr: false,
   loading: () => <CustomAvatarGroupSkeleton />,
 });

@@ -9,15 +9,15 @@ import { format } from "date-fns";
 import { XIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { CustomAvatarSkeleton } from "../CustomAvatar";
-import { CustomAvatarGroupSkeleton } from "../CustomAvatarGroup";
-import ConfirmModal from "../modals/ConfirmModal";
+import { CustomAvatarSkeleton } from "../custom-avatar";
+import { CustomAvatarGroupSkeleton } from "../custom-avatar-group";
+import ConfirmModal from "../modals/confirm-modal";
 
-const CustomAvatar = dynamic(() => import("../CustomAvatar"), {
+const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton className="size-16" />,
 });
-const CustomAvatarGroup = dynamic(() => import("../CustomAvatarGroup"), {
+const CustomAvatarGroup = dynamic(() => import("../custom-avatar-group"), {
   ssr: false,
   loading: () => <CustomAvatarGroupSkeleton />,
 });

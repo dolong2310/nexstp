@@ -19,7 +19,7 @@ import { LoaderIcon, SendIcon, UploadIcon } from "lucide-react";
 import React, { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
-import PreviewImageModal from "../modals/PreviewImageModal";
+import PreviewImageModal from "../modals/preview-image-modal";
 
 const messageSchema = z.object({
   conversationId: z.string(),

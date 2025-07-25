@@ -2,7 +2,7 @@
 
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import UserBox, { UserBoxSkeleton } from "./UserBox";
+import UserBox, { UserBoxSkeleton } from "./user-box";
 
 const UserList = () => {
   const trpc = useTRPC();

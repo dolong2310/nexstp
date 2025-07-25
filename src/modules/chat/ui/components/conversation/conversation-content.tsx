@@ -7,8 +7,8 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { find } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import MessageBox, { MessageBoxSkeleton } from "./MessageBox";
-import TypingBox from "./TypingBox";
+import MessageBox, { MessageBoxSkeleton } from "./message-box";
+import TypingBox from "./typing-box";
 
 export type UserProps = {
   email: string;

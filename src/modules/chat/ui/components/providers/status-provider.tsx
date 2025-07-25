@@ -9,7 +9,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const StatusProvider = ({ children }: Props) => {
+const ChatStatusProvider = ({ children }: Props) => {
   const { set, add, remove } = useActiveList();
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
 
@@ -49,4 +49,4 @@ const StatusProvider = ({ children }: Props) => {
   return children;
 };
 
-export default StatusProvider;
+export default ChatStatusProvider;

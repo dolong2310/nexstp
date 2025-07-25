@@ -8,14 +8,14 @@ import { useCallback, useMemo } from "react";
 import useOtherUser from "../../hooks/use-other-user";
 import useSession from "../../hooks/use-session";
 import { FullConversationType } from "../../types";
-import { CustomAvatarSkeleton } from "./CustomAvatar";
-import { CustomAvatarGroupSkeleton } from "./CustomAvatarGroup";
+import { CustomAvatarSkeleton } from "./custom-avatar";
+import { CustomAvatarGroupSkeleton } from "./custom-avatar-group";
 
-const CustomAvatar = dynamic(() => import("./CustomAvatar"), {
+const CustomAvatar = dynamic(() => import("./custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton />,
 });
-const CustomAvatarGroup = dynamic(() => import("./CustomAvatarGroup"), {
+const CustomAvatarGroup = dynamic(() => import("./custom-avatar-group"), {
   ssr: false,
   loading: () => <CustomAvatarGroupSkeleton />,
 });

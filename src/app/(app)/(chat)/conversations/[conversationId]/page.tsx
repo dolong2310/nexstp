@@ -1,11 +1,11 @@
 import ConversationContent, {
   ConversationContentSkeleton,
-} from "@/modules/chat/ui/components/conversation/ConversationContent";
-import ConversationForm from "@/modules/chat/ui/components/conversation/ConversationForm";
+} from "@/modules/chat/ui/components/conversation/conversation-content";
+import ConversationForm from "@/modules/chat/ui/components/conversation/conversation-form";
 import ConversationHeader, {
   ConversationHeaderSkeleton,
-} from "@/modules/chat/ui/components/conversation/ConversationHeader";
-import EmptyState from "@/modules/chat/ui/components/EmptyState";
+} from "@/modules/chat/ui/components/conversation/conversation-header";
+import EmptyState from "@/modules/chat/ui/components/empty-state";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
