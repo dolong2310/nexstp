@@ -42,13 +42,13 @@ export const ChatUsers: CollectionConfig = {
     {
       name: "conversations",
       type: "relationship",
-      relationTo: "chat-conversations",
+      relationTo: "conversations",
       hasMany: true,
     },
     {
       name: "seenMessages",
       type: "relationship",
-      relationTo: "chat-messages",
+      relationTo: "messages",
       hasMany: true,
     },
   ],

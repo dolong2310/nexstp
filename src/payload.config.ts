@@ -21,8 +21,8 @@ import { Tags } from "./collections/Tags";
 import { Tenants } from "./collections/Tenants";
 import { Users } from "./collections/Users";
 import { ChatUsers } from "./collections/ChatUsers";
-import { ChatConversations } from "./collections/ChatConversations";
-import { ChatMessages } from "./collections/ChatMessages";
+import { Conversations } from "./collections/Conversations";
+import { Messages } from "./collections/Messages";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -47,8 +47,8 @@ export default buildConfig({
     Orders,
     Reviews,
     ChatUsers,
-    ChatConversations,
-    ChatMessages,
+    Conversations,
+    Messages,
   ],
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),

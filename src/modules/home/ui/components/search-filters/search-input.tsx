@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
-import useSession from "@/modules/chat/hooks/use-session";
+import useSession from "@/modules/conversations/hooks/use-session";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";

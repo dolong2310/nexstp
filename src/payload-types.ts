@@ -76,8 +76,8 @@ export interface Config {
     orders: Order;
     reviews: Review;
     'chat-users': ChatUser;
-    'chat-conversations': ChatConversation;
-    'chat-messages': ChatMessage;
+    conversations: Conversation;
+    messages: Message;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -97,8 +97,8 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'chat-users': ChatUsersSelect<false> | ChatUsersSelect<true>;
-    'chat-conversations': ChatConversationsSelect<false> | ChatConversationsSelect<true>;
-    'chat-messages': ChatMessagesSelect<false> | ChatMessagesSelect<true>;
+    conversations: ConversationsSelect<false> | ConversationsSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -346,34 +346,34 @@ export interface ChatUser {
    * Upload avatar cho user
    */
   image?: (string | null) | Media;
-  conversations?: (string | ChatConversation)[] | null;
-  seenMessages?: (string | ChatMessage)[] | null;
+  conversations?: (string | Conversation)[] | null;
+  seenMessages?: (string | Message)[] | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "chat-conversations".
+ * via the `definition` "conversations".
  */
-export interface ChatConversation {
+export interface Conversation {
   id: string;
   name?: string | null;
   isGroup?: boolean | null;
   lastMessageAt?: string | null;
   users: (string | ChatUser)[];
-  messages?: (string | ChatMessage)[] | null;
+  messages?: (string | Message)[] | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "chat-messages".
+ * via the `definition` "messages".
  */
-export interface ChatMessage {
+export interface Message {
   id: string;
   body?: string | null;
   image?: string | null;
-  conversation: string | ChatConversation;
+  conversation: string | Conversation;
   sender: string | ChatUser;
   seen?: (string | ChatUser)[] | null;
   updatedAt: string;
@@ -423,12 +423,12 @@ export interface PayloadLockedDocument {
         value: string | ChatUser;
       } | null)
     | ({
-        relationTo: 'chat-conversations';
-        value: string | ChatConversation;
+        relationTo: 'conversations';
+        value: string | Conversation;
       } | null)
     | ({
-        relationTo: 'chat-messages';
-        value: string | ChatMessage;
+        relationTo: 'messages';
+        value: string | Message;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -615,9 +615,9 @@ export interface ChatUsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "chat-conversations_select".
+ * via the `definition` "conversations_select".
  */
-export interface ChatConversationsSelect<T extends boolean = true> {
+export interface ConversationsSelect<T extends boolean = true> {
   name?: T;
   isGroup?: T;
   lastMessageAt?: T;
@@ -628,9 +628,9 @@ export interface ChatConversationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "chat-messages_select".
+ * via the `definition` "messages_select".
  */
-export interface ChatMessagesSelect<T extends boolean = true> {
+export interface MessagesSelect<T extends boolean = true> {
   body?: T;
   image?: T;
   conversation?: T;
