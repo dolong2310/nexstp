@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { ReviewFormSkeleton } from "../components/review-form";
 import ReviewSidebar from "../components/review-sidebar";
 
-type Props = {
+interface Props {
   productId: string;
 };
 

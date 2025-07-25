@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   activeCategory?: string | null;
   activeCategoryName?: string | null;
   activeSubcategoryName?: string | null;

@@ -5,7 +5,7 @@ import ProductList, {
 } from "../ui/components/product-list";
 import ProductSort from "../ui/components/product-sort";
 
-type Props = {
+interface Props {
   category?: string | null;
   tenantSlug?: string | null;
   narrowView?: boolean;

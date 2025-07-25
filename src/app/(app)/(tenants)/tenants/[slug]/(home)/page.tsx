@@ -14,7 +14,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
 
-type Props = {
+interface Props {
   searchParams: Promise<SearchParams>;
   params: Promise<{ slug: string }>;
 };

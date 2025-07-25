@@ -13,7 +13,7 @@ import useCheckoutState from "../../hooks/use-checkout-state";
 import CheckoutItem from "../components/checkout-item";
 import CheckoutSidebar from "../components/checkout-sidebar";
 
-type Props = {
+interface Props {
   tenantSlug: string;
 };
 

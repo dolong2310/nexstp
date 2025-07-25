@@ -3,7 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React from "react";
 import { ThemeProvider } from "./theme-provider";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 };
 

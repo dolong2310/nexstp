@@ -1,7 +1,8 @@
 import { IS_PRODUCTION } from "@/constants";
 import { isSuperAdmin } from "@/lib/access";
+import { User } from "@/payload-types";
 import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
-import type { CollectionConfig } from "payload";
+import type { CollectionConfig, CollectionAfterChangeHook } from "payload";
 
 const defaultTenantField = tenantsArrayField({
   tenantsArrayFieldName: "tenants",
@@ -18,6 +19,29 @@ const defaultTenantField = tenantsArrayField({
     update: ({ req }) => isSuperAdmin(req.user),
   },
 });
+
+const afterChangeHook: CollectionAfterChangeHook<User> = async ({
+  doc,
+  req,
+  operation,
+}) => {
+  // Tự động tạo ChatUser khi tạo User mới
+  if (operation === "create") {
+    try {
+      await req.payload.create({
+        collection: "chat-users",
+        data: {
+          user: doc.id,
+          email: doc.email,
+          name: doc.username || doc.email,
+          image: null, // Sẽ được cập nhật sau khi user upload avatar
+        },
+      });
+    } catch (error) {
+      console.error("Error creating ChatUser:", error);
+    }
+  }
+};
 
 export const Users: CollectionConfig = {
   slug: "users",
@@ -71,4 +95,7 @@ export const Users: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [afterChangeHook],
+  },
 };

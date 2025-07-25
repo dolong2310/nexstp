@@ -75,6 +75,9 @@ export interface Config {
     tenants: Tenant;
     orders: Order;
     reviews: Review;
+    'chat-users': ChatUser;
+    conversations: Conversation;
+    messages: Message;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -93,6 +96,9 @@ export interface Config {
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'chat-users': ChatUsersSelect<false> | ChatUsersSelect<true>;
+    conversations: ConversationsSelect<false> | ConversationsSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -186,7 +192,6 @@ export interface Tenant {
  */
 export interface Media {
   id: string;
-  tenant?: (string | null) | Tenant;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -330,6 +335,52 @@ export interface Review {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-users".
+ */
+export interface ChatUser {
+  id: string;
+  user: string | User;
+  name?: string | null;
+  email: string;
+  /**
+   * Upload avatar cho user
+   */
+  image?: (string | null) | Media;
+  conversations?: (string | Conversation)[] | null;
+  seenMessages?: (string | Message)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "conversations".
+ */
+export interface Conversation {
+  id: string;
+  name?: string | null;
+  isGroup?: boolean | null;
+  lastMessageAt?: string | null;
+  users: (string | ChatUser)[];
+  messages?: (string | Message)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: string;
+  body?: string | null;
+  image?: string | null;
+  conversation: string | Conversation;
+  sender: string | ChatUser;
+  seen?: (string | ChatUser)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -366,6 +417,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reviews';
         value: string | Review;
+      } | null)
+    | ({
+        relationTo: 'chat-users';
+        value: string | ChatUser;
+      } | null)
+    | ({
+        relationTo: 'conversations';
+        value: string | Conversation;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: string | Message;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -437,7 +500,6 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  tenant?: T;
   alt?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -534,6 +596,46 @@ export interface ReviewsSelect<T extends boolean = true> {
   rating?: T;
   product?: T;
   user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-users_select".
+ */
+export interface ChatUsersSelect<T extends boolean = true> {
+  user?: T;
+  name?: T;
+  email?: T;
+  image?: T;
+  conversations?: T;
+  seenMessages?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "conversations_select".
+ */
+export interface ConversationsSelect<T extends boolean = true> {
+  name?: T;
+  isGroup?: T;
+  lastMessageAt?: T;
+  users?: T;
+  messages?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  body?: T;
+  image?: T;
+  conversation?: T;
+  sender?: T;
+  seen?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -4,7 +4,7 @@ import useCart from "@/modules/checkout/hooks/use-cart";
 import { LoaderIcon } from "lucide-react";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   tenantSlug: string;
   productId: string;
   isPurchased?: boolean;

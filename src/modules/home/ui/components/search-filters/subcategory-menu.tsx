@@ -4,7 +4,7 @@ import { Category } from "@/payload-types";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   category: CategoriesGetManyOutput[1];
   isOpen: boolean;
 };

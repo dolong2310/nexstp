@@ -1,19 +1,19 @@
 "use client";
 
+import Media from "@/components/media";
 import StarRating from "@/components/star-rating";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { toast } from "sonner";
 import { CartButtonSkeleton } from "../ui/components/cart-button";
-import { RichText } from "@payloadcms/richtext-lexical/react";
 
 const CartButton = dynamic(
   () => import("../ui/components/cart-button").then((mod) => mod.default),
@@ -23,7 +23,7 @@ const CartButton = dynamic(
   }
 );
 
-type Props = {
+interface Props {
   productId: string;
   tenantSlug: string;
 };
@@ -50,7 +50,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
     <div className="px-4 lg:px-12 py-10">
       <div className="border rounded-sm bg-background overflow-hidden">
         <div className="relative aspect-[3.9] border-b">
-          <Image
+          <Media
             src={product.cover?.url || "/placeholder-bg.jpg"}
             alt={product.name}
             fill
@@ -79,7 +79,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                   className="flex items-center gap-2"
                 >
                   {product.tenant.image?.url && (
-                    <Image
+                    <Media
                       src={product.tenant.image?.url}
                       alt={product.tenant.name}
                       width={20}
@@ -189,7 +189,7 @@ export const ProductViewSkeleton = () => {
     <div className="px-4 lg:px-12 py-10">
       <div className="border rounded-sm bg-background overflow-hidden">
         <div className="relative aspect-[3.9] border-b">
-          <Image
+          <Media
             src="/placeholder-bg.jpg"
             alt="Placeholder"
             fill

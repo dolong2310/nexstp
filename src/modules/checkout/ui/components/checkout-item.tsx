@@ -1,9 +1,8 @@
+import Media from "@/components/media";
 import { cn, formatCurrency } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-type Props = {
+interface Props {
   isLast?: boolean;
   name: string;
   price: number;
@@ -33,7 +32,7 @@ const CheckoutItem = ({
     >
       <div className="overflow-hidden border-r">
         <div className="relative aspect-square h-full">
-          <Image
+          <Media
             src={imageUrl || "/placeholder-bg.jpg"}
             alt={name}
             fill

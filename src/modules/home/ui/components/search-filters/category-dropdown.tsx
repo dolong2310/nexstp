@@ -11,7 +11,7 @@ const SubcategoryMenu = dynamic(() => import("./subcategory-menu"), {
   ssr: false,
 });
 
-type Props = {
+interface Props {
   category: CategoriesGetManyOutput[1];
   isActive?: boolean;
   isNavigationHovered?: boolean;

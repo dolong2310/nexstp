@@ -3,7 +3,7 @@ import { formatCurrency } from "@/lib/utils";
 import { CircleXIcon } from "lucide-react";
 import React from "react";
 
-type Props = {
+interface Props {
   totalPrice: number;
   isPending?: boolean;
   isCanceled?: boolean;

@@ -5,7 +5,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 
-type Props = {
+interface Props {
   params: Promise<{ slug: string }>;
   children: React.ReactNode;
 };

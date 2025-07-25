@@ -13,7 +13,7 @@ import {
   metadataRobots,
 } from "../../shared-metadata";
 
-type Props = {
+interface Props {
   params: Promise<{ category: string }>;
   searchParams: Promise<SearchParams>;
 };

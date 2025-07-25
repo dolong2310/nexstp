@@ -6,7 +6,7 @@ import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import CheckoutView from "@/modules/checkout/ui/views/checkout-view";
 import { Metadata } from "next";
 
-type Props = {
+interface Props {
   params: Promise<{ slug: string }>;
 };
 
