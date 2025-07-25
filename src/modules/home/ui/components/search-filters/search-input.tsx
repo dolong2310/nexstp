@@ -9,7 +9,7 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import CategoriesSidebar from "./categories-sidebar";
 
-type Props = {
+interface Props {
   value?: string;
   onChange?: (value: string) => void;
   disabled?: boolean;

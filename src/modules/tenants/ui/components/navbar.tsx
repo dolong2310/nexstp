@@ -13,7 +13,7 @@ const CheckoutButton = dynamic(
   { ssr: false, loading: () => <CheckoutButtonSkeleton /> }
 );
 
-type Props = {
+interface Props {
   slug: string;
 };
 

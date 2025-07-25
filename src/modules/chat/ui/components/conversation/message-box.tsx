@@ -16,7 +16,7 @@ const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   loading: () => <CustomAvatarSkeleton />,
 });
 
-type Props = {
+interface Props {
   message: FullMessageType;
   isLast: boolean;
 };

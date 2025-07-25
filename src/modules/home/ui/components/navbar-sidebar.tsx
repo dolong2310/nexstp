@@ -15,7 +15,7 @@ type NavbarItem = {
   children: React.ReactNode;
 };
 
-type Props = {
+interface Props {
   items: NavbarItem[];
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -7,7 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
 import React, { ChangeEvent } from "react";
 
-type Props = {
+interface Props {
   values?: string[] | null;
   onChange: (values: string[]) => void;
 };

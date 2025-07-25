@@ -6,7 +6,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 
-type Props = { children: React.ReactNode };
+interface Props { children: React.ReactNode };
 
 export const dynamic = "force-dynamic";
 

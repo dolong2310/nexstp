@@ -4,7 +4,7 @@ import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import useCart from "../../hooks/use-cart";
 
-type Props = {
+interface Props {
   className?: string;
   hideIfEmpty?: boolean;
   tenantSlug: string;

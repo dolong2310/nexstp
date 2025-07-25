@@ -2,7 +2,7 @@ import Media from "@/components/media";
 import { cn, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   isLast?: boolean;
   name: string;
   price: number;

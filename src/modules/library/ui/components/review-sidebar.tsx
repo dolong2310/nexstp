@@ -5,7 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 import ReviewForm from "./review-form";
 
-type Props = {
+interface Props {
   productId: string;
 };
 

@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
-type Props = {
+interface Props {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 };

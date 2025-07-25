@@ -13,7 +13,7 @@ const CategoriesSidebar = dynamic(() => import("./categories-sidebar"), {
   ssr: false,
 });
 
-type Props = { data: CategoriesGetManyOutput };
+interface Props { data: CategoriesGetManyOutput };
 
 const Categories = ({ data }: Props) => {
   const params = useParams();

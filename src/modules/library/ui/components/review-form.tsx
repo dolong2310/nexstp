@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-type Props = {
+interface Props {
   productId: string;
   initialData?: ReviewGetOneOutput;
 };

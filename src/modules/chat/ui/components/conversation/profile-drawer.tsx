@@ -22,7 +22,7 @@ const CustomAvatarGroup = dynamic(() => import("../custom-avatar-group"), {
   loading: () => <CustomAvatarGroupSkeleton />,
 });
 
-type Props = {
+interface Props {
   conversation: ChatConversation & { users: ChatUser[] };
   isOpen: boolean;
   onClose: () => void;

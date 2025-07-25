@@ -6,7 +6,7 @@ import ChatDesktopSidebar, {
 } from "./chat-desktop-sidebar";
 import ChatMobileFooter from "./chat-mobile-footer";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 };
 

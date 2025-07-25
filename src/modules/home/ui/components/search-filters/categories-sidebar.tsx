@@ -14,7 +14,7 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Props = {
+interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };

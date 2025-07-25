@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { formatName } from "@/lib/utils";
 import { ChatUser, Media } from "@/payload-types";
 
-type Props = {
+interface Props {
   users: ChatUser[];
 };
 

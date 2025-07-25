@@ -2,7 +2,7 @@ import Media from "@/components/media";
 import { StarIcon } from "lucide-react";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   id: string;
   name: string;
   imageUrl?: string | null;

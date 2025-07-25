@@ -12,7 +12,7 @@ import {
   metadataOpenGraphDefaultImage,
 } from "../shared-metadata";
 
-type Props = {
+interface Props {
   searchParams: Promise<SearchParams>;
 };
 

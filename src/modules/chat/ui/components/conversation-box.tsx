@@ -20,7 +20,7 @@ const CustomAvatarGroup = dynamic(() => import("./custom-avatar-group"), {
   loading: () => <CustomAvatarGroupSkeleton />,
 });
 
-type Props = {
+interface Props {
   conversation: FullConversationType;
   selected?: boolean;
 };

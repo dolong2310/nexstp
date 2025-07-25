@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import useActiveList from "../../store/use-active-list";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+interface Props {
   src?: string;
   user: ChatUser | null;
   className?: string;

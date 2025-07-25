@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import React, { ChangeEvent } from "react";
 
-type Props = {
+interface Props {
   minPrice?: string | null;
   maxPrice?: string | null;
   onMinPriceChange: (value: string) => void;

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
-type Props = {
+interface Props {
   label: string;
   href: string;
   icon: React.ElementType;

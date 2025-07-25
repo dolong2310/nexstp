@@ -8,7 +8,7 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-type Props = {
+interface Props {
   params: Promise<{ productId: string }>;
 };
 

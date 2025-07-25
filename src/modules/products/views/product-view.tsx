@@ -23,7 +23,7 @@ const CartButton = dynamic(
   }
 );
 
-type Props = {
+interface Props {
   productId: string;
   tenantSlug: string;
 };

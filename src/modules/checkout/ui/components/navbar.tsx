@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { generateTenantUrl } from "@/lib/utils";
 import Link from "next/link";
 
-type Props = {
+interface Props {
   slug: string;
 };
 

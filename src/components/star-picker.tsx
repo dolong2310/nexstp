@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import React, { useState } from "react";
 
-type Props = {
+interface Props {
   value?: number;
   disabled?: boolean;
   className?: string;

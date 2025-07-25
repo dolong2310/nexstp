@@ -1,7 +1,7 @@
 import ChatStatusProvider from "@/modules/chat/ui/components/providers/status-provider";
 import React from "react";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 };
 

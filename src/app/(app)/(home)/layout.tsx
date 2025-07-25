@@ -7,7 +7,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 };
 

@@ -1,7 +1,7 @@
 import Media from "@/components/media";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
-type Props = {
+interface Props {
   src: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;

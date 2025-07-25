@@ -5,7 +5,7 @@ import useActiveList from "@/modules/chat/store/use-active-list";
 import { Channel, Members } from "pusher-js";
 import React, { useEffect, useState } from "react";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
 };
 

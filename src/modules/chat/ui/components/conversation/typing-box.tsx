@@ -3,7 +3,7 @@ import useSession from "@/modules/chat/hooks/use-session";
 import { useMemo } from "react";
 import { UserProps } from "./conversation-content";
 
-type Props = {
+interface Props {
   typingUsers: UserProps[];
 };
 
