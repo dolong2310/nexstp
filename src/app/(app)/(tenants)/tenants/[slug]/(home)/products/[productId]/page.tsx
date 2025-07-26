@@ -2,7 +2,7 @@ import { metadataOpenGraph } from "@/app/(app)/shared-metadata";
 import { getProductForMetadata } from "@/lib/server-actions/products";
 import ProductView, {
   ProductViewSkeleton,
-} from "@/modules/products/views/product-view";
+} from "@/modules/products/ui/views/product-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";

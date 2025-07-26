@@ -1,6 +1,6 @@
 import { DEFAULT_LIMIT } from "@/constants";
 import { loadProductFilters } from "@/modules/products/search-params";
-import ProductListView from "@/modules/products/views/product-list-view";
+import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";

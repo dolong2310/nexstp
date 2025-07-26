@@ -13,10 +13,10 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { toast } from "sonner";
-import { CartButtonSkeleton } from "../ui/components/cart-button";
+import { CartButtonSkeleton } from "../components/cart-button";
 
 const CartButton = dynamic(
-  () => import("../ui/components/cart-button").then((mod) => mod.default),
+  () => import("../components/cart-button").then((mod) => mod.default),
   {
     ssr: false,
     loading: () => <CartButtonSkeleton />,
