@@ -12,17 +12,18 @@ import { Config } from "./payload-types";
 
 import { isSuperAdmin } from "./lib/access";
 
+import { Banners } from "@/collections/Banners";
 import { Categories } from "./collections/Categories";
+import { ChatUsers } from "./collections/ChatUsers";
+import { Conversations } from "./collections/Conversations";
 import { Media } from "./collections/Media";
+import { Messages } from "./collections/Messages";
 import { Orders } from "./collections/Orders";
 import { Products } from "./collections/Products";
 import { Reviews } from "./collections/Reviews";
 import { Tags } from "./collections/Tags";
 import { Tenants } from "./collections/Tenants";
 import { Users } from "./collections/Users";
-import { ChatUsers } from "./collections/ChatUsers";
-import { Conversations } from "./collections/Conversations";
-import { Messages } from "./collections/Messages";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -49,6 +50,7 @@ export default buildConfig({
     ChatUsers,
     Conversations,
     Messages,
+    Banners,
   ],
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),

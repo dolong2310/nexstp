@@ -9,61 +9,50 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import useScrollHeight from "@/hooks/use-scroll-height";
-import { cn } from "@/lib/utils";
+import { cn, generateTenantUrl } from "@/lib/utils";
+import { useTRPC } from "@/trpc/client";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
-
-const BANNER_IMAGES = [
-  {
-    src: "/auth-bg.jpg",
-    alt: "Featured Collection - Summer Sale",
-    href: "/collections/summer-sale",
-    title: "Summer Sale - Up to 50% Off",
-  },
-  {
-    src: "/auth-bg.jpg",
-    alt: "New Arrivals - Spring Collection",
-    href: "/collections/new-arrivals",
-    title: "New Spring Collection",
-  },
-  {
-    src: "/auth-bg.jpg",
-    alt: "Best Sellers - Top Products",
-    href: "/collections/best-sellers",
-    title: "Best Selling Products",
-  },
-  {
-    src: "/auth-bg.jpg",
-    alt: "Special Offer - Limited Time",
-    href: "/collections/special-offers",
-    title: "Limited Time Special Offers",
-  },
-  {
-    src: "/auth-bg.jpg",
-    alt: "Premium Collection - Luxury Items",
-    href: "/collections/premium",
-    title: "Premium Luxury Collection",
-  },
-] as const;
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const AUTOPLAY_CONFIG = {
-  delay: 4000,
+  delay: 5000,
   stopOnInteraction: true,
   stopOnMouseEnter: true,
 } as const;
 
 interface Props {
+  tenantSlug?: string;
   containerClassName?: string;
 }
 
-const Banner = ({ containerClassName }: Props) => {
+const Banner = ({ tenantSlug, containerClassName }: Props) => {
   const bannerRef = useRef<HTMLDivElement>(null);
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
 
+  const trpc = useTRPC();
   const [bannerHeight] = useScrollHeight({ ref: bannerRef });
 
   const [showControls, setShowControls] = useState(false);
+  const [viewedBanners, setViewedBanners] = useState<Set<string>>(new Set());
+
+  const { data: banners = [] } = useSuspenseQuery(
+    trpc.home.getBannerActive.queryOptions({
+      tenantSlug,
+      limit: 5,
+    })
+  );
+
+  const shouldShowControls = banners.length > 1 && showControls;
+
+  const incrementImpressionMutation = useMutation(
+    trpc.home.incrementBannerImpression.mutationOptions({})
+  );
+
+  const incrementMutation = useMutation(
+    trpc.home.incrementBannerClick.mutationOptions({})
+  );
 
   const handleMouseEnter = useCallback(() => {
     plugin.current.stop();
@@ -75,10 +64,44 @@ const Banner = ({ containerClassName }: Props) => {
     setShowControls(false);
   }, []);
 
-  const shouldShowControls = BANNER_IMAGES.length > 1 && showControls;
+  const handleBannerClick = useCallback(
+    (bannerId: string) => () => {
+      incrementMutation.mutate({ bannerId });
+    },
+    [incrementMutation]
+  );
+
+  const generateBannerUrl = useCallback((banner: (typeof banners)[0]) => {
+    if (banner.product) {
+      // Link to specific product
+      return `${generateTenantUrl(
+        typeof banner.tenant === "string" ? "" : banner.tenant.slug
+      )}/products/${banner.product.id}`;
+    }
+    // Link to tenant homepage
+    return generateTenantUrl(
+      typeof banner.tenant === "string" ? "" : banner.tenant.slug
+    );
+  }, []);
+
+  // Track impressions khi banner hiển thị
+  useEffect(() => {
+    if (banners.length > 0) {
+      banners.forEach((banner) => {
+        if (!viewedBanners.has(banner.id)) {
+          incrementImpressionMutation.mutate({ bannerId: banner.id });
+          setViewedBanners((prev) => new Set([...prev, banner.id]));
+        }
+      });
+    }
+  }, [banners, viewedBanners, incrementImpressionMutation]);
+
+  if (banners.length === 0) {
+    return null;
+  }
 
   return (
-    <div className={cn("px-4 lg:px-12 py-4 lg:py-6", containerClassName)}>
+    <div className={cn("px-4 lg:px-12 pt-8", containerClassName)}>
       <Carousel
         plugins={[plugin.current]}
         className="w-full"
@@ -95,22 +118,42 @@ const Banner = ({ containerClassName }: Props) => {
         >
           <div ref={bannerRef}>
             <CarouselContent className="-ml-1">
-              {BANNER_IMAGES.map((banner, index) => (
-                <CarouselItem key={index} className="pl-1">
+              {banners.map((banner, index) => (
+                <CarouselItem key={banner.id} className="pl-1">
                   <Link
-                    href={banner.href}
-                    className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
+                    href={generateBannerUrl(banner)}
+                    className="relative block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl group"
                     title={banner.title}
+                    onClick={handleBannerClick(banner.id)}
                   >
                     <Media
-                      src={banner.src}
-                      alt={banner.alt}
+                      src={banner.image.url || ""}
+                      alt={banner.title}
                       fill
                       containerClassName="aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] group-hover:scale-105 transition-transform duration-300"
                       className="object-cover"
                       priority={index === 0}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                     />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4 text-white">
+                        <h3 className="text-lg font-semibold">
+                          {banner.title}
+                        </h3>
+                        {banner.description && (
+                          <p className="text-sm opacity-90">
+                            {banner.description}
+                          </p>
+                        )}
+                        <p className="text-xs opacity-75 mt-1">
+                          Visit{" "}
+                          {typeof banner.tenant === "string"
+                            ? "Store"
+                            : banner.tenant.name}
+                        </p>
+                      </div>
+                    </div>
                   </Link>
                 </CarouselItem>
               ))}
@@ -125,6 +168,14 @@ const Banner = ({ containerClassName }: Props) => {
           </div>
         </div>
       </Carousel>
+    </div>
+  );
+};
+
+export const BannerSkeleton = ({ containerClassName }: Props) => {
+  return (
+    <div className={cn("px-4 lg:px-12 py-4 lg:py-6", containerClassName)}>
+      <div className="border rounded-xl overflow-hidden aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] bg-muted animate-pulse" />
     </div>
   );
 };

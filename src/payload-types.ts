@@ -78,6 +78,7 @@ export interface Config {
     'chat-users': ChatUser;
     conversations: Conversation;
     messages: Message;
+    banners: Banner;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -99,6 +100,7 @@ export interface Config {
     'chat-users': ChatUsersSelect<false> | ChatUsersSelect<true>;
     conversations: ConversationsSelect<false> | ConversationsSelect<true>;
     messages: MessagesSelect<false> | MessagesSelect<true>;
+    banners: BannersSelect<false> | BannersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -381,6 +383,59 @@ export interface Message {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners".
+ */
+export interface Banner {
+  id: string;
+  /**
+   * Title for the banner (used for SEO and accessibility)
+   */
+  title: string;
+  /**
+   * Optional description for the banner
+   */
+  description?: string | null;
+  /**
+   * High-quality image for the banner (recommended: 1920x540px)
+   */
+  image: string | Media;
+  /**
+   * The tenant store this banner will link to
+   */
+  tenant: string | Tenant;
+  /**
+   * Optional: Link to a specific product instead of tenant homepage
+   */
+  product?: (string | null) | Product;
+  /**
+   * Whether this banner is currently active
+   */
+  isActive?: boolean | null;
+  /**
+   * Higher numbers appear first (0 = lowest priority)
+   */
+  priority?: number | null;
+  /**
+   * When this banner should start showing (optional)
+   */
+  startDate?: string | null;
+  /**
+   * When this banner should stop showing (optional)
+   */
+  endDate?: string | null;
+  /**
+   * Number of times this banner has been clicked
+   */
+  clickCount?: number | null;
+  /**
+   * Number of times this banner has been viewed
+   */
+  impressionCount?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -429,6 +484,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'messages';
         value: string | Message;
+      } | null)
+    | ({
+        relationTo: 'banners';
+        value: string | Banner;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -636,6 +695,25 @@ export interface MessagesSelect<T extends boolean = true> {
   conversation?: T;
   sender?: T;
   seen?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners_select".
+ */
+export interface BannersSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  image?: T;
+  tenant?: T;
+  product?: T;
+  isActive?: T;
+  priority?: T;
+  startDate?: T;
+  endDate?: T;
+  clickCount?: T;
+  impressionCount?: T;
   updatedAt?: T;
   createdAt?: T;
 }

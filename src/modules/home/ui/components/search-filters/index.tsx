@@ -40,7 +40,7 @@ const SearchFiltersBase = () => {
   };
 
   return (
-    <div className="px-4 lg:px-12 pb-8">
+    <div className="px-4 lg:px-12 py-8">
       <div
         className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl transition-colors duration-200"
         style={{ backgroundColor: activeCategoryColor }}
@@ -61,7 +61,7 @@ const SearchFiltersBase = () => {
 
 export const SearchFiltersSkeleton = () => {
   return (
-    <div className="px-4 lg:px-12 pb-8">
+    <div className="px-4 lg:px-12 py-8">
       <div
         className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl"
         style={{ backgroundColor: DEFAULT_BG_COLOR.dark }}

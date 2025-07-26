@@ -12,12 +12,7 @@ interface Props {
 
 const ProductListView = ({ category, tenantSlug, narrowView }: Props) => {
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-4 px-4 lg:px-12 py-8",
-        narrowView && "pt-4 lg:pt-2"
-      )}
-    >
+    <div className="flex flex-col gap-4 px-4 lg:px-12 py-8">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2 lg:gap-y-0">
         <p className="text-2xl font-medium">Curated for you</p>
         <ProductSort />

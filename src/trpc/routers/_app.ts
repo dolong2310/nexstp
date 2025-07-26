@@ -1,4 +1,5 @@
 import { authRouter } from "@/modules/auth/server/procedures";
+import { homeRouter } from "@/modules/home/server/procedures";
 import { categoriesRouter } from "@/modules/categories/server/procedures";
 import { conversationsRouter } from "@/modules/conversations/server/procedures";
 import { checkoutRouter } from "@/modules/checkout/server/procedures";
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   reviews: reviewsRouter,
   categories: categoriesRouter,
   conversations: conversationsRouter,
+  home: homeRouter,
 });
 
 // export type definition of API

@@ -1,4 +1,4 @@
-import Banner from "@/modules/home/ui/components/banner";
+import Banner, { BannerSkeleton } from "@/modules/home/ui/components/banner";
 import Footer from "@/modules/home/ui/components/footer";
 import Navbar from "@/modules/home/ui/components/navbar";
 import SearchFilters, {
@@ -15,12 +15,19 @@ interface Props {
 const HomeLayout = async ({ children }: Props) => {
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.categories.getMany.queryOptions());
+  void queryClient.prefetchQuery(
+    trpc.home.getBannerActive.queryOptions({
+      limit: 5,
+    })
+  );
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <Banner />
       <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<BannerSkeleton />}>
+          <Banner />
+        </Suspense>
         <Suspense fallback={<SearchFiltersSkeleton />}>
           <SearchFilters />
         </Suspense>
