@@ -1,3 +1,4 @@
+import Banner from "@/modules/home/ui/components/banner";
 import Footer from "@/modules/home/ui/components/footer";
 import Navbar from "@/modules/home/ui/components/navbar";
 import SearchFilters, {
@@ -9,7 +10,7 @@ import React, { Suspense } from "react";
 
 interface Props {
   children: React.ReactNode;
-};
+}
 
 const HomeLayout = async ({ children }: Props) => {
   const queryClient = getQueryClient();
@@ -18,6 +19,7 @@ const HomeLayout = async ({ children }: Props) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <Banner />
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<SearchFiltersSkeleton />}>
           <SearchFilters />

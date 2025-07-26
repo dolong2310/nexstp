@@ -7,6 +7,7 @@ import {
 import { DEFAULT_LIMIT } from "@/constants";
 import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import { generateTenantUrl } from "@/lib/utils";
+import Banner from "@/modules/home/ui/components/banner";
 import { loadProductFilters } from "@/modules/products/search-params";
 import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -17,7 +18,7 @@ import type { SearchParams } from "nuqs/server";
 interface Props {
   searchParams: Promise<SearchParams>;
   params: Promise<{ slug: string }>;
-};
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -91,9 +92,12 @@ const TenantsPage = async ({ params, searchParams }: Props) => {
   );
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductListView tenantSlug={slug} narrowView />
-    </HydrationBoundary>
+    <>
+      <Banner containerClassName="pt-8!" />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ProductListView tenantSlug={slug} narrowView />
+      </HydrationBoundary>
+    </>
   );
 };
 

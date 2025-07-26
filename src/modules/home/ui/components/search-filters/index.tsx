@@ -40,19 +40,21 @@ const SearchFiltersBase = () => {
   };
 
   return (
-    <div
-      className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full transition-colors duration-200"
-      style={{ backgroundColor: activeCategoryColor }}
-    >
-      <SearchInput value={filters.search} onChange={handleSearchChange} />
-      <div className="hidden lg:block">
-        <Categories data={data} />
+    <div className="px-4 lg:px-12 pb-8">
+      <div
+        className="border rounded-xl flex flex-col gap-4 w-full transition-colors duration-200 px-4 lg:px-12 py-8"
+        style={{ backgroundColor: activeCategoryColor }}
+      >
+        <SearchInput value={filters.search} onChange={handleSearchChange} />
+        <div className="hidden lg:block">
+          <Categories data={data} />
+        </div>
+        <BreadcrumbNavigation
+          activeCategory={activeCategory}
+          activeCategoryName={activeCategoryName}
+          activeSubcategoryName={activeSubcategoryName}
+        />
       </div>
-      <BreadcrumbNavigation
-        activeCategory={activeCategory}
-        activeCategoryName={activeCategoryName}
-        activeSubcategoryName={activeSubcategoryName}
-      />
     </div>
   );
 };
