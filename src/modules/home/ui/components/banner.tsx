@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import useScrollHeight from "@/hooks/use-scroll-height";
 import { cn } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
@@ -57,7 +58,11 @@ interface Props {
 }
 
 const Banner = ({ containerClassName }: Props) => {
+  const bannerRef = useRef<HTMLDivElement>(null);
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
+
+  const [bannerHeight] = useScrollHeight({ ref: bannerRef });
+
   const [showControls, setShowControls] = useState(false);
 
   const handleMouseEnter = useCallback(() => {
@@ -84,35 +89,40 @@ const Banner = ({ containerClassName }: Props) => {
           loop: true,
         }}
       >
-        <div className="border rounded-xl overflow-hidden relative">
-          <CarouselContent className="-ml-1">
-            {BANNER_IMAGES.map((banner, index) => (
-              <CarouselItem key={index} className="pl-1">
-                <Link
-                  href={banner.href}
-                  className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
-                  title={banner.title}
-                >
-                  <Media
-                    src={banner.src}
-                    alt={banner.alt}
-                    fill
-                    containerClassName="aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] group-hover:scale-105 transition-transform duration-300"
-                    className="object-cover"
-                    priority={index === 0}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-                  />
-                </Link>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+        <div
+          className="border rounded-xl overflow-hidden relative"
+          style={{ height: bannerHeight ?? "auto" }}
+        >
+          <div ref={bannerRef}>
+            <CarouselContent className="-ml-1">
+              {BANNER_IMAGES.map((banner, index) => (
+                <CarouselItem key={index} className="pl-1">
+                  <Link
+                    href={banner.href}
+                    className="block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl"
+                    title={banner.title}
+                  >
+                    <Media
+                      src={banner.src}
+                      alt={banner.alt}
+                      fill
+                      containerClassName="aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover"
+                      priority={index === 0}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                    />
+                  </Link>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-          {shouldShowControls && (
-            <>
-              <CarouselPrevious className="left-4 z-10 animate-in fade-in-0 duration-200" />
-              <CarouselNext className="right-4 z-10 animate-in fade-in-0 duration-200" />
-            </>
-          )}
+            {shouldShowControls && (
+              <>
+                <CarouselPrevious className="left-4 z-10 animate-in fade-in-0 duration-200" />
+                <CarouselNext className="right-4 z-10 animate-in fade-in-0 duration-200" />
+              </>
+            )}
+          </div>
         </div>
       </Carousel>
     </div>
