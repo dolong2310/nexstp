@@ -12,12 +12,14 @@ import { LogOutIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 interface Props {
   iconClassName?: string;
 }
 
 const LogoutButton = ({ iconClassName }: Props) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const { session, isLoading } = useSession();
@@ -26,12 +28,16 @@ const LogoutButton = ({ iconClassName }: Props) => {
     trpc.auth.logout.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries(trpc.auth.session.queryOptions());
+        router.push("/");
       },
       onError: (error) => {
         toast.error(
           error.message ||
             "An error occurred while logging out. Please try again."
         );
+      },
+      onSettled: () => {
+        router.refresh();
       },
     })
   );
@@ -42,6 +48,13 @@ const LogoutButton = ({ iconClassName }: Props) => {
     logout.mutate();
     setIsOpen(false);
   };
+
+  if (isLoading)
+    return (
+      <Button variant="elevated" size="icon" disabled>
+        <LogOutIcon className={iconClassName} />
+      </Button>
+    );
 
   if (!session?.user && !isLoading) return null;
 
