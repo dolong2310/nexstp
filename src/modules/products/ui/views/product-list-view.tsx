@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import ProductFilters from "../ui/components/product-filters";
+import ProductFilters from "../components/product-filters";
 import ProductList, {
   ProductListSkeleton,
-} from "../ui/components/product-list";
-import ProductSort from "../ui/components/product-sort";
+} from "../components/product-list";
+import ProductSort from "../components/product-sort";
 
 interface Props {
   category?: string | null;

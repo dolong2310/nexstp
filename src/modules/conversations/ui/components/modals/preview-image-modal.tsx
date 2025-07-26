@@ -34,17 +34,16 @@ const PreviewImageModal = ({
           <DialogTitle>Send Image</DialogTitle>
         </DialogHeader>
 
-        <div className="relative w-full max-h-96 overflow-hidden rounded-lg bg-muted">
-          {src && (
-            <Media
-              src={src}
-              alt="Preview"
-              width={400}
-              height={300}
-              className="w-full h-auto object-contain"
-            />
-          )}
-        </div>
+        {src && (
+          <Media
+            src={src}
+            alt="Preview"
+            width={400}
+            height={300}
+            containerClassName="w-full max-w-[50vh] max-h-[90vh] overflow-hidden rounded-lg bg-muted"
+            className="w-full h-auto object-contain"
+          />
+        )}
 
         <DialogFooter className="flex gap-2">
           <DialogClose asChild>

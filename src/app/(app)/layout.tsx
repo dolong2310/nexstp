@@ -1,6 +1,7 @@
 import Providers from "@/components/providers";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import "./globals.css";
 import {
@@ -8,6 +9,7 @@ import {
   metadataOpenGraph,
   metadataRobots,
 } from "./shared-metadata";
+import { defaultConfigTopLoader } from "@/constants";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -54,6 +56,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${dmSans.className} antialiased`}>
         <Providers>
+          <NextTopLoader {...defaultConfigTopLoader} />
           {children}
           <Toaster />
         </Providers>

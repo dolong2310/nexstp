@@ -10,7 +10,7 @@ interface Props {
   authorImageUrl?: string | null;
   reviewRating: number;
   reviewCount: number;
-};
+}
 
 const ProductCard = ({
   id,
@@ -23,15 +23,13 @@ const ProductCard = ({
 }: Props) => {
   return (
     <Link prefetch href={`/library/${id}`} className="no-underline">
-      <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
-        <div className="relative aspect-square">
-          <Media
-            src={imageUrl || "/placeholder-bg.jpg"}
-            alt={name}
-            fill
-            className="object-cover"
-          />
-        </div>
+      <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] transition-all">
+        <Media
+          src={imageUrl || "/placeholder-bg.jpg"}
+          alt={name}
+          fill
+          className="object-cover"
+        />
 
         <div className="flex flex-col gap-3 flex-1 border-y p-4">
           <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
@@ -64,7 +62,20 @@ const ProductCard = ({
 
 export const ProductCardSkeleton = () => {
   return (
-    <div className="w-full aspect-3/4 bg-neutral-200 rounded-lg animate-pulse" />
+    <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full animate-pulse">
+      <div className="relative aspect-square bg-gray-200" />
+      <div className="flex flex-col gap-3 flex-1 border-y p-4">
+        <div className="h-6 bg-gray-200 w-full mb-2" />
+        <div className="flex items-center gap-2">
+          <div className="rounded-full border shrink-0 size-4 bg-gray-200" />
+          <div className="h-4 bg-gray-200 w-24" />
+        </div>
+        <div className="flex items-center gap-1">
+          <StarIcon className="size-3.5 fill-gray-300" />
+          <div className="h-4 bg-gray-200 w-16" />
+        </div>
+      </div>
+    </div>
   );
 };
 

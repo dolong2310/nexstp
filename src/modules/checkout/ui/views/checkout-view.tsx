@@ -93,7 +93,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   if (products?.totalDocs === 0) {
     return (
       <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-        <ProductListEmpty />
+        <ProductListEmpty visibleLibraryButton />
       </div>
     );
   }
