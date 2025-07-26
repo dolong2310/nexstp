@@ -76,7 +76,7 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
     }
 
     return (
-      <div className={cn("relative aspect-auto", containerClassName)}>
+      <div className={cn("relative aspect-square", containerClassName)}>
         {/* Loading State */}
         {imageLoading && showLoading && !imageError && (
           <div
