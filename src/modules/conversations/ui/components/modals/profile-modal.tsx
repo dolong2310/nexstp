@@ -109,7 +109,6 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
     data
   ) => {
     try {
-      console.log("first");
       let imageId;
 
       if (uploadMediaHook.previewImage?.file) {

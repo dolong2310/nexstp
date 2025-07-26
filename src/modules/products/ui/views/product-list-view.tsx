@@ -1,15 +1,14 @@
+import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import ProductFilters from "../components/product-filters";
-import ProductList, {
-  ProductListSkeleton,
-} from "../components/product-list";
+import ProductList, { ProductListSkeleton } from "../components/product-list";
 import ProductSort from "../components/product-sort";
 
 interface Props {
   category?: string | null;
   tenantSlug?: string | null;
   narrowView?: boolean;
-};
+}
 
 const ProductListView = ({ category, tenantSlug, narrowView }: Props) => {
   return (

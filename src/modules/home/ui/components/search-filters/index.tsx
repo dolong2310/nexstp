@@ -40,34 +40,38 @@ const SearchFiltersBase = () => {
   };
 
   return (
-    <div
-      className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full transition-colors duration-200"
-      style={{ backgroundColor: activeCategoryColor }}
-    >
-      <SearchInput value={filters.search} onChange={handleSearchChange} />
-      <div className="hidden lg:block">
-        <Categories data={data} />
+    <div className="px-4 lg:px-12 py-8">
+      <div
+        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl transition-colors duration-200"
+        style={{ backgroundColor: activeCategoryColor }}
+      >
+        <SearchInput value={filters.search} onChange={handleSearchChange} />
+        <div className="hidden lg:block">
+          <Categories data={data} />
+        </div>
+        <BreadcrumbNavigation
+          activeCategory={activeCategory}
+          activeCategoryName={activeCategoryName}
+          activeSubcategoryName={activeSubcategoryName}
+        />
       </div>
-      <BreadcrumbNavigation
-        activeCategory={activeCategory}
-        activeCategoryName={activeCategoryName}
-        activeSubcategoryName={activeSubcategoryName}
-      />
     </div>
   );
 };
 
 export const SearchFiltersSkeleton = () => {
   return (
-    <div
-      className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full"
-      style={{ backgroundColor: DEFAULT_BG_COLOR.dark }}
-    >
-      <SearchInput disabled />
-      <div className="hidden lg:block">
-        <div className="h-11 animate-pulse bg-neutral-200 rounded" />
+    <div className="px-4 lg:px-12 py-8">
+      <div
+        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl"
+        style={{ backgroundColor: DEFAULT_BG_COLOR.dark }}
+      >
+        <SearchInput disabled />
+        <div className="hidden lg:block">
+          <div className="h-11 animate-pulse bg-neutral-200 rounded" />
+        </div>
+        <div className="h-6 animate-pulse bg-neutral-200 rounded w-48" />
       </div>
-      <div className="h-6 animate-pulse bg-neutral-200 rounded w-48" />
     </div>
   );
 };

@@ -12,6 +12,7 @@
     "gen:types": "payload generate:types",
     "db:fresh": "payload migrate:fresh",
     "db:seed": "tsx --env-file=.env src/seed.ts",
+    "db:seed-banner": "tsx --env-file=.env src/seed-banners.ts",
     "db:reset": "pnpm run db:fresh && pnpm run db:seed"
   },
   "dependencies": {
@@ -58,6 +59,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "graphql": "^16.8.1",
     "input-otp": "^1.4.2",
