@@ -11,7 +11,7 @@ interface Props {
   tenantUrl: string;
   tenantName: string;
   onRemove: () => void;
-};
+}
 
 const CheckoutItem = ({
   isLast,
@@ -31,14 +31,12 @@ const CheckoutItem = ({
       )}
     >
       <div className="overflow-hidden border-r">
-        <div className="relative aspect-square h-full">
-          <Media
-            src={imageUrl || "/placeholder-bg.jpg"}
-            alt={name}
-            fill
-            className="object-cover"
-          />
-        </div>
+        <Media
+          src={imageUrl || "/placeholder-bg.jpg"}
+          alt={name}
+          fill
+          className="object-cover"
+        />
       </div>
 
       <div className="flex flex-col justify-between py-4">

@@ -6,6 +6,7 @@ import { useState, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface MediaProps extends Omit<ImageProps, "onLoad" | "onError"> {
+  containerClassName?: string;
   showLoading?: boolean;
   showError?: boolean;
   fallbackIcon?: React.ComponentType<{ className?: string }>;
@@ -21,6 +22,7 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
     {
       src,
       alt = "Image",
+      containerClassName,
       className,
       showLoading = true,
       showError = true,
@@ -74,7 +76,7 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
     }
 
     return (
-      <div className={cn("relative", className)}>
+      <div className={cn("relative aspect-auto", containerClassName)}>
         {/* Loading State */}
         {imageLoading && showLoading && !imageError && (
           <div
