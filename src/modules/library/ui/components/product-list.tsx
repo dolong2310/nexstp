@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
+import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { InboxIcon } from "lucide-react";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
 
 const ProductList = () => {
@@ -59,15 +59,6 @@ const ProductList = () => {
         )}
       </div>
     </>
-  );
-};
-
-export const ProductListEmpty = () => {
-  return (
-    <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-background border border-black border-dashed p-8">
-      <InboxIcon />
-      <p className="text-base font-medium">No products found</p>
-    </div>
   );
 };
 

@@ -8,12 +8,13 @@ import useProductFilter from "../../hooks/use-product-filter";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
 import { InboxIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface Props {
   category?: string | null;
   tenantSlug?: string | null;
   narrowView?: boolean;
-};
+}
 
 const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
   const [filters] = useProductFilter();
@@ -80,11 +81,20 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
   );
 };
 
-export const ProductListEmpty = () => {
+export const ProductListEmpty = ({
+  visibleLibraryButton = false,
+}: {
+  visibleLibraryButton?: boolean;
+}) => {
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-background border border-black border-dashed p-8">
       <InboxIcon />
       <p className="text-base font-medium">No products found</p>
+      {visibleLibraryButton && (
+        <Button asChild variant="elevated" size="sm" className="mt-2">
+          <Link href="/library">Library</Link>
+        </Button>
+      )}
     </div>
   );
 };
