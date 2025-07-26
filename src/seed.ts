@@ -6,7 +6,7 @@ import { Product } from "./payload-types";
 type ProductsType = Omit<Product, "createdAt" | "id" | "sizes" | "updatedAt"> &
   Partial<Pick<Product, "createdAt" | "id" | "updatedAt">>;
 
-const categories = [
+const mockCategories = [
   {
     name: "All",
     slug: "all",
@@ -172,714 +172,114 @@ const categories = [
   },
 ];
 
-const categorySlugs = categories.slice(1, 4).map((cat) => cat.slug);
+const categorySlugs = mockCategories.slice(1, 4).map((cat) => cat.slug);
 
 function getRandomCategorySlug() {
   return categorySlugs[Math.floor(Math.random() * categorySlugs.length)];
 }
 
-const mockProducts: ProductsType[] = [
-  {
-    name: "Product 1",
-    price: 19.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 1",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 1",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 2",
-    price: 29.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 2",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 2",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 3",
-    price: 39.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 3",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 3",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 4",
-    price: 49.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 4",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 4",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 5",
-    price: 59.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 5",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 5",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 6",
-    price: 69.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 6",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 6",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 7",
-    price: 79.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 7",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 7",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 8",
-    price: 89.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 8",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 8",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 9",
-    price: 99.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 9",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 9",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
-  {
-    name: "Product 10",
-    price: 109.99,
-    content: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Content for product 10",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    isPrivate: false,
-    isArchived: false,
-    description: {
-      root: {
-        children: [
-          {
-            children: [
-              {
-                detail: 0,
-                format: 0,
-                mode: "normal",
-                style: "",
-                text: "Description for product 10",
-                type: "text",
-                version: 1,
-              },
-            ],
-            direction: "ltr",
-            format: "",
-            indent: 0,
-            type: "paragraph",
-            version: 1,
-            textFormat: 0,
-            textStyle: "",
-          },
-        ],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "root",
-        version: 1,
-      },
-    },
-    refundPolicy: "30-day",
-    category: getRandomCategorySlug(),
-  },
+const mockTags = [
+  { name: "Popular" },
+  { name: "New Arrival" },
+  { name: "Discount" },
+  { name: "Limited Edition" },
+  { name: "Best Seller" },
+  { name: "Trending" },
+  { name: "Featured" },
+  { name: "Exclusive" },
+  { name: "Eco-Friendly" },
+  { name: "Handmade" },
 ];
+
+function getRandomTags(n = 2) {
+  const shuffled = [...mockTags].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n).map((tag) => tag.name);
+}
+
+const mockRefundPolicy: Product["refundPolicy"][] = [
+  "30-day",
+  "14-day",
+  "7-day",
+  "3-day",
+  "1-day",
+  "no-refunds",
+];
+
+function randomKeyRefundPolicy() {
+  return mockRefundPolicy[Math.floor(Math.random() * mockRefundPolicy.length)];
+}
+
+const mockProducts: ProductsType[] = Array.from({ length: 20 }, (_, i) => ({
+  name: `Product ${i + 1}`,
+  price: 19.99 + i * 10,
+  content: {
+    root: {
+      children: [
+        {
+          children: [
+            {
+              detail: 0,
+              format: 0,
+              mode: "normal",
+              style: "",
+              text: `Content for product ${i + 1}`,
+              type: "text",
+              version: 1,
+            },
+          ],
+          direction: "ltr",
+          format: "",
+          indent: 0,
+          type: "paragraph",
+          version: 1,
+          textFormat: 0,
+          textStyle: "",
+        },
+      ],
+      direction: "ltr",
+      format: "",
+      indent: 0,
+      type: "root",
+      version: 1,
+    },
+  },
+  isPrivate: false,
+  isArchived: false,
+  description: {
+    root: {
+      children: [
+        {
+          children: [
+            {
+              detail: 0,
+              format: 0,
+              mode: "normal",
+              style: "",
+              text: `Description for product ${i + 1}`,
+              type: "text",
+              version: 1,
+            },
+          ],
+          direction: "ltr",
+          format: "",
+          indent: 0,
+          type: "paragraph",
+          version: 1,
+          textFormat: 0,
+          textStyle: "",
+        },
+      ],
+      direction: "ltr",
+      format: "",
+      indent: 0,
+      type: "root",
+      version: 1,
+    },
+  },
+  refundPolicy: randomKeyRefundPolicy(),
+  category: getRandomCategorySlug(),
+  tags: getRandomTags(),
+}));
 
 const seed = async () => {
   const payload = await getPayload({
@@ -917,7 +317,7 @@ const seed = async () => {
   const createdCategories: Record<string, any> = {};
 
   // Create categories and subcategories
-  for (const category of categories) {
+  for (const category of mockCategories) {
     const parentCategory = await payload.create({
       collection: "categories",
       data: {
@@ -942,14 +342,27 @@ const seed = async () => {
     }
   }
 
+  const createdTags: Record<string, any> = {};
+
+  // Create tags
+  for (const mockTag of mockTags) {
+    const tag = await payload.create({
+      collection: "tags",
+      data: mockTag,
+    });
+    createdTags[mockTag.name] = tag.id;
+  }
+
   // Create products
   for (const product of mockProducts) {
     const categoryObj = createdCategories[product.category as string];
+    const tags = (product.tags as string[]).map((tag) => createdTags[tag]);
 
     await payload.create({
       collection: "products",
       data: {
         ...product,
+        tags,
         category: categoryObj ? categoryObj.id : null,
         tenant: adminTenant.id,
       },
