@@ -198,7 +198,7 @@ const ProductListTable = ({
                   key={column.key}
                   className={cn(
                     "custom-th",
-                    "bg-third content-center border-b text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
+                    "bg-background content-center border-b text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
                     "first:sticky first:top-0 first:left-0 first:z-10"
                   )}
                   style={{ width: column.width, minWidth: column.minWidth }}
@@ -245,7 +245,7 @@ const ProductListTable = ({
                         key={col.key}
                         className={cn(
                           "custom-td",
-                          "px-4 py-2 content-center w-full bg-third border-b",
+                          "px-4 py-2 content-center w-full bg-background border-b",
                           "first:sticky first:top-0 first:left-0 first:z-10",
                           col.align && `justify-${col.align}`
                         )}
@@ -353,7 +353,7 @@ export const ProductListTableSkeleton = () => {
                 key={column.key}
                 className={cn(
                   "custom-th",
-                  "bg-third content-center border-b text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
+                  "bg-background content-center border-b text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
                   "first:sticky first:top-0 first:left-0 first:z-10"
                 )}
                 style={{ width: column.width, minWidth: column.minWidth }}
@@ -375,7 +375,7 @@ export const ProductListTableSkeleton = () => {
                   key={col.key}
                   className={cn(
                     "custom-td",
-                    "px-4 py-2 content-center w-full bg-third border-b",
+                    "px-4 py-2 content-center w-full bg-background border-b",
                     "first:sticky first:top-0 first:left-0 first:z-10",
                     col.align && `justify-${col.align}`
                   )}
