@@ -3,6 +3,7 @@ import LibraryView from "@/modules/library/ui/views/library-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import {
   metadataOpenGraph,
   metadataOpenGraphDefaultImage,
@@ -38,8 +39,16 @@ export const metadata: Metadata = {
   },
 };
 
-const LibraryPage = () => {
+const LibraryPage = async () => {
   const queryClient = getQueryClient();
+  const session = await queryClient.fetchQuery(
+    trpc.auth.session.queryOptions()
+  );
+
+  if (!session?.user) {
+    redirect("/sign-in");
+  }
+
   void queryClient.prefetchInfiniteQuery(
     trpc.library.getMany.infiniteQueryOptions({
       limit: DEFAULT_LIMIT,

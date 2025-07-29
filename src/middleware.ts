@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const authPaths = ["/sign-in", "/sign-up"];
+const privatePaths = ["/library", "/conversations", "/checkout"];
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl;
@@ -20,9 +21,11 @@ export function middleware(req: NextRequest) {
   if (authPaths.includes(pathname) && payloadToken) {
     return NextResponse.redirect(new URL("/", req.url));
   }
+  if (privatePaths.includes(pathname) && !payloadToken) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
+  }
 
-  //   const theme = req.cookies.get("theme")?.value || "light"; // Lấy theme từ cookie
-  //   console.log("theme123: ", theme);
+  //   const theme = req.cookies.get("theme")?.value || "light";
   //   const response = NextResponse.next(); // Clone response để modify headers
   //   response.headers.set("x-theme", theme); // Set theme vào response headers để server component có thể access
   //   // req.headers.set("x-theme", theme); "/((?!api(?:/|$)|_next(?:/|$)|_static(?:/|$)|_vercel(?:/|$)|media(?:/|$)|[\\w-]+\\.\\w+$).*)",
@@ -40,7 +43,10 @@ export const config = {
      * 3. /_static (inside the /public folder)
      * 4. all root files inside the /public folder (e.g. /favicon.ico, robots.txt, etc.)
      */
-    "/((?!api/|_next/|_static/|_vercel|media/|[\w-]+\.\w+).*)",
+    "/((?!api/|_next/|_static/|_vercel|media/|[\\w-]+\\.\\w+).*)",
+    "/library/:path*",
+    "/conversations/:path*",
+    "/checkout",
     "/sign-in",
     "/sign-up",
   ],

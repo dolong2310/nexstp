@@ -1,9 +1,9 @@
 import config from "@payload-config";
 import { initTRPC, TRPCError } from "@trpc/server";
+import { cookies as getCookies, headers as getHeaders } from "next/headers";
 import { getPayload } from "payload";
 import { cache } from "react";
 import SuperJSON from "superjson";
-import { headers as getHeaders } from "next/headers";
 
 export const createTRPCContext = cache(async () => {
   /**
@@ -35,9 +35,14 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
   const session = await ctx.db.auth({ headers });
 
   if (!session.user) {
+    const cookies = await getCookies();
+    cookies.delete(`${ctx.db.config.cookiePrefix}-token`);
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "Not authenticated",
+      cause: {
+        redirect: `${ctx.db.config.serverURL}/sign-in`,
+      },
     });
   }
 

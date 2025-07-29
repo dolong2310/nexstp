@@ -4,11 +4,13 @@ import {
 } from "@/app/(app)/shared-metadata";
 import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import CheckoutView from "@/modules/checkout/ui/views/checkout-view";
+import { getQueryClient, trpc } from "@/trpc/server";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 interface Props {
   params: Promise<{ slug: string }>;
-};
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -57,6 +59,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const CheckoutPage = async ({ params }: Props) => {
   const { slug } = await params;
+
+  const queryClient = getQueryClient();
+  const session = await queryClient.fetchQuery(
+    trpc.auth.session.queryOptions()
+  );
+
+  if (!session?.user) {
+    redirect("/sign-in");
+  }
 
   return <CheckoutView tenantSlug={slug} />;
 };
