@@ -88,7 +88,7 @@ export const ProductCardSkeleton = () => {
     <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full">
       <div className="relative aspect-square bg-gray-200 animate-pulse" />
       <div className="flex flex-col gap-3 flex-1 border-y p-4">
-        <div className="h-5 bg-gray-200 animate-pulse w-full mb-2" />
+        <div className="h-4 bg-gray-200 animate-pulse w-full" />
         <div className="flex items-center gap-2">
           <div className="rounded-full bg-gray-200 animate-pulse shrink-0 size-4" />
           <div className="h-3 bg-gray-200 animate-pulse w-24" />
@@ -99,9 +99,7 @@ export const ProductCardSkeleton = () => {
         </div>
       </div>
       <div className="p-4">
-        <div className="relative px-2 py-1 border bg-feature w-fit">
-          <div className="h-4 bg-gray-200 animate-pulse w-16" />
-        </div>
+        <div className="h-4 bg-gray-200 animate-pulse w-16" />
       </div>
     </div>
   );

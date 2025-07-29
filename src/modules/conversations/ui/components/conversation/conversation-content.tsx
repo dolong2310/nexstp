@@ -5,7 +5,7 @@ import useConversation from "@/modules/conversations/hooks/use-conversation";
 import { FullMessageType } from "@/modules/conversations/types";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { find } from "lodash";
+import find from "lodash-es/find";
 import { useEffect, useRef, useState } from "react";
 import MessageBox, { MessageBoxSkeleton } from "./message-box";
 import TypingBox from "./typing-box";

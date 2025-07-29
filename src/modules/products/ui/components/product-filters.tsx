@@ -5,6 +5,7 @@ import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import React, { useState } from "react";
 import useProductFilter from "../../hooks/use-product-filter";
 import PriceFilter from "./price-filter";
+import ProductSort from "./product-sort";
 import TagsFilter from "./tags-filter";
 
 type FilterItemProps = {
@@ -87,11 +88,15 @@ const ProductFilters = () => {
         />
       </FilterItem>
 
-      <FilterItem title="Tags" className="border-b-0">
+      <FilterItem title="Tags" className="md:border-b-0">
         <TagsFilter
           values={filters.tags}
           onChange={(value) => onChange("tags", value)}
         />
+      </FilterItem>
+
+      <FilterItem title="Sorts" className="flex md:hidden border-b-0">
+        <ProductSort />
       </FilterItem>
     </div>
   );

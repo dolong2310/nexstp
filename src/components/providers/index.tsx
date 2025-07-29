@@ -12,7 +12,6 @@ const Providers = ({ children }: Props) => {
     <NuqsAdapter>
       <TRPCReactProvider>
         <ThemeProvider>{children}</ThemeProvider>
-        {/* {children} */}
       </TRPCReactProvider>
     </NuqsAdapter>
   );

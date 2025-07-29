@@ -1,10 +1,12 @@
 "use client";
 
+import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { LoaderIcon } from "lucide-react";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
 
 const ProductList = () => {
@@ -47,16 +49,22 @@ const ProductList = () => {
       </div>
 
       <div className="flex justify-center pt-8">
-        {hasNextPage && (
-          <Button
-            className="text-base font-medium bg-background disabled:opacity-50"
-            variant="elevated"
-            disabled={isFetchingNextPage}
-            onClick={() => fetchNextPage()}
-          >
-            Load more
-          </Button>
-        )}
+        <InfiniteScroll
+          hasMore={hasNextPage}
+          isLoading={isFetchingNextPage}
+          next={fetchNextPage}
+          threshold={1}
+        >
+          {hasNextPage && (
+            <Button
+              className="text-base font-medium bg-background disabled:opacity-50"
+              variant="elevated"
+              disabled
+            >
+              Load more <LoaderIcon className="my-4 h-8 w-8 animate-spin" />
+            </Button>
+          )}
+        </InfiniteScroll>
       </div>
     </>
   );
