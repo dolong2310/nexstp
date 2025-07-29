@@ -64,4 +64,26 @@ const CheckoutItem = ({
   );
 };
 
+export const CheckoutItemSkeleton = () => {
+  return (
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border-b last:border-b-0">
+      <div className="overflow-hidden border-r">
+        <div className="aspect-square w-full h-full bg-gray-200 animate-pulse" />
+      </div>
+
+      <div className="flex flex-col justify-between py-4">
+        <div className="space-y-2">
+          <div className="w-3/4 h-4 bg-gray-200 animate-pulse" />
+          <div className="w-1/2 h-4 bg-gray-200 animate-pulse" />
+        </div>
+      </div>
+
+      <div className="flex flex-col justify-between py-4">
+        <div className="w-1/2 h-4 bg-gray-200 animate-pulse" />
+        <div className="w-1/3 h-4 bg-gray-200 animate-pulse" />
+      </div>
+    </div>
+  );
+};
+
 export default CheckoutItem;
