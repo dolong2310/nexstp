@@ -1,5 +1,10 @@
 import { getQueryClient, trpc } from "@/trpc/server";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 import ConversationDesktopSidebar, {
   ConversationDesktopSidebarSkeleton,
@@ -10,9 +15,25 @@ interface Props {
   children: React.ReactNode;
 }
 
+const handleGetCurrentUser = async (queryClient: QueryClient) => {
+  try {
+    const currentUser = await queryClient.fetchQuery(
+      trpc.conversations.getCurrentUser.queryOptions()
+    );
+    return currentUser;
+  } catch (error) {
+    console.error("Failed to fetch current user:", error);
+    redirect("/sign-in");
+  }
+};
+
 const ConversationSidebar = async ({ children }: Props) => {
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.conversations.getCurrentUser.queryOptions());
+  const currentUser = await handleGetCurrentUser(queryClient);
+
+  if (!currentUser?.user) {
+    redirect("/sign-in");
+  }
 
   return (
     <div className="h-full">

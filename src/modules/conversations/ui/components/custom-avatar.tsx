@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatName } from "@/lib/utils";
+import { cn, formatName } from "@/lib/utils";
 import { ChatUser, Media } from "@/payload-types";
 import { useMemo } from "react";
 import useActiveList from "../../store/use-active-list";
@@ -10,7 +10,7 @@ interface Props {
   user: ChatUser | null;
   className?: string;
   isOnline?: boolean | undefined;
-};
+}
 
 const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
   const { members } = useActiveList();
@@ -41,12 +41,9 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
 
 export const CustomAvatarSkeleton = ({ className }: { className?: string }) => {
   return (
-    <Button asChild variant="outline" size="icon">
-      <Avatar className={className}>
-        <AvatarImage src="/images/default-avatar.png" />
-        <AvatarFallback>{formatName("User")}</AvatarFallback>
-      </Avatar>
-    </Button>
+    <div className={cn("animate-pulse", className)}>
+      <div className="size-9 rounded-md bg-muted" />
+    </div>
   );
 };
 
