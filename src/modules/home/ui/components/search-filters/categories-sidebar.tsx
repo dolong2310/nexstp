@@ -1,3 +1,5 @@
+"use client";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
@@ -5,19 +7,19 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useTheme } from "@/contexts/ThemeContext";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
-import { DEFAULT_BG_COLOR, ThemeMode } from "@/modules/home/constants";
 import { useTRPC } from "@/trpc/client";
+import { ThemeMode } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
+}
 
 const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
   const router = useRouter();
@@ -35,7 +37,7 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
 
   const { theme } = useTheme();
   const themeKey = theme as ThemeMode;
-  const backgroundColor = selectedCategory?.color?.[themeKey] || DEFAULT_BG_COLOR[themeKey];
+  const backgroundColor = selectedCategory?.color?.[themeKey];
 
   const handleOpenChange = (open: boolean) => {
     setSelectedCategory(null);
@@ -76,8 +78,8 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
     <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetContent
         side="left"
-        className="p-0 transition-none"
-        style={{ backgroundColor }}
+        className="p-0 transition-none bg-default-filter"
+        style={backgroundColor ? { backgroundColor } : {}}
       >
         <SheetHeader className="p-4 border-b">
           <SheetTitle>Categories</SheetTitle>

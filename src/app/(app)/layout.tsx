@@ -1,6 +1,8 @@
 import Providers from "@/components/providers";
+import { defaultConfigTopLoader } from "@/constants";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import { cookies } from "next/headers";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -9,7 +11,6 @@ import {
   metadataOpenGraph,
   metadataRobots,
 } from "./shared-metadata";
-import { defaultConfigTopLoader } from "@/constants";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -47,13 +48,19 @@ export const metadata: Metadata = {
   ...metadataRobots,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const getTheme = async () => {
+    const cookieStore = await cookies();
+    return cookieStore.get("theme")?.value || "light";
+  };
+  const defaultTheme = await getTheme();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={defaultTheme} suppressHydrationWarning>
       <body className={`${dmSans.className} antialiased`}>
         <Providers>
           <NextTopLoader {...defaultConfigTopLoader} />

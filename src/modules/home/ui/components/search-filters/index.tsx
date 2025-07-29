@@ -1,17 +1,16 @@
 "use client";
 
-import { DEFAULT_BG_COLOR, ThemeMode } from "@/modules/home/constants";
+import { useTheme } from "@/contexts/ThemeContext";
 import useProductFilter from "@/modules/products/hooks/use-product-filter";
 import { useTRPC } from "@/trpc/client";
+import { ThemeMode } from "@/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
-import withClientTheme from "../../providers/with-client-theme";
 import BreadcrumbNavigation from "./breadcrumb-navigation";
 import Categories from "./categories";
 import SearchInput from "./search-input";
 
-const SearchFiltersBase = () => {
+const SearchFilters = () => {
   const params = useParams();
   const categoryParam = params.category as string | undefined;
   const activeSubcategory = params.subcategory as string | undefined;
@@ -26,8 +25,7 @@ const SearchFiltersBase = () => {
   const activeCategory = categoryParam || "all";
   const activeCategoryData = data.find((cate) => cate.slug === activeCategory);
 
-  const activeCategoryColor =
-    activeCategoryData?.color?.[themeKey] || DEFAULT_BG_COLOR[themeKey];
+  const activeCategoryColor = activeCategoryData?.color?.[themeKey];
 
   const activeCategoryName = activeCategoryData?.name || null;
   const activeSubcategoryName =
@@ -42,8 +40,10 @@ const SearchFiltersBase = () => {
   return (
     <div className="px-4 lg:px-12 py-8">
       <div
-        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl transition-colors duration-200"
-        style={{ backgroundColor: activeCategoryColor }}
+        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl bg-default-filter transition-colors duration-200"
+        style={
+          activeCategoryColor ? { backgroundColor: activeCategoryColor } : {}
+        }
       >
         <SearchInput value={filters.search} onChange={handleSearchChange} />
         <div className="hidden lg:block">
@@ -62,10 +62,7 @@ const SearchFiltersBase = () => {
 export const SearchFiltersSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-8">
-      <div
-        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl"
-        style={{ backgroundColor: DEFAULT_BG_COLOR.dark }}
-      >
+      <div className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl bg-default-filter">
         <SearchInput disabled />
         <div className="hidden lg:block">
           <div className="h-11 animate-pulse bg-neutral-200 rounded" />
@@ -76,8 +73,8 @@ export const SearchFiltersSkeleton = () => {
   );
 };
 
-const SearchFilters = withClientTheme(SearchFiltersBase, {
-  fallback: SearchFiltersSkeleton,
-});
+// const SearchFilters = withClientTheme(SearchFiltersBase, {
+//   fallback: SearchFiltersSkeleton,
+// });
 
 export default SearchFilters;

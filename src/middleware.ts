@@ -21,6 +21,13 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
+  //   const theme = req.cookies.get("theme")?.value || "light"; // Lấy theme từ cookie
+  //   console.log("theme123: ", theme);
+  //   const response = NextResponse.next(); // Clone response để modify headers
+  //   response.headers.set("x-theme", theme); // Set theme vào response headers để server component có thể access
+  //   // req.headers.set("x-theme", theme); "/((?!api(?:/|$)|_next(?:/|$)|_static(?:/|$)|_vercel(?:/|$)|media(?:/|$)|[\\w-]+\\.\\w+$).*)",
+  //   return response;
+
   return NextResponse.next();
 }
 
