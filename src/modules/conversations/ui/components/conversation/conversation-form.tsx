@@ -15,7 +15,7 @@ import useSession from "@/modules/conversations/hooks/use-session";
 import useUploadMedia from "@/modules/conversations/hooks/use-upload-media";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
-import { LoaderIcon, SendIcon, UploadIcon } from "lucide-react";
+import { SendIcon, UploadIcon } from "lucide-react";
 import React, { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
@@ -30,7 +30,7 @@ const messageSchema = z.object({
 const ConversationForm = () => {
   const typingRef = useRef(false);
   const trpc = useTRPC();
-  const { session } = useSession();
+  const { user } = useSession();
   const { conversationId } = useConversation();
 
   const form = useForm<z.infer<typeof messageSchema>>({
@@ -67,9 +67,9 @@ const ConversationForm = () => {
     mutation.mutate({
       conversationId,
       user: {
-        id: session?.user?.id || "",
-        name: session?.user?.username || "",
-        email: session?.user?.email || "",
+        id: user?.id.toString() || "",
+        name: user?.username || "",
+        email: user?.email || "",
       },
     });
   };
@@ -104,13 +104,8 @@ const ConversationForm = () => {
             type="button"
             variant="elevated"
             onClick={uploadMediaHook.openFileDialog}
-            disabled={sendMessage.isPending || uploadMediaHook.isUploading}
           >
-            {sendMessage.isPending || uploadMediaHook.isUploading ? (
-              <LoaderIcon className="size-4 animate-spin" />
-            ) : (
-              <UploadIcon className="size-4" />
-            )}
+            <UploadIcon className="size-4" />
           </Button>
           <input
             ref={uploadMediaHook.fileInputRef}

@@ -197,9 +197,7 @@ export const ProductViewSkeleton = () => {
 
             <div className="flex border-y">
               <div className="flex items-center justify-center border-r px-6 py-4">
-                <div className="px-2 py-1 border bg-feature w-fit">
-                  <div className="bg-gray-200 animate-pulse w-16 h-6" />
-                </div>
+                <div className="bg-gray-200 animate-pulse w-16 h-6" />
               </div>
 
               <div className="flex items-center justify-center lg:border-r px-6 py-4">
@@ -261,6 +259,5 @@ export const ProductViewSkeleton = () => {
     </div>
   );
 };
-// ...existing code...
 
 export default ProductView;

@@ -22,7 +22,7 @@ interface Props {
 };
 
 const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
-  const { session } = useSession();
+  const { user } = useSession();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -43,7 +43,7 @@ const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
             </Link>
           ))}
           <Separator className="my-4" />
-          {session?.user ? (
+          {user ? (
             <>
               <Link
                 href="/admin"

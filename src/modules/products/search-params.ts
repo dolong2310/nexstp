@@ -30,3 +30,15 @@ const params = {
 };
 
 export const loadProductFilters = createLoader(params);
+
+const gridValues = ["grid", "table"] as const;
+
+export const layoutParams = {
+  layout: parseAsStringLiteral(gridValues)
+    .withOptions({
+      clearOnDefault: true,
+    })
+    .withDefault("grid"),
+};
+
+export const loadProductLayout = createLoader(layoutParams);

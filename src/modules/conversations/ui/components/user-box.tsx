@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingFullPage from "@/components/Loading-full-page";
+import LoadingFullPage from "@/components/loading-full-page";
 import { cn } from "@/lib/utils";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";

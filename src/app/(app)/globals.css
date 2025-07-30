@@ -42,6 +42,7 @@
   --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-default-filter: var(--default-filter);
 }
 
 :root {
@@ -79,6 +80,7 @@
   --sidebar-accent-foreground: #353535;
   --sidebar-border: #ebebeb;
   --sidebar-ring: #b5b5b5;
+  --default-filter: #f5f5f5;
 }
 
 .dark {
@@ -115,6 +117,7 @@
   --sidebar-accent-foreground: #fbfbfb;
   --sidebar-border: rgba(255, 255, 255, 0.1);
   --sidebar-ring: #8e8e8e;
+  --default-filter: #1a1a1a;
 }
 
 @layer base {

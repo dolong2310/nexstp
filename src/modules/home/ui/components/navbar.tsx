@@ -25,7 +25,7 @@ const navbarItems = [
 
 const Navbar = () => {
   const pathname = usePathname();
-  const { session } = useSession();
+  const { user } = useSession();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -55,7 +55,7 @@ const Navbar = () => {
         ))}
       </div>
 
-      {session?.user ? (
+      {user ? (
         <div className="hidden lg:flex">
           <Button
             asChild

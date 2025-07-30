@@ -1,13 +1,15 @@
+"use client";
+
+import { useTheme } from "@/contexts/ThemeContext";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
-import { DEFAULT_BG_COLOR, ThemeMode } from "@/modules/home/constants";
 import { Category } from "@/payload-types";
-import { useTheme } from "next-themes";
+import { ThemeMode } from "@/types";
 import Link from "next/link";
 
 interface Props {
   category: CategoriesGetManyOutput[1];
   isOpen: boolean;
-};
+}
 
 const SubcategoryMenu = ({ category, isOpen }: Props) => {
   if (
@@ -20,15 +22,15 @@ const SubcategoryMenu = ({ category, isOpen }: Props) => {
 
   const { theme } = useTheme();
   const themeKey = theme as ThemeMode;
-  const backgroundColor = category.color?.[themeKey] || DEFAULT_BG_COLOR[themeKey];
+  const backgroundColor = category.color?.[themeKey];
 
   return (
     <div className="absolute z-100" style={{ top: "100%", left: 0 }}>
       {/* Invisible bridge to maintain hover */}
       <div className="h-3 w-60" />
       <div
-        className="w-60 text-black dark:text-white rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] -translate-x-[2px] -translate-y-[2px]"
-        style={{ backgroundColor }}
+        className="w-60 text-black dark:text-white bg-default-filter rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] -translate-x-[2px] -translate-y-[2px]"
+        style={backgroundColor ? { backgroundColor } : {}}
       >
         <div className="">
           {category.subcategories?.map((subcategory: Category) => (

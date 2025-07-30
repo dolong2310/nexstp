@@ -11,7 +11,7 @@ import ReviewSidebar from "../components/review-sidebar";
 
 interface Props {
   productId: string;
-};
+}
 
 const ProductView = ({ productId }: Props) => {
   const trpc = useTRPC();
@@ -70,6 +70,27 @@ export const ProductViewSkeleton = () => {
           <span className="text font-medium">Back to Library</span>
         </div>
       </nav>
+
+      <header className="py-8 border-b bg-third">
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-12">
+          <h1 className="text-4xl font-medium animate-pulse bg-gray-200 h-8 w-1/3 mb-2"></h1>
+          <p className="font-medium animate-pulse bg-gray-200 h-6 w-1/4"></p>
+        </div>
+      </header>
+
+      <section className="max-w-screen-xl mx-auto px-4 lg:px-12 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
+          <div className="lg:col-span-2">
+            <div className="p-4 bg-background rounded-md border gap-4">
+              <ReviewFormSkeleton />
+            </div>
+          </div>
+          <div className="lg:col-span-5">
+            <div className="animate-pulse bg-gray-200 h-12 w-full mb-4"></div>
+            <p className="font-medium italic text-muted-foreground animate-pulse bg-gray-200 h-6 w-1/3"></p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

@@ -1,5 +1,8 @@
-import { DEFAULT_LIMIT } from "@/constants";
-import { loadProductFilters } from "@/modules/products/search-params";
+import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
+import {
+  loadProductFilters,
+  loadProductLayout,
+} from "@/modules/products/search-params";
 import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -7,14 +10,14 @@ import { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
 import {
   metadataKeywords,
-  metadataRobots,
   metadataOpenGraph,
   metadataOpenGraphDefaultImage,
+  metadataRobots,
 } from "../shared-metadata";
 
 interface Props {
   searchParams: Promise<SearchParams>;
-};
+}
 
 export const metadata: Metadata = {
   title: "Home",
@@ -44,18 +47,20 @@ export const metadata: Metadata = {
 
 const HomePage = async ({ searchParams }: Props) => {
   const filters = await loadProductFilters(searchParams);
+  const { layout } = await loadProductLayout(searchParams);
 
+  // TODO: detect isLayoutTable after change layout, error when toggle layout
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
       ...filters,
-      limit: DEFAULT_LIMIT,
+      limit: layout === "table" ? TABLE_LIMIT : DEFAULT_LIMIT,
     })
   );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductListView />
+      <ProductListView isLayoutTable={layout === "table"} />
     </HydrationBoundary>
   );
 };

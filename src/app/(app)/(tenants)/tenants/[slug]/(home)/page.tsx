@@ -1,14 +1,17 @@
 import {
-  metadataOpenGraphDefaultImage,
   metadataKeywords,
   metadataOpenGraph,
+  metadataOpenGraphDefaultImage,
   metadataRobots,
 } from "@/app/(app)/shared-metadata";
-import { DEFAULT_LIMIT } from "@/constants";
+import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
 import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import { generateTenantUrl } from "@/lib/utils";
 import Banner, { BannerSkeleton } from "@/modules/home/ui/components/banner";
-import { loadProductFilters } from "@/modules/products/search-params";
+import {
+  loadProductFilters,
+  loadProductLayout,
+} from "@/modules/products/search-params";
 import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -82,13 +85,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const TenantsPage = async ({ params, searchParams }: Props) => {
   const { slug } = await params;
   const filters = await loadProductFilters(searchParams);
+  const { layout } = await loadProductLayout(searchParams);
 
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
       ...filters,
       tenantSlug: slug,
-      limit: DEFAULT_LIMIT,
+      limit: layout === "table" ? TABLE_LIMIT : DEFAULT_LIMIT,
     })
   );
   void queryClient.prefetchQuery(
@@ -104,9 +108,11 @@ const TenantsPage = async ({ params, searchParams }: Props) => {
         <Suspense fallback={<BannerSkeleton />}>
           <Banner tenantSlug={slug} />
         </Suspense>
-        <Suspense fallback={<ProductListView tenantSlug={slug} narrowView />}>
-          <ProductListView tenantSlug={slug} narrowView />
-        </Suspense>
+        <ProductListView
+          tenantSlug={slug}
+          narrowView
+          isLayoutTable={layout === "table"}
+        />
       </HydrationBoundary>
     </>
   );

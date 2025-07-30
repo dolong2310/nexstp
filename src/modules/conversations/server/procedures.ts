@@ -1,7 +1,9 @@
+import { DEFAULT_LIMIT } from "@/constants";
 import { pusherServer } from "@/lib/pusher";
-import { Message, ChatUser, User } from "@/payload-types";
+import { ChatUser, Message } from "@/payload-types";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
+import { PaginatedDocs, Where } from "payload";
 import z from "zod";
 import { FullConversationType, FullMessageType } from "../types";
 
@@ -282,22 +284,35 @@ export const conversationsRouter = createTRPCRouter({
 
   // Get messages for a conversation
   getMessages: protectedProcedure
-    .input(z.object({ conversationId: z.string() }))
+    .input(
+      z.object({
+        conversationId: z.string(),
+        before: z.string().optional(), // ISO date string
+        cursor: z.number().default(1),
+        limit: z.number().default(DEFAULT_LIMIT),
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
-        const messagesData = await ctx.db.find({
-          collection: "messages",
-          depth: 2, // Populate sender and seen
-          where: {
-            conversation: {
-              equals: input.conversationId,
-            },
+        const where: Where = {
+          conversation: {
+            equals: input.conversationId,
           },
-          sort: "createdAt",
-          pagination: false,
+        };
+        if (input.before) {
+          where.createdAt = { less_than: input.before };
+        }
+
+        const data = await ctx.db.find({
+          collection: "messages",
+          depth: 2,
+          where,
+          sort: "-createdAt",
+          page: input.cursor,
+          limit: input.limit,
         });
 
-        return messagesData.docs as FullMessageType[];
+        return data as PaginatedDocs<FullMessageType>;
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -497,7 +512,9 @@ export const conversationsRouter = createTRPCRouter({
           });
         }
 
-        const userIds = (conversation.users as ChatUser[]).map((user) => user.id);
+        const userIds = (conversation.users as ChatUser[]).map(
+          (user) => user.id
+        );
         if (!userIds.includes(currentChatUser.id)) {
           throw new TRPCError({
             code: "FORBIDDEN",

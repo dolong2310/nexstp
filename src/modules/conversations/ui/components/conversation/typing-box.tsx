@@ -8,8 +8,8 @@ interface Props {
 };
 
 const TypingBox = ({ typingUsers }: Props) => {
-  const { session } = useSession();
-  const myEmail = session?.user?.email;
+  const { user } = useSession();
+  const myEmail = user?.email;
 
   const othersTyping = useMemo(
     () => typingUsers.filter((user) => user.email !== myEmail),

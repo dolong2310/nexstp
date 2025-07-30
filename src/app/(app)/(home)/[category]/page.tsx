@@ -1,22 +1,25 @@
-import { DEFAULT_LIMIT } from "@/constants";
+import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
 import { getCategoryForMetadata } from "@/lib/server-actions/categories";
-import { loadProductFilters } from "@/modules/products/search-params";
+import {
+  loadProductFilters,
+  loadProductLayout,
+} from "@/modules/products/search-params";
 import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
 import {
-  metadataOpenGraphDefaultImage,
   metadataKeywords,
   metadataOpenGraph,
+  metadataOpenGraphDefaultImage,
   metadataRobots,
 } from "../../shared-metadata";
 
 interface Props {
   params: Promise<{ category: string }>;
   searchParams: Promise<SearchParams>;
-};
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
@@ -68,19 +71,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const CategoryPage = async ({ params, searchParams }: Props) => {
   const { category } = await params;
   const filters = await loadProductFilters(searchParams);
+  const { layout } = await loadProductLayout(searchParams);
 
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
       ...filters,
       category: category,
-      limit: DEFAULT_LIMIT,
+      limit: layout === "table" ? TABLE_LIMIT : DEFAULT_LIMIT,
     })
   );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductListView category={category} />
+      <ProductListView category={category} isLayoutTable={layout === "table"} />
     </HydrationBoundary>
   );
 };

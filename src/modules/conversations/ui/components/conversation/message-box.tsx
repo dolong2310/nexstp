@@ -19,15 +19,16 @@ const CustomAvatar = dynamic(() => import("../custom-avatar"), {
 interface Props {
   message: FullMessageType;
   isLast: boolean;
+  id: string;
 };
 
-const MessageBox = ({ message, isLast }: Props) => {
-  const { session } = useSession();
+const MessageBox = ({ message, isLast, id }: Props) => {
+  const { user } = useSession();
 
   const [imageModalOpen, setImageModalOpen] = useState(false);
 
   const senderUser = message.sender.user as User;
-  const isOwn = session?.user?.id === senderUser.id;
+  const isOwn = user?.id === senderUser.id;
   const seenList = (message.seen || [])
     .filter((user: ChatUser) => user.id !== message.sender.id)
     .map((user) => user.name)
@@ -44,7 +45,7 @@ const MessageBox = ({ message, isLast }: Props) => {
   );
 
   return (
-    <div className={container}>
+    <div id={id} className={container}>
       <div className={content}>
         <div className={avatar}>
           <CustomAvatar user={message.sender} isOnline={false} />

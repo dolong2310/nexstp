@@ -5,14 +5,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useUserStore } from "@/modules/checkout/store/use-user-store";
 import useSession from "@/modules/conversations/hooks/use-session";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 
 interface Props {
   iconClassName?: string;
@@ -22,11 +23,14 @@ const LogoutButton = ({ iconClassName }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const trpc = useTRPC();
-  const { session, isLoading } = useSession();
+  const { user, isLoading } = useSession();
+
+  const removeUser = useUserStore((state) => state.remove);
 
   const logout = useMutation(
     trpc.auth.logout.mutationOptions({
       onSuccess: () => {
+        removeUser();
         queryClient.invalidateQueries(trpc.auth.session.queryOptions());
         router.push("/");
       },
@@ -56,7 +60,7 @@ const LogoutButton = ({ iconClassName }: Props) => {
       </Button>
     );
 
-  if (!session?.user && !isLoading) return null;
+  if (!user && !isLoading) return null;
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>

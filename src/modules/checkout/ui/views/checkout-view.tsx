@@ -10,12 +10,14 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import useCheckoutState from "../../hooks/use-checkout-state";
-import CheckoutItem from "../components/checkout-item";
+import CheckoutItem, {
+  CheckoutItemSkeleton,
+} from "../components/checkout-item";
 import CheckoutSidebar from "../components/checkout-sidebar";
 
 interface Props {
   tenantSlug: string;
-};
+}
 
 const CheckoutView = ({ tenantSlug }: Props) => {
   const router = useRouter();
@@ -81,13 +83,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   }, [error, cart.clearCart]);
 
   if (isLoading) {
-    return (
-      <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-        <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-background border border-black border-dashed p-8">
-          <LoaderIcon className="size-4 animate-spin" />
-        </div>
-      </div>
-    );
+    return <CheckoutViewSkeleton />;
   }
 
   if (products?.totalDocs === 0) {
@@ -128,6 +124,29 @@ const CheckoutView = ({ tenantSlug }: Props) => {
             onPurchase={() =>
               purchase.mutate({ productIds: cart.productIds, tenantSlug })
             }
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CheckoutViewSkeleton = () => {
+  return (
+    <div className="pt-4 lg:pt-16 px-4 lg:px-12">
+      <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
+        <div className="lg:col-span-4">
+          <div className="border rounded-md overflow-hidden bg-background">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <CheckoutItemSkeleton key={index} />
+            ))}
+          </div>
+        </div>
+        <div className="lg:col-span-3">
+          <CheckoutSidebar
+            totalPrice={0}
+            isPending={true}
+            onPurchase={() => {}}
           />
         </div>
       </div>

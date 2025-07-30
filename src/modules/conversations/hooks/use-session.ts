@@ -1,12 +1,9 @@
-import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useUserStore } from "@/modules/checkout/store/use-user-store";
 
 const useSession = () => {
-  const trpc = useTRPC();
-  const { data: session, isFetching: isLoading } = useQuery(
-    trpc.auth.session.queryOptions()
-  );
-  return { session, isLoading };
+  const user = useUserStore((state) => state.user);
+  const hasHydrated = useUserStore((state) => state._hasHydrated);
+  return { user, isLoading: !hasHydrated };
 };
 
 export default useSession;
