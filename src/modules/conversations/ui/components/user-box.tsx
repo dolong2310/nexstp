@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingFullPage from "@/components/loading-full-page";
 import { cn } from "@/lib/utils";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
@@ -10,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { CustomAvatarSkeleton } from "./custom-avatar";
+import LoadingFullPage from "@/components/loading-full-page";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {
   ssr: false,
