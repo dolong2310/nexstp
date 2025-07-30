@@ -54,7 +54,7 @@ const ConversationHeader = () => {
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
-      <header className="bg-background w-full flex items-center justify-between border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 shadow-sm">
+      <header className="mt-20 bg-background w-full flex items-center justify-between border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 shadow-sm">
         <div className="flex gap-3 items-center">
           <Button asChild variant="elevated" size="icon">
             <Link href="/conversations" className="lg:hidden block">

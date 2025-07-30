@@ -104,13 +104,8 @@ const ConversationForm = () => {
             type="button"
             variant="elevated"
             onClick={uploadMediaHook.openFileDialog}
-            disabled={sendMessage.isPending || uploadMediaHook.isUploading}
           >
-            {sendMessage.isPending || uploadMediaHook.isUploading ? (
-              <LoaderIcon className="size-4 animate-spin" />
-            ) : (
-              <UploadIcon className="size-4" />
-            )}
+            <UploadIcon className="size-4" />
           </Button>
           <input
             ref={uploadMediaHook.fileInputRef}

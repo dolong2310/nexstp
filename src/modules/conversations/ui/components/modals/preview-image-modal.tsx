@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { LoaderIcon, SendIcon } from "lucide-react";
+import { KeyboardEvent } from "react";
 
 interface Props {
   open: boolean;
@@ -27,6 +28,12 @@ const PreviewImageModal = ({
   handleSendImage,
   handleCancelPreview,
 }: Props) => {
+  const handlePressEnter = (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter") {
+      handleSendImage();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md" showCloseButton={false}>
@@ -57,8 +64,10 @@ const PreviewImageModal = ({
           </DialogClose>
 
           <Button
+            autoFocus
             variant="elevated"
             disabled={isLoading}
+            onKeyDown={handlePressEnter}
             onClick={handleSendImage}
           >
             {isLoading ? (

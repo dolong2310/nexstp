@@ -12,6 +12,7 @@ import {
   useInfiniteQuery,
   useMutation,
 } from "@tanstack/react-query";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import find from "lodash-es/find";
 import { LoaderIcon } from "lucide-react";
 import { PaginatedDocs } from "payload";
@@ -38,6 +39,7 @@ const ConversationContent = ({
 }) => {
   const scrollAnchorRef = useRef<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+
   const {
     containerRef,
     isUserScrolling,
@@ -161,7 +163,12 @@ const ConversationContent = ({
     });
 
     // Khôi phục vị trí scroll sau khi cập nhật DOM
-    setTimeout(!isInitialized ? () => bottomRef.current?.scrollIntoView() : maintainScrollPosition, 0);
+    setTimeout(
+      !isInitialized
+        ? () => bottomRef.current?.scrollIntoView()
+        : maintainScrollPosition,
+      0
+    );
   }, [
     lastestPage,
     maintainScrollPosition,
@@ -176,35 +183,66 @@ const ConversationContent = ({
     }
   }, [isUserScrolling, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  return (
-    <>
-      <div className="flex-1 overflow-y-auto" ref={containerRef}>
-        <div className="flex justify-center pb-4">
-          <InfiniteScroll
-            reverse
-            hasMore={hasNextPage}
-            isLoading={isFetchingNextPage}
-            next={handleFetchNextPage}
-            threshold={1}
-          >
-            {hasNextPage && (
-              <LoaderIcon className="my-4 h-8 w-8 animate-spin" />
-            )}
-          </InfiniteScroll>
-        </div>
+  const rowVirtualizer = useVirtualizer({
+    count: messages.length,
+    getScrollElement: () => containerRef.current,
+    estimateSize: () => 114,
+    overscan: 1,
+  });
 
-        {messages.map((message, index) => (
-          <MessageBox
-            key={message.id}
-            message={message}
-            isLast={index === messages.length - 1}
-            id={message.id} // Thêm id để sử dụng làm anchor
-          />
-        ))}
-        <TypingBox typingUsers={typingUsers} />
-        <div ref={bottomRef} className="pt-10 md:pt-20" />
+  return (
+    <div className="flex-1 overflow-y-auto" ref={containerRef}>
+      <div className="flex justify-center pb-4">
+        <InfiniteScroll
+          reverse
+          hasMore={hasNextPage}
+          isLoading={isFetchingNextPage}
+          next={handleFetchNextPage}
+          threshold={1}
+        >
+          {hasNextPage && <LoaderIcon className="my-4 h-8 w-8 animate-spin" />}
+        </InfiniteScroll>
       </div>
-    </>
+
+      <div
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        {rowVirtualizer.getVirtualItems().map((virtualRow, index) => {
+          const message = messages[virtualRow.index] as FullMessageType;
+          return (
+            <div
+              key={virtualRow.key}
+              data-index={virtualRow.index} //needed for dynamic row height measurement
+              ref={(node) => rowVirtualizer.measureElement(node)} //measure dynamic row height
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                // height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+                // transform: `translateY(${
+                //   virtualRow.start - rowVirtualizer.options.scrollMargin
+                // }px)`,
+              }}
+            >
+              <MessageBox
+                message={message}
+                isLast={index === messages.length - 1}
+                id={message.id}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      <TypingBox typingUsers={typingUsers} />
+      <div ref={bottomRef} className="pt-10 md:pt-20" />
+    </div>
   );
 };
 
