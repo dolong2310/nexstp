@@ -20,7 +20,7 @@ const handleGetCurrentUser = async (queryClient: QueryClient) => {
     const currentUser = await queryClient.fetchQuery(
       trpc.conversations.getCurrentUser.queryOptions()
     );
-    return currentUser;
+    if (!currentUser?.user) redirect("/sign-in");
   } catch (error) {
     console.error("Failed to fetch current user:", error);
     redirect("/sign-in");
@@ -29,11 +29,7 @@ const handleGetCurrentUser = async (queryClient: QueryClient) => {
 
 const ConversationSidebar = async ({ children }: Props) => {
   const queryClient = getQueryClient();
-  const currentUser = await handleGetCurrentUser(queryClient);
-
-  if (!currentUser?.user) {
-    redirect("/sign-in");
-  }
+  await handleGetCurrentUser(queryClient);
 
   return (
     <div className="h-full">

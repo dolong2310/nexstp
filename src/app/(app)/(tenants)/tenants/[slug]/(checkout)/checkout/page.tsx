@@ -5,6 +5,7 @@ import {
 import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import CheckoutView from "@/modules/checkout/ui/views/checkout-view";
 import { getQueryClient, trpc } from "@/trpc/server";
+import { QueryClient } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -57,17 +58,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const handleSessionUser = async (queryClient: QueryClient) => {
+  try {
+    const session = await queryClient.fetchQuery(
+      trpc.auth.session.queryOptions()
+    );
+    if (!session?.user) redirect("/sign-in");
+  } catch (error) {
+    console.error("Error fetching conversations:", error);
+    redirect("/");
+  }
+};
+
 const CheckoutPage = async ({ params }: Props) => {
   const { slug } = await params;
 
   const queryClient = getQueryClient();
-  const session = await queryClient.fetchQuery(
-    trpc.auth.session.queryOptions()
-  );
 
-  if (!session?.user) {
-    redirect("/sign-in");
-  }
+  await handleSessionUser(queryClient);
 
   return <CheckoutView tenantSlug={slug} />;
 };
