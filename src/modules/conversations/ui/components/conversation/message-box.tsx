@@ -19,9 +19,10 @@ const CustomAvatar = dynamic(() => import("../custom-avatar"), {
 interface Props {
   message: FullMessageType;
   isLast: boolean;
+  id: string;
 };
 
-const MessageBox = ({ message, isLast }: Props) => {
+const MessageBox = ({ message, isLast, id }: Props) => {
   const { session } = useSession();
 
   const [imageModalOpen, setImageModalOpen] = useState(false);
@@ -44,7 +45,7 @@ const MessageBox = ({ message, isLast }: Props) => {
   );
 
   return (
-    <div className={container}>
+    <div id={id} className={container}>
       <div className={content}>
         <div className={avatar}>
           <CustomAvatar user={message.sender} isOnline={false} />
