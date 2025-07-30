@@ -16,7 +16,7 @@ interface Props {
 };
 
 const SearchInput = ({ value, onChange, disabled }: Props) => {
-  const { session } = useSession();
+  const { user } = useSession();
 
   const [searchTerm, setSearchTerm] = useState(value || "");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -55,8 +55,8 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
         <ListFilterIcon />
       </Button>
 
-      {/* TODO: Add library button */}
-      {session?.user && (
+      {/* Library button */}
+      {user && (
         <Button variant="elevated" asChild>
           <Link prefetch href="/library">
             <BookmarkCheckIcon />

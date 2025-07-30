@@ -23,12 +23,12 @@ interface Props {
 };
 
 const MessageBox = ({ message, isLast, id }: Props) => {
-  const { session } = useSession();
+  const { user } = useSession();
 
   const [imageModalOpen, setImageModalOpen] = useState(false);
 
   const senderUser = message.sender.user as User;
-  const isOwn = session?.user?.id === senderUser.id;
+  const isOwn = user?.id === senderUser.id;
   const seenList = (message.seen || [])
     .filter((user: ChatUser) => user.id !== message.sender.id)
     .map((user) => user.name)

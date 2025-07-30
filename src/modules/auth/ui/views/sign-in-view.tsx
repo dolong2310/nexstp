@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/modules/checkout/store/use-user-store";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -29,13 +30,17 @@ const poppins = Poppins({
 
 const SignInView = () => {
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
+  const addUser = useUserStore((state) => state.add);
+  const removeUser = useUserStore((state) => state.remove);
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
   const loginMutation = useMutation(
     trpc.auth.login.mutationOptions({
-      onSuccess: async () => {
+      onSuccess: async (data) => {
+        addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
         router.push("/");
       },

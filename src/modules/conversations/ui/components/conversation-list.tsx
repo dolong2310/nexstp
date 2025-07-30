@@ -22,10 +22,12 @@ const ConversationBox = dynamic(() => import("./conversation-box"), {
 const ConversationList = () => {
   const router = useRouter();
   const trpc = useTRPC();
-  const { session } = useSession();
+  const { user } = useSession();
   const { conversationId, isOpen } = useConversation();
 
-  const { data: users } = useSuspenseQuery(trpc.conversations.getUsers.queryOptions());
+  const { data: users } = useSuspenseQuery(
+    trpc.conversations.getUsers.queryOptions()
+  );
   const { data: conversations } = useSuspenseQuery(
     trpc.conversations.getConversations.queryOptions()
   );
@@ -34,8 +36,8 @@ const ConversationList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const pusherKey = useMemo(() => {
-    return session?.user?.email || "";
-  }, [session?.user?.email]);
+    return user?.email || "";
+  }, [user?.email]);
 
   useEffect(() => {
     if (pusherKey) {

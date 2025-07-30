@@ -27,7 +27,7 @@ interface Props {
 
 const ConversationBox = ({ conversation, selected }: Props) => {
   const router = useRouter();
-  const { session } = useSession();
+  const { user } = useSession();
   const otherUser = useOtherUser(conversation);
 
   const handleClick = useCallback(() => {
@@ -40,8 +40,8 @@ const ConversationBox = ({ conversation, selected }: Props) => {
   }, [conversation.messages]);
 
   const userEmail = useMemo(() => {
-    return session?.user?.email || "";
-  }, [session?.user?.email]);
+    return user?.email || "";
+  }, [user?.email]);
 
   const hasSeen = useMemo(() => {
     if (!lastMessage) return false;
