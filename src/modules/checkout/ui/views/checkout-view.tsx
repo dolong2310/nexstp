@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_LIMIT } from "@/constants";
 import useSession from "@/hooks/use-session";
 import { generateTenantUrl } from "@/lib/utils";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
@@ -63,7 +64,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 
       // prefetch library products
       queryClient.invalidateQueries(
-        trpc.library.getMany.infiniteQueryOptions({})
+        trpc.library.getMany.infiniteQueryOptions({ limit: DEFAULT_LIMIT })
       );
       router.push("/library");
     }

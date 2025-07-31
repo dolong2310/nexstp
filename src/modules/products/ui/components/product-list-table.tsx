@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TABLE_LIMIT } from "@/constants";
 import { cn, formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { Media as MediaType, Tenant } from "@/payload-types";
+import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import isEqual from "lodash-es/isEqual";
 import { LoaderIcon, StarIcon } from "lucide-react";
@@ -51,6 +52,8 @@ const ProductListTable = ({
 }: Props) => {
   const dataTableRef = useRef<Product[]>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
 
   const dataTable = useMemo<Product[]>(() => {
     const dataTable = productData.map((p) => {
@@ -174,10 +177,14 @@ const ProductListTable = ({
   const rowVirtualizer = useWindowVirtualizer({
     count: dataTable.length,
     estimateSize: () => 56,
-    overscan: 1,
+    overscan: 5,
     scrollMargin: tableContainerRef.current?.offsetTop ?? 0,
     measureElement: (element) => element.getBoundingClientRect().height, // Đo lường chiều cao thực tế
   });
+
+  if (loadingGlobal) {
+    return <ProductListTableSkeleton />;
+  }
 
   return (
     <>
@@ -252,7 +259,9 @@ const ProductListTable = ({
                         )}
                         style={{ width: col.width, minWidth: col.minWidth }}
                       >
-                        {col.render ? col.render(record, product) : String(record)}
+                        {col.render
+                          ? col.render(record, product)
+                          : String(record)}
                       </div>
                     );
                   })}

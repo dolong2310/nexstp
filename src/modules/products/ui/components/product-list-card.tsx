@@ -1,14 +1,15 @@
 "use client";
 
+import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
 import { cn } from "@/lib/utils";
-import { ProductsGetManyOutput } from "../../types";
-import ProductCard, { ProductCardSkeleton } from "./product-card";
-import InfiniteScroll from "@/components/infinite-scroll";
+import { useGlobalStore } from "@/store/use-global-store";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { LoaderIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { ProductsGetManyOutput } from "../../types";
+import ProductCard, { ProductCardSkeleton } from "./product-card";
 
 export enum MediaQuerySizes {
   SM = 640,
@@ -33,6 +34,8 @@ const ProductListCard = ({
   narrowView,
   fetchNextPage,
 }: Props) => {
+  const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
+
   const [columns, setColumns] = useState<number>(4);
   const parentRef = useRef<HTMLDivElement>(null);
   const rowsLength = Math.ceil(productData.length / columns);
@@ -40,7 +43,7 @@ const ProductListCard = ({
   const rowVirtualizer = useWindowVirtualizer({
     count: rowsLength,
     estimateSize: () => 340,
-    overscan: 1,
+    overscan: 5,
     scrollMargin: parentRef.current?.offsetTop ?? 0,
     gap: 16,
     // initialOffset: savedOffsets.get(pathname) ?? 0,
@@ -106,6 +109,10 @@ const ProductListCard = ({
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
   }, [narrowView]);
+
+  if (loadingGlobal) {
+    return <ProductListSkeleton narrowView={narrowView} />;
+  }
 
   return (
     <>

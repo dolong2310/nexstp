@@ -1,3 +1,4 @@
+import RefreshButton, { RefreshQueryKeys } from "@/components/refresh-button";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import ProductFilters from "../components/product-filters";
@@ -30,8 +31,9 @@ const ProductListView = ({
         )}
       >
         <p className="text-2xl font-medium">Curated for you</p>
-        <div className="flex items-center gap-x-6">
+        <div className="flex items-center gap-x-4">
           <ProductGridToggle />
+          <RefreshButton queryKey={"products" as RefreshQueryKeys} />
         </div>
         <div className="absolute -bottom-2 left-0 right-0 h-2 bg-gradient-to-t from-transparent to-third pointer-events-none" />
       </div>

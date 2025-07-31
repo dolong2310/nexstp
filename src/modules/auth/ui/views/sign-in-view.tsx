@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/modules/checkout/store/use-user-store";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { loginSchema } from "../../schemas";
+import { useUserStore } from "../../store/use-user-store";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,9 +30,7 @@ const poppins = Poppins({
 
 const SignInView = () => {
   const router = useRouter();
-  const user = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.add);
-  const removeUser = useUserStore((state) => state.remove);
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
