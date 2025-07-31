@@ -1,10 +1,10 @@
 "use client";
 
+import useSession from "@/hooks/use-session";
 import { generateTenantUrl } from "@/lib/utils";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 
   const [states, setStates] = useCheckoutState();
 
+  const { user } = useSession();
   const cart = useCart(tenantSlug);
 
   const trpc = useTRPC();
@@ -89,7 +90,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   if (products?.totalDocs === 0) {
     return (
       <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-        <ProductListEmpty visibleLibraryButton />
+        <ProductListEmpty visibleLibraryButton={!!user} />
       </div>
     );
   }
@@ -107,7 +108,9 @@ const CheckoutView = ({ tenantSlug }: Props) => {
                   name={product.name}
                   price={product.price}
                   imageUrl={product.image?.url}
-                  productUrl={`${generateTenantUrl(product.tenant.slug)}/products/${product.id}`}
+                  productUrl={`${generateTenantUrl(
+                    product.tenant.slug
+                  )}/products/${product.id}`}
                   tenantUrl={generateTenantUrl(product.tenant.slug)}
                   tenantName={product.tenant.name}
                   onRemove={() => cart.removeProduct(product.id)}

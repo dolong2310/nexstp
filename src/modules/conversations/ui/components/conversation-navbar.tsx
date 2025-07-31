@@ -1,9 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-type Props = {};
-
-const ConversationNavbar = (props: Props) => {
+const ConversationNavbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 h-20 border-b font-medium bg-background z-20">
       <div className="px-4 lg:px-12 flex items-center justify-between h-full">

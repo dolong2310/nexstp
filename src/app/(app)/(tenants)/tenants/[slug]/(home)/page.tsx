@@ -7,12 +7,14 @@ import {
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
 import { getTenantForMetadata } from "@/lib/server-actions/tenants";
 import { generateTenantUrl } from "@/lib/utils";
-import Banner, { BannerSkeleton } from "@/modules/home/ui/components/banner";
 import {
   loadProductFilters,
   loadProductLayout,
 } from "@/modules/products/search-params";
 import ProductListView from "@/modules/products/ui/views/product-list-view";
+import TenantBanner, {
+  TenantBannerSkeleton,
+} from "@/modules/tenants/ui/components/tenant-banner";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
@@ -88,6 +90,11 @@ const TenantsPage = async ({ params, searchParams }: Props) => {
   const { layout } = await loadProductLayout(searchParams);
 
   const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(
+    trpc.tenants.getOne.queryOptions({
+      slug,
+    })
+  );
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
       ...filters,
@@ -105,9 +112,10 @@ const TenantsPage = async ({ params, searchParams }: Props) => {
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<BannerSkeleton />}>
-          <Banner tenantSlug={slug} />
+        <Suspense fallback={<TenantBannerSkeleton />}>
+          <TenantBanner tenantSlug={slug} />
         </Suspense>
+
         <ProductListView
           tenantSlug={slug}
           narrowView

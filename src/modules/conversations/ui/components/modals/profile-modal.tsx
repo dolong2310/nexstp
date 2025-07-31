@@ -169,7 +169,6 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                         alt="Avatar"
                         width={64}
                         height={64}
-                        errorLabel="Failed"
                         className="rounded-md object-cover"
                       />
                       {uploadMediaHook.isUploading && (

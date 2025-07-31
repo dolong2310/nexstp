@@ -90,9 +90,9 @@ const ProductListCard = ({
           setColumns(4);
           break;
         case width >= MediaQuerySizes.LG:
-        case width >= MediaQuerySizes.MD:
           setColumns(3);
           break;
+        case width >= MediaQuerySizes.MD:
         case width >= MediaQuerySizes.SM:
           setColumns(2);
           break;
@@ -123,7 +123,7 @@ const ProductListCard = ({
                 data-index={virtualRow.index}
                 ref={rowVirtualizer.measureElement}
                 className={cn(
-                  "grid gap-4 w-full absolute top-0 left-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
+                  "grid gap-4 w-full absolute top-0 left-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
                   narrowView &&
                     "md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
                 )}
@@ -193,7 +193,7 @@ export const ProductListSkeleton = (props: { narrowView?: boolean }) => {
   return (
     <div
       className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4",
+        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4",
         props.narrowView &&
           "md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
       )}

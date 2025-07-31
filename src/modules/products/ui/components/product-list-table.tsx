@@ -123,6 +123,7 @@ const ProductListTable = ({
                 src={authorImageUrl}
                 alt={authorUsername}
                 fill
+                sizeFallbackIcon="sm"
                 containerClassName="size-6"
                 className="rounded-full border"
               />

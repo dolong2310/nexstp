@@ -67,3 +67,16 @@ export const getCurrentImageUrl = (image: string | Media | undefined) => {
   }
   return fallback;
 };
+
+/** Hàm throttle để giới hạn tần suất gọi */
+export function throttle(func: Function, limit: number) {
+  let inThrottle: boolean;
+  return function (...args: any[]) {
+    if (!inThrottle) {
+      // @ts-ignore
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}

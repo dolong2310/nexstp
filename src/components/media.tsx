@@ -6,30 +6,40 @@ import { useState, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface MediaProps extends Omit<ImageProps, "onLoad" | "onError"> {
+  containerRef?: React.Ref<HTMLDivElement>;
   containerClassName?: string;
+  containerStyle?: React.CSSProperties;
   showLoading?: boolean;
   showError?: boolean;
   fallbackIcon?: React.ComponentType<{ className?: string }>;
+  sizeFallbackIcon?: "sm" | "md" | "lg";
   loadingClassName?: string;
   errorClassName?: string;
-  errorLabel?: string;
   onLoadComplete?: () => void;
   onLoadError?: (error: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
+
+const sizeIcon = {
+  sm: "size-4",
+  md: "size-6",
+  lg: "size-8",
+};
 
 const Media = forwardRef<HTMLImageElement, MediaProps>(
   (
     {
       src,
       alt = "Image",
+      containerRef,
       containerClassName,
+      containerStyle,
       className,
       showLoading = true,
       showError = true,
       fallbackIcon: FallbackIcon = ImageIcon,
+      sizeFallbackIcon = "md",
       loadingClassName,
       errorClassName,
-      errorLabel,
       onLoadComplete,
       onLoadError,
       ...props
@@ -66,17 +76,27 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
           )}
         >
           <div className="flex flex-col items-center justify-center p-4">
-            <FallbackIcon className="h-8 w-8 text-muted-foreground mb-2" />
-            <p className="text-xs text-muted-foreground text-center">
-              No image
-            </p>
+            <FallbackIcon
+              className={cn(
+                "text-muted-foreground mb-2",
+                sizeIcon[sizeFallbackIcon]
+              )}
+            />
           </div>
         </div>
       );
     }
 
     return (
-      <div className={cn("relative aspect-square", containerClassName)}>
+      <div
+        ref={containerRef}
+        className={cn(
+          "media-container",
+          "relative aspect-square",
+          containerClassName
+        )}
+        style={containerStyle}
+      >
         {/* Loading State */}
         {imageLoading && showLoading && !imageError && (
           <div
@@ -97,11 +117,13 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
               errorClassName
             )}
           >
-            <div className="flex flex-col items-center justify-center p-4">
-              <FallbackIcon className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-xs text-muted-foreground text-center">
-                {errorLabel || "Failed to load"}
-              </p>
+            <div className="flex flex-col gap-2 items-center justify-center p-4">
+              <FallbackIcon
+                className={cn(
+                  "text-muted-foreground",
+                  sizeIcon[sizeFallbackIcon]
+                )}
+              />
             </div>
           </div>
         )}

@@ -9,9 +9,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useSession from "@/hooks/use-session";
 import { MAX_FILE_SIZE } from "@/modules/conversations/constants";
 import useConversation from "@/modules/conversations/hooks/use-conversation";
-import useSession from "@/modules/conversations/hooks/use-session";
 import useUploadMedia from "@/modules/conversations/hooks/use-upload-media";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
@@ -39,9 +39,15 @@ const ConversationForm = () => {
     },
   });
 
-  const sendMessage = useMutation(trpc.conversations.sendMessage.mutationOptions({}));
-  const sendTyping = useMutation(trpc.conversations.sendTyping.mutationOptions({}));
-  const stopTyping = useMutation(trpc.conversations.stopTyping.mutationOptions({}));
+  const sendMessage = useMutation(
+    trpc.conversations.sendMessage.mutationOptions({})
+  );
+  const sendTyping = useMutation(
+    trpc.conversations.sendTyping.mutationOptions({})
+  );
+  const stopTyping = useMutation(
+    trpc.conversations.stopTyping.mutationOptions({})
+  );
 
   // Use upload media hook with preview-confirm mode
   const uploadMediaHook = useUploadMedia({

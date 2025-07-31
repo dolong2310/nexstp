@@ -5,8 +5,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import useSession from "@/hooks/use-session";
 import { useUserStore } from "@/modules/checkout/store/use-user-store";
-import useSession from "@/modules/conversations/hooks/use-session";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";

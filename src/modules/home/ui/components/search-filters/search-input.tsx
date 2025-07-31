@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useSession from "@/hooks/use-session";
 import useDebounce from "@/hooks/useDebounce";
-import useSession from "@/modules/conversations/hooks/use-session";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -13,7 +13,7 @@ interface Props {
   value?: string;
   onChange?: (value: string) => void;
   disabled?: boolean;
-};
+}
 
 const SearchInput = ({ value, onChange, disabled }: Props) => {
   const { user } = useSession();

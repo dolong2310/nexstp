@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import useSession from "@/hooks/use-session";
 import { pusherClient } from "@/lib/pusher";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
@@ -10,7 +11,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import useConversation from "../../hooks/use-conversation";
-import useSession from "../../hooks/use-session";
 import { FullConversationType } from "../../types";
 import { ConversationBoxSkeleton } from "./conversation-box";
 import GroupConversationModal from "./modals/group-conversation-modal";

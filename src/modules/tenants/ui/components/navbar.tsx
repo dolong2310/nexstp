@@ -1,11 +1,9 @@
 "use client";
 
-import Media from "@/components/media";
-import { generateTenantUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { CheckoutButtonSkeleton } from "@/modules/checkout/ui/components/checkout-button";
-import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
+import { Poppins } from "next/font/google";
 import Link from "next/link";
 
 const CheckoutButton = dynamic(
@@ -13,35 +11,23 @@ const CheckoutButton = dynamic(
   { ssr: false, loading: () => <CheckoutButtonSkeleton /> }
 );
 
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
 interface Props {
   slug: string;
-};
+}
 
 const Navbar = ({ slug }: Props) => {
-  const trpc = useTRPC();
-  const { data } = useSuspenseQuery(
-    trpc.tenants.getOne.queryOptions({
-      slug,
-    })
-  );
-
   return (
     <nav className="h-20 border-b font-medium bg-background">
       <div className="max-w-screen-lg mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
-        <Link
-          href={generateTenantUrl(slug)}
-          className="flex items-center gap-2"
-        >
-          {data.image?.url && (
-            <Media
-              src={data.image.url}
-              alt={data.name}
-              width={32}
-              height={32}
-              className="rounded-full border shrink-0 size-8"
-            />
-          )}
-          <p className="text-xl">{data.name}</p>
+        <Link href="/">
+          <span className={cn("text-xl font-semibold", poppins.className)}>
+            Nexstp
+          </span>
         </Link>
 
         <CheckoutButton hideIfEmpty tenantSlug={slug} />
@@ -54,7 +40,12 @@ export const NavbarSkeleton = () => {
   return (
     <nav className="h-20 border-b font-medium bg-background">
       <div className="max-w-screen-lg mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
-        <div />
+        <Link href="/">
+          <span className={cn("text-5xl font-semibold", poppins.className)}>
+            nexstp
+          </span>
+        </Link>
+
         <CheckoutButtonSkeleton />
       </div>
     </nav>

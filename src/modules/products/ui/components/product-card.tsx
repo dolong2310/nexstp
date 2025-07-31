@@ -57,6 +57,7 @@ const ProductCard = ({
                 alt={authorUsername}
                 width={16}
                 height={16}
+                sizeFallbackIcon="sm"
                 className="rounded-full border shrink-0 size-4"
               />
             )}

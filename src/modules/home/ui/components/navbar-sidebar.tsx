@@ -6,7 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import useSession from "@/modules/conversations/hooks/use-session";
+import useSession from "@/hooks/use-session";
 import Link from "next/link";
 import React from "react";
 
