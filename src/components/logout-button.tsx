@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
+import { toast } from "./custom-toast";
 import { Button } from "./ui/button";
 
 interface Props {

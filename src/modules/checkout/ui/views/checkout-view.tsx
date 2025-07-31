@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import { DEFAULT_LIMIT } from "@/constants";
 import useSession from "@/hooks/use-session";
 import { generateTenantUrl } from "@/lib/utils";
@@ -8,7 +9,6 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import useCheckoutState from "../../hooks/use-checkout-state";
 import CheckoutItem, {

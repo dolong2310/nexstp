@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,7 +20,6 @@ import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { registerSchema } from "../../schemas";
 

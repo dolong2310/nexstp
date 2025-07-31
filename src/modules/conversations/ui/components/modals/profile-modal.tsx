@@ -1,3 +1,4 @@
+import { toast } from "@/components/custom-toast";
 import Media from "@/components/media";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +29,6 @@ import { LoaderIcon, UploadIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 interface Props {

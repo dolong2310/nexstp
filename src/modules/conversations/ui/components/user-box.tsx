@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import { cn } from "@/lib/utils";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
@@ -8,7 +9,6 @@ import { LoaderIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { toast } from "sonner";
 import { CustomAvatarSkeleton } from "./custom-avatar";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {

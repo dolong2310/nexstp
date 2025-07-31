@@ -1,10 +1,10 @@
 import Providers from "@/components/providers";
+import { Toaster } from "@/components/ui/sonner";
 import { defaultConfigTopLoader } from "@/constants";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import NextTopLoader from "nextjs-toploader";
-import { Toaster } from "sonner";
 import "./globals.css";
 import {
   metadataKeywords,

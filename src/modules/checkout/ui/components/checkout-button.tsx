@@ -1,10 +1,10 @@
+import { toast } from "@/components/custom-toast";
 import { Button } from "@/components/ui/button";
 import useSession from "@/hooks/use-session";
 import { cn, generateTenantUrl } from "@/lib/utils";
 import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 
 interface Props {

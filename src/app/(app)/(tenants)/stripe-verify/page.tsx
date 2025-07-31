@@ -1,10 +1,10 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
 import { useEffect } from "react";
-import { toast } from "sonner";
 
 const StripeVerifyPage = () => {
   const trpc = useTRPC();

@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import Media from "@/components/media";
 import StarRating from "@/components/star-rating";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
 
 const CartButton = dynamic(
@@ -39,7 +39,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
   const handleCopy = () => {
     setIsCopied(true);
     navigator.clipboard.writeText(window.location.href);
-    toast.success("URL copied to clipboard");
+    toast.custom("URL copied to clipboard", { duration: 1000 });
 
     setTimeout(() => {
       setIsCopied(false);
