@@ -13,6 +13,7 @@ import { LoaderIcon, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 import { ProductsGetManyOutput } from "../../types";
+import CartButton from "./cart-button";
 
 type Product = {
   id: string;
@@ -60,14 +61,21 @@ const ProductListTable = ({
       return {
         id: p.id,
         product: {
+          id: p.id,
           name: p.name,
           image: p.image?.url || "/placeholder-bg.jpg",
+          tenantSlug: p.tenant.slug,
         },
         tenant: p.tenant,
         price: p.price,
         reviews: {
           reviewRating: p.reviewRating,
           reviewCount: p.reviewCount,
+        },
+        action: {
+          productId: p.id,
+          tenantSlug: p.tenant.slug,
+          isPurchased: p.isPurchased,
         },
       };
     });
@@ -82,8 +90,8 @@ const ProductListTable = ({
     {
       key: "product",
       header: "Product",
-      width: "40%",
-      minWidth: "300px",
+      width: "35%",
+      minWidth: "220px",
       render: (value) => {
         const image = value.image || "/placeholder-bg.jpg";
         const name = value.name;
@@ -172,6 +180,22 @@ const ProductListTable = ({
         );
       },
     },
+    {
+      key: "action",
+      header: "",
+      width: "5%",
+      minWidth: "80px",
+      render: (value) => {
+        return (
+          <CartButton
+            isIconButton
+            productId={value.productId}
+            tenantSlug={value.tenantSlug}
+            isPurchased={value.isPurchased}
+          />
+        );
+      },
+    },
   ];
 
   const rowVirtualizer = useWindowVirtualizer({
@@ -255,7 +279,7 @@ const ProductListTable = ({
                           "custom-td",
                           "px-4 py-2 content-center w-full bg-background border-b",
                           "first:sticky first:top-0 first:left-0 first:z-10",
-                          col.align && `justify-${col.align}`
+                          col.align && `flex items-center justify-${col.align}`
                         )}
                         style={{ width: col.width, minWidth: col.minWidth }}
                       >

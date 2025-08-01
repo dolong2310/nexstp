@@ -164,6 +164,9 @@ const ProductListCard = ({
                         reviewRating={product.reviewRating}
                         reviewCount={product.reviewCount}
                         price={product.price}
+                        tenantSlug={product.tenant.slug}
+                        productId={product.id}
+                        isPurchased={product.isPurchased}
                       />
                     </div>
                   );

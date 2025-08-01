@@ -23,7 +23,7 @@ const ProductCard = ({
 }: Props) => {
   return (
     <Link prefetch href={`/library/${id}`} className="no-underline">
-      <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] transition-all">
+      <article className="flex flex-col border rounded-md bg-background overflow-hidden h-full hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] transition-all">
         <Media
           src={imageUrl || "/placeholder-bg.jpg"}
           alt={name}
@@ -56,14 +56,14 @@ const ProductCard = ({
             </div>
           )}
         </div>
-      </div>
+      </article>
     </Link>
   );
 };
 
 export const ProductCardSkeleton = () => {
   return (
-    <div className="flex flex-col border rounded-md bg-background overflow-hidden h-full animate-pulse">
+    <article className="flex flex-col border rounded-md bg-background overflow-hidden h-full animate-pulse">
       <div className="relative aspect-square bg-gray-200" />
       <div className="flex flex-col gap-3 flex-1 border-y p-4">
         <div className="h-6 bg-gray-200 w-full mb-2" />
@@ -76,7 +76,7 @@ export const ProductCardSkeleton = () => {
           <div className="h-4 bg-gray-200 w-16" />
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -146,6 +146,9 @@ export const productsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
+      const headers = await getHeaders();
+      const session = await ctx.db.auth({ headers });
+
       const where: Where = {
         isArchived: {
           // tại sao không dùng "equals: false"? vì "defaultValue: false" (ở collection Products) và nếu ẩn "defaultValue" thì nó là "undefined"
@@ -255,9 +258,44 @@ export const productsRouter = createTRPCRouter({
         },
       });
 
+      const dataWithOrders = await Promise.all(
+        data.docs.map(async (product) => {
+          let isPurchased = false;
+
+          if (session?.user) {
+            // Lấy tất cả orders của product hiện tại
+            const ordersData = await ctx.db.find({
+              collection: "orders",
+              where: {
+                and: [
+                  {
+                    product: {
+                      equals: product.id,
+                    },
+                  },
+                  {
+                    user: {
+                      equals: session.user?.id,
+                    },
+                  },
+                ],
+              },
+            });
+
+            isPurchased = !!ordersData.docs[0];
+          }
+
+          // Trả về product với thông tin isPurchased
+          return {
+            ...product,
+            isPurchased,
+          };
+        })
+      );
+
       // Thêm thông tin tóm tắt reviews (rating trung bình và số lượng reviews) cho mỗi product
       const dataWithSummarizedReviews = await Promise.all(
-        data.docs.map(async (product) => {
+        dataWithOrders.map(async (product) => {
           // Lấy tất cả reviews của product hiện tại
           const reviewsData = await ctx.db.find({
             collection: "reviews",
