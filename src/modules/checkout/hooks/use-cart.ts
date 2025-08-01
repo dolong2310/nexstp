@@ -8,6 +8,9 @@ const useCart = () => {
   const clearCart = useCartStore((state) => state.clearCart);
   const clearAllCarts = useCartStore((state) => state.clearAllCarts);
   const getCartByTenant = useCartStore((state) => state.getCartByTenant);
+  const removeTenantByTenantSlug = useCartStore(
+    (state) => state.removeTenantByTenantSlug
+  );
   const tenantCarts = useCartStore((state) => state.tenantCarts);
 
   // const productIds = useCartStore(
@@ -24,6 +27,13 @@ const useCart = () => {
   );
 
   // useCallback must in use all these function because they depend on the useEffect
+  const removeTenantFromCart = useCallback(
+    (tenantSlug: string) => {
+      removeTenantByTenantSlug(tenantSlug);
+    },
+    [removeTenantByTenantSlug]
+  );
+
   const getTotalItems = useCallback(
     (tenantSlug?: string) => {
       if (!tenantSlug) return totalProducts;
@@ -93,6 +103,7 @@ const useCart = () => {
     isProductInCart,
     getProductIdsByTenant,
     getTotalItems,
+    removeTenantFromCart,
   };
 };
 

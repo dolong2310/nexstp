@@ -11,6 +11,7 @@ interface CartState {
   removeProduct: (tenantSlug: string, productId: string) => void;
   clearCart: (tenantSlug: string) => void;
   clearAllCarts: () => void;
+  removeTenantByTenantSlug: (tenantSlug: string) => void;
   getCartByTenant: (tenantSlug: string) => string[];
 }
 
@@ -60,6 +61,13 @@ export const useCartStore = create<CartState>()(
           },
         })),
       clearAllCarts: () => set({ tenantCarts: {} }),
+      // xoá tenant khỏi tenantSlug theo tenantSlug
+      removeTenantByTenantSlug: (tenantSlug: string) =>
+        set((state) => {
+          const { [tenantSlug]: _, ...rest } = state.tenantCarts;
+          return { tenantCarts: rest };
+        }),
+      // lấy danh sách productIds của tenant theo tenantSlug
       getCartByTenant: (tenantSlug) =>
         get().tenantCarts[tenantSlug]?.productIds || [],
     }),

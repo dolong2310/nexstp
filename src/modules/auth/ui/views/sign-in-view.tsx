@@ -22,6 +22,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginSchema } from "../../schemas";
 import { useUserStore } from "../../store/use-user-store";
+import { Tenant } from "@/payload-types";
+import useCart from "@/modules/checkout/hooks/use-cart";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,6 +33,7 @@ const poppins = Poppins({
 const SignInView = () => {
   const router = useRouter();
   const addUser = useUserStore((state) => state.add);
+  const cart = useCart();
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -40,6 +43,11 @@ const SignInView = () => {
       onSuccess: async (data) => {
         addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
+        // Xoá tenant slug mà user vừa đăng nhập trong cart store
+        const tenantSlugs = (data.user.tenants || []).map((tenant) => (tenant.tenant as Tenant).slug);
+        tenantSlugs.forEach((tenantSlug) => {
+          cart.removeTenantFromCart(tenantSlug);
+        });
         router.push("/");
       },
       onError: (error) => {
