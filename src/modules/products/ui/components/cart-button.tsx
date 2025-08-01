@@ -50,8 +50,7 @@ const CartButton = ({
         size={isIconButton ? "icon" : "default"}
         className={cn("flex-1 font-medium bg-background", className)}
       >
-        {/* <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library/${productId}`}> */}
-        <Link href="/library">
+        <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library`}>
           {isIconButton ? (
             <ArchiveIcon className="size-4" />
           ) : (
