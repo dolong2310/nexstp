@@ -43,7 +43,7 @@ const SignInView = () => {
       onSuccess: async (data) => {
         addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
-        // Xoá tenant slug mà user vừa đăng nhập trong cart store
+        // Xoá tenant slug mà user vừa đăng nhập trong cart store (edge case)
         const tenantSlugs = (data.user.tenants || []).map((tenant) => (tenant.tenant as Tenant).slug);
         tenantSlugs.forEach((tenantSlug) => {
           cart.removeTenantFromCart(tenantSlug);

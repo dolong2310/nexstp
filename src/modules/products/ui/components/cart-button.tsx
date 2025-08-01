@@ -1,4 +1,6 @@
+import { toast } from "@/components/custom-toast";
 import { Button } from "@/components/ui/button";
+import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import {
@@ -26,12 +28,17 @@ const CartButton = ({
   productId,
   isPurchased,
 }: Props) => {
+  const { user } = useSession();
   const cart = useCart();
   const isProductInCart = cart.isProductInCart(productId, tenantSlug);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!user) {
+      toast.info("Please sign in to add products to your cart.");
+      return;
+    }
     cart.toggleProduct(productId, tenantSlug);
   };
 
