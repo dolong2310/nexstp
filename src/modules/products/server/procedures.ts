@@ -156,6 +156,16 @@ export const productsRouter = createTRPCRouter({
           not_equals: true, // Chỉ lấy các sản phẩm chưa bị lưu trữ
         },
       };
+
+      // Lọc các sản phẩm theo tenant của người dùng
+      // Nếu người dùng có nhiều tenants, thì sẽ lọc ra các sản phẩm thuộc về các tenants đó
+      // Điều kiện này chỉ lọc các sản phẩm khi không có tenantSlug được cung cấp (nghĩa là ở trang home public, con trang của tenant thì có tenantSlug)
+      if (!input.tenantSlug && session?.user?.tenants && session.user.tenants.length > 0) {
+        where["tenant"] = {
+          not_in: session.user.tenants.map((t) => (t.tenant as Tenant).id),
+        };
+      }
+
       let sort: Sort = "-createdAt";
 
       if (input.sort === "curated") {
