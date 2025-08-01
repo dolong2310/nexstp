@@ -26,12 +26,13 @@ const CartButton = ({
   productId,
   isPurchased,
 }: Props) => {
-  const cart = useCart(tenantSlug);
+  const cart = useCart();
+  const isProductInCart = cart.isProductInCart(productId, tenantSlug);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    cart.toggleProduct(productId);
+    cart.toggleProduct(productId, tenantSlug);
   };
 
   if (isPurchased) {
@@ -55,7 +56,7 @@ const CartButton = ({
   }
 
   const renderLabel = () => {
-    if (cart.isProductInCart(productId)) {
+    if (isProductInCart) {
       return isIconButton ? (
         <TrashIcon className="size-4" />
       ) : (
@@ -75,7 +76,7 @@ const CartButton = ({
       size={isIconButton ? "icon" : "default"}
       className={cn(
         "flex-1 bg-feature",
-        cart.isProductInCart(productId) && "bg-background",
+        isProductInCart && "bg-background",
         className
       )}
       onClick={handleClick}

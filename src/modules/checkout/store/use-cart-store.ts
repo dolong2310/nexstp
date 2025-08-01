@@ -32,17 +32,24 @@ export const useCartStore = create<CartState>()(
           },
         })),
       removeProduct: (tenantSlug, productId) =>
-        set((state) => ({
-          tenantCarts: {
-            ...state.tenantCarts,
-            [tenantSlug]: {
-              productIds:
-                state.tenantCarts[tenantSlug]?.productIds.filter(
-                  (id) => id !== productId
-                ) || [],
+        set((state) => {
+          const productIds =
+            state.tenantCarts[tenantSlug]?.productIds.filter(
+              (id) => id !== productId
+            ) || [];
+
+          if (productIds.length === 0) {
+            const { [tenantSlug]: _, ...rest } = state.tenantCarts;
+            return { tenantCarts: rest };
+          }
+
+          return {
+            tenantCarts: {
+              ...state.tenantCarts,
+              [tenantSlug]: { productIds },
             },
-          },
-        })),
+          };
+        }),
       clearCart: (tenantSlug) =>
         set((state) => ({
           tenantCarts: {

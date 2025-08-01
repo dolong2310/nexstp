@@ -7,10 +7,11 @@ import ProductList from "../components/product-list";
 import { ProductListSkeleton } from "../components/product-list-card";
 import { ProductListTableSkeleton } from "../components/product-list-table";
 import ProductSorts from "../components/product-sorts";
+import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
 
 interface Props {
   category?: string | null;
-  tenantSlug?: string | null;
+  tenantSlug?: string;
   narrowView?: boolean;
   isLayoutTable: boolean;
 }
@@ -34,8 +35,14 @@ const ProductListView = ({
         <div className="flex items-center gap-x-4">
           <ProductGridToggle />
           <RefreshButton queryKey={"products" as RefreshQueryKeys} />
+          <CheckoutButton
+            hideIfEmpty
+            tenantSlug={tenantSlug}
+            hide={!!tenantSlug}
+            isSmallButton
+          />
         </div>
-        <div className="absolute -bottom-2 left-0 right-0 h-2 bg-gradient-to-t from-transparent to-third pointer-events-none" />
+        {/* <div className="absolute -bottom-2 left-0 right-0 h-2 bg-gradient-to-t from-transparent to-third pointer-events-none" /> */}
       </div>
 
       <div className="flex flex-col md:flex-row gap-x-12 gap-y-6">
