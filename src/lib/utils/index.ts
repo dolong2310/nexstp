@@ -80,3 +80,10 @@ export function throttle(func: Function, limit: number) {
     }
   };
 }
+
+export const formatQuantityNumber = (quantity: number, maxNumber: number = 10) => {
+  if (quantity > maxNumber) {
+    return `+${maxNumber}`;
+  }
+  return quantity;
+};

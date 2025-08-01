@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useSession from "@/hooks/use-session";
-import { cn, generateTenantUrl } from "@/lib/utils";
+import { cn, formatQuantityNumber, generateTenantUrl } from "@/lib/utils";
 import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -66,7 +66,8 @@ const CheckoutButton = ({
                 size={isSmallButton ? "sm" : "default"}
                 className={cn("bg-background ring-0 focus:ring-0", className)}
               >
-                <ShoppingCartIcon /> {totalItems > 0 ? totalItems : ""}
+                <ShoppingCartIcon />{" "}
+                {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
               </Button>
             </DropdownMenuTrigger>
 
@@ -89,7 +90,9 @@ const CheckoutButton = ({
                         <p className="truncate overflow-hidden whitespace-nowrap max-w-[300px]">
                           {tenantSlug}
                         </p>
-                        <span>({totalItemsOfTenant})</span>
+                        <span>
+                          ({formatQuantityNumber(totalItemsOfTenant, 99)})
+                        </span>
                       </Link>
                     </Button>
                   </DropdownMenuItem>
@@ -109,7 +112,8 @@ const CheckoutButton = ({
                 tenantCartSlugs[0] as string
               )}/checkout`}
             >
-              <ShoppingCartIcon /> {totalItems > 0 ? totalItems : ""}
+              <ShoppingCartIcon />{" "}
+              {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
             </Link>
           </Button>
         )}
@@ -128,7 +132,8 @@ const CheckoutButton = ({
         href={`${generateTenantUrl(tenantSlug)}/checkout`}
         onClick={handlePreventUser}
       >
-        <ShoppingCartIcon /> {totalItems > 0 ? totalItems : ""}
+        <ShoppingCartIcon />{" "}
+        {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
       </Component>
     </Button>
   );
