@@ -1,14 +1,15 @@
 "use client";
 
+import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
 import { cn } from "@/lib/utils";
-import { ProductsGetManyOutput } from "../../types";
-import ProductCard, { ProductCardSkeleton } from "./product-card";
-import InfiniteScroll from "@/components/infinite-scroll";
+import { useGlobalStore } from "@/store/use-global-store";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { LoaderIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { ProductsGetManyOutput } from "../../types";
+import ProductCard, { ProductCardSkeleton } from "./product-card";
 
 export enum MediaQuerySizes {
   SM = 640,
@@ -33,6 +34,8 @@ const ProductListCard = ({
   narrowView,
   fetchNextPage,
 }: Props) => {
+  const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
+
   const [columns, setColumns] = useState<number>(4);
   const parentRef = useRef<HTMLDivElement>(null);
   const rowsLength = Math.ceil(productData.length / columns);
@@ -40,7 +43,7 @@ const ProductListCard = ({
   const rowVirtualizer = useWindowVirtualizer({
     count: rowsLength,
     estimateSize: () => 340,
-    overscan: 1,
+    overscan: 5,
     scrollMargin: parentRef.current?.offsetTop ?? 0,
     gap: 16,
     // initialOffset: savedOffsets.get(pathname) ?? 0,
@@ -90,9 +93,9 @@ const ProductListCard = ({
           setColumns(4);
           break;
         case width >= MediaQuerySizes.LG:
-        case width >= MediaQuerySizes.MD:
           setColumns(3);
           break;
+        case width >= MediaQuerySizes.MD:
         case width >= MediaQuerySizes.SM:
           setColumns(2);
           break;
@@ -106,6 +109,10 @@ const ProductListCard = ({
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
   }, [narrowView]);
+
+  if (loadingGlobal) {
+    return <ProductListSkeleton narrowView={narrowView} />;
+  }
 
   return (
     <>
@@ -123,7 +130,7 @@ const ProductListCard = ({
                 data-index={virtualRow.index}
                 ref={rowVirtualizer.measureElement}
                 className={cn(
-                  "grid gap-4 w-full absolute top-0 left-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
+                  "grid gap-4 w-full absolute top-0 left-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5",
                   narrowView &&
                     "md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
                 )}
@@ -157,6 +164,9 @@ const ProductListCard = ({
                         reviewRating={product.reviewRating}
                         reviewCount={product.reviewCount}
                         price={product.price}
+                        tenantSlug={product.tenant.slug}
+                        productId={product.id}
+                        isPurchased={product.isPurchased}
                       />
                     </div>
                   );
@@ -193,7 +203,7 @@ export const ProductListSkeleton = (props: { narrowView?: boolean }) => {
   return (
     <div
       className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4",
+        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4",
         props.narrowView &&
           "md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
       )}

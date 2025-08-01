@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
-import useSession from "@/modules/conversations/hooks/use-session";
 import { MenuIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
 import Link from "next/link";

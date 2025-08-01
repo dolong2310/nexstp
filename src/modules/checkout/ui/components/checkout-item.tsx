@@ -1,9 +1,8 @@
 import Media from "@/components/media";
-import { cn, formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
 interface Props {
-  isLast?: boolean;
   name: string;
   price: number;
   imageUrl?: string | null;
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const CheckoutItem = ({
-  isLast,
   name,
   price,
   imageUrl,
@@ -24,12 +22,7 @@ const CheckoutItem = ({
   onRemove,
 }: Props) => {
   return (
-    <div
-      className={cn(
-        "grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border-b",
-        isLast && "border-b-0"
-      )}
-    >
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border rounded-md">
       <div className="overflow-hidden border-r">
         <Media
           src={imageUrl || "/placeholder-bg.jpg"}
@@ -66,7 +59,7 @@ const CheckoutItem = ({
 
 export const CheckoutItemSkeleton = () => {
   return (
-    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border-b last:border-b-0">
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border rounded-md">
       <div className="overflow-hidden border-r">
         <div className="aspect-square w-full h-full bg-gray-200 animate-pulse" />
       </div>

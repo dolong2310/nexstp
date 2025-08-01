@@ -1,14 +1,14 @@
 "use client";
 
-import LoadingFullPage from "@/components/loading-full-page";
+import { toast } from "@/components/custom-toast";
 import { cn } from "@/lib/utils";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
+import { LoaderIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { toast } from "sonner";
 import { CustomAvatarSkeleton } from "./custom-avatar";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {
@@ -80,6 +80,14 @@ export const UserBoxSkeleton = () => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const LoadingFullPage = () => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <LoaderIcon className="size-8 animate-spin text-white" />
     </div>
   );
 };

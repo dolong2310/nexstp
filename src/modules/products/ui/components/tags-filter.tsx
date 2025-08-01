@@ -5,12 +5,11 @@ import { DEFAULT_LIMIT } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
-import React, { ChangeEvent } from "react";
 
 interface Props {
   values?: string[] | null;
   onChange: (values: string[]) => void;
-};
+}
 
 const TagsFilter = ({ values = [], onChange }: Props) => {
   const trpc = useTRPC();
@@ -47,7 +46,9 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
 
     // If no tags are available, show a message
     if (data?.pages?.[0]?.docs.length === 0) {
-      return <p className="text-center text-muted-foreground">No tags available</p>;
+      return (
+        <p className="text-center text-muted-foreground">No tags available</p>
+      );
     }
 
     return data?.pages.map((page) => {
@@ -60,6 +61,7 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
           >
             <p className="font-medium">{tag.name}</p>
             <Checkbox
+              className="cursor-pointer"
               checked={values?.includes(tag.name)}
               onCheckedChange={() => onClick(tag.name)}
             />

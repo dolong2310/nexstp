@@ -1,12 +1,12 @@
 "use client";
 
+import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import useOtherUser from "../../hooks/use-other-user";
-import useSession from "../../hooks/use-session";
 import { FullConversationType } from "../../types";
 import { CustomAvatarSkeleton } from "./custom-avatar";
 import { CustomAvatarGroupSkeleton } from "./custom-avatar-group";
@@ -23,7 +23,7 @@ const CustomAvatarGroup = dynamic(() => import("./custom-avatar-group"), {
 interface Props {
   conversation: FullConversationType;
   selected?: boolean;
-};
+}
 
 const ConversationBox = ({ conversation, selected }: Props) => {
   const router = useRouter();

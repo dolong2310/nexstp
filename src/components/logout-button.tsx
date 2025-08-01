@@ -5,14 +5,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useUserStore } from "@/modules/checkout/store/use-user-store";
-import useSession from "@/modules/conversations/hooks/use-session";
+import useSession from "@/hooks/use-session";
+import { useUserStore } from "@/modules/auth/store/use-user-store";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
+import { toast } from "./custom-toast";
 import { Button } from "./ui/button";
 
 interface Props {

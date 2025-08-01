@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/modules/checkout/store/use-user-store";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -19,9 +19,11 @@ import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { loginSchema } from "../../schemas";
+import { useUserStore } from "../../store/use-user-store";
+import { Tenant } from "@/payload-types";
+import useCart from "@/modules/checkout/hooks/use-cart";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,9 +32,8 @@ const poppins = Poppins({
 
 const SignInView = () => {
   const router = useRouter();
-  const user = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.add);
-  const removeUser = useUserStore((state) => state.remove);
+  const cart = useCart();
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -42,6 +43,11 @@ const SignInView = () => {
       onSuccess: async (data) => {
         addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
+        // Xoá tenant slug mà user vừa đăng nhập trong cart store (edge case)
+        const tenantSlugs = (data.user.tenants || []).map((tenant) => (tenant.tenant as Tenant).slug);
+        tenantSlugs.forEach((tenantSlug) => {
+          cart.removeTenantFromCart(tenantSlug);
+        });
         router.push("/");
       },
       onError: (error) => {

@@ -27,7 +27,7 @@ interface Props {
   containerClassName?: string;
 }
 
-const Banner = ({ tenantSlug, containerClassName }: Props) => {
+const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
   const bannerRef = useRef<HTMLDivElement>(null);
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
 
@@ -172,7 +172,7 @@ const Banner = ({ tenantSlug, containerClassName }: Props) => {
   );
 };
 
-export const BannerSkeleton = ({ containerClassName }: Props) => {
+export const HomeBannerSkeleton = ({ containerClassName }: Props) => {
   return (
     <div className={cn("px-4 lg:px-12 py-4 lg:py-6", containerClassName)}>
       <div className="border rounded-xl overflow-hidden aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] bg-muted animate-pulse" />
@@ -180,4 +180,4 @@ export const BannerSkeleton = ({ containerClassName }: Props) => {
   );
 };
 
-export default Banner;
+export default HomeBanner;

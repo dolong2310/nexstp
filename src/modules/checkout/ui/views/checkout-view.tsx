@@ -1,13 +1,14 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
+import { DEFAULT_LIMIT } from "@/constants";
+import useSession from "@/hooks/use-session";
 import { generateTenantUrl } from "@/lib/utils";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import useCheckoutState from "../../hooks/use-checkout-state";
 import CheckoutItem, {
@@ -25,7 +26,8 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 
   const [states, setStates] = useCheckoutState();
 
-  const cart = useCart(tenantSlug);
+  const { user } = useSession();
+  const cart = useCart();
 
   const trpc = useTRPC();
   const {
@@ -34,7 +36,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     error,
   } = useQuery(
     trpc.checkout.getProducts.queryOptions({
-      ids: cart.productIds,
+      ids: cart.getProductIdsByTenant(tenantSlug),
     })
   );
 
@@ -58,11 +60,11 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   useEffect(() => {
     if (states.success) {
       setStates({ success: false, cancel: false });
-      cart.clearCart();
+      cart.clearCart(tenantSlug);
 
       // prefetch library products
       queryClient.invalidateQueries(
-        trpc.library.getMany.infiniteQueryOptions({})
+        trpc.library.getMany.infiniteQueryOptions({ limit: DEFAULT_LIMIT })
       );
       router.push("/library");
     }
@@ -77,7 +79,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
-      cart.clearCart();
+      cart.clearCart(tenantSlug);
       toast.warning("Invalid products in the cart. Please update your cart.");
     }
   }, [error, cart.clearCart]);
@@ -89,42 +91,58 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   if (products?.totalDocs === 0) {
     return (
       <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-        <ProductListEmpty visibleLibraryButton />
+        <ProductListEmpty visibleLibraryButton={!!user} />
       </div>
     );
   }
 
+  const handleRemoveProduct = (productId: string, tenantSlug: string) => () => {
+    cart.removeProduct(productId, tenantSlug);
+  };
+
+  const handlePurchase = () => {
+    purchase.mutate({
+      productIds: cart.getProductIdsByTenant(tenantSlug),
+      tenantSlug,
+    });
+  };
+
   return (
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-      <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
-        <div className="lg:col-span-4">
-          <div className="border rounded-md overflow-hidden bg-background">
-            {products?.docs.map((product, index) => {
+      <div className="flex gap-4 lg:gap-16">
+        <div className="w-full lg:w-4/7">
+          <div className="flex flex-col gap-4 rounded-md bg-background mb-8">
+            {products?.docs.map((product) => {
               return (
                 <CheckoutItem
                   key={product.id}
-                  isLast={index === products.docs.length - 1}
                   name={product.name}
                   price={product.price}
                   imageUrl={product.image?.url}
-                  productUrl={`${generateTenantUrl(product.tenant.slug)}/products/${product.id}`}
+                  productUrl={`${generateTenantUrl(
+                    product.tenant.slug
+                  )}/products/${product.id}`}
                   tenantUrl={generateTenantUrl(product.tenant.slug)}
                   tenantName={product.tenant.name}
-                  onRemove={() => cart.removeProduct(product.id)}
+                  onRemove={handleRemoveProduct(
+                    product.id,
+                    product.tenant.slug
+                  )}
                 />
               );
             })}
           </div>
         </div>
-        <div className="lg:col-span-3">
-          <CheckoutSidebar
-            totalPrice={products?.totalPrice || 0}
-            isPending={purchase.isPending}
-            isCanceled={states.cancel}
-            onPurchase={() =>
-              purchase.mutate({ productIds: cart.productIds, tenantSlug })
-            }
-          />
+
+        <div className="w-full lg:w-3/7">
+          <div className="sticky top-4 right-0">
+            <CheckoutSidebar
+              totalPrice={products?.totalPrice || 0}
+              isPending={purchase.isPending}
+              isCanceled={states.cancel}
+              onPurchase={handlePurchase}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -134,15 +152,15 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 const CheckoutViewSkeleton = () => {
   return (
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-      <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
-        <div className="lg:col-span-4">
-          <div className="border rounded-md overflow-hidden bg-background">
+      <div className="flex gap-4 lg:gap-16">
+        <div className="lg:w-4/7">
+          <div className="flex flex-col gap-4 rounded-md bg-background mb-8">
             {Array.from({ length: 3 }).map((_, index) => (
               <CheckoutItemSkeleton key={index} />
             ))}
           </div>
         </div>
-        <div className="lg:col-span-3">
+        <div className="lg:w-3/7">
           <CheckoutSidebar
             totalPrice={0}
             isPending={true}

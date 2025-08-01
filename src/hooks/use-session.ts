@@ -1,4 +1,4 @@
-import { useUserStore } from "@/modules/checkout/store/use-user-store";
+import { useUserStore } from "@/modules/auth/store/use-user-store";
 
 const useSession = () => {
   const user = useUserStore((state) => state.user);

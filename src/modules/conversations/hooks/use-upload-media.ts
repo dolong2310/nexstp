@@ -1,10 +1,10 @@
+import { toast } from "@/components/custom-toast";
 import { fileToBase64 } from "@/lib/utils";
 import { PreviewImageType } from "@/modules/conversations/types";
 import { Media } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { MAX_FILE_SIZE } from "../constants";
 
 interface UseUploadMediaProps {

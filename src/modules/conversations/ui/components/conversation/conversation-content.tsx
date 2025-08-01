@@ -187,7 +187,7 @@ const ConversationContent = ({
     count: messages.length,
     getScrollElement: () => containerRef.current,
     estimateSize: () => 114,
-    overscan: 1,
+    overscan: 10,
   });
 
   return (

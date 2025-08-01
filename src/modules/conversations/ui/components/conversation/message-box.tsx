@@ -1,8 +1,8 @@
 "use client";
 
 import Media from "@/components/media";
+import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
-import useSession from "@/modules/conversations/hooks/use-session";
 import { FullMessageType } from "@/modules/conversations/types";
 import { ChatUser, User } from "@/payload-types";
 import { format } from "date-fns";
@@ -20,7 +20,7 @@ interface Props {
   message: FullMessageType;
   isLast: boolean;
   id: string;
-};
+}
 
 const MessageBox = ({ message, isLast, id }: Props) => {
   const { user } = useSession();

@@ -1,5 +1,7 @@
-import Banner, { BannerSkeleton } from "@/modules/home/ui/components/banner";
 import Footer from "@/modules/home/ui/components/footer";
+import HomeBanner, {
+  HomeBannerSkeleton,
+} from "@/modules/home/ui/components/home-banner";
 import Navbar from "@/modules/home/ui/components/navbar";
 import SearchFilters, {
   SearchFiltersSkeleton,
@@ -25,8 +27,8 @@ const HomeLayout = async ({ children }: Props) => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<BannerSkeleton />}>
-          <Banner />
+        <Suspense fallback={<HomeBannerSkeleton />}>
+          <HomeBanner />
         </Suspense>
         <Suspense fallback={<SearchFiltersSkeleton />}>
           <SearchFilters />

@@ -1,14 +1,17 @@
+import RefreshButton, { RefreshQueryKeys } from "@/components/refresh-button";
+import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import ProductFilters from "../components/product-filters";
 import ProductGridToggle from "../components/product-grid-toggle";
 import ProductList from "../components/product-list";
 import { ProductListSkeleton } from "../components/product-list-card";
 import { ProductListTableSkeleton } from "../components/product-list-table";
-import ProductSort from "../components/product-sort";
+import ProductSorts from "../components/product-sorts";
+import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
 
 interface Props {
   category?: string | null;
-  tenantSlug?: string | null;
+  tenantSlug?: string;
   narrowView?: boolean;
   isLayoutTable: boolean;
 }
@@ -20,22 +23,45 @@ const ProductListView = ({
   isLayoutTable,
 }: Props) => {
   return (
-    <div className="flex flex-col gap-4 px-4 lg:px-12 py-8">
-      {/* <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2 lg:gap-y-0"> */}
-      <div className="hidden md:flex md:flex-row lg:items-center justify-between gap-y-2 lg:gap-y-0">
+    <div className="flex flex-col gap-4 px-4 lg:px-12 pt-4 pb-8">
+      <div
+        className={cn(
+          "hidden md:flex md:flex-row lg:items-center justify-between gap-y-2 lg:gap-y-0",
+          "sticky right-0 z-20 bg-third py-4 -mr-[1px]",
+          tenantSlug ? "top-[calc(50px_+_16px)]" : "top-0"
+        )}
+      >
         <p className="text-2xl font-medium">Curated for you</p>
-        <div className="flex items-center gap-x-6">
-          <ProductSort />
+        <div className="flex items-center gap-x-4">
           <ProductGridToggle />
+          <RefreshButton queryKey={"products" as RefreshQueryKeys} />
+          <CheckoutButton
+            hideIfEmpty
+            tenantSlug={tenantSlug}
+            hide={!!tenantSlug}
+            isSmallButton
+          />
         </div>
+        {/* <div className="absolute -bottom-2 left-0 right-0 h-2 bg-gradient-to-t from-transparent to-third pointer-events-none" /> */}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-8 gap-y-6 gap-x-12">
-        <div className="lg:col-span-2 xl:col-span-2">
-          <ProductFilters />
+      <div className="flex flex-col md:flex-row gap-x-12 gap-y-6">
+        <div className="w-full md:w-2/6 lg:w-2/8 xl:w-2/8">
+          <div
+            className={cn(
+              "sticky left-0",
+              tenantSlug
+                ? "top-[calc(138px_+_16px)]"
+                : "top-[calc(72px_+_16px)]"
+            )}
+          >
+            <ProductSorts />
+            <div className="my-4" />
+            <ProductFilters />
+          </div>
         </div>
 
-        <div className="lg:col-span-4 xl:col-span-6">
+        <div className="w-full md:w-4/6 lg:w-6/8 xl:w-6/8">
           <Suspense
             fallback={
               isLayoutTable ? (

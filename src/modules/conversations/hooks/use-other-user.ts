@@ -1,7 +1,7 @@
+import useSession from "@/hooks/use-session";
 import { ChatUser } from "@/payload-types";
 import { useMemo } from "react";
 import { FullConversationType } from "../types";
-import useSession from "./use-session";
 
 const useOtherUser = (
   conversation: FullConversationType | { users: ChatUser[] }

@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/custom-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,12 +19,11 @@ import { useMutation } from "@tanstack/react-query";
 import { AlertTriangleIcon, LoaderIcon, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { toast } from "sonner";
 
 interface Props {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-};
+}
 
 const ConfirmModal = ({ isOpen, onOpenChange }: Props) => {
   const router = useRouter();

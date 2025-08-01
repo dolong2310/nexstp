@@ -1,11 +1,11 @@
+import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
-import useSession from "@/modules/conversations/hooks/use-session";
 import { useMemo } from "react";
 import { UserProps } from "./conversation-content";
 
 interface Props {
   typingUsers: UserProps[];
-};
+}
 
 const TypingBox = ({ typingUsers }: Props) => {
   const { user } = useSession();

@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { TABLE_LIMIT } from "@/constants";
 import { cn, formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { Media as MediaType, Tenant } from "@/payload-types";
+import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import isEqual from "lodash-es/isEqual";
 import { LoaderIcon, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 import { ProductsGetManyOutput } from "../../types";
+import CartButton from "./cart-button";
 
 type Product = {
   id: string;
@@ -52,19 +54,28 @@ const ProductListTable = ({
   const dataTableRef = useRef<Product[]>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
+  const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
+
   const dataTable = useMemo<Product[]>(() => {
     const dataTable = productData.map((p) => {
       return {
         id: p.id,
         product: {
+          id: p.id,
           name: p.name,
           image: p.image?.url || "/placeholder-bg.jpg",
+          tenantSlug: p.tenant.slug,
         },
         tenant: p.tenant,
         price: p.price,
         reviews: {
           reviewRating: p.reviewRating,
           reviewCount: p.reviewCount,
+        },
+        action: {
+          productId: p.id,
+          tenantSlug: p.tenant.slug,
+          isPurchased: p.isPurchased,
         },
       };
     });
@@ -79,8 +90,8 @@ const ProductListTable = ({
     {
       key: "product",
       header: "Product",
-      width: "40%",
-      minWidth: "300px",
+      width: "35%",
+      minWidth: "220px",
       render: (value) => {
         const image = value.image || "/placeholder-bg.jpg";
         const name = value.name;
@@ -123,6 +134,7 @@ const ProductListTable = ({
                 src={authorImageUrl}
                 alt={authorUsername}
                 fill
+                sizeFallbackIcon="sm"
                 containerClassName="size-6"
                 className="rounded-full border"
               />
@@ -168,15 +180,35 @@ const ProductListTable = ({
         );
       },
     },
+    {
+      key: "action",
+      header: "",
+      width: "5%",
+      minWidth: "80px",
+      render: (value) => {
+        return (
+          <CartButton
+            isIconButton
+            productId={value.productId}
+            tenantSlug={value.tenantSlug}
+            isPurchased={value.isPurchased}
+          />
+        );
+      },
+    },
   ];
 
   const rowVirtualizer = useWindowVirtualizer({
     count: dataTable.length,
     estimateSize: () => 56,
-    overscan: 1,
+    overscan: 5,
     scrollMargin: tableContainerRef.current?.offsetTop ?? 0,
     measureElement: (element) => element.getBoundingClientRect().height, // Đo lường chiều cao thực tế
   });
+
+  if (loadingGlobal) {
+    return <ProductListTableSkeleton />;
+  }
 
   return (
     <>
@@ -247,11 +279,13 @@ const ProductListTable = ({
                           "custom-td",
                           "px-4 py-2 content-center w-full bg-background border-b",
                           "first:sticky first:top-0 first:left-0 first:z-10",
-                          col.align && `justify-${col.align}`
+                          col.align && `flex items-center justify-${col.align}`
                         )}
                         style={{ width: col.width, minWidth: col.minWidth }}
                       >
-                        {col.render ? col.render(record, product) : String(record)}
+                        {col.render
+                          ? col.render(record, product)
+                          : String(record)}
                       </div>
                     );
                   })}
