@@ -35,20 +35,103 @@ export async function getProductForMetadata(productId: string) {
   const payload = await getPayload({ config });
 
   try {
-    const product = await payload.findByID({
-      collection: "products",
-      id: productId,
+    // Step 1: Thử tìm trong collection "products" trước
+    let product = null;
+    let isFromLaunchpad = false;
+
+    try {
+      product = await payload.findByID({
+        collection: "products",
+        id: productId,
+        depth: 2,
+      });
+    } catch (error) {
+      // Nếu không tìm thấy trong products, thử tìm trong launchpads
+      try {
+        const launchpad = await payload.findByID({
+          collection: "launchpads",
+          id: productId,
+          depth: 2,
+        });
+
+        if (launchpad) {
+          // Convert launchpad to product format
+          product = {
+            id: launchpad.id,
+            name: launchpad.title,
+            description: launchpad.description,
+            price: launchpad.launchPrice,
+            originalPrice: launchpad.originalPrice,
+            image: launchpad.image,
+            tenant: launchpad.tenant,
+            category: launchpad.category,
+            tags: launchpad.tags,
+            content: launchpad.content,
+            refundPolicy: launchpad.refundPolicy,
+          };
+          isFromLaunchpad = true;
+        }
+      } catch (launchpadError) {
+        console.error("Error fetching launchpad:", launchpadError);
+      }
+    }
+
+    if (!product) return null;
+
+    // Step 2: Lấy reviews data (sử dụng productId cho cả products và launchpads)
+    const reviewsData = await payload.find({
+      collection: "reviews",
+      pagination: false,
+      where: {
+        product: { equals: productId }, // Sử dụng productId gốc
+      },
+    });
+
+    let reviewRating = 0;
+    if (reviewsData.docs.length > 0) {
+      reviewRating =
+        reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) /
+        reviewsData.totalDocs;
+    }
+
+    // Step 3: Convert rich text description to plain text
+    const plainTextDescription = product.description
+      ? extractTextFromRichText(product.description)
+      : "";
+
+    return {
+      ...product,
+      image: product.image as Media | null,
+      reviewRating,
+      reviewCount: reviewsData.totalDocs,
+      plainTextDescription,
+      isFromLaunchpad, // Add flag để biết đây là launchpad hay product
+    };
+  } catch (error) {
+    console.error("Error fetching product/launchpad:", error);
+    return null;
+  }
+}
+
+// Thêm function riêng cho launchpad metadata
+export async function getLaunchpadForMetadata(launchpadId: string) {
+  const payload = await getPayload({ config });
+
+  try {
+    const launchpad = await payload.findByID({
+      collection: "launchpads",
+      id: launchpadId,
       depth: 2,
     });
 
-    if (!product) return null;
+    if (!launchpad) return null;
 
     // Lấy reviews data
     const reviewsData = await payload.find({
       collection: "reviews",
       pagination: false,
       where: {
-        product: { equals: product.id },
+        product: { equals: launchpad.id }, // Reviews cho launchpad sử dụng launchpad ID
       },
     });
 
@@ -60,19 +143,22 @@ export async function getProductForMetadata(productId: string) {
     }
 
     // Convert rich text description to plain text
-    const plainTextDescription = product.description
-      ? extractTextFromRichText(product.description)
-      : "";
+    const plainTextDescription = launchpad.description || "";
 
     return {
-      ...product,
-      image: product.image as Media | null,
+      id: launchpad.id,
+      name: launchpad.title,
+      description: launchpad.description,
+      plainTextDescription,
+      image: launchpad.image as Media | null,
       reviewRating,
       reviewCount: reviewsData.totalDocs,
-      plainTextDescription, // Thêm field này
+      price: launchpad.launchPrice,
+      originalPrice: launchpad.originalPrice,
+      isFromLaunchpad: true,
     };
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error fetching launchpad:", error);
     return null;
   }
 }

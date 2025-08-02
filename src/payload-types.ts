@@ -79,6 +79,7 @@ export interface Config {
     conversations: Conversation;
     messages: Message;
     banners: Banner;
+    launchpads: Launchpad;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -101,6 +102,7 @@ export interface Config {
     conversations: ConversationsSelect<false> | ConversationsSelect<true>;
     messages: MessagesSelect<false> | MessagesSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
+    launchpads: LaunchpadsSelect<false> | LaunchpadsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -160,6 +162,13 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
   password?: string | null;
 }
 /**
@@ -238,21 +247,7 @@ export interface Product {
   id: string;
   tenant?: (string | null) | Tenant;
   name: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  description?: string | null;
   /**
    * Price in USD
    */
@@ -288,6 +283,14 @@ export interface Product {
    * If checked, this product will be archived and not visible to customers.
    */
   isArchived?: boolean | null;
+  /**
+   * How this product was created
+   */
+  sourceType?: ('manual' | 'launchpad') | null;
+  /**
+   * The launchpad this product was created from
+   */
+  sourceLaunchpad?: (string | null) | Launchpad;
   updatedAt: string;
   createdAt: string;
 }
@@ -299,6 +302,77 @@ export interface Tag {
   id: string;
   name: string;
   products?: (string | Product)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "launchpads".
+ */
+export interface Launchpad {
+  id: string;
+  title: string;
+  description?: string | null;
+  image: string | Media;
+  /**
+   * Giá niêm yết gốc
+   */
+  originalPrice: number;
+  /**
+   * Giá ưu đãi khi launch
+   */
+  launchPrice: number;
+  /**
+   * Thời gian live (số giờ)
+   */
+  duration: number;
+  /**
+   * Thời gian bắt đầu (tự động set khi publish)
+   */
+  startTime?: string | null;
+  /**
+   * Thời gian kết thúc (tự động tính)
+   */
+  endTime?: string | null;
+  status: 'draft' | 'pending' | 'approved' | 'live' | 'ended' | 'rejected';
+  /**
+   * Thứ tự ưu tiên (chỉ admin có thể thay đổi)
+   */
+  priority?: number | null;
+  /**
+   * Số lượng đã bán
+   */
+  soldCount?: number | null;
+  tenant?: (string | null) | Tenant;
+  category: string | Category;
+  tags?: (string | Tag)[] | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Chính sách hoàn tiền
+   */
+  refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refunds') | null;
+  /**
+   * Lý do từ chối (chỉ admin có thể thêm)
+   */
+  rejectionReason?: string | null;
+  /**
+   * Product created when launchpad ended
+   */
+  createdProduct?: (string | null) | Product;
   updatedAt: string;
   createdAt: string;
 }
@@ -319,6 +393,10 @@ export interface Order {
    * Stripe account associated with the order
    */
   stripeAccountId?: string | null;
+  /**
+   * Launchpad mà order này được tạo từ (nếu có)
+   */
+  launchpad?: (string | null) | Launchpad;
   updatedAt: string;
   createdAt: string;
 }
@@ -488,6 +566,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'banners';
         value: string | Banner;
+      } | null)
+    | ({
+        relationTo: 'launchpads';
+        value: string | Launchpad;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -553,6 +635,13 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -607,6 +696,8 @@ export interface ProductsSelect<T extends boolean = true> {
   content?: T;
   isPrivate?: T;
   isArchived?: T;
+  sourceType?: T;
+  sourceLaunchpad?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -643,6 +734,7 @@ export interface OrdersSelect<T extends boolean = true> {
   product?: T;
   stripeCheckoutSessionId?: T;
   stripeAccountId?: T;
+  launchpad?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -714,6 +806,32 @@ export interface BannersSelect<T extends boolean = true> {
   endDate?: T;
   clickCount?: T;
   impressionCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "launchpads_select".
+ */
+export interface LaunchpadsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  image?: T;
+  originalPrice?: T;
+  launchPrice?: T;
+  duration?: T;
+  startTime?: T;
+  endTime?: T;
+  status?: T;
+  priority?: T;
+  soldCount?: T;
+  tenant?: T;
+  category?: T;
+  tags?: T;
+  content?: T;
+  refundPolicy?: T;
+  rejectionReason?: T;
+  createdProduct?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -8,8 +8,19 @@ export const Products: CollectionConfig = {
     read: () => true,
     create: ({ req }) => {
       if (isSuperAdmin(req.user)) return true;
-      const tenant = req.user?.tenants?.[0]?.tenant as Tenant;
-      return Boolean(tenant?.stripeDetailsSubmitted);
+      const tenants = req.user?.tenants || [];
+      if (!tenants.length) return false;
+      // Check if tenant has submitted Stripe details
+      if (
+        tenants.some((tenant) =>
+          Boolean((tenant.tenant as Tenant).stripeDetailsSubmitted)
+        )
+      ) {
+        return true;
+      }
+      return false;
+      // const tenant = req.user?.tenants?.[0]?.tenant as Tenant;
+      // return Boolean(tenant?.stripeDetailsSubmitted);
     },
     delete: ({ req }) => isSuperAdmin(req.user),
   },
@@ -25,7 +36,8 @@ export const Products: CollectionConfig = {
     },
     {
       name: "description",
-      type: "richText",
+      type: "textarea",
+      maxLength: 500,
     },
     {
       name: "price",
@@ -89,6 +101,29 @@ export const Products: CollectionConfig = {
       admin: {
         description:
           "If checked, this product will be archived and not visible to customers.",
+      },
+    },
+    {
+      name: "sourceType",
+      type: "select",
+      options: [
+        { label: "Manual", value: "manual" },
+        { label: "From Launchpad", value: "launchpad" },
+      ],
+      defaultValue: "manual",
+      admin: {
+        description: "How this product was created",
+        readOnly: true,
+      },
+    },
+    {
+      name: "sourceLaunchpad",
+      type: "relationship",
+      relationTo: "launchpads",
+      admin: {
+        condition: (data) => data?.sourceType === "launchpad",
+        description: "The launchpad this product was created from",
+        readOnly: true,
       },
     },
   ],

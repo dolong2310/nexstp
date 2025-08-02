@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { registerSchema } from "../../schemas";
+import { useUserStore } from "../../store/use-user-store";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,13 +31,15 @@ const poppins = Poppins({
 
 const SignUpView = () => {
   const router = useRouter();
+  const addUser = useUserStore((state) => state.add);
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
   const registerMutation = useMutation(
     trpc.auth.register.mutationOptions({
-      onSuccess: async () => {
+      onSuccess: async (data) => {
+        addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
         router.push("/");
       },

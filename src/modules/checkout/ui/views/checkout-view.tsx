@@ -111,7 +111,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
       <div className="flex gap-4 lg:gap-16">
         <div className="w-full lg:w-4/7">
-          <div className="flex flex-col gap-4 rounded-md bg-background mb-8">
+          <div className="flex flex-col gap-4 rounded-md mb-8">
             {products?.docs.map((product) => {
               return (
                 <CheckoutItem
@@ -154,7 +154,7 @@ const CheckoutViewSkeleton = () => {
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
       <div className="flex gap-4 lg:gap-16">
         <div className="lg:w-4/7">
-          <div className="flex flex-col gap-4 rounded-md bg-background mb-8">
+          <div className="flex flex-col gap-4 rounded-md mb-8">
             {Array.from({ length: 3 }).map((_, index) => (
               <CheckoutItemSkeleton key={index} />
             ))}

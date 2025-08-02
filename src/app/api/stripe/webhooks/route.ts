@@ -78,6 +78,23 @@ export async function POST(request: Request) {
 
           const lineItems = expandedSession.line_items
             .data as ExpandedLineItem[];
+          console.log(
+            "metadata: ",
+            lineItems.map((item) => item.price.metadata)
+          );
+          console.log(
+            "product: ",
+            lineItems.map((item) => item.price.product)
+          );
+          console.log(
+            "lineItem MAPPING: ",
+            lineItems.map((item) => ({
+              id: item.id,
+              productId: item.price.product.metadata.id,
+              name: item.price.product.metadata.name,
+              launchpad: item.price.product.metadata.launchpad,
+            }))
+          );
 
           for (const item of lineItems) {
             await payload.create({
@@ -88,6 +105,7 @@ export async function POST(request: Request) {
                 user: user.id,
                 product: item.price.product.metadata.id,
                 name: item.price.product.metadata.name,
+                launchpad: item.price.product.metadata.launchpad,
               },
             });
           }

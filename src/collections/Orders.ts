@@ -47,5 +47,13 @@ export const Orders: CollectionConfig = {
         description: "Stripe account associated with the order",
       },
     },
+    {
+      name: "launchpad",
+      type: "relationship",
+      relationTo: "launchpads",
+      admin: {
+        description: "Launchpad mà order này được tạo từ (nếu có)",
+      },
+    },
   ],
 };
