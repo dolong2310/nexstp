@@ -97,17 +97,45 @@ export async function POST(request: Request) {
           );
 
           for (const item of lineItems) {
-            await payload.create({
-              collection: "orders",
-              data: {
-                stripeCheckoutSessionId: data.id,
-                stripeAccountId: event.account,
-                user: user.id,
-                product: item.price.product.metadata.id,
-                name: item.price.product.metadata.name,
-                launchpad: item.price.product.metadata.launchpad,
-              },
-            });
+            // Check if this is a launchpad purchase
+            const isLaunchpadPurchase = !!item.price.product.metadata.launchpad;
+
+            if (isLaunchpadPurchase) {
+              // For launchpad purchases
+              await payload.create({
+                collection: "orders",
+                data: {
+                  stripeCheckoutSessionId: data.id,
+                  stripeAccountId: event.account,
+                  user: user.id,
+                  product: item.price.product.metadata.launchpad, // Use launchpad ID as product
+                  name: item.price.product.metadata.name,
+                  launchpad: item.price.product.metadata.launchpad, // Set launchpad field
+                },
+              });
+
+              // Update sold count
+              await payload.update({
+                collection: "launchpads",
+                id: item.price.product.metadata.launchpad,
+                data: {
+                  soldCount:
+                    (item.price.product.metadata?.launchpadSoldCount || 0) + 1,
+                },
+              });
+            } else {
+              // For regular product purchases
+              await payload.create({
+                collection: "orders",
+                data: {
+                  stripeCheckoutSessionId: data.id,
+                  stripeAccountId: event.account,
+                  user: user.id,
+                  product: item.price.product.metadata.id,
+                  name: item.price.product.metadata.name,
+                },
+              });
+            }
           }
 
           break;

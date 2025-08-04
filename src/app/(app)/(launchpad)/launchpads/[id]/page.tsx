@@ -1,13 +1,16 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { getPayload } from "payload";
+import LaunchpadDetailView, {
+  LaunchpadDetailViewSkeleton,
+} from "@/modules/launchpads/ui/views/launchpad-detail-view";
 import config from "@/payload.config";
-import { LaunchpadDetailView } from "@/modules/launchpads/ui/launchpad-detail-view";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getPayload } from "payload";
+import { Suspense } from "react";
 
 interface Props {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -57,7 +60,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function LaunchpadDetailPage({ params }: Props) {
+const LaunchpadDetailPage = async ({ params }: Props) => {
   const { id } = await params;
-  return <LaunchpadDetailView launchpadId={id} />;
-}
+
+  const queryClient = getQueryClient();
+  try {
+    await queryClient.fetchQuery(trpc.launchpads.getOne.queryOptions({ id }));
+  } catch (error) {
+    redirect("/launchpads");
+  }
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<LaunchpadDetailViewSkeleton />}>
+        <LaunchpadDetailView launchpadId={id} />
+      </Suspense>
+    </HydrationBoundary>
+  );
+};
+
+export default LaunchpadDetailPage;

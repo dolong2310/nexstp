@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   try {
     // Kiểm tra auth header hoặc secret key để bảo mật
     const authHeader = request.headers.get("authorization");
-    const expectedSecret = process.env.CRON_SECRET || "your-secret-key";
+    const expectedSecret = process.env.CRON_SECRET;
 
     if (authHeader !== `Bearer ${expectedSecret}`) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

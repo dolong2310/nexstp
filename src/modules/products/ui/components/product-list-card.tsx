@@ -165,8 +165,8 @@ const ProductListCard = ({
                         reviewCount={product.reviewCount}
                         price={product.price}
                         tenantSlug={product.tenant.slug}
-                        productId={product.id}
                         isPurchased={product.isPurchased}
+                        isOwner={product.isOwner}
                       />
                     </div>
                   );

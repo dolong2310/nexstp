@@ -1,34 +1,39 @@
+import { DEFAULT_LIMIT } from "@/constants";
 import { z } from "zod";
 
-export const createLaunchpadSchema = z.object({
-  title: z.string().min(1, "Title is required").max(100, "Title too long"),
-  description: z.string().min(1, "Description is required").max(500, "Description too long"),
-  content: z.any().optional(), // Rich text content
-  image: z.string().min(1, "Image is required"),
-  originalPrice: z.number().min(0.01, "Original price must be greater than 0"),
-  launchPrice: z.number().min(0.01, "Launch price must be greater than 0"),
-  duration: z.number().min(0.01, "Duration must be at least 1 hour").max(720, "Duration too long"),
-  category: z.string().min(1, "Category is required"),
-  tags: z.array(z.string()).optional(),
-  refundPolicy: z.any().optional(), // Rich text
-}).refine(
-  (data) => data.launchPrice < data.originalPrice,
-  {
+export const createLaunchpadSchema = z
+  .object({
+    title: z.string().min(1, "Title is required").max(100, "Title too long"),
+    description: z
+      .string()
+      .min(1, "Description is required")
+      .max(500, "Description too long"),
+    content: z.any().optional(), // Rich text content
+    image: z.string().min(1, "Image is required"),
+    originalPrice: z
+      .number()
+      .min(0.01, "Original price must be greater than 0"),
+    launchPrice: z.number().min(0.01, "Launch price must be greater than 0"),
+    duration: z
+      .number()
+      .min(0.01, "Duration must be at least 1 hour")
+      .max(720, "Duration too long"),
+    category: z.string().min(1, "Category is required"),
+    tags: z.array(z.string()).optional(),
+    refundPolicy: z.string().optional(),
+  })
+  .refine((data) => data.launchPrice < data.originalPrice, {
     message: "Launch price must be less than original price",
     path: ["launchPrice"],
-  }
-);
+  });
 
 export const updateLaunchpadSchema = createLaunchpadSchema.partial();
 
 export const getLaunchpadsSchema = z.object({
   cursor: z.number().default(1),
-  limit: z.number().min(1).max(50).default(10),
-  status: z.enum(["draft", "pending", "approved", "live", "ended", "rejected"]).optional(),
-  tenantSlug: z.string().optional(),
-  category: z.string().optional(),
-  sortBy: z.enum(["createdAt", "priority", "startTime", "endTime"]).default("priority"),
-  sortOrder: z.enum(["asc", "desc"]).default("desc"),
+  limit: z.number().default(DEFAULT_LIMIT),
+  search: z.string().optional(),
+  sort: z.enum(["priority", "newest", "ending-soon"]).default("priority"),
 });
 
 export const getLaunchpadSchema = z.object({

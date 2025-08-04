@@ -57,10 +57,10 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
 
       {/* Library button */}
       {user && (
-        <Button variant="elevated" asChild>
+        <Button asChild variant="elevated" className="size-12 md:size-auto md:self-stretch shrink-0">
           <Link prefetch href="/library">
             <BookmarkCheckIcon />
-            Library
+            <span className="hidden md:block">Library</span>
           </Link>
         </Button>
       )}

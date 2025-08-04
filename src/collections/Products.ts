@@ -11,14 +11,9 @@ export const Products: CollectionConfig = {
       const tenants = req.user?.tenants || [];
       if (!tenants.length) return false;
       // Check if tenant has submitted Stripe details
-      if (
-        tenants.some((tenant) =>
-          Boolean((tenant.tenant as Tenant).stripeDetailsSubmitted)
-        )
-      ) {
-        return true;
-      }
-      return false;
+      return tenants.some((tenant) =>
+        Boolean((tenant.tenant as Tenant).stripeDetailsSubmitted)
+      );
       // const tenant = req.user?.tenants?.[0]?.tenant as Tenant;
       // return Boolean(tenant?.stripeDetailsSubmitted);
     },

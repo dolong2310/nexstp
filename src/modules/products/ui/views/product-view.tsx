@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { CartButtonSkeleton } from "../components/cart-button";
+import { RefundPolicy } from "@/types";
 
 const CartButton = dynamic(
   () => import("../components/cart-button").then((mod) => mod.default),
@@ -113,7 +114,8 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 
             <div className="p-6">
               {product.description ? (
-                <RichText data={product.description} />
+                // <RichText data={product.description} />
+                product.description
               ) : (
                 <p className="font-medium text-muted-foreground italic">
                   No description available
@@ -144,7 +146,9 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                 <p className="text-center font-medium">
                   {product.refundPolicy === "no-refunds"
                     ? "No refunds"
-                    : `${product.refundPolicy} money back guarantee`}
+                    : `${
+                        RefundPolicy[product.refundPolicy!]
+                      } money back guarantee`}
                 </p>
               </div>
 

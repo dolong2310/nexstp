@@ -35,17 +35,19 @@ const ProductView = ({ productId }: Props) => {
 
       <header className="py-8 border-b bg-third">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-12">
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-4xl font-medium">{displayName}</h1>
-            {product?.isFromLaunchpad && (
-              <Badge className="bg-green-100 text-green-800">
-                From Launchpad
-              </Badge>
+          <div className="flex items-center gap-3">
+            <h1 className="text-4xl font-medium">{product.name}</h1>
+            {product.isFromLaunchpad && (
+              // Custom Badge
+              <div className="relative px-2 py-0.5 border bg-feature w-fit rounded-sm">
+                <p className="text-xs font-medium">Launchpad</p>
+              </div>
             )}
           </div>
-          <p className="font-medium">Your purchased product</p>
-          {product?.isFromLaunchpad && product.originalPrice && (
-            <p className="text-sm text-muted-foreground">
+          {/* <h1 className="text-4xl font-medium">{product.name}</h1> */}
+          <p className="font-medium">Your purchased and reviews</p>
+          {product.isFromLaunchpad && product.originalPrice && (
+            <p className="text-sm text-muted-foreground mt-1">
               You saved ${product.originalPrice - product.price} from launch
               price!
             </p>

@@ -10,7 +10,7 @@ import { Suspense } from "react";
 
 interface Props {
   params: Promise<{ productId: string }>;
-};
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productId } = await params;
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const description =
-    product.plainTextDescription || `Browse ${product.name} in the library`;
+    product.description || `Browse ${product.name} in the library`;
 
   return {
     title: `${product.name}`,

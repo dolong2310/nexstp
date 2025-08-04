@@ -1,5 +1,17 @@
-import { LaunchpadsView } from "@/modules/launchpads/ui/launchpad-view";
+import { DEFAULT_LIMIT } from "@/constants";
+import { loadLaunchpadFilters } from "@/modules/launchpads/search-params";
+import LaunchpadsView, {
+  LaunchpadsViewSkeleton,
+} from "@/modules/launchpads/ui/views/launchpad-view";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
+import type { SearchParams } from "nuqs/server";
+import { Suspense } from "react";
+
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
 
 export const metadata: Metadata = {
   title: "Launchpads - Exclusive Early Access Deals",
@@ -21,6 +33,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LaunchpadsPage() {
-  return <LaunchpadsView />;
-}
+const LaunchpadsPage = async ({ searchParams }: Props) => {
+  const filters = await loadLaunchpadFilters(searchParams);
+
+  const queryClient = getQueryClient();
+  void queryClient.prefetchInfiniteQuery(
+    trpc.launchpads.getMany.infiniteQueryOptions({
+      ...filters,
+      limit: DEFAULT_LIMIT,
+    })
+  );
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<LaunchpadsViewSkeleton />}>
+        <LaunchpadsView />
+      </Suspense>
+    </HydrationBoundary>
+  );
+};
+
+export default LaunchpadsPage;

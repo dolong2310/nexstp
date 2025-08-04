@@ -6,6 +6,7 @@ export type ProductMetadata = {
   price: number;
   stripeAccountId: string;
   launchpad: string;
+  launchpadSoldCount?: number; // Optional, only for launchpad products
 };
 
 export type CheckoutMetadata = {

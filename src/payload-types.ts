@@ -315,32 +315,32 @@ export interface Launchpad {
   description?: string | null;
   image: string | Media;
   /**
-   * Giá niêm yết gốc
+   * Original listed price
    */
   originalPrice: number;
   /**
-   * Giá ưu đãi khi launch
+   * Launch promotional price
    */
   launchPrice: number;
   /**
-   * Thời gian live (số giờ)
+   * Live duration (in hours)
    */
   duration: number;
   /**
-   * Thời gian bắt đầu (tự động set khi publish)
+   * Start time (automatically set upon publishing)
    */
   startTime?: string | null;
   /**
-   * Thời gian kết thúc (tự động tính)
+   * End time (automatically set upon publishing)
    */
   endTime?: string | null;
   status: 'draft' | 'pending' | 'approved' | 'live' | 'ended' | 'rejected';
   /**
-   * Thứ tự ưu tiên (chỉ admin có thể thay đổi)
+   * Priority order (admin only)
    */
   priority?: number | null;
   /**
-   * Số lượng đã bán
+   * Quantity sold
    */
   soldCount?: number | null;
   tenant?: (string | null) | Tenant;
@@ -362,11 +362,11 @@ export interface Launchpad {
     [k: string]: unknown;
   } | null;
   /**
-   * Chính sách hoàn tiền
+   * Refund policy
    */
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refunds') | null;
   /**
-   * Lý do từ chối (chỉ admin có thể thêm)
+   * Rejection reason (admin only)
    */
   rejectionReason?: string | null;
   /**
@@ -394,7 +394,7 @@ export interface Order {
    */
   stripeAccountId?: string | null;
   /**
-   * Launchpad mà order này được tạo từ (nếu có)
+   * Launchpad this order was created from (if any)
    */
   launchpad?: (string | null) | Launchpad;
   updatedAt: string;

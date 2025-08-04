@@ -160,15 +160,15 @@ export const productsRouter = createTRPCRouter({
       // Lọc các sản phẩm theo tenant của người dùng
       // Nếu người dùng có nhiều tenants, thì sẽ lọc ra các sản phẩm thuộc về các tenants đó
       // Điều kiện này chỉ lọc các sản phẩm khi không có tenantSlug được cung cấp (nghĩa là ở trang home public, con trang của tenant thì có tenantSlug)
-      if (
-        !input.tenantSlug &&
-        session?.user?.tenants &&
-        session.user.tenants.length > 0
-      ) {
-        where["tenant"] = {
-          not_in: session.user.tenants.map((t) => (t.tenant as Tenant).id),
-        };
-      }
+      // if (
+      //   !input.tenantSlug &&
+      //   session?.user?.tenants &&
+      //   session.user.tenants.length > 0
+      // ) {
+      //   where["tenant"] = {
+      //     not_in: session.user.tenants.map((t) => (t.tenant as Tenant).id),
+      //   };
+      // }
 
       let sort: Sort = "-createdAt";
 
@@ -260,21 +260,21 @@ export const productsRouter = createTRPCRouter({
         };
       }
 
-      const ordersData = await ctx.db.find({
-        collection: "orders",
-        pagination: false,
-        where: {
-          user: { equals: session.user?.id },
-        },
-      });
-      const purchasedProductIds = ordersData.docs.map((order) => (order.product as Product).id);
+      // const ordersData = await ctx.db.find({
+      //   collection: "orders",
+      //   pagination: false,
+      //   where: {
+      //     user: { equals: session.user?.id },
+      //   },
+      // });
+      // const purchasedProductIds = ordersData.docs.map((order) => (order.product as Product).id);
 
-      // Nếu có purchasedProductIds thì sẽ lọc ra các sản phẩm mà user đã mua
-      if (purchasedProductIds.length > 0) {
-        where.id = {
-          not_in: purchasedProductIds,
-        };
-      }
+      // // Nếu có purchasedProductIds thì sẽ lọc ra các sản phẩm mà user đã mua
+      // if (purchasedProductIds.length > 0) {
+      //   where.id = {
+      //     not_in: purchasedProductIds,
+      //   };
+      // }
 
       const data = await ctx.db.find({
         collection: "products",
@@ -361,6 +361,7 @@ export const productsRouter = createTRPCRouter({
         ...data,
         docs: dataWithSummarizedReviews.map((doc) => ({
           ...doc,
+          isOwner: (session.user?.tenants || []).map((t) => (t.tenant as Tenant).id).includes((doc.tenant as Tenant).id),
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & { image: Media | null },
         })),

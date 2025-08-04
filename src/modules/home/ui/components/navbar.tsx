@@ -17,10 +17,8 @@ const poppins = Poppins({
 
 const navbarItems = [
   { href: "/", children: "Home" },
+  { href: "/launchpads", children: "Launchpads" },
   { href: "/about", children: "About" },
-  { href: "/features", children: "Features" },
-  { href: "/pricing", children: "Pricing" },
-  { href: "/contact", children: "Contact" },
 ];
 
 const Navbar = () => {

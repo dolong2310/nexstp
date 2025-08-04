@@ -5,6 +5,7 @@ import type { CollectionConfig } from "payload";
 export const Launchpads: CollectionConfig = {
   slug: "launchpads",
   access: {
+    // @ts-ignore
     read: ({ req }) => {
       // Public có thể xem launchpads live
       if (!req.user) {
@@ -41,7 +42,7 @@ export const Launchpads: CollectionConfig = {
         return true;
       }
 
-      // Cho phép tenant update khi tạo mới hoặc khi status = 'draft'
+      // Cho phép tenant update khi tạo mới hoặc khi status = 'draft' hoặc 'rejected'
       if (!req.user?.tenants?.length) {
         return false;
       }
@@ -51,8 +52,8 @@ export const Launchpads: CollectionConfig = {
         return true;
       }
 
-      // Nếu có data và status không phải draft thì không cho phép
-      if (data?.status && data.status !== "draft") {
+      // Nếu có data và status không phải draft hoặc rejected thì không cho phép
+      if (data?.status && !["draft", "rejected"].includes(data.status)) {
         return false;
       }
 
@@ -64,8 +65,8 @@ export const Launchpads: CollectionConfig = {
         return true;
       }
 
-      // Chỉ có thể xóa khi status = 'draft'
-      if (data?.status && data.status !== "draft") {
+      // Chỉ có thể xóa khi status = 'draft' hoặc 'rejected'
+      if (data?.status && !["draft", "rejected"].includes(data.status)) {
         return false;
       }
 
@@ -78,7 +79,7 @@ export const Launchpads: CollectionConfig = {
     components: {
       edit: {
         beforeDocumentControls: [
-          "@/modules/launchpads/ui/launchpad-actions#LaunchpadActions",
+          "@/components/admin/launchpads/launchpad-actions#LaunchpadActions",
         ],
       },
     },
@@ -108,7 +109,7 @@ export const Launchpads: CollectionConfig = {
       required: true,
       min: 0,
       admin: {
-        description: "Giá niêm yết gốc",
+        description: "Original listed price",
       },
     },
     {
@@ -117,7 +118,7 @@ export const Launchpads: CollectionConfig = {
       required: true,
       min: 0,
       admin: {
-        description: "Giá ưu đãi khi launch",
+        description: "Launch promotional price",
       },
     },
     {
@@ -127,14 +128,14 @@ export const Launchpads: CollectionConfig = {
       min: 0.001,
       max: 720,
       admin: {
-        description: "Thời gian live (số giờ)",
+        description: "Live duration (in hours)",
       },
     },
     {
       name: "startTime",
       type: "date",
       admin: {
-        description: "Thời gian bắt đầu (tự động set khi publish)",
+        description: "Start time (automatically set upon publishing)",
         readOnly: true,
       },
     },
@@ -142,7 +143,7 @@ export const Launchpads: CollectionConfig = {
       name: "endTime",
       type: "date",
       admin: {
-        description: "Thời gian kết thúc (tự động tính)",
+        description: "End time (automatically set upon publishing)",
         readOnly: true,
       },
     },
@@ -168,7 +169,7 @@ export const Launchpads: CollectionConfig = {
       type: "number",
       defaultValue: 0,
       admin: {
-        description: "Thứ tự ưu tiên (chỉ admin có thể thay đổi)",
+        description: "Priority order (admin only)",
         condition: (data, siblingData, { user }) => isSuperAdmin(user),
       },
       access: {
@@ -181,7 +182,7 @@ export const Launchpads: CollectionConfig = {
       defaultValue: 0,
       admin: {
         readOnly: true,
-        description: "Số lượng đã bán",
+        description: "Quantity sold",
       },
     },
     {
@@ -239,7 +240,7 @@ export const Launchpads: CollectionConfig = {
       options: ["30-day", "14-day", "7-day", "3-day", "1-day", "no-refunds"],
       defaultValue: "30-day",
       admin: {
-        description: "Chính sách hoàn tiền",
+        description: "Refund policy",
       },
     },
     {
@@ -247,7 +248,7 @@ export const Launchpads: CollectionConfig = {
       type: "textarea",
       admin: {
         condition: (data) => data?.status === "rejected",
-        description: "Lý do từ chối (chỉ admin có thể thêm)",
+        description: "Rejection reason (admin only)",
       },
       access: {
         update: ({ req }) => isSuperAdmin(req.user),

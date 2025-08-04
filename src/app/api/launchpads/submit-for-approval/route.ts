@@ -43,9 +43,9 @@ export async function POST(request: NextRequest) {
     // }
 
     // Check status
-    if (launchpad.status !== "draft") {
+    if (!["draft", "rejected"].includes(launchpad.status)) {
       return NextResponse.json(
-        { message: "Can only submit draft launchpads for approval" },
+        { message: "Can only submit draft or rejected launchpads for approval" },
         { status: 400 }
       );
     }

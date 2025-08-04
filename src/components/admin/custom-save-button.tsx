@@ -1,7 +1,7 @@
 "use client";
 
-import { LaunchpadActions } from "@/modules/launchpads/ui/launchpad-actions";
 import type { BeforeDocumentControlsClientProps } from "payload";
+import { LaunchpadActions } from "./launchpads/launchpad-actions";
 
 export const CustomSaveButton = (props: BeforeDocumentControlsClientProps) => {
   return (

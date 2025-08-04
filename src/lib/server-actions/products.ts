@@ -68,6 +68,8 @@ export async function getProductForMetadata(productId: string) {
             tags: launchpad.tags,
             content: launchpad.content,
             refundPolicy: launchpad.refundPolicy,
+            createdAt: launchpad.createdAt,
+            updatedAt: launchpad.updatedAt,
           };
           isFromLaunchpad = true;
         }
@@ -83,6 +85,7 @@ export async function getProductForMetadata(productId: string) {
       collection: "reviews",
       pagination: false,
       where: {
+        // product: { equals: product.id },
         product: { equals: productId }, // Sử dụng productId gốc
       },
     });
@@ -95,16 +98,16 @@ export async function getProductForMetadata(productId: string) {
     }
 
     // Step 3: Convert rich text description to plain text
-    const plainTextDescription = product.description
-      ? extractTextFromRichText(product.description)
-      : "";
+    // const plainTextDescription = product.description
+    //   ? extractTextFromRichText(product.description)
+    //   : "";
 
     return {
       ...product,
       image: product.image as Media | null,
       reviewRating,
       reviewCount: reviewsData.totalDocs,
-      plainTextDescription,
+      // plainTextDescription,
       isFromLaunchpad, // Add flag để biết đây là launchpad hay product
     };
   } catch (error) {
@@ -113,7 +116,6 @@ export async function getProductForMetadata(productId: string) {
   }
 }
 
-// Thêm function riêng cho launchpad metadata
 export async function getLaunchpadForMetadata(launchpadId: string) {
   const payload = await getPayload({ config });
 
@@ -162,3 +164,49 @@ export async function getLaunchpadForMetadata(launchpadId: string) {
     return null;
   }
 }
+
+// export async function getProductForMetadata(productId: string) {
+//   const payload = await getPayload({ config });
+
+//   try {
+//     const product = await payload.findByID({
+//       collection: "products",
+//       id: productId,
+//       depth: 2,
+//     });
+
+//     if (!product) return null;
+
+//     // Lấy reviews data
+//     const reviewsData = await payload.find({
+//       collection: "reviews",
+//       pagination: false,
+//       where: {
+//         product: { equals: product.id },
+//       },
+//     });
+
+//     let reviewRating = 0;
+//     if (reviewsData.docs.length > 0) {
+//       reviewRating =
+//         reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) /
+//         reviewsData.totalDocs;
+//     }
+
+//     // Convert rich text description to plain text
+//     const plainTextDescription = product.description
+//       ? extractTextFromRichText(product.description)
+//       : "";
+
+//     return {
+//       ...product,
+//       image: product.image as Media | null,
+//       reviewRating,
+//       reviewCount: reviewsData.totalDocs,
+//       plainTextDescription, // Thêm field này
+//     };
+//   } catch (error) {
+//     console.error("Error fetching product:", error);
+//     return null;
+//   }
+// }

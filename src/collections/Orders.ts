@@ -52,7 +52,7 @@ export const Orders: CollectionConfig = {
       type: "relationship",
       relationTo: "launchpads",
       admin: {
-        description: "Launchpad mà order này được tạo từ (nếu có)",
+        description: "Launchpad this order was created from (if any)",
       },
     },
   ],
