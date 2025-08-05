@@ -42,8 +42,6 @@ export const libraryRouter = createTRPCRouter({
         },
       });
 
-      console.log("get one ~ ordersData: ", ordersData);
-
       const order = ordersData.docs[0];
 
       if (!order) {

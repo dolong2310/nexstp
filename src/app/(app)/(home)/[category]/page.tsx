@@ -1,5 +1,4 @@
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
-import { getCategoryForMetadata } from "@/lib/server-actions/categories";
 import {
   loadProductFilters,
   loadProductLayout,
@@ -8,6 +7,7 @@ import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import {
   metadataKeywords,
@@ -21,11 +21,29 @@ interface Props {
   searchParams: Promise<SearchParams>;
 }
 
+const prefetchCategoryData = async (slug: string) => {
+  const queryClient = getQueryClient();
+
+  try {
+    await queryClient.prefetchQuery(
+      trpc.categories.getCategory.queryOptions({ slug })
+    );
+
+    const category = queryClient.getQueryData(
+      trpc.categories.getCategory.queryOptions({ slug }).queryKey
+    );
+
+    return { queryClient, categoryData: category };
+  } catch (error) {
+    redirect("/");
+  }
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
 
   // Lấy thông tin category thực từ database
-  const categoryData = await getCategoryForMetadata(category);
+  const { categoryData } = await prefetchCategoryData(category);
 
   if (!categoryData) {
     return {

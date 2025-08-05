@@ -7,14 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
-import { RichText } from "@payloadcms/richtext-lexical/react";
+import { RefundPolicy } from "@/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { CartButtonSkeleton } from "../components/cart-button";
-import { RefundPolicy } from "@/types";
 
 const CartButton = dynamic(
   () => import("../components/cart-button").then((mod) => mod.default),

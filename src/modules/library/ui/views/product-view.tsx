@@ -3,7 +3,7 @@
 import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowLeftIcon, Badge } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ReviewFormSkeleton } from "../components/review-form";
@@ -60,9 +60,7 @@ const ProductView = ({ productId }: Props) => {
           <div className="lg:col-span-2">
             <div className="p-4 bg-background rounded-md border gap-4">
               <Suspense fallback={<ReviewFormSkeleton />}>
-                <ReviewSidebar
-                  productId={(product?.sourceLaunchpad as string) || productId}
-                />
+                <ReviewSidebar productId={productId} />
               </Suspense>
             </div>
           </div>

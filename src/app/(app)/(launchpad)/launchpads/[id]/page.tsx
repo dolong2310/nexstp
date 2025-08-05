@@ -1,28 +1,40 @@
 import LaunchpadDetailView, {
   LaunchpadDetailViewSkeleton,
 } from "@/modules/launchpads/ui/views/launchpad-detail-view";
-import config from "@/payload.config";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getPayload } from "payload";
 import { Suspense } from "react";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
+const prefetchLaunchpadData = async (id: string) => {
+  const queryClient = getQueryClient();
+
+  try {
+    await queryClient.prefetchQuery(
+      trpc.launchpads.getOne.queryOptions({ id })
+    );
+
+    const launchpad = queryClient.getQueryData(
+      trpc.launchpads.getOne.queryOptions({ id }).queryKey
+    );
+
+    return { queryClient, launchpad };
+  } catch (error) {
+    redirect("/launchpads");
+  }
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
   try {
-    const payload = await getPayload({ config });
-    const launchpad = await payload.findByID({
-      collection: "launchpads",
-      id,
-      depth: 2,
-    });
+    const { launchpad } = await prefetchLaunchpadData(id);
+    console.log("launchpad:", launchpad);
 
     if (!launchpad || launchpad.status !== "live") {
       return {
@@ -63,12 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const LaunchpadDetailPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  const queryClient = getQueryClient();
-  try {
-    await queryClient.fetchQuery(trpc.launchpads.getOne.queryOptions({ id }));
-  } catch (error) {
-    redirect("/launchpads");
-  }
+  const { queryClient } = await prefetchLaunchpadData(id);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

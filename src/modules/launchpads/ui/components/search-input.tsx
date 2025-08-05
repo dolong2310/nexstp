@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import useDebounce from "@/hooks/useDebounce";
+import useDebounce from "@/hooks/use-debounce";
 import { SearchIcon } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import useLaunchpadFilter from "../../hooks/use-launchpad-filter";

@@ -1,11 +1,11 @@
 import { metadataOpenGraph } from "@/app/(app)/shared-metadata";
-import { getProductForMetadata } from "@/lib/server-actions/products";
 import ProductView, {
   ProductViewSkeleton,
 } from "@/modules/products/ui/views/product-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 interface Props {
@@ -15,10 +15,30 @@ interface Props {
   }>;
 }
 
+const prefetchProductData = async (id: string) => {
+  const queryClient = getQueryClient();
+
+  try {
+    await queryClient.prefetchQuery(trpc.products.getOne.queryOptions({ id }));
+
+    const product = queryClient.getQueryData(
+      trpc.products.getOne.queryOptions({ id }).queryKey
+    );
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    return { queryClient, product };
+  } catch (error) {
+    redirect("/");
+  }
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productId } = await params;
 
-  const product = await getProductForMetadata(productId);
+  const { product } = await prefetchProductData(productId);
 
   if (!product) {
     return {
@@ -27,6 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const image = product.image?.url;
   const description =
     product.description || `Browse ${product.name} in the library`;
 
@@ -37,10 +58,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...metadataOpenGraph,
       title: product.name,
       description: description,
-      images: product.image?.url
+      images: image
         ? [
             {
-              url: product.image.url,
+              url: image,
               width: 1200,
               height: 630,
               alt: product.name,
@@ -52,7 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: product.name,
       description: description,
-      images: product.image?.url ? [product.image.url] : [],
+      images: image ? [image] : [],
     },
   };
 }
@@ -60,9 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const ProductDetailPage = async ({ params }: Props) => {
   const { slug, productId: id } = await params;
 
-  const queryClient = getQueryClient();
-  // void queryClient.prefetchQuery(trpc.products.getOne.queryOptions({ id }));
-  void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
+  const { queryClient } = await prefetchProductData(id);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
