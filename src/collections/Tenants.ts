@@ -46,6 +46,11 @@ export const Tenants: CollectionConfig = {
       relationTo: "media",
     },
     {
+      name: "description",
+      type: "textarea",
+      maxLength: 500,
+    },
+    {
       name: "stripeAccountId",
       type: "text",
       required: true,

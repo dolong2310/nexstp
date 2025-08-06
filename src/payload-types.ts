@@ -186,6 +186,7 @@ export interface Tenant {
    */
   slug: string;
   image?: (string | null) | Media;
+  description?: string | null;
   /**
    * Stripe Account ID associated with your store
    */
@@ -719,6 +720,7 @@ export interface TenantsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   image?: T;
+  description?: T;
   stripeAccountId?: T;
   stripeDetailsSubmitted?: T;
   updatedAt?: T;

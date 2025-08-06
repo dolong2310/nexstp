@@ -124,20 +124,18 @@ const TenantBanner = ({ tenantSlug }: Props) => {
           />
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-bold mt-0.5">{data.name}</h1>
-            <p className="line-clamp-2 overflow-hidden">
-              quis excepturi esse? Eveniet, quam sit pariatur quaerat est
-              laborum iusto ducimus? Aperiam ipsa odio nemo totam accusamus
-              reiciendis sit tempore? Unde error iste voluptas adipisci deserunt
-              provident? quis excepturi esse? Eveniet, quam sit pariatur quaerat
-              est laborum iusto ducimus? Aperiam ipsa odio nemo totam accusamus
-              reiciendis sit tempore? Unde error iste voluptas adipisci deserunt
-              provident?
-            </p>
+            {data.description ? (
+              <p className="line-clamp-2 overflow-hidden">{data.description}</p>
+            ) : (
+              <p className="text-muted-foreground italic">
+                No description available.
+              </p>
+            )}
           </div>
         </div>
 
         <p className="flex mt-4 text-sm text-muted-foreground">
-          {"Description available."}
+          {"More information about the store."}
         </p>
       </div>
     </div>
