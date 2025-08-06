@@ -2,16 +2,14 @@
 
 import Media from "@/components/media";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LIMIT } from "@/constants";
 import useSession from "@/hooks/use-session";
 import {
-  cn,
   formatCurrency,
   generateTenantUrl,
-  getCurrentImageUrl,
+  getCurrentImageUrl
 } from "@/lib/utils";
 import useCheckoutState from "@/modules/checkout/hooks/use-checkout-state";
 import { useTRPC } from "@/trpc/client";
@@ -24,12 +22,10 @@ import {
 } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
 import {
-  Heart,
   LoaderIcon,
   Share2,
   ShoppingCart,
-  Star,
-  Timer,
+  Timer
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -178,138 +174,140 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
 
   return (
     <div className="px-4 lg:px-12 py-10">
-      <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
-        <div className="w-full md:w-2/3 border rounded-sm bg-background overflow-hidden">
-          {/* Hero Image */}
-          <div className="relative aspect-square rounded-tl-sm rounded-tr-sm overflow-hidden">
-            <Media
-              src={getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"}
-              alt={launchpad.title}
-              fill
-              // containerClassName="aspect-video"
-              className="size-full object-cover"
-            />
+        <div className="w-full md:w-3/5 space-y-6">
+          <div className="border rounded-sm bg-background overflow-hidden">
+            {/* Hero Image */}
+            <div className="relative aspect-square rounded-tl-sm rounded-tr-sm overflow-hidden">
+              <Media
+                src={
+                  getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"
+                }
+                alt={launchpad.title}
+                fill
+                // containerClassName="aspect-video"
+                className="size-full object-cover"
+              />
 
-            {/* Status Badge */}
-            <div className="absolute top-4 left-4 px-2 py-0.5 border bg-feature w-fit rounded-sm">
-              <p className="text-xs font-medium">-{discountPercentage}%</p>
+              {/* Status Badge */}
+              <div className="absolute top-4 left-4 px-2 py-0.5 border bg-feature w-fit rounded-sm">
+                <p className="text-xs font-medium">-{discountPercentage}%</p>
+              </div>
+
+              {/* Share Button */}
+              <Button
+                variant="elevated"
+                size="icon"
+                className="absolute top-4 right-4"
+                onClick={handleShare}
+              >
+                <Share2 className="size-4" />
+              </Button>
             </div>
-
-            {/* Share Button */}
-            <Button
-              variant="elevated"
-              size="icon"
-              className="absolute top-4 right-4"
-              onClick={handleShare}
-            >
-              <Share2 className="size-4" />
-            </Button>
           </div>
 
-          <div className="py-4 px-6 space-y-4">
-            {/* Title & Description */}
-            <div className="space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h1 className="text-3xl font-bold mb-2 md:mb-4">
-                    {launchpad.title}
-                  </h1>
-                  {launchpad.description && (
-                    <p className="text-md text-muted-foreground">
-                      {launchpad.description}
+          <Tabs defaultValue="overview" className="gap-4">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="content">Content</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview">
+              <div className="border rounded-sm bg-background overflow-hidden">
+                <div className="p-6">
+                  {launchpad.description ? (
+                    <p className="font-medium">{launchpad.description}</p>
+                  ) : (
+                    <p className="font-medium text-muted-foreground italic">
+                      No description available
+                    </p>
+                  )}
+
+                  {launchpad.tags && launchpad.tags.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <h3 className="font-semibold">Tags</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {launchpad.tags.map((tag) => (
+                          <div
+                            key={tag.id}
+                            className="px-2 py-0.5 border bg-feature w-fit rounded-sm"
+                          >
+                            <p className="text-xs font-medium">{tag.name}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="content">
+              <div className="border rounded-sm bg-background overflow-hidden">
+                <div className="p-6">
+                  {launchpad.content ? (
+                    <RichText data={launchpad.content} />
+                  ) : (
+                    <p className="font-medium text-muted-foreground italic">
+                      No content available
                     </p>
                   )}
                 </div>
-
-                <Button
-                  variant="elevated"
-                  size="icon"
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                >
-                  <Heart
-                    className={cn(
-                      "size-5",
-                      isWishlisted && "fill-red-500 text-red-500"
-                    )}
-                  />
-                </Button>
               </div>
-
-              {/* Tenant Info */}
-              <Link href={generateTenantUrl(launchpad.tenant.slug)}>
-                <div className="flex items-center gap-4">
-                  <Media
-                    src={launchpad.tenant.image?.url || "/default-avatar.png"}
-                    alt={launchpad.tenant.slug}
-                    width={40}
-                    height={40}
-                    sizeFallbackIcon="md"
-                    className="rounded-full border shrink-0 size-10"
-                  />
-                  <div className="">
-                    <p className="text-md font-medium">
-                      {launchpad.tenant.slug}
-                    </p>
-                    <p className="text-sm text-muted-foreground">Creator</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            {/* Content */}
-            {launchpad.content && (
-              <div className="space-y-2">
-                <h3 className="font-semibold">About This Launch</h3>
-                <div className="prose prose-sm max-w-none dark:prose-invert border rounded-sm p-4">
-                  <RichText data={launchpad.content} />
-                </div>
-              </div>
-            )}
-
-            {/* Tags */}
-            {launchpad.tags && launchpad.tags.length > 0 && (
-              <div className="space-y-2">
-                <h3 className="font-semibold">Tags</h3>
-                <div className="flex flex-wrap gap-2">
-                  {launchpad.tags.map((tag) => (
-                    <div
-                      key={tag.id}
-                      className="px-2 py-0.5 border bg-feature w-fit rounded-sm"
-                    >
-                      <p className="text-xs font-medium">{tag.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+            </TabsContent>
+          </Tabs>
         </div>
 
         {/* Right Column */}
-        <div className="w-full md:w-1/3">
-          <div className="py-4 px-6 space-y-4 border rounded-sm bg-background sticky top-4 right-0">
-            <div className="space-y-4">
-              {/* Pricing */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl font-bold text-feature">
+        <div className="w-full md:w-2/5">
+          <div className="border rounded-sm bg-background py-6 space-y-4 sticky top-4 right-0">
+            <div className="px-6">
+              <Link
+                href={generateTenantUrl(launchpad.tenant.slug)}
+                className="flex items-center gap-2"
+              >
+                {launchpad.tenant.image?.url && (
+                  <Media
+                    src={launchpad.tenant.image?.url}
+                    alt={launchpad.tenant.slug}
+                    width={20}
+                    height={20}
+                    className="rounded-full border shrink-0 size-5"
+                  />
+                )}
+                <p className="text-base underline font-medium">
+                  {launchpad.tenant.slug}
+                </p>
+              </Link>
+            </div>
+
+            <div className="px-6">
+              <h1 className="text-4xl font-medium">{launchpad.title}</h1>
+            </div>
+
+            <div className="px-6">
+              <div className="flex items-center gap-3">
+                <div className="px-2 py-1 border bg-feature w-fit">
+                  <p className="text-base font-medium">
                     {formatCurrency(launchpad.launchPrice)}
-                  </span>
-                  <span className="text-lg line-through text-muted-foreground">
-                    {formatCurrency(launchpad.originalPrice)}
-                  </span>
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Save{" "}
-                  {formatCurrency(
-                    launchpad.originalPrice - launchpad.launchPrice
-                  )}{" "}
-                  ({discountPercentage}% off)
+                <p className="text-lg line-through text-muted-foreground">
+                  {formatCurrency(launchpad.originalPrice)}
                 </p>
               </div>
+              <p className="flex items-center gap-1 text-sm text-muted-foreground mt-2">
+                <span>Save</span>
+                <span>
+                  {formatCurrency(
+                    launchpad.originalPrice - launchpad.launchPrice
+                  )}
+                </span>
+                <span>({discountPercentage}% off)</span>
+              </p>
+            </div>
 
-              {/* Timer */}
+            <div className="px-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="flex items-center gap-1">
@@ -326,8 +324,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               </div>
             </div>
 
-            <div className="space-y-4">
-              {/* Purchase Button */}
+            <div className="px-6">
               <Button
                 variant="elevated"
                 className="w-full bg-feature text-lg font-semibold"
@@ -338,10 +335,9 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               >
                 {renderPurchaseLabel()}
               </Button>
+            </div>
 
-              <Separator />
-
-              {/* Stats */}
+            <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">
@@ -390,9 +386,10 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                   </span>
                 </div>
               </div>
+            </div>
 
-              {/* Guarantee */}
-              {/* <div className="flex items-center justify-center border-t pt-4">
+            {/* <div className="px-6">
+              <div className="flex items-center justify-center border-t pt-4">
                 <div className="flex flex-col items-center w-full border border-green-400 bg-green-100 font-medium px-4 py-3 rounded">
                   <div className="flex items-start justify-between">
                     <Star className="size-6 fill-green-500 mr-1" />
@@ -404,8 +401,8 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                     {formatCurrency(launchpad.originalPrice)} after launch ends.
                   </p>
                 </div>
-              </div> */}
-            </div>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -416,66 +413,104 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
 export const LaunchpadDetailViewSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-10">
-      <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap gap-8">
-        {/* Left Column */}
-        <div className="w-full md:w-2/3 border rounded-sm bg-background overflow-hidden">
-          <div className="relative aspect-square rounded-tl-sm rounded-tr-sm overflow-hidden bg-gray-200 animate-pulse" />
-          <div className="py-4 px-6 space-y-4">
-            <div className="space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h1 className="text-3xl font-bold mb-2 md:mb-4 bg-gray-200 animate-pulse h-8 w-full" />
-                  <p className="text-md text-muted-foreground bg-gray-200 animate-pulse h-6 w-full" />
-                </div>
-                <Button variant="elevated" size="icon" disabled>
-                  <Heart className="size-5 fill-red-500 text-red-500" />
-                </Button>
-              </div>
-              <Link href="/">
-                <div className="flex items-center gap-4">
-                  <div className="rounded-full bg-gray-200 animate-pulse shrink-0 size-10" />
-                  <div>
-                    <p className="text-md font-medium bg-gray-200 animate-pulse h-6 w-full" />
-                    <p className="text-sm text-muted-foreground bg-gray-200 animate-pulse h-4 w-full" />
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold bg-gray-200 animate-pulse h-6 w-full" />
-              <div className="prose prose-sm max-w-none dark:prose-invert border rounded-sm p-4 bg-gray-200 animate-pulse h-[100px]" />
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
+        <div className="w-full md:w-3/5 space-y-6">
+          <div className="border rounded-sm bg-background overflow-hidden">
+            <div className="relative aspect-square rounded-tl-sm rounded-tr-sm overflow-hidden">
+              <div className="size-full bg-gray-200 animate-pulse" />
             </div>
           </div>
+
+          <Tabs defaultValue="overview" className="gap-4">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="content">Content</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview">
+              <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-2">
+                <p className="text-base font-medium bg-muted w-full h-5 animate-pulse" />
+                <p className="text-base font-medium bg-muted w-2/3 h-5 animate-pulse" />
+              </div>
+            </TabsContent>
+            <TabsContent value="content">
+              <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-2">
+                <p className="text-base font-medium bg-muted w-full h-5 animate-pulse" />
+                <p className="text-base font-medium bg-muted w-2/3 h-5 animate-pulse" />
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
 
-        {/* Right Column */}
-        <div className="w-full md:w-1/3">
-          <div className="py-4 px-6 space-y-4 border rounded-sm sticky top-4 right-0">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl font-bold text-feature bg-gray-200 animate-pulse h-8 w-24" />
-                  <span className="text-lg line-through text-muted-foreground bg-gray-200 animate-pulse h-6 w-20" />
-                </div>
-                <p className="text-sm text-muted-foreground bg-gray-200 animate-pulse h-4 w-full" />
-              </div>
+        <div className="w-full md:w-2/5 space-y-4">
+          <div className="border rounded-sm bg-background py-6 space-y-4 sticky top-4 right-0">
+            <div className="px-6 flex items-center gap-2 animate-pulse">
+              <div className="rounded-full border bg-muted size-5" />
+              <p className="text-base underline font-medium bg-muted w-24 h-5 animate-pulse" />
+            </div>
 
+            <div className="px-6">
+              <h1 className="text-4xl font-medium bg-muted w-3/4 h-8 animate-pulse" />
+            </div>
+
+            <div className="px-6">
+              <div className="flex items-center gap-3">
+                <div className="px-2 py-1 border bg-muted w-20 h-7 animate-pulse rounded" />
+                <p className="text-lg line-through text-muted-foreground bg-muted w-16 h-6 animate-pulse rounded" />
+              </div>
+              <p className="flex items-center gap-1 text-sm text-muted-foreground mt-2">
+                <span className="bg-muted w-10 h-4 animate-pulse rounded" />
+                <span className="bg-muted w-12 h-4 animate-pulse rounded" />
+                <span className="bg-muted w-14 h-4 animate-pulse rounded" />
+              </p>
+            </div>
+
+            <div className="px-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="flex items-center gap-1">
-                    <Timer className="size-4" />
-                    Launch Progress
+                    <div className="bg-muted rounded-full w-4 h-4 animate-pulse" />
+                    <span className="bg-muted w-24 h-4 animate-pulse rounded" />
                   </span>
-                  <span className="font-medium bg-gray-200 animate-pulse h-4 w-16" />
+                  <span className="bg-muted w-8 h-4 animate-pulse rounded" />
                 </div>
-                <Progress
-                  value={50}
-                  className="h-3 bg-gray-200 animate-pulse"
-                />
+                <div className="h-3 bg-muted rounded animate-pulse" />
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>Ends in 2 days</span>
-                  <span>0 sold</span>
+                  <span className="bg-muted w-24 h-4 animate-pulse rounded" />
+                  <span className="bg-muted w-12 h-4 animate-pulse rounded" />
                 </div>
+              </div>
+            </div>
+
+            <div className="px-6">
+              <div className="w-full h-11 bg-muted animate-pulse rounded" />
+            </div>
+
+            <div className="px-6 pt-2">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground bg-muted w-20 h-4 animate-pulse rounded" />
+                  <div className="px-2 py-0.5 border bg-muted w-16 h-5 animate-pulse rounded" />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground bg-muted w-24 h-4 animate-pulse rounded" />
+                  <span className="text-sm font-medium bg-muted w-16 h-4 animate-pulse rounded" />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground bg-muted w-20 h-4 animate-pulse rounded" />
+                  <span className="text-sm font-medium bg-muted w-20 h-4 animate-pulse rounded" />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground bg-muted w-16 h-4 animate-pulse rounded" />
+                  <span className="text-sm font-medium bg-muted w-20 h-4 animate-pulse rounded" />
+                </div>
+
+                <div className="flex items-center justify-between"></div>
+                <span className="text-sm text-muted-foreground bg-muted w-16 h-4 animate-pulse rounded" />
+                <span className="text-sm font-medium bg-muted w-16 h-4 animate-pulse rounded" />
               </div>
             </div>
           </div>

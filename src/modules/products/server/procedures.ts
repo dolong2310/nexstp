@@ -18,9 +18,9 @@ export const productsRouter = createTRPCRouter({
         collection: "products",
         id: input.id,
         depth: 2, // Load the "product.image", "product.tenant" and "product.tenant.image"
-        select: {
-          content: false, // Exclude content field
-        },
+        // select: {
+        //   content: false, // Exclude content field
+        // },
       });
 
       if (product.isArchived) {

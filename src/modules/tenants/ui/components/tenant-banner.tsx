@@ -51,7 +51,7 @@ const TenantBanner = ({ tenantSlug }: Props) => {
   const [containerHeight, avatarSize, translateY] = useScrollDynamicSize({});
 
   return (
-    <div className="sticky top-0 left-0 px-4 lg:px-12 pt-4 mt-4 z-20 bg-third">
+    <div className="sticky top-0 left-0 px-4 lg:px-12 py-4 mt-4 z-20 bg-third">
       <div
         className="p-6 overflow-hidden relative z-10 border rounded-xl bg-default-filter"
         style={{
