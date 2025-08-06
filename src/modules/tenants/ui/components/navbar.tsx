@@ -23,7 +23,7 @@ interface Props {
 const Navbar = ({ slug }: Props) => {
   return (
     <nav className="h-20 border-b font-medium bg-background">
-      <div className="max-w-screen-lg mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
+      <div className="max-w-screen-xl mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
         <Link href={process.env.NEXT_PUBLIC_APP_URL!}>
           <span className={cn("text-xl font-semibold", poppins.className)}>
             Nexstp
@@ -39,7 +39,7 @@ const Navbar = ({ slug }: Props) => {
 export const NavbarSkeleton = () => {
   return (
     <nav className="h-20 border-b font-medium bg-background">
-      <div className="max-w-screen-lg mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
+      <div className="max-w-screen-xl mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
         <Link href={process.env.NEXT_PUBLIC_APP_URL!}>
           <span className={cn("text-5xl font-semibold", poppins.className)}>
             nexstp

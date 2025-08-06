@@ -1,5 +1,6 @@
-import Footer from "@/modules/tenants/ui/components/footer";
-import Navbar from "@/modules/tenants/ui/components/navbar";
+import Navbar from "@/modules/home/ui/components/navbar";
+import Footer from "@/modules/home/ui/components/footer";
+
 import { Metadata } from "next";
 import React from "react";
 
@@ -18,9 +19,9 @@ export const metadata: Metadata = {
 const LaunchpadsLayout = async ({ children }: Props) => {
   return (
     <div className="min-h-screen flex flex-col bg-third">
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="flex-1">
-        <div className="max-w-screen-lg mx-auto">{children}</div>
+        <div className="max-w-screen-xl mx-auto">{children}</div>
       </div>
       <Footer />
     </div>

@@ -12,7 +12,7 @@ const poppins = Poppins({
 const Footer = () => {
   return (
     <footer className="border-t font-medium bg-background">
-      <div className="max-w-screen-lg mx-auto px-4 lg:px-12 py-6 flex items-center justify-between gap-2 h-full">
+      <div className="max-w-screen-xl mx-auto px-4 lg:px-12 py-6 flex items-center justify-between gap-2 h-full">
         <div className="flex items-center gap-2">
           <p>Powered by</p>
           <Link href={process.env.NEXT_PUBLIC_APP_URL!}>

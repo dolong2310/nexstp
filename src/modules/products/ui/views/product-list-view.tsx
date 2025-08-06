@@ -45,7 +45,7 @@ const ProductListView = ({
         {/* <div className="absolute -bottom-2 left-0 right-0 h-2 bg-gradient-to-t from-transparent to-third pointer-events-none" /> */}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-x-12 gap-y-6">
+      <div className="flex flex-col md:flex-row gap-x-8 xl:gap-x-12 gap-y-6">
         <div className="w-full md:w-2/6 lg:w-2/8 xl:w-2/8">
           <div
             className={cn(
