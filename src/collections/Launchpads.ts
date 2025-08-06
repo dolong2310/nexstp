@@ -125,7 +125,7 @@ export const Launchpads: CollectionConfig = {
       name: "duration",
       type: "number",
       required: true,
-      min: 0.001,
+      min: 1,
       max: 720,
       admin: {
         description: "Live duration (in hours)",
@@ -200,7 +200,6 @@ export const Launchpads: CollectionConfig = {
         beforeChange: [
           ({ req, operation, value }) => {
             // TODO: kiểm tra
-            // console.log("Auto-assign tenant khi tạo mới ~ value: ", value);
             // Auto-assign tenant khi tạo launchpad mới
             if (operation === "create" && !value && req.user) {
               const userTenantIds = (req.user.tenants || []).map((tenant) => {
@@ -208,7 +207,6 @@ export const Launchpads: CollectionConfig = {
               });
               if (userTenantIds.length > 0) {
                 const tenantId = userTenantIds[0];
-                // console.log("Auto-assigning tenant:", tenantId);
                 return tenantId;
               }
             }

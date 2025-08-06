@@ -145,11 +145,11 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
     return (
       <>
         {purchaseMutation.isPending ? (
-          <LoaderIcon className="size-5" />
+          <LoaderIcon className="size-5 animate-spin" />
         ) : (
           <ShoppingCart className="size-5" />
         )}
-        <span className="ml-2">Get Early Access</span>
+        <span className="ml-2">Buy</span>
       </>
     );
   };

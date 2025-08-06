@@ -16,7 +16,7 @@ export const createLaunchpadSchema = z
     launchPrice: z.number().min(0.01, "Launch price must be greater than 0"),
     duration: z
       .number()
-      .min(0.01, "Duration must be at least 1 hour")
+      .min(1, "Duration must be at least 1 hour")
       .max(720, "Duration too long"),
     category: z.string().min(1, "Category is required"),
     tags: z.array(z.string()).optional(),

@@ -78,23 +78,6 @@ export async function POST(request: Request) {
 
           const lineItems = expandedSession.line_items
             .data as ExpandedLineItem[];
-          console.log(
-            "metadata: ",
-            lineItems.map((item) => item.price.metadata)
-          );
-          console.log(
-            "product: ",
-            lineItems.map((item) => item.price.product)
-          );
-          console.log(
-            "lineItem MAPPING: ",
-            lineItems.map((item) => ({
-              id: item.id,
-              productId: item.price.product.metadata.id,
-              name: item.price.product.metadata.name,
-              launchpad: item.price.product.metadata.launchpad,
-            }))
-          );
 
           for (const item of lineItems) {
             // Check if this is a launchpad purchase
@@ -115,12 +98,17 @@ export async function POST(request: Request) {
               });
 
               // Update sold count
+              // Atomic increment sold count to avoid race conditions
+              const launchpad = await payload.findByID({
+                collection: "launchpads",
+                id: item.price.product.metadata.launchpad,
+              });
+
               await payload.update({
                 collection: "launchpads",
                 id: item.price.product.metadata.launchpad,
                 data: {
-                  soldCount:
-                    (item.price.product.metadata?.launchpadSoldCount || 0) + 1,
+                  soldCount: (launchpad.soldCount || 0) + 1,
                 },
               });
             } else {

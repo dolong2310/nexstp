@@ -23,7 +23,7 @@ const SearchInput = ({ disabled }: Props) => {
 
   useEffect(() => {
     setFilters({ ...filters, search: debouncedSearchTerm });
-  }, [debouncedSearchTerm]);
+  }, [setFilters, debouncedSearchTerm]);
 
   return (
     <div className="relative w-full">

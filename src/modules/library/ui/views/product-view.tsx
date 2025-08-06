@@ -21,9 +21,6 @@ const ProductView = ({ productId }: Props) => {
     })
   );
 
-  // Determine display name and content based on source type
-  const displayName = product?.name;
-  const displayContent = product?.content;
   return (
     <div className="min-h-screen bg-background">
       <nav className="w-full p-4 border-b bg-third">
@@ -65,8 +62,8 @@ const ProductView = ({ productId }: Props) => {
             </div>
           </div>
           <div className="lg:col-span-5">
-            {displayContent ? (
-              <RichText data={displayContent} />
+            {product?.content ? (
+              <RichText data={product?.content} />
             ) : (
               <p className="font-medium italic text-muted-foreground">
                 No special content
@@ -77,45 +74,6 @@ const ProductView = ({ productId }: Props) => {
       </section>
     </div>
   );
-
-  // return (
-  //   <div className="min-h-screen bg-background">
-  //     <nav className="w-full p-4 border-b bg-third">
-  //       <Link prefetch href="/library" className="flex items-center gap-2">
-  //         <ArrowLeftIcon className="size-4" />
-  //         <span className="text font-medium">Back to Library</span>
-  //       </Link>
-  //     </nav>
-
-  //     <header className="py-8 border-b bg-third">
-  //       <div className="max-w-screen-xl mx-auto px-4 lg:px-12">
-  //         <h1 className="text-4xl font-medium">{product.name}</h1>
-  //         <p className="font-medium">Your purchased and reviews</p>
-  //       </div>
-  //     </header>
-
-  //     <section className="max-w-screen-xl mx-auto px-4 lg:px-12 py-10">
-  //       <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
-  //         <div className="lg:col-span-2">
-  //           <div className="p-4 bg-background rounded-md border gap-4">
-  //             <Suspense fallback={<ReviewFormSkeleton />}>
-  //               <ReviewSidebar productId={productId} />
-  //             </Suspense>
-  //           </div>
-  //         </div>
-  //         <div className="lg:col-span-5">
-  //           {product.content ? (
-  //             <RichText data={product.content} />
-  //           ) : (
-  //             <p className="font-medium italic text-muted-foreground">
-  //               No special content
-  //             </p>
-  //           )}
-  //         </div>
-  //       </div>
-  //     </section>
-  //   </div>
-  // );
 };
 
 export const ProductViewSkeleton = () => {

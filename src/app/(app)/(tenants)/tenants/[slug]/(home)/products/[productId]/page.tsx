@@ -1,11 +1,10 @@
 import { metadataOpenGraph } from "@/app/(app)/shared-metadata";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import ProductView, {
   ProductViewSkeleton,
 } from "@/modules/products/ui/views/product-view";
-import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 interface Props {
@@ -15,30 +14,10 @@ interface Props {
   }>;
 }
 
-const prefetchProductData = async (id: string) => {
-  const queryClient = getQueryClient();
-
-  try {
-    await queryClient.prefetchQuery(trpc.products.getOne.queryOptions({ id }));
-
-    const product = queryClient.getQueryData(
-      trpc.products.getOne.queryOptions({ id }).queryKey
-    );
-
-    if (!product) {
-      throw new Error("Product not found");
-    }
-
-    return { queryClient, product };
-  } catch (error) {
-    redirect("/");
-  }
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productId } = await params;
 
-  const { product } = await prefetchProductData(productId);
+  const { product } = await prefetchApi.product(productId);
 
   if (!product) {
     return {
@@ -81,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const ProductDetailPage = async ({ params }: Props) => {
   const { slug, productId: id } = await params;
 
-  const { queryClient } = await prefetchProductData(id);
+  const { queryClient } = await prefetchApi.product(id);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

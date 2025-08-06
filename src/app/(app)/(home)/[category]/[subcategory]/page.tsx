@@ -5,6 +5,7 @@ import {
   metadataRobots,
 } from "@/app/(app)/shared-metadata";
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import {
   loadProductFilters,
   loadProductLayout,
@@ -13,7 +14,6 @@ import ProductListView from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { SearchParams } from "nuqs";
 
 interface Props {
@@ -21,42 +21,11 @@ interface Props {
   searchParams: Promise<SearchParams>;
 }
 
-const prefetchCategoryAndSubCategoryData = async (slugCategory: string, slugSubCategory: string) => {
-  const queryClient = getQueryClient();
-
-  try {
-    await Promise.all([
-      queryClient.prefetchQuery(
-        trpc.categories.getCategory.queryOptions({ slug: slugCategory })
-      ),
-      queryClient.prefetchQuery(
-        trpc.categories.getSubcategory.queryOptions({ slug: slugSubCategory })
-      ),
-    ]);
-
-    const category = queryClient.getQueryData(
-      trpc.categories.getCategory.queryOptions({ slug: slugCategory }).queryKey
-    );
-
-    const subCategory = queryClient.getQueryData(
-      trpc.categories.getSubcategory.queryOptions({ slug: slugSubCategory }).queryKey
-    );
-
-    return {
-      queryClient,
-      categoryData: category,
-      subcategoryData: subCategory,
-    };
-  } catch (error) {
-    redirect("/");
-  }
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, subcategory } = await params;
 
   const { categoryData: parentCategoryData, subcategoryData } =
-    await prefetchCategoryAndSubCategoryData(category, subcategory);
+    await prefetchApi.categoryAndSubCategory(category, subcategory);
 
   if (!subcategoryData || !parentCategoryData) {
     return {

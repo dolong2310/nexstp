@@ -1,39 +1,20 @@
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import LaunchpadDetailView, {
   LaunchpadDetailViewSkeleton,
 } from "@/modules/launchpads/ui/views/launchpad-detail-view";
-import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-const prefetchLaunchpadData = async (id: string) => {
-  const queryClient = getQueryClient();
-
-  try {
-    await queryClient.prefetchQuery(
-      trpc.launchpads.getOne.queryOptions({ id })
-    );
-
-    const launchpad = queryClient.getQueryData(
-      trpc.launchpads.getOne.queryOptions({ id }).queryKey
-    );
-
-    return { queryClient, launchpad };
-  } catch (error) {
-    redirect("/launchpads");
-  }
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
   try {
-    const { launchpad } = await prefetchLaunchpadData(id);
+    const { launchpad } = await prefetchApi.launchpad(id);
     console.log("launchpad:", launchpad);
 
     if (!launchpad || launchpad.status !== "live") {
@@ -75,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const LaunchpadDetailPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  const { queryClient } = await prefetchLaunchpadData(id);
+  const { queryClient } = await prefetchApi.launchpad(id);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

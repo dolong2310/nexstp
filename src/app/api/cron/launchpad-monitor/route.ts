@@ -9,8 +9,14 @@ export async function GET(request: NextRequest) {
     // Kiểm tra auth header hoặc secret key để bảo mật
     const authHeader = request.headers.get("authorization");
     const expectedSecret = process.env.CRON_SECRET;
+    if (!expectedSecret) {
+      return NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 }
+      );
+    }
 
-    if (authHeader !== `Bearer ${expectedSecret}`) {
+    if (!authHeader || authHeader !== `Bearer ${expectedSecret}`) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

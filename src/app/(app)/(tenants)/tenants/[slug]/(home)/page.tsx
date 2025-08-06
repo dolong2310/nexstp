@@ -5,6 +5,7 @@ import {
   metadataRobots,
 } from "@/app/(app)/shared-metadata";
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import { generateTenantUrl } from "@/lib/utils";
 import {
   loadProductFilters,
@@ -14,10 +15,9 @@ import ProductListView from "@/modules/products/ui/views/product-list-view";
 import TenantBanner, {
   TenantBannerSkeleton,
 } from "@/modules/tenants/ui/components/tenant-banner";
-import { getQueryClient, trpc } from "@/trpc/server";
+import { trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
@@ -26,26 +26,10 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-const prefetchTenantData = async (slug: string) => {
-  const queryClient = getQueryClient();
-
-  try {
-    await queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
-
-    const tenant = queryClient.getQueryData(
-      trpc.tenants.getOne.queryOptions({ slug }).queryKey
-    );
-
-    return { queryClient, tenant };
-  } catch (error) {
-    redirect("/");
-  }
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const { tenant } = await prefetchTenantData(slug);
+  const { tenant } = await prefetchApi.tenant(slug);
 
   if (!tenant) {
     return {
@@ -106,7 +90,7 @@ const TenantsPage = async ({ params, searchParams }: Props) => {
   const filters = await loadProductFilters(searchParams);
   const { layout } = await loadProductLayout(searchParams);
 
-  const { queryClient } = await prefetchTenantData(slug);
+  const { queryClient } = await prefetchApi.tenant(slug);
 
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({

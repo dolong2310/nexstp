@@ -215,7 +215,6 @@ export const launchpadsRouter = createTRPCRouter({
               name: launchpad.title,
               price: launchpad.launchPrice,
               launchpad: launchpad.id,
-              launchpadSoldCount: launchpad.soldCount || 0,
             } as ProductMetadata,
           },
         },

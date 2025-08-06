@@ -39,8 +39,8 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
 
     const updateTimer = () => {
       const now = new Date();
-      const endTime = new Date(launchpad.endTime!);
-      const startTime = new Date(launchpad.startTime!);
+      const endTime = new Date(launchpad.endTime || Date.now());
+      const startTime = new Date(launchpad.startTime || Date.now());
 
       if (now >= endTime) {
         if (!isRefetched.current) {
