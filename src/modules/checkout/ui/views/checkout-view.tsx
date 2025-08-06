@@ -109,9 +109,9 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 
   return (
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-      <div className="flex gap-4 lg:gap-16">
-        <div className="w-full lg:w-4/7">
-          <div className="flex flex-col gap-4 rounded-md bg-background mb-8">
+      <div className="flex flex-wrap md:flex-nowrap gap-4 lg:gap-16">
+        <div className="w-full md:w-5/7 lg:w-4/7 md:mb-8">
+          <div className="flex flex-col gap-4 rounded-md">
             {products?.docs.map((product) => {
               return (
                 <CheckoutItem
@@ -134,7 +134,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
           </div>
         </div>
 
-        <div className="w-full lg:w-3/7">
+        <div className="w-full md:w-2/7 lg:w-3/7 mb-8 md:mb-0">
           <div className="sticky top-4 right-0">
             <CheckoutSidebar
               totalPrice={products?.totalPrice || 0}
@@ -152,15 +152,15 @@ const CheckoutView = ({ tenantSlug }: Props) => {
 const CheckoutViewSkeleton = () => {
   return (
     <div className="pt-4 lg:pt-16 px-4 lg:px-12">
-      <div className="flex gap-4 lg:gap-16">
-        <div className="lg:w-4/7">
-          <div className="flex flex-col gap-4 rounded-md bg-background mb-8">
+      <div className="flex flex-wrap md:flex-nowrap gap-4 lg:gap-16">
+        <div className="w-full md:w-5/7 lg:w-4/7 md:mb-8">
+          <div className="flex flex-col gap-4 rounded-md">
             {Array.from({ length: 3 }).map((_, index) => (
               <CheckoutItemSkeleton key={index} />
             ))}
           </div>
         </div>
-        <div className="lg:w-3/7">
+        <div className="w-full md:w-2/7 lg:w-3/7 mb-8 md:mb-0">
           <CheckoutSidebar
             totalPrice={0}
             isPending={true}

@@ -1,5 +1,6 @@
 import { Category } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import z from "zod";
 
 export const categoriesRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
@@ -26,4 +27,40 @@ export const categoriesRouter = createTRPCRouter({
 
     return formattedData;
   }),
+  getCategory: baseProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const categoriesData = await ctx.db.find({
+        collection: "categories",
+        limit: 1,
+        pagination: false,
+        where: {
+          slug: { equals: input.slug },
+        },
+      });
+      return categoriesData.docs[0] || null;
+    }),
+  getSubcategory: baseProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const subcategoriesData = await ctx.db.find({
+        collection: "categories",
+        limit: 1,
+        pagination: false,
+        depth: 1, // Populate parent category
+        where: {
+          slug: { equals: input.slug },
+          parent: { exists: true }, // Chỉ lấy subcategories
+        },
+      });
+      return subcategoriesData.docs[0] || null;
+    }),
 });

@@ -209,7 +209,7 @@ function randomKeyRefundPolicy() {
   return mockRefundPolicy[Math.floor(Math.random() * mockRefundPolicy.length)];
 }
 
-const mockProducts: ProductsType[] = Array.from({ length: 20 }, (_, i) => ({
+const mockProducts: ProductsType[] = Array.from({ length: 10 }, (_, i) => ({
   name: `Product ${i + 1}`,
   price: 19.99 + i * 10,
   content: {
@@ -245,37 +245,7 @@ const mockProducts: ProductsType[] = Array.from({ length: 20 }, (_, i) => ({
   },
   isPrivate: false,
   isArchived: false,
-  description: {
-    root: {
-      children: [
-        {
-          children: [
-            {
-              detail: 0,
-              format: 0,
-              mode: "normal",
-              style: "",
-              text: `Description for product ${i + 1}`,
-              type: "text",
-              version: 1,
-            },
-          ],
-          direction: "ltr",
-          format: "",
-          indent: 0,
-          type: "paragraph",
-          version: 1,
-          textFormat: 0,
-          textStyle: "",
-        },
-      ],
-      direction: "ltr",
-      format: "",
-      indent: 0,
-      type: "root",
-      version: 1,
-    },
-  },
+  description: "Description for product " + (i + 1),
   refundPolicy: randomKeyRefundPolicy(),
   category: getRandomCategorySlug(),
   tags: getRandomTags(),

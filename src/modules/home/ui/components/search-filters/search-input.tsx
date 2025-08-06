@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useDebounce from "@/hooks/use-debounce";
 import useSession from "@/hooks/use-session";
-import useDebounce from "@/hooks/useDebounce";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -57,10 +57,14 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
 
       {/* Library button */}
       {user && (
-        <Button variant="elevated" asChild>
+        <Button
+          asChild
+          variant="elevated"
+          className="size-12 md:size-auto md:self-stretch shrink-0"
+        >
           <Link prefetch href="/library">
             <BookmarkCheckIcon />
-            Library
+            <span className="hidden md:block">Library</span>
           </Link>
         </Button>
       )}

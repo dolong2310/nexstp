@@ -5,7 +5,7 @@ import {
   metadataRobots,
 } from "@/app/(app)/shared-metadata";
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
-import { getTenantForMetadata } from "@/lib/server-actions/tenants";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import { generateTenantUrl } from "@/lib/utils";
 import {
   loadProductFilters,
@@ -15,7 +15,7 @@ import ProductListView from "@/modules/products/ui/views/product-list-view";
 import TenantBanner, {
   TenantBannerSkeleton,
 } from "@/modules/tenants/ui/components/tenant-banner";
-import { getQueryClient, trpc } from "@/trpc/server";
+import { trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
@@ -29,7 +29,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const tenant = await getTenantForMetadata(slug);
+  const { tenant } = await prefetchApi.tenant(slug);
 
   if (!tenant) {
     return {
@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const image = tenant.image?.url;
   const title = `${tenant.name} - Store`;
   const description = `Shop amazing products from ${tenant.name}. Discover our curated collection of high-quality items.`;
 
@@ -54,10 +55,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: tenant.name,
       description,
       siteName: tenant.name,
-      images: tenant.image?.url
+      images: image
         ? [
             {
-              url: tenant.image.url,
+              url: image,
               width: 1200,
               height: 630,
               alt: `${tenant.name} store logo`,
@@ -75,7 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: tenant.name,
       description,
-      images: tenant.image?.url ? [tenant.image.url] : [],
+      images: image ? [image] : [],
     },
     alternates: {
       canonical: generateTenantUrl(slug),
@@ -89,12 +90,8 @@ const TenantsPage = async ({ params, searchParams }: Props) => {
   const filters = await loadProductFilters(searchParams);
   const { layout } = await loadProductLayout(searchParams);
 
-  const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(
-    trpc.tenants.getOne.queryOptions({
-      slug,
-    })
-  );
+  const { queryClient } = await prefetchApi.tenant(slug);
+
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
       ...filters,

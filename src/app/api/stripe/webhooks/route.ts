@@ -80,16 +80,50 @@ export async function POST(request: Request) {
             .data as ExpandedLineItem[];
 
           for (const item of lineItems) {
-            await payload.create({
-              collection: "orders",
-              data: {
-                stripeCheckoutSessionId: data.id,
-                stripeAccountId: event.account,
-                user: user.id,
-                product: item.price.product.metadata.id,
-                name: item.price.product.metadata.name,
-              },
-            });
+            // Check if this is a launchpad purchase
+            const isLaunchpadPurchase = !!item.price.product.metadata.launchpad;
+
+            if (isLaunchpadPurchase) {
+              // For launchpad purchases
+              await payload.create({
+                collection: "orders",
+                data: {
+                  stripeCheckoutSessionId: data.id,
+                  stripeAccountId: event.account,
+                  user: user.id,
+                  product: item.price.product.metadata.launchpad, // Use launchpad ID as product
+                  name: item.price.product.metadata.name,
+                  launchpad: item.price.product.metadata.launchpad, // Set launchpad field
+                },
+              });
+
+              // Update sold count
+              // Atomic increment sold count to avoid race conditions
+              const launchpad = await payload.findByID({
+                collection: "launchpads",
+                id: item.price.product.metadata.launchpad,
+              });
+
+              await payload.update({
+                collection: "launchpads",
+                id: item.price.product.metadata.launchpad,
+                data: {
+                  soldCount: (launchpad.soldCount || 0) + 1,
+                },
+              });
+            } else {
+              // For regular product purchases
+              await payload.create({
+                collection: "orders",
+                data: {
+                  stripeCheckoutSessionId: data.id,
+                  stripeAccountId: event.account,
+                  user: user.id,
+                  product: item.price.product.metadata.id,
+                  name: item.price.product.metadata.name,
+                },
+              });
+            }
           }
 
           break;

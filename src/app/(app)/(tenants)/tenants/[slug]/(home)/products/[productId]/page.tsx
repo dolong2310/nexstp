@@ -1,9 +1,8 @@
 import { metadataOpenGraph } from "@/app/(app)/shared-metadata";
-import { getProductForMetadata } from "@/lib/server-actions/products";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import ProductView, {
   ProductViewSkeleton,
 } from "@/modules/products/ui/views/product-view";
-import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -13,12 +12,12 @@ interface Props {
     slug: string;
     productId: string;
   }>;
-};
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productId } = await params;
 
-  const product = await getProductForMetadata(productId);
+  const { product } = await prefetchApi.product(productId);
 
   if (!product) {
     return {
@@ -27,8 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const image = product.image?.url;
   const description =
-    product.plainTextDescription || `Browse ${product.name} in the library`;
+    product.description || `Browse ${product.name} in the library`;
 
   return {
     title: `${product.name}`,
@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...metadataOpenGraph,
       title: product.name,
       description: description,
-      images: product.image?.url
+      images: image
         ? [
             {
-              url: product.image.url,
+              url: image,
               width: 1200,
               height: 630,
               alt: product.name,
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: product.name,
       description: description,
-      images: product.image?.url ? [product.image.url] : [],
+      images: image ? [image] : [],
     },
   };
 }
@@ -60,9 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const ProductDetailPage = async ({ params }: Props) => {
   const { slug, productId: id } = await params;
 
-  const queryClient = getQueryClient();
-  // void queryClient.prefetchQuery(trpc.products.getOne.queryOptions({ id }));
-  void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({ slug }));
+  const { queryClient } = await prefetchApi.product(id);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

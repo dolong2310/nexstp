@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { RefreshCwIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { useGlobalStore } from "@/store/use-global-store";
 
@@ -16,19 +16,33 @@ export enum RefreshQueryKeys {
   CONVERSATION_USERS = "conversation-users",
   LIBRARIES = "libraries",
   TAGS = "tags",
+  LAUNCHPADS = "launchpads",
 }
 
 interface Props {
   queryKey?: RefreshQueryKeys;
+  sizeButton?: "sm" | "default" | "lg" | "icon";
 }
 
-const RefreshButton = ({ queryKey }: Props) => {
+const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
 
   const setLoadingGlobal = useGlobalStore((state) => state.setLoadingGlobal);
 
   const [loading, setLoading] = useState(false);
+
+  const iconSize = useMemo(() => {
+    switch (sizeButton) {
+      case "sm":
+      case "icon":
+        return "size-4";
+      case "lg":
+        return "size-5";
+      default:
+        return "size-5";
+    }
+  }, [sizeButton]);
 
   const invalidateQuery = () => {
     console.log("queryKey, ", queryKey);
@@ -62,6 +76,10 @@ const RefreshButton = ({ queryKey }: Props) => {
         _queryKey = trpc.tags.getMany.queryKey();
         break;
 
+      case "launchpads":
+        _queryKey = trpc.launchpads.getMany.queryKey();
+        break;
+
       default:
         break;
     }
@@ -85,13 +103,14 @@ const RefreshButton = ({ queryKey }: Props) => {
   return (
     <Button
       variant="elevated"
-      size="sm"
+      size={sizeButton}
       onClick={handleRefresh}
       disabled={loading}
     >
       <RefreshCwIcon
         className={cn(
-          "size-4 transition-transform duration-500",
+          "transition-transform duration-500",
+          iconSize,
           loading && "animate-spin"
         )}
       />

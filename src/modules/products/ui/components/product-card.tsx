@@ -24,8 +24,8 @@ interface Props {
   reviewCount: number;
   price: number;
   tenantSlug: string;
-  productId: string;
   isPurchased?: boolean;
+  isOwner?: boolean;
 }
 
 const ProductCard = ({
@@ -38,11 +38,11 @@ const ProductCard = ({
   reviewCount,
   price,
   tenantSlug,
-  productId,
   isPurchased,
+  isOwner,
 }: Props) => {
   const cart = useCart();
-  const isCartButtonVisible = cart.isProductInCart(productId, tenantSlug) || isPurchased;
+  const isCartButtonVisible = cart.isProductInCart(id, tenantSlug) || isPurchased || isOwner;
 
   return (
     <article className="group relative flex flex-col border rounded-md bg-background overflow-hidden h-full hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] transition-all">
@@ -108,8 +108,9 @@ const ProductCard = ({
           className="py-8 rounded-none rounded-bl-md rounded-br-md border-b-0 border-x-0"
           isDefaultButton
           tenantSlug={tenantSlug}
-          productId={productId}
+          productId={id}
           isPurchased={isPurchased}
+          isOwner={isOwner}
         />
       </div>
     </article>

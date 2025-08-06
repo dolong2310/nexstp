@@ -32,8 +32,23 @@ const ProductView = ({ productId }: Props) => {
 
       <header className="py-8 border-b bg-third">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-12">
-          <h1 className="text-4xl font-medium">{product.name}</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-4xl font-medium">{product.name}</h1>
+            {product.isFromLaunchpad && (
+              // Custom Badge
+              <div className="relative px-2 py-0.5 border bg-feature w-fit rounded-sm">
+                <p className="text-xs font-medium">Launchpad</p>
+              </div>
+            )}
+          </div>
+          {/* <h1 className="text-4xl font-medium">{product.name}</h1> */}
           <p className="font-medium">Your purchased and reviews</p>
+          {product.isFromLaunchpad && product.originalPrice && (
+            <p className="text-sm text-muted-foreground mt-1">
+              You saved ${product.originalPrice - product.price} from launch
+              price!
+            </p>
+          )}
         </div>
       </header>
 
@@ -47,8 +62,8 @@ const ProductView = ({ productId }: Props) => {
             </div>
           </div>
           <div className="lg:col-span-5">
-            {product.content ? (
-              <RichText data={product.content} />
+            {product?.content ? (
+              <RichText data={product?.content} />
             ) : (
               <p className="font-medium italic text-muted-foreground">
                 No special content

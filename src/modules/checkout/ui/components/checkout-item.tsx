@@ -22,13 +22,13 @@ const CheckoutItem = ({
   onRemove,
 }: Props) => {
   return (
-    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border rounded-md">
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border bg-background rounded-md">
       <div className="overflow-hidden border-r">
         <Media
           src={imageUrl || "/placeholder-bg.jpg"}
           alt={name}
           fill
-          className="object-cover"
+          className="object-cover rounded-md"
         />
       </div>
 
@@ -59,9 +59,9 @@ const CheckoutItem = ({
 
 export const CheckoutItemSkeleton = () => {
   return (
-    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border rounded-md">
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border bg-background rounded-md">
       <div className="overflow-hidden border-r">
-        <div className="aspect-square w-full h-full bg-gray-200 animate-pulse" />
+        <div className="aspect-square w-full h-full bg-gray-200 animate-pulse rounded-md" />
       </div>
 
       <div className="flex flex-col justify-between py-4">

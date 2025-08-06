@@ -2,9 +2,9 @@ import {
   metadataOpenGraph,
   metadataOpenGraphDefaultImage,
 } from "@/app/(app)/shared-metadata";
-import { getTenantForMetadata } from "@/lib/server-actions/tenants";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import CheckoutView from "@/modules/checkout/ui/views/checkout-view";
-import { getQueryClient, trpc } from "@/trpc/server";
+import { trpc } from "@/trpc/server";
 import { QueryClient } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const tenant = await getTenantForMetadata(slug);
+  const { tenant } = await prefetchApi.tenant(slug);
 
   if (!tenant) {
     return {
@@ -73,7 +73,12 @@ const handleSessionUser = async (queryClient: QueryClient) => {
 const CheckoutPage = async ({ params }: Props) => {
   const { slug } = await params;
 
-  const queryClient = getQueryClient();
+  const { queryClient } = await prefetchApi.tenant(slug);
+  // void queryClient.prefetchQuery(
+  //   trpc.checkout.getProducts.queryOptions({
+  //     ids: [slug], // TODO: query by product IDs instead of slug
+  //   })
+  // );
 
   await handleSessionUser(queryClient);
 

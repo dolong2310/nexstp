@@ -16,6 +16,7 @@ import { Banners } from "@/collections/Banners";
 import { Categories } from "./collections/Categories";
 import { ChatUsers } from "./collections/ChatUsers";
 import { Conversations } from "./collections/Conversations";
+import { Launchpads } from "./collections/Launchpads";
 import { Media } from "./collections/Media";
 import { Messages } from "./collections/Messages";
 import { Orders } from "./collections/Orders";
@@ -51,6 +52,7 @@ export default buildConfig({
     Conversations,
     Messages,
     Banners,
+    Launchpads,
   ],
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),
@@ -77,6 +79,7 @@ export default buildConfig({
     multiTenantPlugin<Config>({
       collections: {
         products: {},
+        // launchpads: {},
         // media: {},
       },
       tenantsArrayField: {

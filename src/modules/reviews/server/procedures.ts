@@ -10,18 +10,46 @@ export const reviewsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const product = await ctx.db.findByID({
-        collection: "products",
-        id: input.productId,
+      // Step 1: Tìm order của user để xác định đây là product hay launchpad
+      const ordersData = await ctx.db.find({
+        collection: "orders",
+        limit: 1,
+        pagination: false,
+        where: {
+          and: [
+            {
+              user: {
+                equals: ctx.session.user.id,
+              },
+            },
+            {
+              or: [
+                {
+                  product: {
+                    equals: input.productId, // Check nếu là product thường
+                  },
+                },
+                {
+                  launchpad: {
+                    equals: input.productId, // Check nếu là launchpad
+                  },
+                },
+              ],
+            },
+          ],
+        },
       });
 
-      if (!product) {
+      const order = ordersData.docs[0];
+
+      if (!order) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Product not found",
+          message: "Order not found - You must purchase this item to review it",
         });
       }
 
+      // Step 2: Tìm review existing với productId này
       const reviewsData = await ctx.db.find({
         collection: "reviews",
         limit: 1,
@@ -29,7 +57,7 @@ export const reviewsRouter = createTRPCRouter({
           and: [
             {
               product: {
-                equals: product.id,
+                equals: input.productId, // Review luôn sử dụng productId (có thể là launchpad ID)
               },
             },
             {
@@ -59,25 +87,53 @@ export const reviewsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const product = await ctx.db.findByID({
-        collection: "products",
-        id: input.productId,
+      // Step 1: Verify user đã mua product/launchpad này
+      const ordersData = await ctx.db.find({
+        collection: "orders",
+        limit: 1,
+        pagination: false,
+        where: {
+          and: [
+            {
+              user: {
+                equals: ctx.session.user.id,
+              },
+            },
+            {
+              or: [
+                {
+                  product: {
+                    equals: input.productId, // Check nếu là product thường
+                  },
+                },
+                {
+                  launchpad: {
+                    equals: input.productId, // Check nếu là launchpad
+                  },
+                },
+              ],
+            },
+          ],
+        },
       });
 
-      if (!product) {
+      const order = ordersData.docs[0];
+
+      if (!order) {
         throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Product not found",
+          code: "FORBIDDEN",
+          message: "You must purchase this item to review it",
         });
       }
 
+      // Step 2: Check if user đã review rồi
       const existingReviewsData = await ctx.db.find({
         collection: "reviews",
         where: {
           and: [
             {
               product: {
-                equals: product.id,
+                equals: input.productId, // Review sử dụng productId (có thể là launchpad ID)
               },
             },
             {
@@ -96,10 +152,11 @@ export const reviewsRouter = createTRPCRouter({
         });
       }
 
+      // Step 3: Tạo review mới
       const review = await ctx.db.create({
         collection: "reviews",
         data: {
-          product: product.id,
+          product: input.productId, // Lưu productId (có thể là launchpad ID)
           user: ctx.session.user.id,
           rating: input.rating,
           description: input.description,

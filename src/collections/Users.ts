@@ -59,6 +59,7 @@ export const Users: CollectionConfig = {
     hidden: ({ user }) => !isSuperAdmin(user),
   },
   auth: {
+    tokenExpiration: 1000000, // for testing
     cookies: {
       ...(IS_PRODUCTION && {
         sameSite: "None",

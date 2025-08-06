@@ -17,10 +17,8 @@ const poppins = Poppins({
 
 const navbarItems = [
   { href: "/", children: "Home" },
+  { href: "/launchpads", children: "Launchpads" },
   { href: "/about", children: "About" },
-  { href: "/features", children: "Features" },
-  { href: "/pricing", children: "Pricing" },
-  { href: "/contact", children: "Contact" },
 ];
 
 const Navbar = () => {
@@ -39,7 +37,7 @@ const Navbar = () => {
     <nav className="h-20 flex border-b justify-between font-medium bg-background ">
       <Link href="/" className="pl-4 lg:pl-6 flex items-center">
         <span className={cn("text-5xl font-semibold", poppins.className)}>
-          nexstp
+          Nexstp
         </span>
       </Link>
 

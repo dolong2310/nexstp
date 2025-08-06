@@ -1,7 +1,7 @@
 import { toast } from "@/components/custom-toast";
 import { Button } from "@/components/ui/button";
 import useSession from "@/hooks/use-session";
-import { cn } from "@/lib/utils";
+import { cn, generateTenantUrl } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import {
   ArchiveIcon,
@@ -18,6 +18,7 @@ interface Props {
   tenantSlug: string;
   productId: string;
   isPurchased?: boolean;
+  isOwner?: boolean;
 }
 
 const CartButton = ({
@@ -27,6 +28,7 @@ const CartButton = ({
   tenantSlug,
   productId,
   isPurchased,
+  isOwner,
 }: Props) => {
   const { user } = useSession();
   const cart = useCart();
@@ -41,6 +43,21 @@ const CartButton = ({
     }
     cart.toggleProduct(productId, tenantSlug);
   };
+
+  if (isOwner) {
+    return (
+      <Button
+        asChild
+        variant={isDefaultButton ? "default" : "elevated"}
+        size={isIconButton ? "icon" : "default"}
+        className={cn("flex-1 font-medium bg-background", className)}
+      >
+        <Link href={`${generateTenantUrl(tenantSlug)}/products/${productId}`}>
+          {isIconButton ? <ArchiveIcon className="size-4" /> : "View Product"}
+        </Link>
+      </Button>
+    );
+  }
 
   if (isPurchased) {
     return (

@@ -25,7 +25,7 @@ const TenantsLayout = async ({ children, params }: Props) => {
         <Navbar slug={slug} />
       </Suspense>
       <div className="flex-1">
-        <div className="max-w-screen-lg mx-auto">{children}</div>
+        <div className="max-w-screen-xl mx-auto">{children}</div>
       </div>
       <Footer />
     </div>

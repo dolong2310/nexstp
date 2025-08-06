@@ -5,10 +5,7 @@ import {
   metadataRobots,
 } from "@/app/(app)/shared-metadata";
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
-import {
-  getCategoryForMetadata,
-  getSubcategoryForMetadata,
-} from "@/lib/server-actions/categories";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import {
   loadProductFilters,
   loadProductLayout,
@@ -27,8 +24,8 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, subcategory } = await params;
 
-  const subcategoryData = await getSubcategoryForMetadata(subcategory);
-  const parentCategoryData = await getCategoryForMetadata(category);
+  const { categoryData: parentCategoryData, subcategoryData } =
+    await prefetchApi.categoryAndSubCategory(category, subcategory);
 
   if (!subcategoryData || !parentCategoryData) {
     return {

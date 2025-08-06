@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
-import { getCategoryForMetadata } from "@/lib/server-actions/categories";
+import { prefetchApi } from "@/lib/prefetch-helpers";
 import {
   loadProductFilters,
   loadProductLayout,
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
 
   // Lấy thông tin category thực từ database
-  const categoryData = await getCategoryForMetadata(category);
+  const { categoryData } = await prefetchApi.category(category);
 
   if (!categoryData) {
     return {
