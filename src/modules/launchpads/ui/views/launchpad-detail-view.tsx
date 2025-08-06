@@ -9,7 +9,7 @@ import useSession from "@/hooks/use-session";
 import {
   formatCurrency,
   generateTenantUrl,
-  getCurrentImageUrl
+  getCurrentImageUrl,
 } from "@/lib/utils";
 import useCheckoutState from "@/modules/checkout/hooks/use-checkout-state";
 import { useTRPC } from "@/trpc/client";
@@ -21,12 +21,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
-import {
-  LoaderIcon,
-  Share2,
-  ShoppingCart,
-  Timer
-} from "lucide-react";
+import { LoaderIcon, Share2, ShoppingCart, Timer } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -208,7 +203,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
-            <TabsList>
+            <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
             </TabsList>
@@ -422,7 +417,7 @@ export const LaunchpadDetailViewSkeleton = () => {
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
-            <TabsList>
+            <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
             </TabsList>

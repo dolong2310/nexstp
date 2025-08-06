@@ -64,7 +64,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
-            <TabsList>
+            <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
               <TabsTrigger value="ratings">Ratings</TabsTrigger>
@@ -231,7 +231,7 @@ export const ProductViewSkeleton = () => {
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
-            <TabsList>
+            <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
               <TabsTrigger value="ratings">Ratings</TabsTrigger>
