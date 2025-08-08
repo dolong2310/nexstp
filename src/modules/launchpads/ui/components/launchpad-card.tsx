@@ -1,9 +1,11 @@
 "use client";
 
 import Media from "@/components/media";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   cn,
   formatCurrency,
@@ -15,12 +17,10 @@ import { Launchpad, Media as MediaType, Tenant } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
-import { Clock, Users } from "lucide-react";
+import { Clock, Timer, Users } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface LaunchpadCardProps {
   launchpad: Launchpad & {
@@ -163,8 +163,11 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
 
           {/* Progress Bar */}
           <div className="px-4">
-            <div className="flex justify-between text-xs text-foreground mb-1">
-              <span>Launch Progress</span>
+            <div className="flex justify-between text-xs text-foreground mb-3">
+              <p className="flex items-center gap-2">
+                <Timer className="size-4" />
+                <span>Launch Progress</span>
+              </p>
               <span>{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-3" />
@@ -219,8 +222,11 @@ export const LaunchpadCardSkeleton = () => {
 
         {/* Progress Bar */}
         <div className="mt-2 px-4">
-          <div className="flex justify-between text-xs text-foreground mb-1">
-            <span>Launch Progress</span>
+          <div className="flex justify-between text-xs text-foreground mb-3">
+            <p className="flex items-center gap-2">
+              <Timer className="size-4" />
+              <span>Launch Progress</span>
+            </p>
             <Skeleton className="h-3 bg-secondary-background animate-pulse w-8" />
           </div>
           <Progress value={0} className="h-3" />

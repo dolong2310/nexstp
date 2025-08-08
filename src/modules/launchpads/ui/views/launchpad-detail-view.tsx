@@ -1,5 +1,6 @@
 "use client";
 
+import Countdown from "@/components/countdown";
 import Media from "@/components/media";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -219,7 +220,9 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               <div className="border-2 rounded-sm bg-background overflow-hidden">
                 <div className="p-6">
                   {launchpad.description ? (
-                    <p className="font-medium break-words">{launchpad.description}</p>
+                    <p className="font-medium break-words">
+                      {launchpad.description}
+                    </p>
                   ) : (
                     <p className="font-medium text-foreground italic">
                       No description available
@@ -312,9 +315,9 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             <div className="px-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-2">
                     <Timer className="size-4" />
-                    Launch Progress
+                    <Countdown targetDate={launchpad.endTime!} />
                   </span>
                   <span className="font-medium">{Math.round(progress)}%</span>
                 </div>
@@ -474,7 +477,7 @@ export const LaunchpadDetailViewSkeleton = () => {
             <div className="px-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-2">
                     <Timer className="size-4" />
                     Launch Progress
                   </span>
