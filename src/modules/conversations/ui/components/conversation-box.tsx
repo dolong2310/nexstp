@@ -24,10 +24,9 @@ const CustomAvatarGroup = dynamic(() => import("./custom-avatar-group"), {
 
 interface Props {
   conversation: FullConversationType;
-  selected?: boolean;
 }
 
-const ConversationBox = ({ conversation, selected }: Props) => {
+const ConversationBox = ({ conversation }: Props) => {
   const router = useRouter();
   const { user } = useSession();
   const otherUser = useOtherUser(conversation);
@@ -67,7 +66,10 @@ const ConversationBox = ({ conversation, selected }: Props) => {
   return (
     <Card
       shadowTransition
-      className="gap-0 flex-row w-full relative flex items-center space-x-3 p-3 rounded-base border-2 shadow-shadow bg-main cursor-pointer"
+      className={cn(
+        "gap-0 flex-row w-full relative flex items-center space-x-3 p-3 rounded-base border-2 shadow-shadow bg-main cursor-pointer",
+        hasSeen && "bg-background text-foreground"
+      )}
       onClick={handleClick}
     >
       {conversation.isGroup ? (
@@ -78,11 +80,21 @@ const ConversationBox = ({ conversation, selected }: Props) => {
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
           <div className="flex items-center justify-between mb-1">
-            <p className="text-md font-medium text-main-foreground">
+            <p
+              className={cn(
+                "text-md font-medium text-main-foreground",
+                hasSeen && "text-foreground"
+              )}
+            >
               {conversation?.name || otherUser?.name || "User"}
             </p>
             {lastMessage?.createdAt && (
-              <p className="text-xs text-main-foreground/80 font-light">
+              <p
+                className={cn(
+                  "text-xs text-main-foreground/80 font-light",
+                  hasSeen && "text-foreground/80"
+                )}
+              >
                 {format(new Date(lastMessage.createdAt), "p")}
               </p>
             )}
@@ -91,7 +103,7 @@ const ConversationBox = ({ conversation, selected }: Props) => {
           <p
             className={cn(
               "truncate text-sm",
-              hasSeen ? "text-main-foreground" : "text-main-foreground font-bold"
+              hasSeen ? "text-foreground" : "text-main-foreground font-bold"
             )}
           >
             {lastMessageText}

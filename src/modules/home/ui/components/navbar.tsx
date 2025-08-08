@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";
 import { cn } from "@/lib/utils";
+import useConversationNotifications from "@/modules/conversations/hooks/use-conversation-notifications";
 
 interface Props {
   fixed?: boolean;
@@ -23,6 +24,7 @@ const navbarItems = [
 
 const Navbar = ({ fixed }: Props) => {
   const { user } = useSession();
+  const { unreadCount } = useConversationNotifications();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -37,7 +39,7 @@ const Navbar = ({ fixed }: Props) => {
     <nav
       className={cn(
         "h-18 flex border-b-4 items-center justify-between font-medium bg-secondary-background px-4 lg:px-8",
-        fixed && "fixed top-0 left-0 right-0 z-20",
+        fixed && "fixed top-0 left-0 right-0 z-20"
       )}
     >
       <div className="flex items-center gap-10">
@@ -61,9 +63,17 @@ const Navbar = ({ fixed }: Props) => {
               </Link>
             </Button>
             <Button asChild variant="neutral" size="icon">
-              <Link href="/conversations">
-                <MessageSquareIcon />
-              </Link>
+              <div className="relative">
+                <Link href="/conversations">
+                  <MessageSquareIcon />
+                </Link>
+                {/* Placeholder for notification count */}
+                {unreadCount > 0 && (
+                  <span className="absolute -top-3 -right-3 size-6 flex items-center justify-center text-xs text-white bg-red-500 rounded-full">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
+              </div>
             </Button>
           </>
         ) : (
