@@ -5,12 +5,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { PRIVATE_PATHS } from "@/constants";
 import useSession from "@/hooks/use-session";
 import { useUserStore } from "@/modules/auth/store/use-user-store";
+import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "./custom-toast";
 import { Button } from "./ui/button";
@@ -22,19 +24,26 @@ interface Props {
 }
 
 const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
+  const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const { user, isLoading } = useSession();
 
+  const setForceLogout = useGlobalStore((state) => state.setForceLogout);
   const removeUser = useUserStore((state) => state.remove);
 
   const logout = useMutation(
     trpc.auth.logout.mutationOptions({
-      onSuccess: () => {
+      onSuccess: async () => {
+        setForceLogout(true);
         removeUser();
         queryClient.invalidateQueries(trpc.auth.session.queryOptions());
-        router.push("/");
+        if (PRIVATE_PATHS.includes(pathname)) {
+          router.push("/");
+        } else {
+          router.refresh();
+        }
       },
       onError: (error) => {
         toast.error(
@@ -65,7 +74,11 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
   if (!user && !isLoading) return null;
 
   if (isLabel) {
-    return <p className={labelClassName} onClick={handleLogout}>Sign out</p>;
+    return (
+      <p className={labelClassName} onClick={handleLogout}>
+        Sign out
+      </p>
+    );
   }
 
   return (
