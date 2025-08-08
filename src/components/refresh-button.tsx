@@ -1,13 +1,18 @@
 "use client";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { VariantProps } from "class-variance-authority";
 import { RefreshCwIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { useGlobalStore } from "@/store/use-global-store";
-import { VariantProps } from "class-variance-authority";
 
 export enum RefreshQueryKeys {
   PRODUCTS = "products",
@@ -107,21 +112,28 @@ const RefreshButton = ({
   };
 
   return (
-    <Button
-      variant={variant}
-      size={size}
-      className="shrink-0"
-      disabled={loading}
-      onClick={handleRefresh}
-    >
-      <RefreshCwIcon
-        className={cn(
-          "transition-transform duration-500",
-          iconSize,
-          loading && "animate-spin"
-        )}
-      />
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant={variant}
+          size={size}
+          className="shrink-0"
+          disabled={loading}
+          onClick={handleRefresh}
+        >
+          <RefreshCwIcon
+            className={cn(
+              "transition-transform duration-500",
+              iconSize,
+              loading && "animate-spin"
+            )}
+          />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Refresh</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +19,7 @@ import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { loginSchema } from "../../schemas";
 import { useUserStore } from "../../store/use-user-store";
@@ -87,7 +87,7 @@ const SignInView = () => {
       email: "",
       password: "",
     },
-    mode: "all",
+    mode: "onChange",
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
@@ -128,9 +128,7 @@ const SignInView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
-                    <Button asChild variant="neutral" className="py-2 px-3">
-                      <Input {...field} />
-                    </Button>
+                    <Input {...field} className="shadow-shadow" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,9 +141,11 @@ const SignInView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <Button asChild variant="neutral" className="py-2 px-3">
-                      <Input {...field} type="password" />
-                    </Button>
+                    <Input
+                      {...field}
+                      className="shadow-shadow"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

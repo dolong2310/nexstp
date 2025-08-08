@@ -2,6 +2,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Props {
   label: string;
@@ -22,12 +27,24 @@ const ConversationDesktopItem = ({
     onClick && onClick();
   };
   return (
-    <Button asChild variant="neutral" size="icon" onClick={handleClick}>
-      <Link href={href} className={cn(active && "bg-main!")}>
-        <Icon className={cn(active && "dark:fill-white fill-black dark:stroke-white stroke-black")} />
-        <span className="sr-only">{label}</span>
-      </Link>
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button asChild variant="neutral" size="icon" onClick={handleClick}>
+          <Link href={href} className={cn(active && "bg-main!")}>
+            <Icon
+              className={cn(
+                active &&
+                  "dark:fill-white fill-black dark:stroke-white stroke-black"
+              )}
+            />
+            <span className="sr-only">{label}</span>
+          </Link>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="right">
+        <p>{label}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 

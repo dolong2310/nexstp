@@ -4,13 +4,18 @@ import Logo from "@/components/logo";
 import LogoutButton from "@/components/logout-button";
 import ThemeButton from "@/components/theme-button";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useSession from "@/hooks/use-session";
+import { cn } from "@/lib/utils";
+import useConversationNotifications from "@/modules/conversations/hooks/use-conversation-notifications";
 import { LayoutDashboardIcon, MenuIcon, MessageSquareIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";
-import { cn } from "@/lib/utils";
-import useConversationNotifications from "@/modules/conversations/hooks/use-conversation-notifications";
 
 interface Props {
   fixed?: boolean;
@@ -62,19 +67,29 @@ const Navbar = ({ fixed }: Props) => {
                 Dashboard <LayoutDashboardIcon />
               </Link>
             </Button>
-            <Button asChild variant="neutral" size="icon">
-              <div className="relative">
-                <Link href="/conversations">
-                  <MessageSquareIcon />
-                </Link>
-                {/* Placeholder for notification count */}
-                {unreadCount > 0 && (
-                  <span className="absolute -top-3 -right-3 size-6 flex items-center justify-center text-xs text-white bg-red-500 rounded-full">
-                    {unreadCount > 99 ? "99+" : unreadCount}
-                  </span>
-                )}
-              </div>
-            </Button>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  asChild
+                  variant="neutral"
+                  size="icon"
+                  className="relative"
+                >
+                  <Link href="/conversations">
+                    <MessageSquareIcon />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-3 -right-3 size-6 flex items-center justify-center text-xs text-white bg-red-500 rounded-full">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Conversations</p>
+              </TooltipContent>
+            </Tooltip>
           </>
         ) : (
           <>

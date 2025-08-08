@@ -53,7 +53,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
       name: currentUser?.name || "",
       image: typeof currentUser?.image === "string" ? currentUser.image : "",
     },
-    mode: "all",
+    mode: "onChange",
   });
 
   const updateProfile = useMutation(

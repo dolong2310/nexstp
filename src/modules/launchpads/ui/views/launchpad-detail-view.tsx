@@ -219,7 +219,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               <div className="border-2 rounded-sm bg-background overflow-hidden">
                 <div className="p-6">
                   {launchpad.description ? (
-                    <p className="font-medium">{launchpad.description}</p>
+                    <p className="font-medium break-words">{launchpad.description}</p>
                   ) : (
                     <p className="font-medium text-foreground italic">
                       No description available
@@ -274,14 +274,16 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                     {formatName(launchpad.tenant.slug)}
                   </AvatarFallback>
                 </Avatar>
-                <p className="text-base underline font-medium">
+                <p className="text-base underline font-medium truncate overflow-hidden">
                   {launchpad.tenant.slug}
                 </p>
               </Link>
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium">{launchpad.title}</h1>
+              <h1 className="text-4xl font-medium line-clamp-2 break-words">
+                {launchpad.title}
+              </h1>
             </div>
 
             <div className="px-6 py-4 border-y-2">
@@ -340,9 +342,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Category
-                  </span>
+                  <span className="text-sm text-foreground">Category</span>
                   <Badge>
                     <p className="text-xs font-medium">
                       {launchpad.category.name}
@@ -351,36 +351,28 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Refund Policy
-                  </span>
+                  <span className="text-sm text-foreground">Refund Policy</span>
                   <span className="text-sm font-medium">
                     {RefundPolicy[launchpad.refundPolicy!]}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Launch Date
-                  </span>
+                  <span className="text-sm text-foreground">Launch Date</span>
                   <span className="text-sm font-medium">
                     {format(new Date(launchpad.startTime!), "MMM dd, yyyy")}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    End Date
-                  </span>
+                  <span className="text-sm text-foreground">End Date</span>
                   <span className="text-sm font-medium">
                     {format(new Date(launchpad.endTime!), "MMM dd, yyyy")}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Duration
-                  </span>
+                  <span className="text-sm text-foreground">Duration</span>
                   <span className="text-sm font-medium">
                     {launchpad.duration} hours
                   </span>
@@ -510,37 +502,27 @@ export const LaunchpadDetailViewSkeleton = () => {
             <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Category
-                  </span>
+                  <span className="text-sm text-foreground">Category</span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Refund Policy
-                  </span>
+                  <span className="text-sm text-foreground">Refund Policy</span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Launch Date
-                  </span>
+                  <span className="text-sm text-foreground">Launch Date</span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    End Date
-                  </span>
+                  <span className="text-sm text-foreground">End Date</span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">
-                    Duration
-                  </span>
+                  <span className="text-sm text-foreground">Duration</span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
               </div>

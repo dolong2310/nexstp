@@ -191,7 +191,7 @@ const ConversationContent = ({
   });
 
   return (
-    <div className="flex-1 overflow-y-auto" ref={containerRef}>
+    <div className="flex-1 overflow-y-auto scrollbar" ref={containerRef}>
       <div className="flex justify-center pb-4">
         <InfiniteScroll
           reverse

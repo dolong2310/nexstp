@@ -56,7 +56,7 @@ const SignUpView = () => {
       email: "",
       password: "",
     },
-    mode: "all",
+    mode: "onChange",
   });
 
   const username = form.watch("username");
@@ -103,9 +103,7 @@ const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Username</FormLabel>
                   <FormControl>
-                    <Button asChild variant="neutral" className="py-2 px-3">
-                      <Input {...field} />
-                    </Button>
+                    <Input {...field} className="shadow-shadow" />
                   </FormControl>
                   <FormDescription
                     className={cn("hidden", showPreview && "block")}
@@ -124,9 +122,7 @@ const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
-                    <Button asChild variant="neutral" className="py-2 px-3">
-                      <Input {...field} />
-                    </Button>
+                    <Input {...field} className="shadow-shadow" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,9 +135,11 @@ const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <Button asChild variant="neutral" className="py-2 px-3">
-                      <Input {...field} type="password" />
-                    </Button>
+                    <Input
+                      {...field}
+                      className="shadow-shadow"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

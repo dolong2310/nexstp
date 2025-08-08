@@ -47,9 +47,7 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
 
     // If no tags are available, show a message
     if (data?.pages?.[0]?.docs.length === 0) {
-      return (
-        <p className="text-center text-foreground">No tags available</p>
-      );
+      return <p className="text-center text-foreground">No tags available</p>;
     }
 
     return data?.pages.map((page) => {
@@ -57,13 +55,14 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
         return (
           <div
             key={tag.id}
-            className="flex items-center justify-between cursor-pointer"
+            className="flex items-center justify-between gap-2"
             onClick={() => onClick(tag.name)}
           >
-            <Label htmlFor={tag.id}>{tag.name}</Label>
+            <Label htmlFor={tag.id} className="truncate overflow-hidden">
+              {tag.name}
+            </Label>
             <Checkbox
               id={tag.id}
-              className="cursor-pointer"
               checked={values?.includes(tag.name)}
               onCheckedChange={() => onClick(tag.name)}
             />

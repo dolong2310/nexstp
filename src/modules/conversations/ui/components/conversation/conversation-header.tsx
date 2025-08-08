@@ -73,16 +73,19 @@ const ConversationHeader = () => {
             <CustomAvatar user={otherUser} />
           )}
           <div className="flex flex-col">
-            <div>{conversation.name || otherUser.name}</div>
-            <div className="text-sm font-light text-foreground">
+            <p className="max-w-[500px] truncate overflow-hidden">
+              {conversation.name || otherUser.name}
+            </p>
+            <p className="text-sm font-light text-foreground">
               {statusText}
-            </div>
+            </p>
           </div>
         </div>
 
         <Button
           variant="default"
           size="icon"
+          className="shrink-0"
           onClick={() => setDrawerOpen(true)}
         >
           <EllipsisVerticalIcon />

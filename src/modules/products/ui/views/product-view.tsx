@@ -94,7 +94,9 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
               <div className="border-2 rounded-sm bg-background overflow-hidden">
                 <div className="p-6">
                   {product.description ? (
-                    <p className="font-medium">{product.description}</p>
+                    <p className="font-medium break-words">
+                      {product.description}
+                    </p>
                   ) : (
                     <p className="font-medium text-foreground italic">
                       No description available
@@ -180,14 +182,16 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                     {formatName(product.tenant.name)}
                   </AvatarFallback>
                 </Avatar>
-                <p className="text-base underline font-medium">
+                <p className="text-base underline font-medium truncate overflow-hidden">
                   {product.tenant.name}
                 </p>
               </Link>
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium">{product.name}</h1>
+              <h1 className="text-4xl font-medium line-clamp-2 break-words">
+                {product.name}
+              </h1>
             </div>
 
             <div className="px-6">

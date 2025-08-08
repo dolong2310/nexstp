@@ -31,21 +31,23 @@ const ProductSorts = () => {
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
-      <div className="rounded-base flex items-center justify-between space-x-4 border-2 border-border text-main-foreground bg-main px-4 py-2">
-        <h4 className="text-sm font-heading">
-          Sort ({getSortLabel(filters.sort)})
-        </h4>
-        <CollapsibleTrigger asChild>
+      <CollapsibleTrigger asChild>
+        <div className="rounded-base flex items-center justify-between space-x-4 border-2 border-border text-main-foreground bg-main px-4 py-2">
+          <h4 className="text-sm font-heading">
+            Sort ({getSortLabel(filters.sort)})
+          </h4>
           <Button
-            variant="noShadow"
-            size="sm"
-            className="w-9 bg-secondary-background text-foreground p-0"
+            variant="ghost"
+            size="icon"
+            className="size-9 text-main-foreground"
           >
-            <ChevronDownIcon className="size-4" />
+            <ChevronDownIcon
+              className={isOpen ? "size-4 rotate-180" : "size-4"}
+            />
             <span className="sr-only">Toggle</span>
           </Button>
-        </CollapsibleTrigger>
-      </div>
+        </div>
+      </CollapsibleTrigger>
 
       <CollapsibleContent className="space-y-2 text-main-foreground font-base">
         <div className="rounded-base border-2 border-border bg-main px-4 py-3 font-mono text-sm">
@@ -53,12 +55,17 @@ const ProductSorts = () => {
             {sortList.map((sort) => (
               <div
                 key={sort.value}
-                className="flex items-center justify-between cursor-pointer"
+                className="flex items-center justify-between gap-2"
                 onClick={() =>
                   setFilters({ ...filters, sort: sort.value as SortType })
                 }
               >
-                <Label htmlFor={sort.value}>{sort.label}</Label>
+                <Label
+                  htmlFor={sort.value}
+                  className="truncate overflow-hidden"
+                >
+                  {sort.label}
+                </Label>
                 <Checkbox
                   id={sort.value}
                   checked={filters.sort === sort.value}

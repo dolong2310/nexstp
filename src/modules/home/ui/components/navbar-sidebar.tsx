@@ -35,7 +35,7 @@ const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
           <SheetTitle className="text-2xl">Nexstp</SheetTitle>
         </SheetHeader>
 
-        <ScrollArea className="flex flex-col overflow-y-auto h-full pb-2">
+        <ScrollArea className="flex flex-col overflow-y-auto scrollbar-sm h-full pb-2">
           {items.map((item) => (
             <Link
               key={item.href}

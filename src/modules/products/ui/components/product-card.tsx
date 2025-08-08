@@ -70,7 +70,9 @@ const ProductCard = ({
 
       <div className="flex flex-col gap-3 flex-1 border-y-2 p-4">
         <Link href={`${generateTenantUrl(authorUsername)}/products/${id}`}>
-          <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
+          <h2 className="text-lg font-medium line-clamp-2 break-words">
+            {name}
+          </h2>
         </Link>
 
         <Link href={generateTenantUrl(authorUsername)}>
@@ -81,7 +83,7 @@ const ProductCard = ({
                 {formatName(authorUsername)}
               </AvatarFallback>
             </Avatar>
-            <p className="text-sm underline font-medium">{authorUsername}</p>
+            <p className="text-sm underline font-medium truncate overflow-hidden">{authorUsername}</p>
           </div>
         </Link>
 

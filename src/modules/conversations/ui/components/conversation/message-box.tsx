@@ -53,10 +53,12 @@ const MessageBox = ({ message, isLast, id }: Props) => {
         </div>
         <div className={body}>
           <div className="flex items-center gap-1">
-            <div className="text-sm text-foreground">{message.sender.name}</div>
-            <div className="text-xs text-foreground/80">
+            <p className="text-sm text-foreground truncate overflow-hidden max-w-[500px]">
+              {message.sender.name}
+            </p>
+            <time className="text-xs text-foreground/80">
               {format(new Date(message.createdAt), "p")}
-            </div>
+            </time>
           </div>
 
           <div className={messageText}>
@@ -77,14 +79,14 @@ const MessageBox = ({ message, isLast, id }: Props) => {
                 />
               </>
             ) : (
-              <div>{message.body}</div>
+              <p>{message.body}</p>
             )}
           </div>
 
           {isLast && isOwn && seenList.length > 0 && (
-            <div className="text-xs font-light text-foreground mt-1">
+            <p className="text-xs font-light text-foreground mt-1">
               Seen by {seenList}
-            </div>
+            </p>
           )}
         </div>
       </div>

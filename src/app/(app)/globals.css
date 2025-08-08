@@ -84,23 +84,29 @@
 
 /* Scrollbar customize */
 body,
-.scrollbar {
+.scrollbar,
+.scrollbar-sm {
   --sb-track-color: #ffffff;
   --sb-thumb-color: #000000;
 }
 
 html.dark body,
-html.dark .scrollbar {
+html.dark .scrollbar,
+html.dark .scrollbar-sm {
   --sb-track-color: #1f1f1f;
   --sb-thumb-color: #e6e6e6;
 }
 
-.scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
 body::-webkit-scrollbar {
   width: 12px;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scrollbar-sm::-webkit-scrollbar {
+  width: 8px;
 }
 
 .toc-scrollbar::-webkit-scrollbar {
@@ -108,20 +114,26 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track,
-.scrollbar::-webkit-scrollbar-track {
+.scrollbar::-webkit-scrollbar-track,
+.scrollbar-sm::-webkit-scrollbar-track {
   background: var(--sb-track-color);
 }
 
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,
+.scrollbar::-webkit-scrollbar-track,
+.scrollbar-sm::-webkit-scrollbar-track {
   border-left: 4px solid #000;
 }
 
 body::-webkit-scrollbar-thumb,
-.scrollbar::-webkit-scrollbar-thumb {
+.scrollbar::-webkit-scrollbar-thumb,
+.scrollbar-sm::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
 }
 
-html.dark body::-webkit-scrollbar-thumb {
+html.dark body::-webkit-scrollbar-thumb,
+html.dark .scrollbar::-webkit-scrollbar-thumb,
+html.dark .scrollbar-sm::-webkit-scrollbar-thumb {
   border-left: 4px solid #000;
 }
 
@@ -156,9 +168,11 @@ html.dark body::-webkit-scrollbar-thumb {
   background: #000;
 }
 
+/* Hỗ trợ cho browsers không có webkit scrollbar */
 @supports not selector(::-webkit-scrollbar) {
   body,
-  .scrollbar {
+  .scrollbar,
+  .scrollbar-sm {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 

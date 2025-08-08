@@ -41,7 +41,7 @@ const SearchFilters = () => {
   return (
     <div className="px-4 lg:px-12 py-8">
       <div
-        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border-4 rounded-xl bg-secondary-background transition-colors duration-200"
+        className="px-4 lg:px-8 py-8 flex flex-col gap-4 w-full border-4 rounded-xl bg-secondary-background transition-colors duration-200"
         style={
           activeCategoryColor ? { backgroundColor: activeCategoryColor } : {}
         }

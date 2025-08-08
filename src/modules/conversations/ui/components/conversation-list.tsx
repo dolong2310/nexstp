@@ -97,13 +97,13 @@ const ConversationList = () => {
     <>
       <aside
         className={cn(
-          "mt-18 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-secondary-background lg:border-r-4",
+          "mt-18 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto scrollbar-sm bg-secondary-background lg:border-r-4",
           isOpen ? "hidden" : "block w-full left-0"
         )}
       >
         <div className="flex flex-col gap-y-3 px-5">
           <div className="flex justify-between py-4">
-            <div className="text-2xl font-bold text-foreground">Messages</div>
+            <h2 className="text-2xl font-bold text-foreground">Messages</h2>
             <Button
               variant="default"
               size="icon"

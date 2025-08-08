@@ -42,7 +42,7 @@ const CartButton = ({
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      toast.success("Please sign in to add products to your cart.");
+      toast.info("Please sign in to add products to your cart.");
       return;
     }
     cart.toggleProduct(productId, tenantSlug);

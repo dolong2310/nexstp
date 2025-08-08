@@ -132,18 +132,18 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
                 {formatName(launchpad.tenant.slug)}
               </AvatarFallback>
             </Avatar>
-            <p className="text-sm underline font-medium">
+            <p className="text-sm underline font-medium truncate overflow-hidden">
               {launchpad.tenant.slug}
             </p>
           </div>
 
           {/* Title */}
-          <h2 className="text-lg font-medium line-clamp-2 px-4">
+          <h2 className="text-lg font-medium line-clamp-2 px-4 break-words">
             {launchpad.title}
           </h2>
 
           {/* Description */}
-          <p className="text-sm text-foreground mb-3 line-clamp-2 px-4">
+          <p className="text-sm text-foreground mb-3 line-clamp-2 px-4 break-words">
             {launchpad.description}
           </p>
 

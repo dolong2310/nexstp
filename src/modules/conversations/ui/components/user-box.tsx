@@ -54,7 +54,7 @@ const UserBox = ({ user }: Props) => {
         <CustomAvatar user={user} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between focus:outline-none">
-            <p className="text-sm font-medium text-main-foreground">
+            <p className="text-sm font-medium text-main-foreground truncate overflow-hidden">
               {user.name}
             </p>
           </div>

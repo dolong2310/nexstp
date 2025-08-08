@@ -51,7 +51,9 @@ const ProductCard = ({
         />
 
         <div className="flex flex-col gap-3 flex-1 border-y-2 p-4">
-          <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
+          <h2 className="text-lg font-medium line-clamp-2 break-words">
+            {name}
+          </h2>
 
           <div className="flex items-center gap-2" onClick={handleUserClick}>
             <Avatar className="size-4">
@@ -60,7 +62,9 @@ const ProductCard = ({
                 {formatName(authorUsername)}
               </AvatarFallback>
             </Avatar>
-            <p className="text-sm underline font-medium">{authorUsername}</p>
+            <p className="text-sm underline font-medium truncate overflow-hidden">
+              {authorUsername}
+            </p>
           </div>
 
           {reviewCount > 0 && (

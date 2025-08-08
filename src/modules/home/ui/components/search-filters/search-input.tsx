@@ -35,18 +35,16 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
     <div className="flex items-center gap-2 w-full">
       <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
-      <Button asChild variant="neutral" className="p-0">
-        <div className="relative w-full">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
-          <Input
-            className="pl-8"
-            placeholder="Search products"
-            disabled={disabled}
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
-      </Button>
+      <div className="relative w-full">
+        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
+        <Input
+          className="pl-8 shadow-shadow"
+          placeholder="Search products"
+          disabled={disabled}
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
 
       {/* Categories view all button in mobile */}
       <Button

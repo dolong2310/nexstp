@@ -79,24 +79,24 @@ const ConversationBox = ({ conversation }: Props) => {
       )}
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between gap-2 mb-1">
             <p
               className={cn(
-                "text-md font-medium text-main-foreground",
+                "text-md font-medium text-main-foreground truncate overflow-hidden",
                 hasSeen && "text-foreground"
               )}
             >
               {conversation?.name || otherUser?.name || "User"}
             </p>
             {lastMessage?.createdAt && (
-              <p
+              <time
                 className={cn(
-                  "text-xs text-main-foreground/80 font-light",
+                  "shrink-0 text-xs text-main-foreground/80 font-light",
                   hasSeen && "text-foreground/80"
                 )}
               >
                 {format(new Date(lastMessage.createdAt), "p")}
-              </p>
+              </time>
             )}
           </div>
 
