@@ -6,7 +6,7 @@ import {
 
 export function startCronJobs() {
   // Chạy vào 0h và 12h mỗi ngày để check expired launchpads
-  cron.schedule("0 0,12 * * *", async () => {
+  cron.schedule("0 0 * * *", async () => {
     console.log("Running launchpad monitor cron job...");
     try {
       await monitorExpiredLaunchpads();
@@ -17,7 +17,7 @@ export function startCronJobs() {
   });
 
   // Chạy vào 0h và 12h mỗi ngày để check upcoming expiry
-  cron.schedule("0 0,12 * * *", async () => {
+  cron.schedule("0 0 * * *", async () => {
     console.log("Running upcoming expiry check...");
     try {
       await checkUpcomingExpiry();

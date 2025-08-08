@@ -10,6 +10,8 @@ import useOtherUser from "../../hooks/use-other-user";
 import { FullConversationType } from "../../types";
 import { CustomAvatarSkeleton } from "./custom-avatar";
 import { CustomAvatarGroupSkeleton } from "./custom-avatar-group";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {
   ssr: false,
@@ -22,10 +24,9 @@ const CustomAvatarGroup = dynamic(() => import("./custom-avatar-group"), {
 
 interface Props {
   conversation: FullConversationType;
-  selected?: boolean;
 }
 
-const ConversationBox = ({ conversation, selected }: Props) => {
+const ConversationBox = ({ conversation }: Props) => {
   const router = useRouter();
   const { user } = useSession();
   const otherUser = useOtherUser(conversation);
@@ -63,10 +64,11 @@ const ConversationBox = ({ conversation, selected }: Props) => {
   }, [lastMessage]);
 
   return (
-    <div
+    <Card
+      shadowTransition
       className={cn(
-        "w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border transition",
-        "bg-background hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px]"
+        "gap-0 flex-row w-full relative flex items-center space-x-3 p-3 rounded-base border-2 shadow-shadow bg-main cursor-pointer",
+        hasSeen && "bg-background text-foreground"
       )}
       onClick={handleClick}
     >
@@ -77,42 +79,52 @@ const ConversationBox = ({ conversation, selected }: Props) => {
       )}
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-md font-medium text-foreground">
+          <div className="flex items-center justify-between gap-2 mb-1">
+            <p
+              className={cn(
+                "text-md font-medium text-main-foreground truncate overflow-hidden",
+                hasSeen && "text-foreground"
+              )}
+            >
               {conversation?.name || otherUser?.name || "User"}
             </p>
             {lastMessage?.createdAt && (
-              <p className="text-xs text-muted-foreground/80 font-light">
+              <time
+                className={cn(
+                  "shrink-0 text-xs text-main-foreground/80 font-light",
+                  hasSeen && "text-foreground/80"
+                )}
+              >
                 {format(new Date(lastMessage.createdAt), "p")}
-              </p>
+              </time>
             )}
           </div>
 
           <p
             className={cn(
               "truncate text-sm",
-              hasSeen ? "text-muted-foreground" : "text-foreground font-bold"
+              hasSeen ? "text-foreground" : "text-main-foreground font-bold"
             )}
           >
             {lastMessageText}
           </p>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
 export const ConversationBoxSkeleton = () => {
   return (
-    <div className="w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border bg-background">
+    <div className="w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border bg-background shadow-shadow">
       <CustomAvatarSkeleton />
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
           <div className="flex items-center justify-between mb-2">
-            <div className="h-5 bg-muted rounded-md w-32" />
-            <div className="h-3 bg-muted rounded-md w-16" />
+            <Skeleton className="h-5 bg-secondary-background rounded-md w-32" />
+            <Skeleton className="h-3 bg-secondary-background rounded-md w-16" />
           </div>
-          <div className="h-5 bg-muted rounded-md w-full" />
+          <Skeleton className="h-5 bg-secondary-background rounded-md w-full" />
         </div>
       </div>
     </div>

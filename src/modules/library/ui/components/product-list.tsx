@@ -57,11 +57,11 @@ const ProductList = () => {
         >
           {hasNextPage && (
             <Button
-              className="text-base font-medium bg-background disabled:opacity-50"
-              variant="elevated"
+              className="text-base font-medium"
+              variant="default"
               disabled
             >
-              Load more <LoaderIcon className="my-4 h-8 w-8 animate-spin" />
+              Load more <LoaderIcon className="size-8 animate-spin" />
             </Button>
           )}
         </InfiniteScroll>

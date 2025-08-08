@@ -13,7 +13,7 @@ const ProductGridToggle = () => {
 
   return (
     <Tabs defaultValue="grid" value={layout} onValueChange={handleTabChange}>
-      <TabsList className="hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] transition-all">
+      <TabsList>
         <TabsTrigger value="grid">
           <LayoutGrid className="size-5" />
         </TabsTrigger>

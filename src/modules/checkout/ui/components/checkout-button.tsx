@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,23 +14,16 @@ import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useCart from "../../hooks/use-cart";
+import { useCartStore } from "../../store/use-cart-store";
 
 interface Props {
   className?: string;
-  hide?: boolean;
-  hideIfEmpty?: boolean;
-  isSmallButton?: boolean;
   tenantSlug?: string;
 }
 
-const CheckoutButton = ({
-  className,
-  hide,
-  hideIfEmpty,
-  isSmallButton,
-  tenantSlug,
-}: Props) => {
+const CheckoutButton = ({ className, tenantSlug }: Props) => {
   const router = useRouter();
+  const hasHydrated = useCartStore((state) => state._hasHydrated);
   const cart = useCart();
   const { user } = useSession();
   const totalItems = cart.getTotalItems(tenantSlug);
@@ -49,9 +42,9 @@ const CheckoutButton = ({
     }
   };
 
-  if (hide) return null;
+  if (!hasHydrated) return <CheckoutButtonSkeleton />;
 
-  if (hideIfEmpty && totalItems === 0) return null;
+  if (totalItems === 0) return null;
 
   // If tenantSlug is provided, show the cart for that specific tenant
   // Otherwise, show a dropdown for all tenant carts
@@ -62,9 +55,9 @@ const CheckoutButton = ({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="elevated"
-                size={isSmallButton ? "sm" : "default"}
-                className={cn("bg-background ring-0 focus:ring-0", className)}
+                variant="default"
+                size="sm"
+                className={cn("h-10 shrink-0", className)}
               >
                 <ShoppingCartIcon />{" "}
                 {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
@@ -83,7 +76,7 @@ const CheckoutButton = ({
                     <Button
                       asChild
                       className="flex items-center justify-between gap-2 w-full cursor-pointer"
-                      variant="elevated"
+                      variant="default"
                       onClick={handlePreventUser}
                     >
                       <Link href={`${generateTenantUrl(tenantSlug)}/checkout`}>
@@ -103,9 +96,9 @@ const CheckoutButton = ({
         ) : (
           <Button
             asChild
-            variant="elevated"
-            size={isSmallButton ? "sm" : "default"}
-            className={cn("bg-background", className)}
+            variant="default"
+            size="sm"
+            className={cn("h-10 shrink-0", className)}
           >
             <Link
               href={`${generateTenantUrl(
@@ -124,9 +117,9 @@ const CheckoutButton = ({
   return (
     <Button
       asChild
-      variant="elevated"
-      size={isSmallButton ? "sm" : "default"}
-      className={cn("bg-background", className)}
+      variant="default"
+      size="sm"
+      className={cn("h-10 shrink-0", className)}
     >
       <Component
         href={`${generateTenantUrl(tenantSlug)}/checkout`}
@@ -141,7 +134,12 @@ const CheckoutButton = ({
 
 export const CheckoutButtonSkeleton = () => {
   return (
-    <Button disabled variant="elevated" className="bg-background">
+    <Button
+      disabled
+      variant="default"
+      size="sm"
+      className="bg-background h-10 shrink-0"
+    >
       <ShoppingCartIcon className="fill-black" />
       <LoaderIcon className="size-4 animate-spin" />
     </Button>

@@ -12,12 +12,17 @@ import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
 import { CustomAvatarGroupSkeleton } from "../custom-avatar-group";
-import ProfileDrawer from "./profile-drawer";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ProfileDrawer = dynamic(() => import("./profile-drawer"), {
+  ssr: false,
+});
 
 const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton />,
 });
+
 const CustomAvatarGroup = dynamic(() => import("../custom-avatar-group"), {
   ssr: false,
   loading: () => <CustomAvatarGroupSkeleton />,
@@ -54,9 +59,9 @@ const ConversationHeader = () => {
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
-      <header className="mt-20 bg-background w-full flex items-center justify-between border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 shadow-sm">
+      <header className="mt-18 bg-secondary-background w-full flex items-center justify-between border-b-4 sm:px-4 py-3 px-4 lg:px-6">
         <div className="flex gap-3 items-center">
-          <Button asChild variant="elevated" size="icon">
+          <Button asChild variant="default" size="icon">
             <Link href="/conversations" className="lg:hidden block">
               <ChevronLeftIcon />
             </Link>
@@ -68,16 +73,19 @@ const ConversationHeader = () => {
             <CustomAvatar user={otherUser} />
           )}
           <div className="flex flex-col">
-            <div>{conversation.name || otherUser.name}</div>
-            <div className="text-sm font-light text-muted-foreground">
+            <p className="max-w-[500px] truncate overflow-hidden">
+              {conversation.name || otherUser.name}
+            </p>
+            <p className="text-sm font-light text-foreground">
               {statusText}
-            </div>
+            </p>
           </div>
         </div>
 
         <Button
-          variant="elevated"
+          variant="default"
           size="icon"
+          className="shrink-0"
           onClick={() => setDrawerOpen(true)}
         >
           <EllipsisVerticalIcon />
@@ -89,10 +97,10 @@ const ConversationHeader = () => {
 
 export const ConversationHeaderSkeleton = () => {
   return (
-    <div className="bg-background w-full flex items-center justify-between border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 shadow-sm">
+    <div className="mt-18 bg-secondary-background w-full flex items-center justify-between border-b-4 sm:px-4 py-3 px-4 lg:px-6 shadow-sm">
       <div className="flex gap-3 items-center">
         <Button
-          variant="elevated"
+          variant="default"
           size="icon"
           className="lg:hidden block"
           disabled
@@ -103,12 +111,12 @@ export const ConversationHeaderSkeleton = () => {
         <CustomAvatarSkeleton />
 
         <div className="flex flex-col gap-y-2">
-          <div className="h-4 bg-muted rounded-md w-32" />
-          <div className="h-3 bg-muted rounded-md w-24" />
+          <Skeleton className="h-4 bg-background rounded-base w-32" />
+          <Skeleton className="h-3 bg-background rounded-base w-24" />
         </div>
       </div>
 
-      <Button variant="elevated" size="icon" disabled>
+      <Button variant="default" size="icon" disabled>
         <EllipsisVerticalIcon />
       </Button>
     </div>

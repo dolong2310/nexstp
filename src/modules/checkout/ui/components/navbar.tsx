@@ -8,10 +8,10 @@ interface Props {
 
 const Navbar = ({ slug }: Props) => {
   return (
-    <nav className="h-20 border-b font-medium bg-background">
+    <nav className="h-18 border-b-4 font-medium bg-secondary-background">
       <div className="max-w-screen-xl mx-auto px-4 lg:px-12 flex items-center justify-between h-full">
         <p className="text-xl">Checkout</p>
-        <Button asChild variant="elevated">
+        <Button asChild variant="neutral">
           <Link href={generateTenantUrl(slug)}>Continue Shopping</Link>
         </Button>
       </div>

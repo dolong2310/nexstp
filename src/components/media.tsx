@@ -15,6 +15,9 @@ interface MediaProps extends Omit<ImageProps, "onLoad" | "onError"> {
   sizeFallbackIcon?: "sm" | "md" | "lg";
   loadingClassName?: string;
   errorClassName?: string;
+  isBordered?: boolean;
+  shadow?: boolean;
+  shadowTransition?: boolean;
   onLoadComplete?: () => void;
   onLoadError?: (error: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
@@ -40,6 +43,9 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
       sizeFallbackIcon = "md",
       loadingClassName,
       errorClassName,
+      isBordered,
+      shadow,
+      shadowTransition,
       onLoadComplete,
       onLoadError,
       ...props
@@ -70,17 +76,15 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
       return (
         <div
           className={cn(
-            "flex items-center justify-center bg-muted rounded-lg",
+            "flex items-center justify-center bg-secondary-background rounded-base",
+            isBordered && "border-2 border-border",
             errorClassName,
             className
           )}
         >
           <div className="flex flex-col items-center justify-center p-4">
             <FallbackIcon
-              className={cn(
-                "text-muted-foreground mb-2",
-                sizeIcon[sizeFallbackIcon]
-              )}
+              className={cn("text-foreground mb-2", sizeIcon[sizeFallbackIcon])}
             />
           </div>
         </div>
@@ -93,6 +97,10 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
         className={cn(
           "media-container",
           "relative aspect-square",
+          shadow && "shadow-shadow rounded-base border-2 overflow-hidden",
+          shadow &&
+            shadowTransition &&
+            "hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all",
           containerClassName
         )}
         style={containerStyle}
@@ -101,11 +109,12 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
         {imageLoading && showLoading && !imageError && (
           <div
             className={cn(
-              "absolute inset-0 flex items-center justify-center bg-muted rounded-lg z-10",
+              "absolute inset-0 flex items-center justify-center bg-secondary-background rounded-base z-10",
+              isBordered && "border-2 border-border",
               loadingClassName
             )}
           >
-            <LoaderIcon className="size-4 animate-spin text-muted-foreground" />
+            <LoaderIcon className="size-4 animate-spin text-foreground" />
           </div>
         )}
 
@@ -113,16 +122,14 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
         {imageError && showError && (
           <div
             className={cn(
-              "absolute inset-0 flex items-center justify-center bg-muted rounded-lg z-10",
+              "absolute inset-0 flex items-center justify-center bg-secondary-background rounded-base z-10",
+              isBordered && "border-2 border-border",
               errorClassName
             )}
           >
             <div className="flex flex-col gap-2 items-center justify-center p-4">
               <FallbackIcon
-                className={cn(
-                  "text-muted-foreground",
-                  sizeIcon[sizeFallbackIcon]
-                )}
+                className={cn("text-foreground", sizeIcon[sizeFallbackIcon])}
               />
             </div>
           </div>
@@ -137,6 +144,7 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
             "transition-opacity duration-200",
             imageLoading ? "opacity-0" : "opacity-100",
             imageError && "opacity-0",
+            isBordered && "border-2 border-border",
             className
           )}
           onLoad={handleImageLoad}

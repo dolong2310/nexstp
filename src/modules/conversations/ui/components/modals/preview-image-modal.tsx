@@ -36,7 +36,8 @@ const PreviewImageModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md" showCloseButton={false}>
+      {/* showCloseButton={false} */}
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Send Image</DialogTitle>
         </DialogHeader>
@@ -47,6 +48,8 @@ const PreviewImageModal = ({
             alt="Preview"
             width={400}
             height={300}
+            isBordered
+            shadow
             containerClassName="w-full max-w-[50vh] max-h-[90vh] overflow-hidden rounded-lg bg-muted"
             className="w-full h-auto object-contain"
           />
@@ -55,7 +58,7 @@ const PreviewImageModal = ({
         <DialogFooter className="flex gap-2">
           <DialogClose asChild>
             <Button
-              variant="outline"
+              variant="neutral"
               onClick={handleCancelPreview}
               disabled={isLoading}
             >
@@ -65,7 +68,7 @@ const PreviewImageModal = ({
 
           <Button
             autoFocus
-            variant="elevated"
+            variant="default"
             disabled={isLoading}
             onKeyDown={handlePressEnter}
             onClick={handleSendImage}

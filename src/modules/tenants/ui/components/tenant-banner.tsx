@@ -51,9 +51,9 @@ const TenantBanner = ({ tenantSlug }: Props) => {
   const [containerHeight, avatarSize, translateY] = useScrollDynamicSize({});
 
   return (
-    <div className="sticky top-0 left-0 px-4 lg:px-12 py-4 mt-4 z-20 bg-third">
+    <div className="sticky top-0 left-0 px-4 lg:px-12 mt-4 -mr-[4px] z-20 bg-transparent">
       <div
-        className="p-6 overflow-hidden relative z-10 border rounded-xl bg-default-filter"
+        className="p-6 overflow-hidden relative z-10 border-4 rounded-xl bg-background"
         style={{
           maxHeight: containerHeight,
           transition: "max-height 0.1s ease-out",
@@ -77,10 +77,7 @@ const TenantBanner = ({ tenantSlug }: Props) => {
               loop: true,
             }}
           >
-            <CarouselContent
-              containerClassName="size-full"
-              className="size-full m-0 p-0"
-            >
+            <CarouselContent className="size-full m-0 p-0">
               {banners.map((banner) => (
                 <CarouselItem key={banner.id} className="m-0 p-0">
                   <div
@@ -106,6 +103,7 @@ const TenantBanner = ({ tenantSlug }: Props) => {
             alt={data.name}
             width={90}
             height={90}
+            isBordered
             sizeFallbackIcon="sm"
             containerClassName="shrink-0"
             containerStyle={{
@@ -127,14 +125,14 @@ const TenantBanner = ({ tenantSlug }: Props) => {
             {data.description ? (
               <p className="line-clamp-2 overflow-hidden">{data.description}</p>
             ) : (
-              <p className="text-muted-foreground italic">
+              <p className="text-foreground italic">
                 No description available.
               </p>
             )}
           </div>
         </div>
 
-        <p className="flex mt-4 text-sm text-muted-foreground">
+        <p className="flex mt-4 text-sm text-foreground">
           {"More information about the store."}
         </p>
       </div>
@@ -146,15 +144,15 @@ export const TenantBannerSkeleton = () => {
   const [containerHeight, avatarSize, translateY] = useScrollDynamicSize({});
 
   return (
-    <div className="sticky top-0 left-0 px-4 lg:px-12 pt-4 mt-4 z-20 bg-third">
+    <div className="sticky top-0 left-0 px-4 lg:px-12 pt-4 mt-4 z-20 bg-secondary-background">
       <div
-        className="p-6 overflow-hidden relative z-10 border rounded-xl bg-default-filter"
+        className="p-6 overflow-hidden relative z-10 border rounded-xl bg-main"
         style={{
           maxHeight: containerHeight,
           transition: "max-height 0.1s ease-out",
         }}
       >
-        <div className="rounded-xl absolute top-0 right-0 left-0 bottom-0 bg-gray-200 animate-pulse" />
+        <div className="rounded-xl absolute top-0 right-0 left-0 bottom-0 bg-secondary-background animate-pulse" />
         <div
           className="flex gap-4"
           style={{ transform: `translateY(-${translateY}px)` }}

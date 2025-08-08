@@ -1,13 +1,18 @@
 "use client";
 
+import Countdown from "@/components/countdown";
 import Media from "@/components/media";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LIMIT } from "@/constants";
 import useSession from "@/hooks/use-session";
 import {
   formatCurrency,
+  formatName,
   generateTenantUrl,
   getCurrentImageUrl,
 } from "@/lib/utils";
@@ -21,7 +26,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
-import { LoaderIcon, Share2, ShoppingCart, Timer } from "lucide-react";
+import { LoaderIcon, Share2Icon, ShoppingCart, Timer } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -140,7 +145,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
         ) : (
           <ShoppingCart className="size-5" />
         )}
-        <span className="ml-2">Buy</span>
+        <span>Buy</span>
       </>
     );
   };
@@ -168,53 +173,58 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
   };
 
   return (
-    <div className="px-4 lg:px-12 py-10">
+    <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
-          <div className="border rounded-sm bg-background overflow-hidden">
-            {/* Hero Image */}
-            <div className="relative aspect-square rounded-tl-sm rounded-tr-sm overflow-hidden">
-              <Media
-                src={
-                  getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"
-                }
-                alt={launchpad.title}
-                fill
-                // containerClassName="aspect-video"
-                className="size-full object-cover"
-              />
+          <div className="relative">
+            <Media
+              src={getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"}
+              alt={launchpad.title}
+              title={launchpad.title}
+              fill
+              shadow
+              shadowTransition
+              containerClassName="aspect-square"
+              className="size-full object-cover"
+            />
 
-              {/* Status Badge */}
-              <div className="absolute top-4 left-4 px-2 py-0.5 border bg-feature w-fit rounded-sm">
-                <p className="text-xs font-medium">-{discountPercentage}%</p>
-              </div>
+            <Badge className="absolute top-4 left-4">
+              <p className="text-xs font-medium">-{discountPercentage}%</p>
+            </Badge>
 
-              {/* Share Button */}
-              <Button
-                variant="elevated"
-                size="icon"
-                className="absolute top-4 right-4"
-                onClick={handleShare}
-              >
-                <Share2 className="size-4" />
-              </Button>
-            </div>
+            <Button
+              variant="default"
+              size="icon"
+              className="absolute top-4 right-4"
+              onClick={handleShare}
+            >
+              <Share2Icon className="size-4" />
+            </Button>
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
-            <TabsList className="w-full">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsList className="w-full shadow-shadow">
+              <TabsTrigger className="w-full" value="overview">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger className="w-full" value="content">
+                Content
+              </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="overview">
-              <div className="border rounded-sm bg-background overflow-hidden">
+            <TabsContent
+              className="shadow-shadow rounded-base"
+              value="overview"
+            >
+              <div className="border-2 rounded-sm bg-background overflow-hidden">
                 <div className="p-6">
                   {launchpad.description ? (
-                    <p className="font-medium">{launchpad.description}</p>
+                    <p className="font-medium break-words">
+                      {launchpad.description}
+                    </p>
                   ) : (
-                    <p className="font-medium text-muted-foreground italic">
+                    <p className="font-medium text-foreground italic">
                       No description available
                     </p>
                   )}
@@ -224,12 +234,9 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                       <h3 className="font-semibold">Tags</h3>
                       <div className="flex flex-wrap gap-2">
                         {launchpad.tags.map((tag) => (
-                          <div
-                            key={tag.id}
-                            className="px-2 py-0.5 border bg-feature w-fit rounded-sm"
-                          >
+                          <Badge key={tag.id}>
                             <p className="text-xs font-medium">{tag.name}</p>
-                          </div>
+                          </Badge>
                         ))}
                       </div>
                     </div>
@@ -237,13 +244,13 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent value="content">
-              <div className="border rounded-sm bg-background overflow-hidden">
+            <TabsContent className="shadow-shadow rounded-base" value="content">
+              <div className="border-2 rounded-sm bg-background overflow-hidden">
                 <div className="p-6">
                   {launchpad.content ? (
                     <RichText data={launchpad.content} />
                   ) : (
-                    <p className="font-medium text-muted-foreground italic">
+                    <p className="font-medium text-foreground italic">
                       No content available
                     </p>
                   )}
@@ -255,43 +262,46 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
 
         {/* Right Column */}
         <div className="w-full md:w-2/5">
-          <div className="border rounded-sm bg-background py-6 space-y-4 sticky top-4 right-0">
+          <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4 sticky top-4 right-0">
             <div className="px-6">
               <Link
                 href={generateTenantUrl(launchpad.tenant.slug)}
                 className="flex items-center gap-2"
               >
-                {launchpad.tenant.image?.url && (
-                  <Media
-                    src={launchpad.tenant.image?.url}
+                <Avatar className="size-6">
+                  <AvatarImage
+                    src={launchpad.tenant.image?.url!}
                     alt={launchpad.tenant.slug}
-                    width={20}
-                    height={20}
-                    className="rounded-full border shrink-0 size-5"
                   />
-                )}
-                <p className="text-base underline font-medium">
+                  <AvatarFallback>
+                    {formatName(launchpad.tenant.slug)}
+                  </AvatarFallback>
+                </Avatar>
+                <p className="text-base underline font-medium truncate overflow-hidden">
                   {launchpad.tenant.slug}
                 </p>
               </Link>
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium">{launchpad.title}</h1>
+              <h1 className="text-4xl font-medium line-clamp-2 break-words">
+                {launchpad.title}
+              </h1>
             </div>
 
-            <div className="px-6">
+            <div className="px-6 py-4 border-y-2">
               <div className="flex items-center gap-3">
-                <div className="px-2 py-1 border bg-feature w-fit">
+                <Badge>
                   <p className="text-base font-medium">
                     {formatCurrency(launchpad.launchPrice)}
                   </p>
-                </div>
-                <p className="text-lg line-through text-muted-foreground">
+                </Badge>
+                <p className="text-lg line-through text-foreground">
                   {formatCurrency(launchpad.originalPrice)}
                 </p>
               </div>
-              <p className="flex items-center gap-1 text-sm text-muted-foreground mt-2">
+
+              <p className="flex items-center gap-1 text-sm text-foreground mt-2">
                 <span>Save</span>
                 <span>
                   {formatCurrency(
@@ -305,24 +315,24 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             <div className="px-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-2">
                     <Timer className="size-4" />
-                    Launch Progress
+                    <Countdown targetDate={launchpad.endTime!} />
                   </span>
                   <span className="font-medium">{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} className="h-3" />
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="flex items-center justify-between text-sm text-foreground">
                   <span>Ends {timeLeft}</span>
                   <span>{launchpad.soldCount || 0} sold</span>
                 </div>
               </div>
             </div>
 
-            <div className="px-6">
+            <div className="px-6 py-4 border-y-2">
               <Button
-                variant="elevated"
-                className="w-full bg-feature text-lg font-semibold"
+                variant="default"
+                className="w-full space-x-1 text-lg font-semibold"
                 onClick={handlePurchase}
                 disabled={
                   (user?.id && launchpad.isOwner) || purchaseMutation.isPending
@@ -335,47 +345,37 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Category
-                  </span>
-                  <div className="px-2 py-0.5 border bg-feature w-fit rounded-sm">
+                  <span className="text-sm text-foreground">Category</span>
+                  <Badge>
                     <p className="text-xs font-medium">
                       {launchpad.category.name}
                     </p>
-                  </div>
+                  </Badge>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Refund Policy
-                  </span>
+                  <span className="text-sm text-foreground">Refund Policy</span>
                   <span className="text-sm font-medium">
                     {RefundPolicy[launchpad.refundPolicy!]}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Launch Date
-                  </span>
+                  <span className="text-sm text-foreground">Launch Date</span>
                   <span className="text-sm font-medium">
                     {format(new Date(launchpad.startTime!), "MMM dd, yyyy")}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    End Date
-                  </span>
+                  <span className="text-sm text-foreground">End Date</span>
                   <span className="text-sm font-medium">
                     {format(new Date(launchpad.endTime!), "MMM dd, yyyy")}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Duration
-                  </span>
+                  <span className="text-sm text-foreground">Duration</span>
                   <span className="text-sm font-medium">
                     {launchpad.duration} hours
                   </span>
@@ -407,105 +407,127 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
 
 export const LaunchpadDetailViewSkeleton = () => {
   return (
-    <div className="px-4 lg:px-12 py-10">
+    <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
+        {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
-          <div className="border rounded-sm bg-background overflow-hidden">
-            <div className="relative aspect-square rounded-tl-sm rounded-tr-sm overflow-hidden">
-              <div className="size-full bg-gray-200 animate-pulse" />
-            </div>
+          <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
+            <Skeleton className="aspect-square bg-secondary-background animate-pulse border-0" />
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
-            <TabsList className="w-full">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsList className="w-full shadow-shadow">
+              <TabsTrigger className="w-full" value="overview">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger className="w-full" value="content">
+                Content
+              </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="overview">
+            <TabsContent
+              className="shadow-shadow rounded-base"
+              value="overview"
+            >
               <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-2">
-                <p className="text-base font-medium bg-muted w-full h-5 animate-pulse" />
-                <p className="text-base font-medium bg-muted w-2/3 h-5 animate-pulse" />
+                <Skeleton className="text-base font-medium bg-secondary-background w-full h-5 animate-pulse" />
+                <Skeleton className="text-base font-medium bg-secondary-background w-2/3 h-5 animate-pulse" />
               </div>
             </TabsContent>
-            <TabsContent value="content">
+            <TabsContent className="shadow-shadow rounded-base" value="content">
               <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-2">
-                <p className="text-base font-medium bg-muted w-full h-5 animate-pulse" />
-                <p className="text-base font-medium bg-muted w-2/3 h-5 animate-pulse" />
+                <Skeleton className="text-base font-medium bg-secondary-background w-full h-5 animate-pulse" />
+                <Skeleton className="text-base font-medium bg-secondary-background w-2/3 h-5 animate-pulse" />
+              </div>
+            </TabsContent>
+            <TabsContent className="shadow-shadow rounded-base" value="ratings">
+              <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-4">
+                <h3 className="text-xl font-medium animate-pulse">Ratings</h3>
+                {[5, 4, 3, 2, 1].map((stars) => (
+                  <div
+                    key={stars}
+                    className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
+                  >
+                    <span>{stars} stars</span>
+                    <Progress value={0} className="h-[1lh]" />
+                    <span>0%</span>
+                  </div>
+                ))}
               </div>
             </TabsContent>
           </Tabs>
         </div>
 
+        {/* Right Column */}
         <div className="w-full md:w-2/5 space-y-4">
-          <div className="border rounded-sm bg-background py-6 space-y-4 sticky top-4 right-0">
-            <div className="px-6 flex items-center gap-2 animate-pulse">
-              <div className="rounded-full border bg-muted size-5" />
-              <p className="text-base underline font-medium bg-muted w-24 h-5 animate-pulse" />
+          <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4 sticky top-4 right-0">
+            <div className="px-6 flex items-center gap-2">
+              <Skeleton className="rounded-full border bg-secondary-background size-6 animate-pulse" />
+              <Skeleton className="text-base underline font-medium bg-secondary-background w-24 h-5 animate-pulse" />
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium bg-muted w-3/4 h-8 animate-pulse" />
+              <Skeleton className="text-4xl font-medium bg-secondary-background w-3/4 h-8 animate-pulse" />
             </div>
 
-            <div className="px-6">
-              <div className="flex items-center gap-3">
-                <div className="px-2 py-1 border bg-muted w-20 h-7 animate-pulse rounded" />
-                <p className="text-lg line-through text-muted-foreground bg-muted w-16 h-6 animate-pulse rounded" />
-              </div>
-              <p className="flex items-center gap-1 text-sm text-muted-foreground mt-2">
-                <span className="bg-muted w-10 h-4 animate-pulse rounded" />
-                <span className="bg-muted w-12 h-4 animate-pulse rounded" />
-                <span className="bg-muted w-14 h-4 animate-pulse rounded" />
-              </p>
+            <div className="px-6 py-4 border-y-2">
+              <Skeleton className="text-base font-medium bg-secondary-background w-20 h-6 animate-pulse" />
             </div>
 
             <div className="px-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-1">
-                    <div className="bg-muted rounded-full w-4 h-4 animate-pulse" />
-                    <span className="bg-muted w-24 h-4 animate-pulse rounded" />
+                  <span className="flex items-center gap-2">
+                    <Timer className="size-4" />
+                    Launch Progress
                   </span>
-                  <span className="bg-muted w-8 h-4 animate-pulse rounded" />
+                  <span className="font-medium">0%</span>
                 </div>
-                <div className="h-3 bg-muted rounded animate-pulse" />
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span className="bg-muted w-24 h-4 animate-pulse rounded" />
-                  <span className="bg-muted w-12 h-4 animate-pulse rounded" />
+                <Progress value={0} className="h-3 animate-pulse" />
+                <div className="flex items-center justify-between text-sm text-foreground">
+                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
+                  <Skeleton className="bg-secondary-background w-12 h-4 animate-pulse rounded" />
                 </div>
               </div>
             </div>
 
-            <div className="px-6">
-              <div className="w-full h-11 bg-muted animate-pulse rounded" />
+            <div className="px-6 py-4 border-y-2">
+              <Button
+                variant="default"
+                className="w-full"
+                disabled
+                onClick={() => {}}
+              >
+                <LoaderIcon className="size-5 animate-spin" />
+              </Button>
             </div>
 
             <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground bg-muted w-20 h-4 animate-pulse rounded" />
-                  <div className="px-2 py-0.5 border bg-muted w-16 h-5 animate-pulse rounded" />
+                  <span className="text-sm text-foreground">Category</span>
+                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground bg-muted w-24 h-4 animate-pulse rounded" />
-                  <span className="text-sm font-medium bg-muted w-16 h-4 animate-pulse rounded" />
+                  <span className="text-sm text-foreground">Refund Policy</span>
+                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground bg-muted w-20 h-4 animate-pulse rounded" />
-                  <span className="text-sm font-medium bg-muted w-20 h-4 animate-pulse rounded" />
+                  <span className="text-sm text-foreground">Launch Date</span>
+                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground bg-muted w-16 h-4 animate-pulse rounded" />
-                  <span className="text-sm font-medium bg-muted w-20 h-4 animate-pulse rounded" />
+                  <span className="text-sm text-foreground">End Date</span>
+                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
-                <div className="flex items-center justify-between"></div>
-                <span className="text-sm text-muted-foreground bg-muted w-16 h-4 animate-pulse rounded" />
-                <span className="text-sm font-medium bg-muted w-16 h-4 animate-pulse rounded" />
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-foreground">Duration</span>
+                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
+                </div>
               </div>
             </div>
           </div>

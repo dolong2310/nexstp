@@ -1,4 +1,5 @@
 import Media from "@/components/media";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
@@ -22,15 +23,13 @@ const CheckoutItem = ({
   onRemove,
 }: Props) => {
   return (
-    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border bg-background rounded-md">
-      <div className="overflow-hidden border-r">
-        <Media
-          src={imageUrl || "/placeholder-bg.jpg"}
-          alt={name}
-          fill
-          className="object-cover rounded-md"
-        />
-      </div>
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 bg-background border-2 rounded-base shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all">
+      <Media
+        src={imageUrl || "/placeholder-bg.jpg"}
+        alt={name}
+        fill
+        className="object-cover border-r-2 rounded-tl-base rounded-bl-base"
+      />
 
       <div className="flex flex-col justify-between py-4">
         <div className="">
@@ -38,7 +37,7 @@ const CheckoutItem = ({
             <h4 className="font-bold underline">{name}</h4>
           </Link>
           <Link href={tenantUrl}>
-            <h4 className="font-medium underline">{tenantName}</h4>
+            <p className="font-medium underline mt-2">{tenantName}</p>
           </Link>
         </div>
       </div>
@@ -59,21 +58,21 @@ const CheckoutItem = ({
 
 export const CheckoutItemSkeleton = () => {
   return (
-    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 border bg-background rounded-md">
-      <div className="overflow-hidden border-r">
-        <div className="aspect-square w-full h-full bg-gray-200 animate-pulse rounded-md" />
+    <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 bg-background border-2 rounded-base shadow-shadow">
+      <div className="border-r-2 rounded-tl-base rounded-bl-base overflow-hidden">
+        <Skeleton className="aspect-square size-full animate-pulse border-0 rounded-none" />
       </div>
 
       <div className="flex flex-col justify-between py-4">
         <div className="space-y-2">
-          <div className="w-3/4 h-4 bg-gray-200 animate-pulse" />
-          <div className="w-1/2 h-4 bg-gray-200 animate-pulse" />
+          <Skeleton className="w-3/4 h-4 bg-secondary-background animate-pulse" />
+          <Skeleton className="w-1/2 h-4 bg-secondary-background animate-pulse mt-2" />
         </div>
       </div>
 
       <div className="flex flex-col justify-between py-4">
-        <div className="w-1/2 h-4 bg-gray-200 animate-pulse" />
-        <div className="w-1/3 h-4 bg-gray-200 animate-pulse" />
+        <Skeleton className="w-full h-4 bg-secondary-background animate-pulse" />
+        <p className="font-medium underline cursor-not-allowed">Remove</p>
       </div>
     </div>
   );

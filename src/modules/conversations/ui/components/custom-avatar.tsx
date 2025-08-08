@@ -4,6 +4,7 @@ import { ChatUser, Media } from "@/payload-types";
 import { useMemo } from "react";
 import useActiveList from "../../store/use-active-list";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   src?: string;
@@ -23,8 +24,11 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
   }, [members, user?.email, isOnline]);
 
   return (
-    <Button asChild variant="outline" size="icon">
-      <Avatar className={className} isOnline={isActive}>
+    <Button asChild variant="neutral" size="icon">
+      <Avatar
+        className={cn("rounded-base! outline-none", className)}
+        isOnline={isActive}
+      >
         <AvatarImage
           src={
             src ||
@@ -33,7 +37,9 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
             "/images/default-avatar.png"
           }
         />
-        <AvatarFallback>{formatName(user?.name || "User")}</AvatarFallback>
+        <AvatarFallback className="rounded-base! outline-none">
+          {formatName(user?.name || "User")}
+        </AvatarFallback>
       </Avatar>
     </Button>
   );
@@ -41,9 +47,11 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
 
 export const CustomAvatarSkeleton = ({ className }: { className?: string }) => {
   return (
-    <div className={cn("animate-pulse", className)}>
-      <div className="size-9 rounded-md bg-muted" />
-    </div>
+    <Button asChild variant="neutral" size="icon">
+      <div className={cn("animate-pulse", className)}>
+        <Skeleton className="size-9 rounded-base bg-secondary-background border-0" />
+      </div>
+    </Button>
   );
 };
 

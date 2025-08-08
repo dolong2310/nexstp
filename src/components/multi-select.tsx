@@ -20,28 +20,23 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { Checkbox } from "./ui/checkbox";
 
 /**
  * Variants for the multi-select component to handle different styles.
  * Uses class-variance-authority (cva) to define different styles based on "variant" prop.
  */
-const multiSelectVariants = cva(
-  "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
-  {
-    variants: {
-      variant: {
-        default: "border-foreground text-foreground bg-card hover:bg-card/80",
-        secondary:
-          "border-foreground bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-      },
+const multiSelectVariants = cva("m-1", {
+  variants: {
+    variant: {
+      default: "bg-main text-main-foreground",
+      neutral: "bg-secondary-background text-foreground",
     },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-);
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
 /**
  * Props for MultiSelect component
@@ -181,10 +176,11 @@ export const MultiSelect = React.forwardRef<
         <PopoverTrigger asChild>
           <Button
             ref={ref}
+            variant="noShadowNeutral"
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full p-1 rounded-md border min-h-12 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
+              "flex w-full p-1 rounded-md min-h-10 h-auto items-center justify-between [&_svg]:pointer-events-auto",
               className
             )}
           >
@@ -200,21 +196,22 @@ export const MultiSelect = React.forwardRef<
                         className={cn(multiSelectVariants({ variant }))}
                       >
                         {IconComponent && (
-                          <IconComponent className="h-4 w-4 mr-2" />
+                          <IconComponent className="size-4 mr-2" />
                         )}
                         {option?.label}
                         <div
-                          className="ml-2 h-4 w-4 cursor-pointer"
+                          className="size-4 cursor-pointer"
                           onClick={(event) => {
                             event.stopPropagation();
                             toggleOption(value);
                           }}
                         >
-                          <XCircle className="h-4 w-4" />
+                          <XIcon className="size-4" />
                         </div>
                       </Badge>
                     );
                   })}
+
                   {selectedValues.length > maxCount && (
                     <Badge
                       className={cn(
@@ -224,7 +221,7 @@ export const MultiSelect = React.forwardRef<
                     >
                       {`+ ${selectedValues.length - maxCount} more`}
                       <XCircle
-                        className="ml-2 h-4 w-4 cursor-pointer"
+                        className="ml-2 size-4 cursor-pointer"
                         onClick={(event) => {
                           event.stopPropagation();
                           clearExtraOptions();
@@ -233,9 +230,10 @@ export const MultiSelect = React.forwardRef<
                     </Badge>
                   )}
                 </div>
+
                 <div className="flex items-center justify-between">
                   <XIcon
-                    className="h-4 mx-2 cursor-pointer text-muted-foreground"
+                    className="h-4 mx-2 cursor-pointer text-foreground"
                     onClick={(event) => {
                       event.stopPropagation();
                       handleClear();
@@ -245,30 +243,32 @@ export const MultiSelect = React.forwardRef<
                     orientation="vertical"
                     className="flex min-h-6 h-full"
                   />
-                  <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="h-4 mx-2 cursor-pointer text-foreground" />
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-muted-foreground mx-3">
+                <span className="text-sm text-foreground mx-3">
                   {placeholder}
                 </span>
-                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
+                <ChevronDown className="h-4 cursor-pointer text-foreground mx-2" />
               </div>
             )}
           </Button>
         </PopoverTrigger>
 
         <PopoverContent
-          className="w-auto p-0"
+          className="w-auto min-w-72 p-0"
           align="start"
+          sideOffset={10}
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
-          <Command>
+          <Command className="border-0 rounded-base">
             <CommandInput
               placeholder="Search..."
               onKeyDown={handleInputKeyDown}
             />
+
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
@@ -277,64 +277,51 @@ export const MultiSelect = React.forwardRef<
                   onSelect={toggleAll}
                   className="cursor-pointer"
                 >
-                  <div
-                    className={cn(
-                      "mr-2 flex h-4 w-4 items-center justify-center rounded-xs border",
-                      selectedValues.length === options.length
-                        ? "bg-background text-primary-foreground"
-                        : "opacity-50 [&_svg]:invisible"
-                    )}
-                  >
-                    <CheckIcon className="h-4 w-4" />
-                  </div>
+                  <Checkbox
+                    checked={selectedValues.length === options.length}
+                  />
                   <span>(Select All)</span>
                 </CommandItem>
+
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option.value);
                   return (
                     <CommandItem
                       key={option.value}
-                      onSelect={() => toggleOption(option.value)}
                       className="cursor-pointer"
+                      onSelect={() => toggleOption(option.value)}
                     >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-xs border",
-                          isSelected
-                            ? "bg-background text-primary-foreground"
-                            : "opacity-50 [&_svg]:invisible"
-                        )}
-                      >
-                        <CheckIcon className="h-4 w-4" />
-                      </div>
+                      <Checkbox checked={isSelected} />
                       {option.icon && (
-                        <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <option.icon className="mr-2 h-4 w-4 text-foreground" />
                       )}
                       <span>{option.label}</span>
                     </CommandItem>
                   );
                 })}
               </CommandGroup>
+
               <CommandSeparator />
+
               <CommandGroup>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 justify-between">
                   {selectedValues.length > 0 && (
-                    <Button asChild variant="elevated">
-                      <CommandItem
-                        onSelect={handleClear}
-                        className="flex-1 justify-center cursor-pointer"
-                      >
-                        Clear
-                      </CommandItem>
+                    <Button
+                      variant="noShadowNeutral"
+                      size="sm"
+                      className="flex-1 justify-center cursor-pointer"
+                      onClick={handleClear}
+                    >
+                      Clear
                     </Button>
                   )}
-                  <Button asChild variant="elevated">
-                    <CommandItem
-                      onSelect={() => setIsPopoverOpen(false)}
-                      className="flex-1 justify-center cursor-pointer max-w-full"
-                    >
-                      Close
-                    </CommandItem>
+                  <Button
+                    variant="noShadowNeutral"
+                    size="sm"
+                    className="flex-1 justify-center cursor-pointer max-w-full"
+                    onClick={() => setIsPopoverOpen(false)}
+                  >
+                    Close
                   </Button>
                 </div>
               </CommandGroup>

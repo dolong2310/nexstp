@@ -1,12 +1,18 @@
 "use client";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { VariantProps } from "class-variance-authority";
 import { RefreshCwIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Button } from "./ui/button";
-import { useGlobalStore } from "@/store/use-global-store";
+import { Button, buttonVariants } from "./ui/button";
 
 export enum RefreshQueryKeys {
   PRODUCTS = "products",
@@ -21,10 +27,15 @@ export enum RefreshQueryKeys {
 
 interface Props {
   queryKey?: RefreshQueryKeys;
-  sizeButton?: "sm" | "default" | "lg" | "icon";
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
 }
 
-const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
+const RefreshButton = ({
+  queryKey,
+  variant = "default",
+  size = "sm",
+}: Props) => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
 
@@ -33,7 +44,7 @@ const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const iconSize = useMemo(() => {
-    switch (sizeButton) {
+    switch (size) {
       case "sm":
       case "icon":
         return "size-4";
@@ -42,7 +53,7 @@ const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
       default:
         return "size-5";
     }
-  }, [sizeButton]);
+  }, [size]);
 
   const invalidateQuery = () => {
     console.log("queryKey, ", queryKey);
@@ -101,20 +112,28 @@ const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
   };
 
   return (
-    <Button
-      variant="elevated"
-      size={sizeButton}
-      onClick={handleRefresh}
-      disabled={loading}
-    >
-      <RefreshCwIcon
-        className={cn(
-          "transition-transform duration-500",
-          iconSize,
-          loading && "animate-spin"
-        )}
-      />
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant={variant}
+          size={size}
+          className="shrink-0"
+          disabled={loading}
+          onClick={handleRefresh}
+        >
+          <RefreshCwIcon
+            className={cn(
+              "transition-transform duration-500",
+              iconSize,
+              loading && "animate-spin"
+            )}
+          />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Refresh</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 

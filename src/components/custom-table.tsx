@@ -211,7 +211,7 @@ const CustomTable = ({
                   className={cn(
                     "p-2 md:p-4 whitespace-nowrap font-semibold text-left",
                     "text-sm",
-                    checkSticky && "bg-third",
+                    checkSticky && "bg-secondary-background",
                     classNameTogether,
                     classNameHeader,
                     (noHover || isLoading) && "first:ps-0 last:pe-0"

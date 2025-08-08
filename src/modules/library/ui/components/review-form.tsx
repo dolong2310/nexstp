@@ -1,4 +1,4 @@
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import StarPicker from "@/components/star-picker";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import { ReviewGetOneOutput } from "@/modules/reviews/types";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -35,7 +36,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
 
   const createReview = useMutation(
     trpc.reviews.create.mutationOptions({
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(
           trpc.reviews.getOne.queryOptions({ productId })
         );
@@ -50,7 +51,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
 
   const updateReview = useMutation(
     trpc.reviews.update.mutationOptions({
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(
           trpc.reviews.getOne.queryOptions({ productId })
         );
@@ -72,8 +73,6 @@ const ReviewForm = ({ productId, initialData }: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-
     if (initialData) {
       updateReview.mutate({
         reviewId: initialData.id,
@@ -140,11 +139,15 @@ const ReviewForm = ({ productId, initialData }: Props) => {
         {!isPreview && (
           <Button
             type="submit"
-            variant="elevated"
+            variant="default"
             size="lg"
             disabled={createReview.isPending || updateReview.isPending}
-            className="w-fit bg-black text-white hover:bg-feature hover:text-primary"
+            className="w-fit"
           >
+            {createReview.isPending ||
+              (updateReview.isPending && (
+                <LoaderIcon className="size-4 animate-spin" />
+              ))}
             {initialData ? "Update review" : "Post review"}
           </Button>
         )}
@@ -153,7 +156,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
       {isPreview && (
         <Button
           type="button"
-          variant="elevated"
+          variant="default"
           size="lg"
           className="w-fit mt-4"
           onClick={() => setIsPreview(false)}
@@ -171,13 +174,7 @@ export const ReviewFormSkeleton = () => {
       <p className="font-medium">Liked it? Give it a rating</p>
       <StarPicker disabled />
       <Textarea placeholder="Want to leave a written review?" disabled />
-      <Button
-        type="button"
-        variant="elevated"
-        size="lg"
-        disabled
-        className="w-fit bg-black text-white hover:bg-feature hover:text-primary"
-      >
+      <Button variant="default" size="lg" disabled>
         Post review
       </Button>
     </div>

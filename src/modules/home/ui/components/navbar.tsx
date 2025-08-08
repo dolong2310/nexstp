@@ -1,19 +1,25 @@
 "use client";
 
+import Logo from "@/components/logo";
+import LogoutButton from "@/components/logout-button";
+import ThemeButton from "@/components/theme-button";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
-import { MenuIcon } from "lucide-react";
-import { Poppins } from "next/font/google";
+import useConversationNotifications from "@/modules/conversations/hooks/use-conversation-notifications";
+import { LayoutDashboardIcon, MenuIcon, MessageSquareIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["700"],
-});
+interface Props {
+  fixed?: boolean;
+}
 
 const navbarItems = [
   { href: "/", children: "Home" },
@@ -21,77 +27,87 @@ const navbarItems = [
   { href: "/about", children: "About" },
 ];
 
-const Navbar = () => {
-  const pathname = usePathname();
+const Navbar = ({ fixed }: Props) => {
   const { user } = useSession();
+  const { unreadCount } = useConversationNotifications();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const _pathname = useMemo(() => {
-    const navbarHref = navbarItems.map((i) => i.href);
-    if (!navbarHref.includes(pathname)) return "/";
-    return pathname;
-  }, [pathname, navbarItems]);
+  // const pathname = usePathname();
+  // const _pathname = useMemo(() => {
+  //   const navbarHref = navbarItems.map((i) => i.href);
+  //   if (!navbarHref.includes(pathname)) return "/";
+  //   return pathname;
+  // }, [pathname, navbarItems]);
 
   return (
-    <nav className="h-20 flex border-b justify-between font-medium bg-background ">
-      <Link href="/" className="pl-4 lg:pl-6 flex items-center">
-        <span className={cn("text-5xl font-semibold", poppins.className)}>
-          Nexstp
-        </span>
-      </Link>
+    <nav
+      className={cn(
+        "h-18 flex border-b-4 items-center justify-between font-medium bg-secondary-background px-4 lg:px-8",
+        fixed && "fixed top-0 left-0 right-0 z-20"
+      )}
+    >
+      <div className="flex items-center gap-10">
+        <Logo />
 
-      <div className="items-center gap-4 hidden lg:flex">
-        {navbarItems.map((item) => (
-          <NavbarItem
-            key={item.href}
-            href={item.href}
-            isActive={_pathname === item.href}
-          >
-            {item.children}
-          </NavbarItem>
-        ))}
+        <div className="items-center gap-10 hidden lg:flex">
+          {navbarItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.children}
+            </Link>
+          ))}
+        </div>
       </div>
 
-      {user ? (
-        <div className="hidden lg:flex">
-          <Button
-            asChild
-            variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-background hover:bg-feature transition-colors duration-200 text-lg"
-          >
-            <Link href="/admin">Dashboard</Link>
-          </Button>
-          <Button
-            asChild
-            variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
-          >
-            <Link href="/conversations">Conversation</Link>
-          </Button>
-        </div>
-      ) : (
-        <div className="hidden lg:flex">
-          <Button
-            asChild
-            variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-background hover:bg-feature transition-colors duration-200 text-lg"
-          >
-            <Link prefetch href="/sign-in">
-              Log in
-            </Link>
-          </Button>
-          <Button
-            asChild
-            variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-8 h-full rounded-none bg-black text-white hover:bg-feature hover:text-black transition-colors duration-200 text-lg"
-          >
-            <Link prefetch href="/sign-up">
-              Start selling
-            </Link>
-          </Button>
-        </div>
-      )}
+      <div className="hidden lg:flex items-center gap-4">
+        {user ? (
+          <>
+            <Button asChild variant="neutral">
+              <Link href="/admin">
+                Dashboard <LayoutDashboardIcon />
+              </Link>
+            </Button>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  asChild
+                  variant="neutral"
+                  size="icon"
+                  className="relative"
+                >
+                  <Link href="/conversations">
+                    <MessageSquareIcon />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-3 -right-3 size-6 flex items-center justify-center text-xs text-white bg-red-500 rounded-full">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Conversations</p>
+              </TooltipContent>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            <Button asChild variant="neutral">
+              <Link prefetch href="/sign-in">
+                Sign in
+              </Link>
+            </Button>
+            <Button asChild variant="neutral">
+              <Link prefetch href="/sign-up">
+                Sign up
+              </Link>
+            </Button>
+          </>
+        )}
+        <ThemeButton />
+        <LogoutButton />
+      </div>
 
       <NavbarSidebar
         items={navbarItems}
@@ -99,9 +115,10 @@ const Navbar = () => {
         onOpenChange={setIsSidebarOpen}
       />
 
-      <div className="flex lg:hidden items-center justify-center pr-4">
+      <div className="flex lg:hidden items-center justify-center gap-4">
+        <ThemeButton />
         <Button
-          variant="elevated"
+          variant="default"
           size="icon"
           onClick={() => setIsSidebarOpen(true)}
         >
@@ -109,30 +126,6 @@ const Navbar = () => {
         </Button>
       </div>
     </nav>
-  );
-};
-
-const NavbarItem = ({
-  href,
-  children,
-  isActive = false,
-}: {
-  href: string;
-  children: React.ReactNode;
-  isActive?: boolean;
-}) => {
-  return (
-    <Button
-      asChild
-      variant="outline"
-      className={cn(
-        "bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent px-4 text-lg",
-        isActive &&
-          "bg-black text-white dark:bg-white dark:text-black hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
-      )}
-    >
-      <Link href={href}>{children}</Link>
-    </Button>
   );
 };
 

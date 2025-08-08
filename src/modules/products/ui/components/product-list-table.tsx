@@ -2,9 +2,12 @@
 
 import InfiniteScroll from "@/components/infinite-scroll";
 import Media from "@/components/media";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TABLE_LIMIT } from "@/constants";
-import { cn, formatCurrency, generateTenantUrl } from "@/lib/utils";
+import { cn, formatCurrency, formatName, generateTenantUrl } from "@/lib/utils";
 import { Media as MediaType, Tenant } from "@/payload-types";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
@@ -13,7 +16,7 @@ import { LoaderIcon, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 import { ProductsGetManyOutput } from "../../types";
-import CartButton from "./cart-button";
+import CartButton, { CartButtonSkeleton } from "./cart-button";
 
 type Product = {
   id: string;
@@ -76,6 +79,7 @@ const ProductListTable = ({
           productId: p.id,
           tenantSlug: p.tenant.slug,
           isPurchased: p.isPurchased,
+          isOwner: p.isOwner,
         },
       };
     });
@@ -107,6 +111,7 @@ const ProductListTable = ({
               src={image}
               alt={name}
               fill
+              isBordered
               containerClassName="size-10"
               className="rounded-md object-cover"
             />
@@ -129,16 +134,10 @@ const ProductListTable = ({
             href={generateTenantUrl(authorUsername)}
             className="flex items-center gap-2 cursor-pointer w-full"
           >
-            {authorImageUrl && (
-              <Media
-                src={authorImageUrl}
-                alt={authorUsername}
-                fill
-                sizeFallbackIcon="sm"
-                containerClassName="size-6"
-                className="rounded-full border"
-              />
-            )}
+            <Avatar className="size-6">
+              <AvatarImage src={authorImageUrl} alt={authorUsername} />
+              <AvatarFallback>{formatName(authorUsername)}</AvatarFallback>
+            </Avatar>
             <p className="text-sm underline font-medium truncate overflow-hidden">
               {authorUsername}
             </p>
@@ -153,11 +152,11 @@ const ProductListTable = ({
       minWidth: "100px",
       render: (value) => {
         return (
-          <div className="relative px-2 py-1 border bg-feature w-fit overflow-hidden">
+          <Badge>
             <p className="text-sm font-medium truncate">
               {formatCurrency(value)}
             </p>
-          </div>
+          </Badge>
         );
       },
     },
@@ -172,7 +171,7 @@ const ProductListTable = ({
 
         return (
           <div className="flex items-center gap-1 overflow-hidden">
-            <StarIcon className="size-3.5 fill-black shrink-0" />
+            <StarIcon className="size-3.5 fill-black dark:fill-white shrink-0" />
             <p className="text-sm font-medium whitespace-nowrap truncate">
               {reviewRating} ({reviewCount})
             </p>
@@ -189,6 +188,7 @@ const ProductListTable = ({
         return (
           <CartButton
             isIconButton
+            isOwner={value.isOwner}
             productId={value.productId}
             tenantSlug={value.tenantSlug}
             isPurchased={value.isPurchased}
@@ -214,7 +214,7 @@ const ProductListTable = ({
     <>
       <div
         ref={tableContainerRef}
-        className="overflow-hidden rounded-md border"
+        className="overflow-hidden rounded-md border-2"
       >
         <div
           className={cn(
@@ -230,7 +230,7 @@ const ProductListTable = ({
                   key={column.key}
                   className={cn(
                     "custom-th",
-                    "bg-background content-center border-b text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
+                    "bg-background content-center border-b-2 text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
                     "first:sticky first:top-0 first:left-0 first:z-10"
                   )}
                   style={{ width: column.width, minWidth: column.minWidth }}
@@ -277,7 +277,7 @@ const ProductListTable = ({
                         key={col.key}
                         className={cn(
                           "custom-td",
-                          "px-4 py-2 content-center w-full bg-background border-b",
+                          "px-4 py-2 content-center w-full bg-background border-b-2",
                           "first:sticky first:top-0 first:left-0 first:z-10",
                           col.align && `flex items-center justify-${col.align}`
                         )}
@@ -305,11 +305,11 @@ const ProductListTable = ({
         >
           {hasNextPage && (
             <Button
-              className="text-base font-medium bg-background disabled:opacity-50"
-              variant="elevated"
+              className="text-base font-medium"
+              variant="default"
               disabled
             >
-              Load more <LoaderIcon className="my-4 h-8 w-8 animate-spin" />
+              Load more <LoaderIcon className="size-8 animate-spin" />
             </Button>
           )}
         </InfiniteScroll>
@@ -324,13 +324,13 @@ export const ProductListTableSkeleton = () => {
       {
         key: "product",
         header: "Product",
-        width: "40%",
-        minWidth: "300px",
+        width: "35%",
+        minWidth: "220px",
         render: () => {
           return (
             <div className="flex items-center gap-2">
-              <div className="relative aspect-square rounded-md bg-gray-200 animate-pulse size-10" />
-              <div className="h-4 w-full bg-gray-200 animate-pulse" />
+              <Skeleton className="relative aspect-square rounded-md bg-secondary-background animate-pulse size-10" />
+              <Skeleton className="h-5 w-full bg-secondary-background animate-pulse" />
             </div>
           );
         },
@@ -343,8 +343,8 @@ export const ProductListTableSkeleton = () => {
         render: () => {
           return (
             <div className="flex items-center gap-2">
-              <div className="rounded-full bg-gray-200 animate-pulse shrink-0 size-6" />
-              <div className="h-3 bg-gray-200 animate-pulse w-24" />
+              <Skeleton className="rounded-full bg-secondary-background animate-pulse shrink-0 size-6" />
+              <Skeleton className="h-4 bg-secondary-background animate-pulse w-24" />
             </div>
           );
         },
@@ -355,7 +355,7 @@ export const ProductListTableSkeleton = () => {
         width: "15%",
         minWidth: "100px",
         render: () => {
-          return <div className="h-4 bg-gray-200 animate-pulse w-16" />;
+          return <Skeleton className="h-5 bg-secondary-background animate-pulse w-16" />;
         },
       },
       {
@@ -367,9 +367,18 @@ export const ProductListTableSkeleton = () => {
           return (
             <div className="flex items-center gap-1">
               <StarIcon className="size-3.5 fill-gray-300" />
-              <div className="h-3 bg-gray-200 animate-pulse w-16" />
+              <Skeleton className="h-4 bg-secondary-background animate-pulse w-16" />
             </div>
           );
+        },
+      },
+      {
+        key: "action",
+        header: "",
+        width: "5%",
+        minWidth: "80px",
+        render: () => {
+          return <CartButtonSkeleton isIconButton />;
         },
       },
     ];
@@ -378,7 +387,7 @@ export const ProductListTableSkeleton = () => {
   const dataTable = useMemo(() => Array.from({ length: TABLE_LIMIT }), []);
 
   return (
-    <div className="overflow-hidden rounded-md border">
+    <div className="overflow-hidden rounded-md border-2">
       <div className="custom-table relative w-full overflow-x-auto caption-bottom text-sm">
         <div className="custom-thead">
           <div className="custom-tr relative flex items-center">
@@ -387,7 +396,7 @@ export const ProductListTableSkeleton = () => {
                 key={column.key}
                 className={cn(
                   "custom-th",
-                  "bg-background content-center border-b text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
+                  "bg-background content-center border-b-2 text-foreground h-10 px-2 text-left font-medium whitespace-nowrap",
                   "first:sticky first:top-0 first:left-0 first:z-10"
                 )}
                 style={{ width: column.width, minWidth: column.minWidth }}
@@ -409,7 +418,7 @@ export const ProductListTableSkeleton = () => {
                   key={col.key}
                   className={cn(
                     "custom-td",
-                    "px-4 py-2 content-center w-full bg-background border-b",
+                    "px-4 py-2 content-center w-full bg-background border-b-2",
                     "first:sticky first:top-0 first:left-0 first:z-10",
                     col.align && `justify-${col.align}`
                   )}

@@ -97,15 +97,15 @@ const ConversationList = () => {
     <>
       <aside
         className={cn(
-          "mt-20 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-back border-r",
+          "mt-18 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto scrollbar-sm bg-secondary-background lg:border-r-4",
           isOpen ? "hidden" : "block w-full left-0"
         )}
       >
         <div className="flex flex-col gap-y-3 px-5">
           <div className="flex justify-between py-4">
-            <div className="text-2xl font-bold text-foreground">Messages</div>
+            <h2 className="text-2xl font-bold text-foreground">Messages</h2>
             <Button
-              variant="elevated"
+              variant="default"
               size="icon"
               onClick={() => setIsModalOpen(true)}
             >
@@ -114,11 +114,7 @@ const ConversationList = () => {
           </div>
 
           {items.map((item) => (
-            <ConversationBox
-              key={item.id}
-              conversation={item}
-              selected={item.id === conversationId}
-            />
+            <ConversationBox key={item.id} conversation={item} />
           ))}
         </div>
       </aside>
@@ -133,11 +129,11 @@ const ConversationList = () => {
 
 export const ConversationListSkeleton = () => {
   return (
-    <aside className="mt-20 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-back border-r block w-full left-0">
+    <aside className="mt-18 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-secondary-background lg:border-r-4 block w-full left-0">
       <div className="flex flex-col gap-y-3 px-5">
         <div className="flex justify-between py-4">
           <div className="text-2xl font-bold text-foreground">Messages</div>
-          <Button variant="elevated" size="icon" disabled>
+          <Button variant="default" size="icon" disabled>
             <UserPlus />
           </Button>
         </div>

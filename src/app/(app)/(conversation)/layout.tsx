@@ -1,5 +1,5 @@
-import ConversationNavbar from "@/modules/conversations/ui/components/conversation-navbar";
 import ConversationStatusProvider from "@/modules/conversations/ui/components/providers/status-provider";
+import Navbar from "@/modules/home/ui/components/navbar";
 import React from "react";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 const ConversationLayout = ({ children }: Props) => {
   return (
     <ConversationStatusProvider>
-      <ConversationNavbar />
+      <Navbar fixed />
       {children}
     </ConversationStatusProvider>
   );

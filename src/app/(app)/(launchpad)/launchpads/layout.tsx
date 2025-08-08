@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 const LaunchpadsLayout = async ({ children }: Props) => {
   return (
-    <div className="min-h-screen flex flex-col bg-third">
+    <div className="min-h-screen flex flex-col bg-secondary-background bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] bg-[size:70px_70px]">
       <Navbar />
       <div className="flex-1">
         <div className="max-w-screen-xl mx-auto">{children}</div>

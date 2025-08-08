@@ -1,8 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-
-const authPaths = ["/sign-in", "/sign-up"];
-const privatePaths = ["/library", "/conversations", "/checkout"];
+import { AUTH_PATHS, PRIVATE_PATHS } from "./constants";
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl;
@@ -18,10 +16,10 @@ export function middleware(req: NextRequest) {
   }
 
   const payloadToken = req.cookies.get("payload-token")?.value;
-  if (authPaths.includes(pathname) && payloadToken) {
+  if (AUTH_PATHS.includes(pathname) && payloadToken) {
     return NextResponse.redirect(new URL("/", req.url));
   }
-  if (privatePaths.includes(pathname) && !payloadToken) {
+  if (PRIVATE_PATHS.includes(pathname) && !payloadToken) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 

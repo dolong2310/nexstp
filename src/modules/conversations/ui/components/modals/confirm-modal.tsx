@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,37 +56,29 @@ const ConfirmModal = ({ isOpen, onOpenChange }: Props) => {
       <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
         <AlertDialogTrigger asChild>
           <div className="flex flex-col gap-3 items-center cursor-pointer hover:opacity-75">
-            <Button variant="elevated" size="icon">
+            <Button variant="default" size="icon">
               <TrashIcon />
             </Button>
-            <div className="text-sm font-light text-muted-foreground">
+            <div className="text-sm font-light text-foreground">
               Delete
             </div>
           </div>
         </AlertDialogTrigger>
 
         <AlertDialogContent>
-          <AlertDialogHeader className="flex flex-col sm:flex-row gap-4">
-            <div className="mx-auto w-12 h-12 flex items-center justify-center shrink-0 rounded-full bg-destructive sm:mx-0 sm:h-10 sm:w-10">
-              <AlertTriangleIcon className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <AlertDialogTitle>Delete conversation</AlertDialogTitle>
-              <AlertDialogDescription className="mt-2">
-                Are you sure you want to delete this conversation? This action
-                cannot be undone.
-              </AlertDialogDescription>
-            </div>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete conversation</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this conversation? This action
+              cannot be undone.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Button asChild variant="elevated">
-              <AlertDialogCancel className="hover:bg-background">
-                Cancel
-              </AlertDialogCancel>
+            <Button asChild variant="neutral">
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
             </Button>
-            <Button asChild variant="elevated">
+            <Button asChild variant="default">
               <AlertDialogAction
-                className="bg-feature text-primary hover:bg-feature"
                 onClick={onDelete}
                 disabled={deleteConversation.isPending}
               >

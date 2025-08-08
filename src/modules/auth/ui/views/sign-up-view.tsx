@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -56,7 +56,7 @@ const SignUpView = () => {
       email: "",
       password: "",
     },
-    mode: "all",
+    mode: "onChange",
   });
 
   const username = form.watch("username");
@@ -69,7 +69,7 @@ const SignUpView = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
-      <div className="h-screen w-full lg:col-span-3 overflow-auto bg-third">
+      <div className="h-screen w-full lg:col-span-3 overflow-auto bg-background">
         <Form {...form}>
           <form
             className="flex flex-col gap-8 p-4 lg:p-16"
@@ -84,20 +84,17 @@ const SignUpView = () => {
                 </span>
               </Link>
 
-              <Button
-                asChild
-                variant="ghost"
-                size="sm"
+              <Link
+                prefetch
+                href="/sign-in"
                 className="text-base border-none underline"
               >
-                <Link prefetch href="/sign-in">
-                  Sign in
-                </Link>
-              </Button>
+                Sign in
+              </Link>
             </div>
 
             <h1 className="text-4xl font-medium">
-              Join over "hihi" creators earning money on Nexstp.
+              Join over "Nexer" creators earning money on Nexstp.
             </h1>
 
             <FormField
@@ -106,7 +103,7 @@ const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Username</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="shadow-shadow" />
                   </FormControl>
                   <FormDescription
                     className={cn("hidden", showPreview && "block")}
@@ -125,7 +122,7 @@ const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="shadow-shadow" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +135,11 @@ const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input
+                      {...field}
+                      className="shadow-shadow"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -147,9 +148,8 @@ const SignUpView = () => {
 
             <Button
               type="submit"
-              variant="elevated"
+              variant="default"
               size="lg"
-              className="bg-black text-white hover:bg-feature hover:text-primary"
               disabled={registerMutation.isPending}
             >
               Create account

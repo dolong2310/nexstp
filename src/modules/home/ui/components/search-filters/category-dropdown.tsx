@@ -15,7 +15,7 @@ interface Props {
   category: CategoriesGetManyOutput[1];
   isActive?: boolean;
   isNavigationHovered?: boolean;
-};
+}
 
 const CategoryDropdown = ({
   category,
@@ -50,12 +50,9 @@ const CategoryDropdown = ({
       <div className="relative">
         <Button
           asChild
-          variant="elevated"
+          variant="neutral"
           className={cn(
-            "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-background hover:border-primary text-foreground",
-            isActive && !isNavigationHovered && "bg-background border-primary",
-            isOpen &&
-              "bg-background border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] -translate-x-[4px] -translate-y-[4px]"
+            isActive && !isNavigationHovered && "bg-main text-main-foreground"
           )}
         >
           <Link href={`/${category.slug === "all" ? "" : category.slug}`}>

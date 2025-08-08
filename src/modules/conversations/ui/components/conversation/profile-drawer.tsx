@@ -26,7 +26,7 @@ interface Props {
   conversation: Conversation & { users: ChatUser[] };
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
   const otherUser = useOtherUser(conversation);
@@ -59,7 +59,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
         <DrawerContent className="py-3 px-4 sm:px-6">
           <DrawerTitle className="sr-only"></DrawerTitle>
           <div className="flex items-start justify-end mt-2">
-            <Button variant="elevated" size="icon" onClick={onClose}>
+            <Button variant="default" size="icon" onClick={onClose}>
               <span className="sr-only">Close panel</span>
               <XIcon />
             </Button>
@@ -74,8 +74,8 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   <CustomAvatar user={otherUser} className="size-16" />
                 )}
               </div>
-              <div>{title}</div>
-              <div className="text-sm text-muted-foreground">{statusText}</div>
+              <p className="text-center w-full line-clamp-2 break-words">{title}</p>
+              <p className="text-sm mt-1">{statusText}</p>
               <div className="flex gap-10 my-8">
                 <ConfirmModal
                   isOpen={isConfirmOpen}
@@ -87,7 +87,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                 <dl className="space-y-8 px-4 sm:space-y-6">
                   {conversation.isGroup && (
                     <div>
-                      <dt className="text-sm font-medium text-muted-foreground sm:w-40 sm:shrink-0">
+                      <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
                         Emails
                       </dt>
                       <dd className="mt-1 text-sm text-foreground sm:col-span-2">
@@ -99,7 +99,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   )}
                   {!conversation.isGroup && (
                     <div>
-                      <dt className="text-sm font-medium text-muted-foreground sm:w-40 sm:shrink-0">
+                      <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
                         Email
                       </dt>
                       <dd className="mt-1 text-sm text-foreground sm:col-span-2">
@@ -111,7 +111,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                     <>
                       <hr />
                       <div>
-                        <dt className="text-sm font-medium text-muted-foreground sm:w-40 sm:shrink-0">
+                        <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
                           Joined
                         </dt>
                         <dd className="mt-1 text-sm text-foreground sm:col-span-2">

@@ -628,7 +628,11 @@ export const conversationsRouter = createTRPCRouter({
         const users = conversation.users as any[];
         users.forEach((user) => {
           if (user.user?.email) {
-            pusherServer.trigger(user.user.email, "conversation:update", {
+            const event =
+              user.user.email === ctx.session.user.email
+                ? "conversation:update" // Send conversation update to sender
+                : "conversation:new_message"; // Send new message notification to other users
+            pusherServer.trigger(user.user.email, event, {
               id: input.conversationId,
               messages: [newMessage],
             });
@@ -701,7 +705,7 @@ export const conversationsRouter = createTRPCRouter({
             depth: 2,
           });
 
-          // Send realtime event to current user
+          // Send conversation update to current user
           await pusherServer.trigger(
             ctx.session.user.email!,
             "conversation:update",
@@ -827,40 +831,111 @@ export const conversationsRouter = createTRPCRouter({
       }
     }),
 
-  // Pusher authentication (for presence channels)
-  pusherAuth: protectedProcedure
-    .input(
-      z.object({
-        socketId: z.string(),
-        channel: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        if (!ctx.session?.user?.email) {
-          throw new TRPCError({
-            code: "UNAUTHORIZED",
-            message: "User not authenticated",
-          });
-        }
+  getUnreadCount: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      // Get current chat user
+      const currentUserData = await ctx.db.find({
+        collection: "chat-users",
+        where: {
+          user: {
+            equals: ctx.session.user.id,
+          },
+        },
+        limit: 1,
+      });
 
-        const data = {
-          user_id: ctx.session.user.email,
-        };
-
-        const authResponse = pusherServer.authorizeChannel(
-          input.socketId,
-          input.channel,
-          data
-        );
-
-        return authResponse;
-      } catch (error) {
-        if (error instanceof TRPCError) throw error;
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to authenticate Pusher",
-        });
+      if (currentUserData.docs.length === 0) {
+        return 0;
       }
-    }),
+
+      const currentChatUser = currentUserData.docs[0] as ChatUser;
+
+      // Get all conversations where user is a participant
+      const conversations = await ctx.db.find({
+        collection: "conversations",
+        where: {
+          users: {
+            contains: currentChatUser.id,
+          },
+        },
+        pagination: false,
+      });
+
+      let totalUnreadCount = 0;
+
+      // For each conversation, count unread messages
+      for (const conversation of conversations.docs) {
+        // Get latest message in conversation
+        const messagesData = await ctx.db.find({
+          collection: "messages",
+          where: {
+            conversation: {
+              equals: conversation.id,
+            },
+          },
+          sort: "-createdAt",
+          limit: 1,
+          depth: 1,
+        });
+
+        if (messagesData.docs.length > 0) {
+          const lastMessage = messagesData.docs[0] as Message;
+          const seenUserIds =
+            (lastMessage.seen as ChatUser[]).map((user) => user.id) || [];
+
+          // If current user hasn't seen the last message, increment count
+          if (
+            !seenUserIds.includes(currentChatUser.id) &&
+            lastMessage.sender !== currentChatUser.id
+          ) {
+            totalUnreadCount += 1;
+          }
+        }
+      }
+
+      return totalUnreadCount;
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to get unread count",
+      });
+    }
+  }),
+
+  // Pusher authentication (for presence channels)
+  // pusherAuth: protectedProcedure
+  //   .input(
+  //     z.object({
+  //       socketId: z.string(),
+  //       channel: z.string(),
+  //     })
+  //   )
+  //   .mutation(async ({ ctx, input }) => {
+  //     try {
+  //       if (!ctx.session?.user?.email) {
+  //         throw new TRPCError({
+  //           code: "UNAUTHORIZED",
+  //           message: "User not authenticated",
+  //         });
+  //       }
+
+  //       const data = {
+  //         user_id: ctx.session.user.email,
+  //       };
+
+  //       const authResponse = pusherServer.authorizeChannel(
+  //         input.socketId,
+  //         input.channel,
+  //         data
+  //       );
+
+  //       return authResponse;
+  //     } catch (error) {
+  //       if (error instanceof TRPCError) throw error;
+  //       throw new TRPCError({
+  //         code: "INTERNAL_SERVER_ERROR",
+  //         message: "Failed to authenticate Pusher",
+  //       });
+  //     }
+  //   }),
 });

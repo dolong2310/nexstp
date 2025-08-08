@@ -1,10 +1,10 @@
-import { toast } from "@/components/custom-toast";
 import Media from "@/components/media";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -29,6 +29,7 @@ import { LoaderIcon, UploadIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 interface Props {
@@ -52,7 +53,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
       name: currentUser?.name || "",
       image: typeof currentUser?.image === "string" ? currentUser.image : "",
     },
-    mode: "all",
+    mode: "onChange",
   });
 
   const updateProfile = useMutation(
@@ -137,14 +138,15 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
-      <DialogContent showCloseButton={false}>
+      {/* showCloseButton={false} */}
+      <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle className="text-2xl">Profile</DialogTitle>
-              <p className="text-sm leading-6 text-muted-foreground">
+              <DialogDescription>
                 Edit your public information
-              </p>
+              </DialogDescription>
 
               <div className="flex flex-col mt-4 gap-y-6">
                 <FormField
@@ -169,6 +171,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                         alt="Avatar"
                         width={64}
                         height={64}
+                        isBordered
                         className="rounded-md object-cover"
                       />
                       {uploadMediaHook.isUploading && (
@@ -181,14 +184,14 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                     <div className="flex flex-col gap-2">
                       <Button
                         type="button"
-                        variant="outline"
+                        variant="noShadowDefault"
                         size="sm"
                         onClick={uploadMediaHook.openFileDialog}
                         disabled={
                           uploadMediaHook.isUploading || updateProfile.isPending
                         }
                       >
-                        <UploadIcon className="size-4 mr-2" />
+                        <UploadIcon className="size-4" />
                         Choose Image
                       </Button>
 
@@ -200,15 +203,9 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                         className="hidden"
                       />
 
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground">
                         JPG, PNG up to 5MB
                       </p>
-
-                      {uploadMediaHook.previewImage && (
-                        <p className="text-xs text-blue-600">
-                          ✓ New image selected. Click Save to upload.
-                        </p>
-                      )}
                     </div>
                   </div>
                 </FormItem>
@@ -217,12 +214,12 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
 
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button variant="elevated">Cancel</Button>
+                <Button variant="neutral">Cancel</Button>
               </DialogClose>
               <Button
                 type="submit"
-                variant="elevated"
-                className="bg-feature"
+                variant="default"
+                className="bg-main"
                 disabled={
                   updateProfile.isPending || uploadMediaHook.isUploading
                 }

@@ -41,9 +41,10 @@ const SortDropdown = ({ disabled }: Props) => {
       {sortOptions.map((option) => (
         <Button
           key={option.value}
-          variant="elevated"
+          variant="default"
           className={cn(
-            filters.sort === option.value ? "bg-feature" : "bg-background"
+            "hover:bg-main",
+            filters.sort === option.value ? "bg-main" : "bg-background"
           )}
           disabled={disabled}
           onClick={handleSortChange(option.value as SortValue)}

@@ -9,19 +9,25 @@ interface Props {
   icon: React.ElementType;
   active?: boolean;
   onClick?: () => void;
-};
+}
 
-const ConversationMobileItem = ({ label, href, icon: Icon, active, onClick }: Props) => {
+const ConversationMobileItem = ({
+  label,
+  href,
+  icon: Icon,
+  active,
+  onClick,
+}: Props) => {
   const handleClick = () => {
     onClick && onClick();
   };
   return (
-    <Button asChild variant="elevated">
+    <Button asChild variant="neutral">
       <Link
         href={href}
         className={cn(
           "group flex-1 flex items-center justify-center p-4",
-          active && "bg-feature"
+          active && "bg-main!"
         )}
         onClick={handleClick}
       >

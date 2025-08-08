@@ -28,7 +28,7 @@ const TypingBox = ({ typingUsers }: Props) => {
   return (
     <div
       className={cn(
-        "text-xs text-muted-foreground/80 px-4 pb-2",
+        "text-xs text-foreground/80 px-4 pb-2",
         othersTyping.length === 0 ? "text-right" : "text-left"
       )}
     >

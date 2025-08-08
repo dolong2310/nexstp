@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
@@ -28,7 +28,7 @@ const StripeVerifyPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <LoaderIcon className="animate-spin text-muted-foreground" />
+      <LoaderIcon className="animate-spin text-foreground" />
     </div>
   );
 };
