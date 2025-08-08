@@ -11,7 +11,7 @@ const useOtherUser = (
   const otherUser = useMemo(() => {
     // lấy user khác với user hiện tại
     const currentUserEmail = user?.email || "";
-    const otherUser = conversation.users.filter(
+    const otherUser = (conversation.users as ChatUser[]).filter(
       (user) => user.email !== currentUserEmail
     );
     return otherUser[0] as ChatUser; // trả về user khác đầu tiên (vì conversation chỉ có 2 user)
