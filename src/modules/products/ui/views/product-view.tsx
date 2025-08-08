@@ -51,7 +51,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
   const handleCopy = () => {
     setIsCopied(true);
     navigator.clipboard.writeText(window.location.href);
-    toast.custom("URL copied to clipboard", { duration: 1000 });
+    toast.message("URL copied to clipboard", { duration: 1000 });
 
     setTimeout(() => {
       setIsCopied(false);
