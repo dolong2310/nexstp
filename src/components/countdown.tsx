@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react";
 
 interface CountdownProps {
   targetDate: string; // ISO 8601 format: 'YYYY-MM-DDTHH:mm:ss.sssZ'
+  isExpired?: boolean;
+  expiredContent?: React.ReactNode;
 }
 
-// Hàm tạo text cho số ngày
 const getDaysText = (days: number) => {
   if (days === 0) return "";
   if (days === 1) return "1 day";
@@ -42,7 +43,11 @@ const calculateTimeLeft = (targetDate: string) => {
   return timeLeft;
 };
 
-const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
+const Countdown: React.FC<CountdownProps> = ({
+  targetDate,
+  isExpired,
+  expiredContent,
+}) => {
   const [isMounted, setIsMounted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
   const [prevTimeLeft, setPrevTimeLeft] = useState(
@@ -67,7 +72,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     const previousDigits = formatDigits(previous);
 
     return (
-      <div className="flex" key={unit}>
+      <div className="flex items-center" key={unit}>
         {/* Chữ số hàng chục */}
         <div className="relative overflow-hidden">
           <div
@@ -104,15 +109,14 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     );
   };
 
-  if (!isMounted) {
-    return <span>00 : 00 : 00</span>;
-  }
+  if (!isMounted) return <span>00 : 00 : 00</span>;
 
-  // Kiểm tra nếu đã hết thời gian
-  const isExpired = new Date(targetDate).getTime() <= new Date().getTime();
+  const isExpiredTime = new Date(targetDate).getTime() <= new Date().getTime();
 
-  if (isExpired) {
-    return (
+  if (isExpired && isExpiredTime) {
+    return expiredContent ? (
+      <div>{expiredContent}</div>
+    ) : (
       <div className="flex items-center justify-center">
         <span className="">End time!</span>
       </div>
@@ -121,7 +125,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
 
   return (
     <div className="flex items-center gap-1">
-      {/* Hiển thị số ngày nếu có */}
+      {/* Day */}
       {timeLeft.days > 0 && (
         <>
           <span>{timeLeft.days}</span>
@@ -129,15 +133,15 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
         </>
       )}
 
-      {/* Giờ */}
+      {/* Hour */}
       {renderTimeUnit(timeLeft.hours, prevTimeLeft.hours, "hours")}
       <span>:</span>
 
-      {/* Phút */}
+      {/* Minute */}
       {renderTimeUnit(timeLeft.minutes, prevTimeLeft.minutes, "minutes")}
       <span>:</span>
 
-      {/* Giây */}
+      {/* Second */}
       {renderTimeUnit(timeLeft.seconds, prevTimeLeft.seconds, "seconds")}
     </div>
   );
