@@ -1,8 +1,16 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ChevronDownIcon } from "lucide-react";
+import { useState } from "react";
 import useProductFilter from "../../hooks/use-product-filter";
-import FilterItem from "./product-filter-item";
+import { Label } from "@/components/ui/label";
 
 type SortType = "curated" | "trending" | "hot_and_new" | "newest" | "oldest";
 
@@ -13,6 +21,8 @@ const sortList = [
 ];
 
 const ProductSorts = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [filters, setFilters] = useProductFilter();
   const getSortLabel = (sort: SortType) => {
     const found = sortList.find((s) => s.value === sort);
@@ -20,36 +30,48 @@ const ProductSorts = () => {
   };
 
   return (
-    <div className="border rounded-md bg-background">
-      <div className="flex items-center justify-between border-b p-4">
-        <p className="font-medium">Sorts</p>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
+      <div className="rounded-base flex items-center justify-between space-x-4 border-2 border-border text-main-foreground bg-main px-4 py-2">
+        <h4 className="text-sm font-heading">
+          Sort ({getSortLabel(filters.sort)})
+        </h4>
+        <CollapsibleTrigger asChild>
+          <Button
+            variant="noShadow"
+            size="sm"
+            className="w-9 bg-secondary-background text-foreground p-0"
+          >
+            <ChevronDownIcon className="size-4" />
+            <span className="sr-only">Toggle</span>
+          </Button>
+        </CollapsibleTrigger>
       </div>
 
-      <FilterItem
-        title={getSortLabel(filters.sort)}
-        className="flex border-b-0"
-      >
-        <div className="flex flex-col gap-2 p-4">
-          {sortList.map((sort) => (
-            <div
-              key={sort.value}
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() =>
-                setFilters({ ...filters, sort: sort.value as SortType })
-              }
-            >
-              <p className="font-medium">{sort.label}</p>
-              <Checkbox
-                checked={filters.sort === sort.value}
-                onCheckedChange={() =>
+      <CollapsibleContent className="space-y-2 text-main-foreground font-base">
+        <div className="rounded-base border-2 border-border bg-main px-4 py-3 font-mono text-sm">
+          <div className="flex flex-col gap-y-4 gap-2">
+            {sortList.map((sort) => (
+              <div
+                key={sort.value}
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() =>
                   setFilters({ ...filters, sort: sort.value as SortType })
                 }
-              />
-            </div>
-          ))}
+              >
+                <Label htmlFor={sort.value}>{sort.label}</Label>
+                <Checkbox
+                  id={sort.value}
+                  checked={filters.sort === sort.value}
+                  onCheckedChange={() =>
+                    setFilters({ ...filters, sort: sort.value as SortType })
+                  }
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </FilterItem>
-    </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 };
 

@@ -1,10 +1,11 @@
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { MultiSelect } from "@/components/multi-select";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -83,23 +84,24 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
-      <DialogContent showCloseButton={false}>
+      {/* showCloseButton={false} */}
+      <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle className="text-2xl">
                 Create a group chat
               </DialogTitle>
-              <p className="text-sm leading-6 text-muted-foreground">
+              <DialogDescription>
                 Create a chat with more than 2 people.
-              </p>
+              </DialogDescription>
 
               <div className="flex flex-col mt-4 gap-y-6">
                 <FormField
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base">Name</FormLabel>
+                      <FormLabel className="text-start text-base">Name</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -109,7 +111,7 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
                 />
 
                 <FormItem>
-                  <FormLabel className="text-base">Members</FormLabel>
+                  <FormLabel className="text-start text-base">Members</FormLabel>
                   <MultiSelect
                     // defaultValue={["", ""]}
                     placeholder=""
@@ -136,12 +138,12 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
 
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button variant="elevated">Cancel</Button>
+                <Button variant="neutral">Cancel</Button>
               </DialogClose>
               <Button
                 type="submit"
-                variant="elevated"
-                className="bg-feature"
+                variant="default"
+                className="bg-main"
                 disabled={
                   createConversation.isPending ||
                   !form.formState.isValid ||

@@ -90,7 +90,7 @@
 //     header: ({ column }) => {
 //       return (
 //         <Button
-//           variant="ghost"
+//           variant="neutral"
 //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 //         >
 //           Email
@@ -125,7 +125,7 @@
 //         <div className="text-right">
 //           <DropdownMenu>
 //             <DropdownMenuTrigger asChild>
-//               <Button variant="ghost" className="h-8 w-8 p-0">
+//               <Button variant="neutral" className="h-8 w-8 p-0">
 //                 <span className="sr-only">Open menu</span>
 //                 <MoreHorizontal className="h-4 w-4" />
 //               </Button>
@@ -197,7 +197,7 @@
 
 //         <DropdownMenu>
 //           <DropdownMenuTrigger asChild>
-//             <Button variant="outline" className="ml-auto">
+//             <Button variant="default" className="ml-auto">
 //               Columns
 //             </Button>
 //           </DropdownMenuTrigger>
@@ -279,13 +279,13 @@
 //       <div className="flex items-center justify-end space-x-2 py-4">
 //         <DataTablePagination table={table} />
 
-//         {/* <div className="text-muted-foreground flex-1 text-sm">
+//         {/* <div className="text-foreground flex-1 text-sm">
 //           {table.getFilteredSelectedRowModel().rows.length} of{" "}
 //           {table.getFilteredRowModel().rows.length} row(s) selected.
 //         </div>
 
 //         <Button
-//           variant="outline"
+//           variant="default"
 //           size="sm"
 //           onClick={() => table.previousPage()}
 //           disabled={!table.getCanPreviousPage()}
@@ -293,7 +293,7 @@
 //           Previous
 //         </Button>
 //         <Button
-//           variant="outline"
+//           variant="default"
 //           size="sm"
 //           onClick={() => table.nextPage()}
 //           disabled={!table.getCanNextPage()}
@@ -314,7 +314,7 @@
 // }: DataTablePaginationProps<TData>) {
 //   return (
 //     <div className="flex items-center justify-between px-2">
-//       <div className="text-muted-foreground flex-1 text-sm">
+//       <div className="text-foreground flex-1 text-sm">
 //         {table.getFilteredSelectedRowModel().rows.length} of{" "}
 //         {table.getFilteredRowModel().rows.length} row(s) selected.
 //       </div>
@@ -345,7 +345,7 @@
 //         </div>
 //         <div className="flex items-center space-x-2">
 //           <Button
-//             variant="outline"
+//             variant="default"
 //             size="icon"
 //             className="hidden size-8 lg:flex"
 //             onClick={() => table.setPageIndex(0)}
@@ -355,7 +355,7 @@
 //             <ChevronsLeft />
 //           </Button>
 //           <Button
-//             variant="outline"
+//             variant="default"
 //             size="icon"
 //             className="size-8"
 //             onClick={() => table.previousPage()}
@@ -365,7 +365,7 @@
 //             <ChevronLeft />
 //           </Button>
 //           <Button
-//             variant="outline"
+//             variant="default"
 //             size="icon"
 //             className="size-8"
 //             onClick={() => table.nextPage()}
@@ -375,7 +375,7 @@
 //             <ChevronRight />
 //           </Button>
 //           <Button
-//             variant="outline"
+//             variant="default"
 //             size="icon"
 //             className="hidden size-8 lg:flex"
 //             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
@@ -395,7 +395,7 @@
 //     <DropdownMenu>
 //       <DropdownMenuTrigger asChild>
 //         <Button
-//           variant="outline"
+//           variant="default"
 //           size="sm"
 //           className="ml-auto hidden h-8 lg:flex"
 //         >

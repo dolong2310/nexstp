@@ -13,9 +13,9 @@ const ThemeButton = () => {
   };
 
   return (
-    <Button variant="elevated" size="icon" onClick={handleToggleTheme}>
-      <SunIcon className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-      <MoonIcon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+    <Button variant="neutral" size="icon" onClick={handleToggleTheme}>
+      <MoonIcon className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+      <SunIcon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

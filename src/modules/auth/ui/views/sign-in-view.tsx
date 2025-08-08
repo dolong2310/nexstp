@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -96,7 +96,7 @@ const SignInView = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
-      <div className="h-screen w-full lg:col-span-3 overflow-auto bg-third">
+      <div className="h-screen w-full lg:col-span-3 overflow-auto bg-background">
         <Form {...form}>
           <form
             className="flex flex-col gap-8 p-4 lg:p-16"
@@ -111,16 +111,13 @@ const SignInView = () => {
                 </span>
               </Link>
 
-              <Button
-                asChild
-                variant="ghost"
-                size="sm"
+              <Link
+                prefetch
+                href="/sign-up"
                 className="text-base border-none underline"
               >
-                <Link prefetch href="/sign-up">
-                  Sign up
-                </Link>
-              </Button>
+                Sign up
+              </Link>
             </div>
 
             <h1 className="text-4xl font-medium">Welcome back to Nexstp.</h1>
@@ -131,7 +128,9 @@ const SignInView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Button asChild variant="neutral" className="py-2 px-3">
+                      <Input {...field} />
+                    </Button>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,7 +143,9 @@ const SignInView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Button asChild variant="neutral" className="py-2 px-3">
+                      <Input {...field} type="password" />
+                    </Button>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -153,9 +154,8 @@ const SignInView = () => {
 
             <Button
               type="submit"
-              variant="elevated"
+              variant="default"
               size="lg"
-              className="bg-black text-white hover:bg-feature hover:text-primary"
               disabled={loginMutation.isPending}
             >
               Login

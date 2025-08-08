@@ -1,10 +1,12 @@
-import { toast } from "@/components/custom-toast";
-import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Button, buttonVariants } from "@/components/ui/button";
 import useSession from "@/hooks/use-session";
 import { cn, generateTenantUrl } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
+import { VariantProps } from "class-variance-authority";
 import {
   ArchiveIcon,
+  CornerDownLeftIcon,
   LoaderIcon,
   ShoppingCartIcon,
   TrashIcon,
@@ -13,22 +15,24 @@ import Link from "next/link";
 
 interface Props {
   className?: string;
-  isDefaultButton?: boolean;
   isIconButton?: boolean;
   tenantSlug: string;
   productId: string;
   isPurchased?: boolean;
   isOwner?: boolean;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
 }
 
 const CartButton = ({
   className,
-  isDefaultButton = false,
   isIconButton = false,
   tenantSlug,
   productId,
   isPurchased,
   isOwner,
+  variant,
+  size,
 }: Props) => {
   const { user } = useSession();
   const cart = useCart();
@@ -38,7 +42,7 @@ const CartButton = ({
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      toast.info("Please sign in to add products to your cart.");
+      toast.success("Please sign in to add products to your cart.");
       return;
     }
     cart.toggleProduct(productId, tenantSlug);
@@ -48,12 +52,18 @@ const CartButton = ({
     return (
       <Button
         asChild
-        variant={isDefaultButton ? "default" : "elevated"}
-        size={isIconButton ? "icon" : "default"}
-        className={cn("flex-1 font-medium bg-background", className)}
+        variant={
+          variant ? variant : isIconButton ? "background" : "noShadowBackground"
+        }
+        size={size ? size : isIconButton ? "icon" : "default"}
+        className={cn("flex-1 font-medium", className)}
       >
         <Link href={`${generateTenantUrl(tenantSlug)}/products/${productId}`}>
-          {isIconButton ? <ArchiveIcon className="size-4" /> : "View Product"}
+          {isIconButton ? (
+            <CornerDownLeftIcon className="size-4" />
+          ) : (
+            "View Product"
+          )}
         </Link>
       </Button>
     );
@@ -63,9 +73,11 @@ const CartButton = ({
     return (
       <Button
         asChild
-        variant={isDefaultButton ? "default" : "elevated"}
-        size={isIconButton ? "icon" : "default"}
-        className={cn("flex-1 font-medium bg-background", className)}
+        variant={
+          variant ? variant : isIconButton ? "background" : "noShadowBackground"
+        }
+        size={size ? size : isIconButton ? "icon" : "default"}
+        className={cn("flex-1 font-medium", className)}
       >
         <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library`}>
           {isIconButton ? (
@@ -95,13 +107,9 @@ const CartButton = ({
 
   return (
     <Button
-      variant={isDefaultButton ? "default" : "elevated"}
-      size={isIconButton ? "icon" : "default"}
-      className={cn(
-        "flex-1 bg-feature",
-        isProductInCart && "bg-background",
-        className
-      )}
+      variant={variant ? variant : isIconButton ? "default" : "noShadowDefault"}
+      size={size ? size : isIconButton ? "icon" : "default"}
+      className={cn("flex-1", className)}
       onClick={handleClick}
     >
       {renderLabel()}
@@ -109,9 +117,24 @@ const CartButton = ({
   );
 };
 
-export const CartButtonSkeleton = () => {
+export const CartButtonSkeleton = ({
+  className,
+  isIconButton,
+  variant,
+  size,
+}: {
+  className?: string;
+  isIconButton?: boolean;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
+}) => {
   return (
-    <Button disabled variant="elevated" className="flex-1 bg-feature">
+    <Button
+      disabled
+      variant={variant ? variant : isIconButton ? "default" : "noShadowDefault"}
+      size={size ? size : isIconButton ? "icon" : "default"}
+      className={cn("flex-1 disabled:opacity-100", className)}
+    >
       <LoaderIcon className="size-4 animate-spin" />
     </Button>
   );

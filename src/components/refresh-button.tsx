@@ -5,8 +5,9 @@ import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { RefreshCwIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { useGlobalStore } from "@/store/use-global-store";
+import { VariantProps } from "class-variance-authority";
 
 export enum RefreshQueryKeys {
   PRODUCTS = "products",
@@ -21,10 +22,15 @@ export enum RefreshQueryKeys {
 
 interface Props {
   queryKey?: RefreshQueryKeys;
-  sizeButton?: "sm" | "default" | "lg" | "icon";
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
 }
 
-const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
+const RefreshButton = ({
+  queryKey,
+  variant = "default",
+  size = "sm",
+}: Props) => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
 
@@ -33,7 +39,7 @@ const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const iconSize = useMemo(() => {
-    switch (sizeButton) {
+    switch (size) {
       case "sm":
       case "icon":
         return "size-4";
@@ -42,7 +48,7 @@ const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
       default:
         return "size-5";
     }
-  }, [sizeButton]);
+  }, [size]);
 
   const invalidateQuery = () => {
     console.log("queryKey, ", queryKey);
@@ -102,10 +108,11 @@ const RefreshButton = ({ queryKey, sizeButton = "sm" }: Props) => {
 
   return (
     <Button
-      variant="elevated"
-      size={sizeButton}
-      onClick={handleRefresh}
+      variant={variant}
+      size={size}
+      className="shrink-0"
       disabled={loading}
+      onClick={handleRefresh}
     >
       <RefreshCwIcon
         className={cn(

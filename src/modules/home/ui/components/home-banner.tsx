@@ -113,7 +113,7 @@ const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
         }}
       >
         <div
-          className="border rounded-xl overflow-hidden relative"
+          className="border-4 rounded-xl overflow-hidden relative"
           style={{ height: bannerHeight ?? "auto" }}
         >
           <div ref={bannerRef}>
@@ -122,7 +122,7 @@ const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
                 <CarouselItem key={banner.id} className="pl-1">
                   <Link
                     href={generateBannerUrl(banner)}
-                    className="relative block w-full h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-xl group"
+                    className="relative block w-full h-full rounded-xl group"
                     title={banner.title}
                     onClick={handleBannerClick(banner.id)}
                   >
@@ -175,7 +175,7 @@ const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
 export const HomeBannerSkeleton = ({ containerClassName }: Props) => {
   return (
     <div className={cn("px-4 lg:px-12 py-4 lg:py-6", containerClassName)}>
-      <div className="border rounded-xl overflow-hidden aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] bg-muted animate-pulse" />
+      <div className="border-4 rounded-xl overflow-hidden aspect-[16/9] sm:aspect-[20/9] lg:aspect-[40/9] bg-secondary-background animate-pulse" />
     </div>
   );
 };

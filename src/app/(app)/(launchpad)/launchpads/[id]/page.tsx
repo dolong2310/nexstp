@@ -15,7 +15,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     const { launchpad } = await prefetchApi.launchpad(id);
-    console.log("launchpad:", launchpad);
 
     if (!launchpad || launchpad.status !== "live") {
       return {

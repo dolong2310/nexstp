@@ -1,6 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { DEFAULT_LIMIT } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -47,7 +48,7 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
     // If no tags are available, show a message
     if (data?.pages?.[0]?.docs.length === 0) {
       return (
-        <p className="text-center text-muted-foreground">No tags available</p>
+        <p className="text-center text-foreground">No tags available</p>
       );
     }
 
@@ -59,8 +60,9 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
             className="flex items-center justify-between cursor-pointer"
             onClick={() => onClick(tag.name)}
           >
-            <p className="font-medium">{tag.name}</p>
+            <Label htmlFor={tag.id}>{tag.name}</Label>
             <Checkbox
+              id={tag.id}
               className="cursor-pointer"
               checked={values?.includes(tag.name)}
               onCheckedChange={() => onClick(tag.name)}
@@ -72,7 +74,7 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-y-4 gap-2">
       {renderContent()}
 
       {hasNextPage && (

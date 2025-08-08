@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
@@ -10,6 +10,8 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { CustomAvatarSkeleton } from "./custom-avatar";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {
   ssr: false,
@@ -44,43 +46,37 @@ const UserBox = ({ user }: Props) => {
   return (
     <>
       {createConversation.isPending && <LoadingFullPage />}
-      <div
-        className={cn(
-          "w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border transition",
-          "bg-background hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px]"
-        )}
+      <Card
+        shadowTransition
+        className="gap-0 flex-row w-full relative flex items-center space-x-3 p-3 transition cursor-pointer bg-main"
         onClick={handleClick}
       >
         <CustomAvatar user={user} />
         <div className="min-w-0 flex-1">
-          <div className="focus:outline-none">
-            <div className="flex items-center justify-between mb-1">
-              <p className="text-sm font-medium text-foreground">{user.name}</p>
-            </div>
+          <div className="flex items-center justify-between focus:outline-none">
+            <p className="text-sm font-medium text-main-foreground">
+              {user.name}
+            </p>
           </div>
         </div>
-      </div>
+      </Card>
     </>
   );
 };
 
 export const UserBoxSkeleton = () => {
   return (
-    <div
-      className={cn(
-        "w-full relative flex items-center space-x-3 p-3 rounded-lg cursor-pointer border transition",
-        "bg-background hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px]"
-      )}
+    <Card
+      shadowTransition
+      className="gap-0 flex-row w-full relative flex items-center space-x-3 p-3 transition cursor-pointer"
     >
       <CustomAvatarSkeleton />
       <div className="min-w-0 flex-1">
-        <div className="focus:outline-none">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-sm font-medium text-foreground bg-muted w-full h-4 rounded-md" />
-          </div>
+        <div className="flex items-center justify-between focus:outline-none">
+          <Skeleton className="bg-secondary-background w-full h-4" />
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

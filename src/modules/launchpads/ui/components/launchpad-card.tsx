@@ -1,9 +1,13 @@
 "use client";
 
 import Media from "@/components/media";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import {
+  cn,
   formatCurrency,
+  formatName,
   generateTenantUrl,
   getCurrentImageUrl,
 } from "@/lib/utils";
@@ -15,6 +19,8 @@ import { Clock, Users } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface LaunchpadCardProps {
   launchpad: Launchpad & {
@@ -89,7 +95,13 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
 
   return (
     <Link href={`/launchpads/${launchpad.id}`}>
-      <article className="group relative flex flex-col border rounded-md bg-background overflow-hidden h-full hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] transition-all">
+      <Card
+        shadowTransition
+        className={cn(
+          "group relative flex flex-col border-2 rounded-md bg-background overflow-hidden h-full",
+          "py-0 gap-0"
+        )}
+      >
         <div className="relative">
           {/* Image */}
           <Media
@@ -100,51 +112,50 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
           />
 
           {/* Discount Badge */}
-          <div className="absolute top-2 right-2 px-2 py-0.5 border bg-feature w-fit rounded-sm">
+          <Badge className="absolute top-2 right-2">
             <p className="text-xs font-medium">-{discountPercentage}%</p>
-          </div>
+          </Badge>
         </div>
 
-        <div className="flex flex-col gap-3 flex-1 border-y py-4">
-          {/* Title */}
-          <h2 className="text-lg font-medium line-clamp-2 px-4">
-            {launchpad.title}
-          </h2>
-
+        <div className="flex flex-col gap-3 flex-1 border-y-2 py-4">
           {/* Tenant Info */}
           <div
             className="flex items-center gap-2 px-4"
             onClick={handleUserClick}
           >
-            {launchpad.tenant.image?.url && (
-              <Media
-                src={launchpad.tenant.image?.url}
+            <Avatar className="size-6">
+              <AvatarImage
+                src={launchpad.tenant.image?.url!}
                 alt={launchpad.tenant.slug}
-                width={16}
-                height={16}
-                sizeFallbackIcon="sm"
-                className="rounded-full border shrink-0 size-4"
               />
-            )}
+              <AvatarFallback>
+                {formatName(launchpad.tenant.slug)}
+              </AvatarFallback>
+            </Avatar>
             <p className="text-sm underline font-medium">
               {launchpad.tenant.slug}
             </p>
           </div>
 
+          {/* Title */}
+          <h2 className="text-lg font-medium line-clamp-2 px-4">
+            {launchpad.title}
+          </h2>
+
           {/* Description */}
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-2 px-4">
+          <p className="text-sm text-foreground mb-3 line-clamp-2 px-4">
             {launchpad.description}
           </p>
 
           {/* Pricing */}
-          <div className="border-t mt-auto">
-            <div className="flex items-center gap-2 px-4 pt-4">
-              <div className="relative px-2 py-1 border bg-feature w-fit">
+          <div className="border-y-2 mt-auto">
+            <div className="flex items-center gap-2 p-4">
+              <Badge>
                 <p className="text-sm font-medium">
                   {formatCurrency(launchpad.launchPrice)}
                 </p>
-              </div>
-              <p className="text-sm line-through text-muted-foreground">
+              </Badge>
+              <p className="text-sm line-through text-foreground">
                 {formatCurrency(launchpad.originalPrice)}
               </p>
             </div>
@@ -152,7 +163,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
 
           {/* Progress Bar */}
           <div className="px-4">
-            <div className="flex justify-between text-xs text-muted-foreground mb-1">
+            <div className="flex justify-between text-xs text-foreground mb-1">
               <span>Launch Progress</span>
               <span>{Math.round(progress)}%</span>
             </div>
@@ -160,7 +171,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
           </div>
 
           {/* Stats */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground px-4">
+          <div className="flex items-center justify-between text-xs text-foreground px-4">
             <div className="flex items-center gap-1">
               <Users className="w-3 h-3" />
               <span>{launchpad.soldCount || 0} sold</span>
@@ -171,54 +182,60 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
             </div>
           </div>
         </div>
-      </article>
+      </Card>
     </Link>
   );
 };
 
 export const LaunchpadCardSkeleton = () => {
   return (
-    <article className="flex flex-col border rounded-md bg-background overflow-hidden h-full">
-      <div className="relative aspect-square bg-gray-200 animate-pulse" />
+    <article className="flex flex-col border-2 shadow-shadow rounded-base bg-background overflow-hidden h-full">
+      <div className="relative aspect-square bg-secondary-background animate-pulse" />
 
-      <div className="flex flex-col gap-3 flex-1 border-y p-4">
-        {/* Title */}
-        <div className="h-4 bg-gray-200 animate-pulse w-full" />
-
+      <div className="flex flex-col gap-3 flex-1 border-y-2 py-4">
         {/* Tenant Info */}
-        <div className="flex items-center gap-2">
-          <div className="rounded-full bg-gray-200 animate-pulse shrink-0 size-4" />
-          <div className="h-3 bg-gray-200 animate-pulse w-24" />
+        <div className="flex items-center gap-2 px-4">
+          <Skeleton className="rounded-full bg-secondary-background animate-pulse shrink-0 size-6" />
+          <Skeleton className="h-3 bg-secondary-background animate-pulse w-24" />
+        </div>
+
+        {/* Title */}
+        <div className="px-4">
+          <Skeleton className="h-4 bg-secondary-background animate-pulse w-full" />
         </div>
 
         {/* Description */}
-        <div className="h-3 bg-gray-200 animate-pulse w-full" />
-        <div className="h-3 bg-gray-200 animate-pulse w-3/4 mb-3" />
+        <div className="space-y-2 px-4">
+          <Skeleton className="h-3 bg-secondary-background animate-pulse w-full" />
+          <Skeleton className="h-3 bg-secondary-background animate-pulse w-3/4 mb-3" />
+        </div>
 
         {/* Pricing */}
-        <div className="flex items-center gap-2">
-          <div className="h-6 bg-gray-200 animate-pulse w-16" />
+        <div className="border-y-2 mt-auto px-4">
+          <div className="p-4">
+            <Skeleton className="h-6 bg-secondary-background animate-pulse w-16" />
+          </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="mt-2">
-          <div className="flex justify-between text-xs text-muted-foreground mb-1">
+        <div className="mt-2 px-4">
+          <div className="flex justify-between text-xs text-foreground mb-1">
             <span>Launch Progress</span>
-            <span className="h-3 bg-gray-200 animate-pulse w-8" />
+            <Skeleton className="h-3 bg-secondary-background animate-pulse w-8" />
           </div>
           <Progress value={0} className="h-3" />
-          {/* <div className="bg-gray-200 h-3 w-full animate-pulse" /> */}
+          {/* <div className="bg-secondary-background h-3 w-full animate-pulse" /> */}
         </div>
 
         {/* Stats */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex items-center justify-between text-xs text-foreground px-4">
           <div className="flex items-center gap-1">
             <Users className="w-3 h-3" />
-            <span className="h-3 bg-gray-200 animate-pulse w-12" />
+            <Skeleton className="h-3 bg-secondary-background animate-pulse w-12" />
           </div>
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            <span className="h-3 bg-gray-200 animate-pulse w-16" />
+            <Skeleton className="h-3 bg-secondary-background animate-pulse w-16" />
           </div>
         </div>
       </div>

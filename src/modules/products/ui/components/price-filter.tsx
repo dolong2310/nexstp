@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label"
 import React, { ChangeEvent } from "react";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
   maxPrice?: string | null;
   onMinPriceChange: (value: string) => void;
   onMaxPriceChange: (value: string) => void;
-};
+}
 
 export const formatAsCurrency = (value: string) => {
   const numericValue = value.replace(/[^0-9.]/g, "");
@@ -49,10 +50,13 @@ const PriceFilter = ({
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <label className="font-medium text-base">Minimum price</label>
+        <Label htmlFor="min-price">
+          Minimum price
+        </Label>
         <Input
+          id="min-price"
           type="text"
           placeholder="$0"
           value={minPrice ? formatAsCurrency(minPrice) : ""}
@@ -61,8 +65,11 @@ const PriceFilter = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="font-medium text-base">Maximum price</label>
+        <Label htmlFor="max-price">
+          Maximum price
+        </Label>
         <Input
+          id="max-price"
           type="text"
           placeholder="∞"
           value={maxPrice ? formatAsCurrency(maxPrice) : ""}

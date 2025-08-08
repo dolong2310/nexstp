@@ -13,7 +13,7 @@ const ConversationMobileFooter = () => {
   }
 
   return (
-    <div className="fixed justify-between w-full bottom-0 z-40 flex items-center bg-background lg:hidden">
+    <div className="fixed justify-between w-full bottom-0 z-40 flex items-center bg-secondary-background lg:hidden">
       {routes.map((item) => (
         <ConversationMobileItem key={item.href} {...item} />
       ))}

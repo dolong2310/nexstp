@@ -1,5 +1,3 @@
-import LogoutButton from "@/components/logout-button";
-import ThemeButton from "@/components/theme-button";
 import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
@@ -11,7 +9,7 @@ const poppins = Poppins({
 
 const Footer = () => {
   return (
-    <footer className="border-t font-medium bg-background">
+    <footer className="border-t-4 font-medium bg-background">
       <div className="max-w-screen-xl mx-auto px-4 lg:px-12 py-6 flex items-center justify-between gap-2 h-full">
         <div className="flex items-center gap-2">
           <p>Powered by</p>
@@ -20,11 +18,6 @@ const Footer = () => {
               Nexstp
             </span>
           </Link>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <ThemeButton />
-          <LogoutButton />
         </div>
       </div>
     </footer>

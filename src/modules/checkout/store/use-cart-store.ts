@@ -13,6 +13,9 @@ interface CartState {
   clearAllCarts: () => void;
   removeTenantByTenantSlug: (tenantSlug: string) => void;
   getCartByTenant: (tenantSlug: string) => string[];
+
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -70,10 +73,20 @@ export const useCartStore = create<CartState>()(
       // lấy danh sách productIds của tenant theo tenantSlug
       getCartByTenant: (tenantSlug) =>
         get().tenantCarts[tenantSlug]?.productIds || [],
+
+      _hasHydrated: false,
+      setHasHydrated: (state) => {
+        set({
+          _hasHydrated: state,
+        });
+      },
     }),
     {
       name: "nexstp-cart",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: (state) => {
+        return () => state.setHasHydrated(true);
+      },
     }
   )
 );

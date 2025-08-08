@@ -1,9 +1,47 @@
-import React from "react";
+"use client";
 
-interface Props {}
+import * as React from "react";
 
-const AboutPage = (props: Props) => {
-  return <div>AboutPage</div>;
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+
+const AboutPage = () => {
+  return (
+    <div>
+      <ResizablePanelGroup
+        direction="horizontal"
+      >
+        <ResizablePanel defaultSize={50}>
+          <div className="flex h-[200px] items-center justify-center bg-main p-6">
+            <span className="font-base">One</span>
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle />
+
+        <ResizablePanel defaultSize={50}>
+          <ResizablePanelGroup direction="vertical">
+            <ResizablePanel defaultSize={25}>
+              <div className="flex h-full items-center justify-center bg-main p-6">
+                <span className="font-base">Two</span>
+              </div>
+            </ResizablePanel>
+
+            <ResizableHandle />
+
+            <ResizablePanel defaultSize={75}>
+              <div className="flex h-full items-center justify-center bg-main p-6">
+                <span className="font-base">Three</span>
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
 };
 
 export default AboutPage;
@@ -189,31 +227,31 @@ export default AboutPage;
 
 //   return (
 //     <div className="flex flex-col items-center justify-center p-4">
-//       <Button variant="elevated" onClick={testExpiredLaunchpad}>
+//       <Button variant="default" onClick={testExpiredLaunchpad}>
 //         Create Test Expired Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={createLaunchpad}>
+//       <Button variant="default" onClick={createLaunchpad}>
 //         Create Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={updateLaunchpad}>
+//       <Button variant="default" onClick={updateLaunchpad}>
 //         Update Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={deleteLaunchpad}>
+//       <Button variant="default" onClick={deleteLaunchpad}>
 //         Delete Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={submitForApprovalLaunchpad}>
+//       <Button variant="default" onClick={submitForApprovalLaunchpad}>
 //         Submit for Approval Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={publishLaunchpad}>
+//       <Button variant="default" onClick={publishLaunchpad}>
 //         Publish Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={approveLaunchpad}>
+//       <Button variant="default" onClick={approveLaunchpad}>
 //         Approve Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={rejectLaunchpad}>
+//       <Button variant="default" onClick={rejectLaunchpad}>
 //         Reject Launchpad
 //       </Button>
-//       <Button variant="elevated" onClick={purchaseLaunchpad}>
+//       <Button variant="default" onClick={purchaseLaunchpad}>
 //         Purchase Launchpad
 //       </Button>
 //     </div>

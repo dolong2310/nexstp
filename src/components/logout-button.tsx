@@ -17,9 +17,11 @@ import { Button } from "./ui/button";
 
 interface Props {
   iconClassName?: string;
+  isLabel?: boolean;
+  labelClassName?: string;
 }
 
-const LogoutButton = ({ iconClassName }: Props) => {
+const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const trpc = useTRPC();
@@ -55,23 +57,27 @@ const LogoutButton = ({ iconClassName }: Props) => {
 
   if (isLoading)
     return (
-      <Button variant="elevated" size="icon" disabled>
+      <Button variant="default" size="icon" disabled>
         <LogOutIcon className={iconClassName} />
       </Button>
     );
 
   if (!user && !isLoading) return null;
 
+  if (isLabel) {
+    return <p className={labelClassName} onClick={handleLogout}>Sign out</p>;
+  }
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="elevated" size="icon">
+        <Button variant="neutral" size="icon">
           <LogOutIcon className={iconClassName} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="bg-background flex items-center gap-2 w-fit">
+      <PopoverContent className="bg-secondary-background flex items-center gap-2 w-fit">
         <span className="font-medium text-center">You want to</span>
-        <Button variant="elevated" size="sm" onClick={handleLogout}>
+        <Button variant="default" size="sm" onClick={handleLogout}>
           sign out
         </Button>
       </PopoverContent>

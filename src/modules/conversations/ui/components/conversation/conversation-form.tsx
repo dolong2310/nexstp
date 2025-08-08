@@ -1,5 +1,6 @@
 "use client";
 
+import { AutosizeTextarea } from "@/components/autosize-textarea";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -8,7 +9,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import useSession from "@/hooks/use-session";
 import { MAX_FILE_SIZE } from "@/modules/conversations/constants";
 import useConversation from "@/modules/conversations/hooks/use-conversation";
@@ -17,7 +17,12 @@ import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { SendIcon, UploadIcon } from "lucide-react";
 import React, { useRef } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  ControllerRenderProps,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import z from "zod";
 import PreviewImageModal from "../modals/preview-image-modal";
 
@@ -88,7 +93,26 @@ const ConversationForm = () => {
     }
   };
 
+  const handleKeydown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      form.handleSubmit(onSubmit)();
+    }
+  };
+
+  const handleInputChange =
+    (field: ControllerRenderProps<FieldValues, "message">) =>
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value;
+      handleTyping(value);
+      field.onChange(value);
+    };
+
   const onSubmit: SubmitHandler<z.infer<typeof messageSchema>> = (data) => {
+    if (!data.message && !uploadMediaHook.previewImage) {
+      return; // Prevent sending empty messages
+    }
+
     form.setValue("message", "", { shouldValidate: true });
 
     if (typingRef.current) {
@@ -104,11 +128,11 @@ const ConversationForm = () => {
 
   return (
     <>
-      <div className="p-4 bg-background border-t flex items-center gap-2 lg:gap-4 w-full">
+      <div className="p-4 bg-secondary-background border-t-4 flex items-end gap-2 lg:gap-4 w-full">
         <div className="flex items-center gap-4">
           <Button
             type="button"
-            variant="elevated"
+            variant="default"
             onClick={uploadMediaHook.openFileDialog}
           >
             <UploadIcon className="size-4" />
@@ -125,7 +149,7 @@ const ConversationForm = () => {
         <Form {...form}>
           <form
             autoComplete="off"
-            className="flex items-center gap-2 lg:gap-4 w-full"
+            className="flex items-end gap-2 lg:gap-4 w-full"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -133,16 +157,15 @@ const ConversationForm = () => {
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormControl>
-                    <Input
+                    <AutosizeTextarea
                       {...field}
-                      type="text"
+                      className="min-h-10 resize-none"
                       placeholder="Write a message"
+                      minHeight={40}
+                      maxHeight={192}
                       value={field.value}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const value = e.target.value;
-                        handleTyping(value);
-                        field.onChange(value);
-                      }}
+                      onKeyDown={handleKeydown}
+                      onChange={handleInputChange(field)}
                     />
                   </FormControl>
                   <FormMessage />
@@ -150,7 +173,7 @@ const ConversationForm = () => {
               )}
             />
 
-            <Button type="submit" variant="elevated">
+            <Button type="submit" variant="default">
               Send <SendIcon size={18} />
             </Button>
           </form>

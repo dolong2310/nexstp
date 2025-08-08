@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
 import useProductFilter from "@/modules/products/hooks/use-product-filter";
 import { useTRPC } from "@/trpc/client";
@@ -40,7 +41,7 @@ const SearchFilters = () => {
   return (
     <div className="px-4 lg:px-12 py-8">
       <div
-        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl bg-default-filter transition-colors duration-200"
+        className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border-4 rounded-xl bg-secondary-background transition-colors duration-200"
         style={
           activeCategoryColor ? { backgroundColor: activeCategoryColor } : {}
         }
@@ -62,12 +63,12 @@ const SearchFilters = () => {
 export const SearchFiltersSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-8">
-      <div className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border rounded-xl bg-default-filter">
+      <div className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border-4 rounded-xl bg-secondary-background">
         <SearchInput disabled />
         <div className="hidden lg:block">
-          <div className="h-11 animate-pulse bg-neutral-200 rounded" />
+          <Skeleton className="h-11 animate-pulse bg-secondary-background rounded" />
         </div>
-        <div className="h-6 animate-pulse bg-neutral-200 rounded w-48" />
+        <Skeleton className="h-6 animate-pulse bg-secondary-background rounded w-48" />
       </div>
     </div>
   );

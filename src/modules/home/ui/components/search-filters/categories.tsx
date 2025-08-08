@@ -13,7 +13,9 @@ const CategoriesSidebar = dynamic(() => import("./categories-sidebar"), {
   ssr: false,
 });
 
-interface Props { data: CategoriesGetManyOutput };
+interface Props {
+  data: CategoriesGetManyOutput;
+}
 
 const Categories = ({ data }: Props) => {
   const params = useParams();
@@ -99,7 +101,7 @@ const Categories = ({ data }: Props) => {
       {/* Container hiển thị categories với responsive layout */}
       <div
         ref={containerRef}
-        className="flex flex-nowrap items-center"
+        className="flex flex-nowrap items-center gap-2"
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
       >
@@ -116,13 +118,10 @@ const Categories = ({ data }: Props) => {
 
         <div ref={viewAllRef} className="shrink-0">
           <Button
-            variant="elevated"
+            variant="neutral"
             className={cn(
-              "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-background hover:border-primary text-foreground",
               // Highlight button nếu category active bị ẩn và không hover
-              isActiveCategoryHidden &&
-                !isAnyHovered &&
-                "bg-background border-primary"
+              isActiveCategoryHidden && !isAnyHovered && "bg-background"
             )}
             onClick={() => setIsSidebarOpen(true)}
           >

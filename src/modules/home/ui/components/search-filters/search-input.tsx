@@ -35,21 +35,24 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
     <div className="flex items-center gap-2 w-full">
       <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
-      <div className="relative w-full">
-        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
-        <Input
-          className="pl-8"
-          placeholder="Search products"
-          disabled={disabled}
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
+      <Button asChild variant="neutral" className="p-0">
+        <div className="relative w-full">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
+          <Input
+            className="pl-8"
+            placeholder="Search products"
+            disabled={disabled}
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </Button>
 
       {/* Categories view all button in mobile */}
       <Button
-        variant="elevated"
-        className="size-12 shrink-0 flex lg:hidden"
+        variant="default"
+        size="icon"
+        className="shrink-0 flex lg:hidden"
         onClick={() => setIsSidebarOpen(true)}
       >
         <ListFilterIcon />
@@ -59,8 +62,8 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
       {user && (
         <Button
           asChild
-          variant="elevated"
-          className="size-12 md:size-auto md:self-stretch shrink-0"
+          variant="default"
+          className="size-10 md:size-auto md:self-stretch shrink-0"
         >
           <Link prefetch href="/library">
             <BookmarkCheckIcon />

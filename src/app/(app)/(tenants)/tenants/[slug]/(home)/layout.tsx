@@ -1,10 +1,9 @@
+import Navbar from "@/modules/home/ui/components/navbar";
 import Footer from "@/modules/tenants/ui/components/footer";
-import Navbar, { NavbarSkeleton } from "@/modules/tenants/ui/components/navbar";
 import { Metadata } from "next";
-import React, { Suspense } from "react";
+import React from "react";
 
 interface Props {
-  params: Promise<{ slug: string }>;
   children: React.ReactNode;
 }
 
@@ -16,14 +15,10 @@ export const metadata: Metadata = {
   description: "Browse amazing products from our store",
 };
 
-const TenantsLayout = async ({ children, params }: Props) => {
-  const { slug } = await params;
-
+const TenantsLayout = ({ children }: Props) => {
   return (
-    <div className="min-h-screen flex flex-col bg-third">
-      <Suspense fallback={<NavbarSkeleton />}>
-        <Navbar slug={slug} />
-      </Suspense>
+    <div className="min-h-screen flex flex-col bg-secondary-background bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] bg-[size:70px_70px]">
+      <Navbar />
       <div className="flex-1">
         <div className="max-w-screen-xl mx-auto">{children}</div>
       </div>

@@ -1,11 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatName } from "@/lib/utils";
 import { ChatUser, Media } from "@/payload-types";
 
 interface Props {
   users: ChatUser[];
-};
+}
 
 const MAX_DISPLAY = 3;
 
@@ -17,8 +18,8 @@ const CustomAvatarGroup = ({ users }: Props) => {
   return (
     <div className="*:data-[slot=avatar]:ring-background flex -space-x-4 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
       {showUsers.map((user) => (
-        <Button key={user.id} asChild variant="outline" size="icon">
-          <Avatar>
+        <Button key={user.id} asChild variant="neutral" size="icon">
+          <Avatar className="rounded-base! outline-none">
             <AvatarImage
               src={
                 (user.image as Media)?.url ||
@@ -27,14 +28,16 @@ const CustomAvatarGroup = ({ users }: Props) => {
               }
               alt={user.name || "Avatar"}
             />
-            <AvatarFallback>{formatName(user.name || "User")}</AvatarFallback>
+            <AvatarFallback className="rounded-base! outline-none">
+              {formatName(user.name || "User")}
+            </AvatarFallback>
           </Avatar>
         </Button>
       ))}
       {users.length > MAX_DISPLAY && (
-        <div className="flex items-center justify-center border size-6 -mt-2 rounded-md bg-feature text-white text-sm font-medium z-10">
+        <Badge className="flex items-center justify-center size-6 -mt-2 text-sm font-medium z-10">
           +{remaining}
-        </div>
+        </Badge>
       )}
     </div>
   );
@@ -42,7 +45,7 @@ const CustomAvatarGroup = ({ users }: Props) => {
 
 export const CustomAvatarGroupSkeleton = () => {
   return (
-    <Button asChild variant="outline" size="icon">
+    <Button asChild variant="default" size="icon">
       <Avatar>
         <AvatarImage src="/images/default-avatar.png" alt="Avatar" />
         <AvatarFallback>{formatName("User")}</AvatarFallback>

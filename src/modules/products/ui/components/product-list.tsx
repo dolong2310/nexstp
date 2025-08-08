@@ -76,11 +76,11 @@ export const ProductListEmpty = ({
   visibleLibraryButton?: boolean;
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-lg bg-background border border-black border-dashed p-8">
+    <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-base bg-background border-4 p-8">
       <InboxIcon />
       <p className="text-base font-medium">No products found</p>
       {visibleLibraryButton && (
-        <Button asChild variant="elevated" size="sm" className="mt-2">
+        <Button asChild variant="default" size="sm" className="mt-2">
           <Link href="/library">Library</Link>
         </Button>
       )}

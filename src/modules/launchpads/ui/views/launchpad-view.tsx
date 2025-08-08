@@ -11,7 +11,7 @@ const LaunchpadsView = () => {
     <div className="flex flex-col gap-4 px-4 lg:px-12 pt-4 pb-8">
       <section className="flex flex-col md:flex-row md:items-center justify-between gap-4 lg:gap-8 py-4">
         <h1 className="flex-1 text-4xl font-bold">Launchpad</h1>
-        <p className="flex-1 text-sm text-muted-foreground md:text-end">
+        <p className="flex-1 text-sm text-foreground md:text-end">
           Get exclusive early access to amazing products at special launch
           prices. Limited time offers before they return to regular pricing.
         </p>
@@ -22,7 +22,7 @@ const LaunchpadsView = () => {
         <SortDropdown />
         <RefreshButton
           queryKey={"launchpads" as RefreshQueryKeys}
-          sizeButton="default"
+          size="icon"
         />
       </div>
 
@@ -38,7 +38,7 @@ export const LaunchpadsViewSkeleton = () => {
     <div className="flex flex-col gap-4 px-4 lg:px-12 pt-4 pb-8">
       <section className="flex flex-col md:flex-row md:items-center justify-between gap-4 lg:gap-8 py-4">
         <h1 className="flex-1 text-4xl font-bold">Launchpad</h1>
-        <p className="flex-1 text-sm text-muted-foreground md:text-end">
+        <p className="flex-1 text-sm text-foreground md:text-end">
           Get exclusive early access to amazing products at special launch
           prices. Limited time offers before they return to regular pricing.
         </p>

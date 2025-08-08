@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { DEFAULT_LIMIT } from "@/constants";
 import useSession from "@/hooks/use-session";
 import { generateTenantUrl } from "@/lib/utils";
@@ -69,7 +69,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
       router.push("/library");
     }
   }, [
-    states.success,
+    states,
     cart.clearCart,
     router,
     setStates,

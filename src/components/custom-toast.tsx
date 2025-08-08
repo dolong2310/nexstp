@@ -91,7 +91,7 @@ const NexstpToast = (props: ToastProps) => {
   const descriptionTxt = useMemo(() => {
     if (typeof description === "string") {
       return (
-        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        <p className="mt-1 text-sm text-foreground">{description}</p>
       );
     }
     return description;
@@ -115,7 +115,7 @@ const NexstpToast = (props: ToastProps) => {
   return (
     <div
       className={cn(
-        "flex items-center rounded-lg bg-third border w-full md:max-w-[364px] p-4",
+        "flex items-center rounded-lg bg-secondary-background border w-full md:max-w-[364px] p-4",
         "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] -translate-x-[4px] -translate-y-[4px]"
       )}
     >
@@ -134,7 +134,7 @@ const NexstpToast = (props: ToastProps) => {
       {typeof button?.onClick === "function" && (
         <div className="ml-5 shrink-0">
           <Button
-            variant="elevated"
+            variant="default"
             size={button?.label ? "sm" : "icon"}
             className="text-sm font-medium"
             onClick={() => {

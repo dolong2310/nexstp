@@ -29,7 +29,7 @@ const SubcategoryMenu = ({ category, isOpen }: Props) => {
       {/* Invisible bridge to maintain hover */}
       <div className="h-3 w-60" />
       <div
-        className="w-60 text-black dark:text-white bg-default-filter rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] -translate-x-[2px] -translate-y-[2px]"
+        className="w-60 text-black dark:text-white bg-main rounded-md overflow-hidden border-2"
         style={backgroundColor ? { backgroundColor } : {}}
       >
         <div className="">

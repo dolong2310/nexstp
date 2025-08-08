@@ -1,4 +1,4 @@
-import { toast } from "@/components/custom-toast";
+import { toast } from "sonner";
 import { fileToBase64 } from "@/lib/utils";
 import { PreviewImageType } from "@/modules/conversations/types";
 import { Media } from "@/payload-types";

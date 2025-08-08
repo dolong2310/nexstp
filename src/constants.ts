@@ -7,7 +7,7 @@ export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 export const defaultConfigTopLoader = {
-  color: "#fb64b6",
+  color: "#5294ff",
   initialPosition: 0.08,
   crawlSpeed: 200,
   height: 3,
@@ -15,7 +15,7 @@ export const defaultConfigTopLoader = {
   showSpinner: false,
   easing: "ease",
   speed: 200,
-  shadow: "none", // "0 0 10px #fb64b6,0 0 5px #fb64b6",
+  shadow: "none", // "0 0 10px #5294ff,0 0 5px #5294ff",
   template:
     '<div class="bar" role="bar"><div class="peg"></div></div> <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>',
   zIndex: 1600,

@@ -10,7 +10,7 @@ const ProductSort = () => {
   return (
     <div className="flex items-center gap-2 mt-2 md:mt-0">
       <Button
-        variant="secondary"
+        variant="noShadow"
         size="sm"
         className={cn(
           "rounded-full bg-background hover:bg-background",
@@ -23,7 +23,7 @@ const ProductSort = () => {
       </Button>
 
       <Button
-        variant="secondary"
+        variant="noShadow"
         size="sm"
         className={cn(
           "rounded-full bg-background hover:bg-background",
@@ -36,7 +36,7 @@ const ProductSort = () => {
       </Button>
 
       <Button
-        variant="secondary"
+        variant="noShadow"
         size="sm"
         className={cn(
           "rounded-full bg-background hover:bg-background",

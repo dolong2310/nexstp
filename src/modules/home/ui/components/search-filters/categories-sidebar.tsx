@@ -78,7 +78,7 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
     <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetContent
         side="left"
-        className="p-0 transition-none bg-default-filter"
+        className="p-0 transition-none bg-secondary-background"
         style={backgroundColor ? { backgroundColor } : {}}
       >
         <SheetHeader className="p-4 border-b">

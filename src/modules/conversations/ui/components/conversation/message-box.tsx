@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
 import ImageModal from "../modals/image-modal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
@@ -36,11 +37,11 @@ const MessageBox = ({ message, isLast, id }: Props) => {
 
   const container = cn("flex p-2", isOwn ? "justify-end" : "justify-start");
   const content = cn("flex gap-3 p-4", isOwn ? "flex-row" : "flex-row-reverse");
-  const avatar = cn("w-8 h-8 rounded-full", isOwn ? "order-2" : "order-1");
+  const avatar = cn(isOwn ? "order-2" : "order-1");
   const body = cn("flex flex-col gap-2", isOwn ? "items-end" : "items-start");
   const messageText = cn(
-    "text-sm w-fit rounded-md overflow-hidden border",
-    isOwn ? "bg-feature text-white" : "bg-background text-primary",
+    "text-sm w-fit max-w-[500px] break-words rounded-base overflow-hidden shadow-shadow border-2",
+    isOwn ? "bg-main text-white" : "bg-secondary-background",
     message.image ? "p-0" : "py-2 px-3"
   );
 
@@ -52,10 +53,8 @@ const MessageBox = ({ message, isLast, id }: Props) => {
         </div>
         <div className={body}>
           <div className="flex items-center gap-1">
-            <div className="text-sm text-muted-foreground">
-              {message.sender.name}
-            </div>
-            <div className="text-xs text-muted-foreground/80">
+            <div className="text-sm text-foreground">{message.sender.name}</div>
+            <div className="text-xs text-foreground/80">
               {format(new Date(message.createdAt), "p")}
             </div>
           </div>
@@ -83,7 +82,7 @@ const MessageBox = ({ message, isLast, id }: Props) => {
           </div>
 
           {isLast && isOwn && seenList.length > 0 && (
-            <div className="text-xs font-light text-muted-foreground mt-1">
+            <div className="text-xs font-light text-foreground mt-1">
               Seen by {seenList}
             </div>
           )}
@@ -97,9 +96,8 @@ export const MessageBoxSkeleton = ({ isReverse }: { isReverse?: boolean }) => {
   return (
     <div className={cn("flex p-2 justify-start", isReverse && "justify-end")}>
       <div className={cn("flex gap-3 p-4", isReverse && "flex-row-reverse")}>
-        <div className="w-8 h-8 rounded-full">
-          <CustomAvatarSkeleton />
-        </div>
+        <CustomAvatarSkeleton />
+
         <div
           className={cn(
             "flex flex-col gap-2 items-start",
@@ -107,11 +105,9 @@ export const MessageBoxSkeleton = ({ isReverse }: { isReverse?: boolean }) => {
           )}
         >
           <div className="flex items-center gap-1">
-            <div className="h-4 bg-muted rounded-md w-20" />
+            <Skeleton className="h-4 bg-secondary-background rounded-base w-20" />
           </div>
-          <div className="text-sm w-48 rounded-md overflow-hidden bg-muted text-primary py-2 px-3">
-            <div className="h-4 bg-muted rounded-md w-full" />
-          </div>
+          <Skeleton className="text-sm h-8 w-48 rounded-base overflow-hidden bg-secondary-background py-2 px-3 shadow-shadow" />
         </div>
       </div>
     </div>

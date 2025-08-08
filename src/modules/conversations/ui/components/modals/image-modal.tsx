@@ -19,12 +19,14 @@ const ImageModal = ({
       <DialogContent className="flex flex-col justify-center items-center max-w-4xl max-h-[90vh]">
         <DialogTitle className="sr-only">{alt}</DialogTitle>
 
-        <div className="mt-12">
+        <div className="mt-4">
           <Media
             src={src}
             alt={alt}
             width={800}
             height={600}
+            isBordered
+            shadow
             sizes="(max-width: 768px) 95vw, 80vw"
             containerClassName="w-full min-h-[300px] flex items-center justify-center aspect-auto"
             className="w-auto h-auto max-w-full max-h-[80vh] rounded-lg object-contain"
