@@ -1,10 +1,21 @@
 "use client";
 
 import Countdown from "@/components/countdown";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  TelegramIcon,
+  TwitterIcon,
+} from "@/components/icons";
 import Media from "@/components/media";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -156,23 +167,30 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
     purchaseMutation.mutate({ launchpadId: launchpad.id });
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: launchpad.title,
-          text: launchpad.description || `Check out ${launchpad.title}`,
-          url: window.location.href,
-        });
-      } catch (error) {
-        // User cancelled or error occurred
+  const handleSocialShare =
+    (platform: "facebook" | "instagram" | "telegram" | "twitter") => () => {
+      const url = encodeURIComponent(window.location.href);
+      // const text = encodeURIComponent(`Check out ${launchpad.title}`); // &text=${text}
+      let shareUrl = "";
+
+      switch (platform) {
+        case "facebook":
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+          break;
+        case "twitter":
+          shareUrl = `https://twitter.com/intent/tweet?url=${url}`;
+          break;
+        case "telegram":
+          shareUrl = `https://t.me/share/url?url=${url}`;
+          break;
+        case "instagram":
+          shareUrl = `https://www.instagram.com/`;
+          break;
+        default:
+          break;
       }
-    } else {
-      // Fallback to copying URL
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success("Link copied to clipboard!");
-    }
-  };
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
+    };
 
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
@@ -195,14 +213,47 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               <p className="text-xs font-medium">-{discountPercentage}%</p>
             </Badge>
 
-            <Button
-              variant="default"
-              size="icon"
-              className="absolute top-4 right-4"
-              onClick={handleShare}
-            >
-              <Share2Icon className="size-4" />
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="absolute top-4 right-4"
+                >
+                  <Share2Icon className="size-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="flex items-center gap-2 w-fit">
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("facebook")}
+                >
+                  <FacebookIcon />
+                </Button>
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("instagram")}
+                >
+                  <InstagramIcon />
+                </Button>
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("telegram")}
+                >
+                  <TelegramIcon />
+                </Button>
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("twitter")}
+                >
+                  <TwitterIcon />
+                </Button>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">

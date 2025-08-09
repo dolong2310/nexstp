@@ -1,9 +1,21 @@
 "use client";
 
+import {
+  FacebookIcon,
+  InstagramIcon,
+  TelegramIcon,
+  TwitterIcon,
+} from "@/components/icons";
 import Media from "@/components/media";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,7 +25,7 @@ import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { StarIcon } from "lucide-react";
+import { Share2Icon, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { Fragment, Suspense } from "react";
 import ReviewForm, { ReviewFormSkeleton } from "../components/review-form";
@@ -37,6 +49,30 @@ const ProductView = ({ productId }: Props) => {
     })
   );
 
+  const handleSocialShare =
+    (platform: "facebook" | "instagram" | "telegram" | "twitter") => () => {
+      const url = encodeURIComponent(window.location.href);
+      let shareUrl = "";
+
+      switch (platform) {
+        case "facebook":
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+          break;
+        case "twitter":
+          shareUrl = `https://twitter.com/intent/tweet?url=${url}`;
+          break;
+        case "telegram":
+          shareUrl = `https://t.me/share/url?url=${url}`;
+          break;
+        case "instagram":
+          shareUrl = `https://www.instagram.com/`;
+          break;
+        default:
+          break;
+      }
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
+    };
+
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
@@ -58,6 +94,48 @@ const ProductView = ({ productId }: Props) => {
                 <p className="text-xs font-medium">Launchpad</p>
               </Badge>
             )}
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="absolute top-4 right-4"
+                >
+                  <Share2Icon className="size-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="flex items-center gap-2 w-fit">
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("facebook")}
+                >
+                  <FacebookIcon />
+                </Button>
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("instagram")}
+                >
+                  <InstagramIcon />
+                </Button>
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("telegram")}
+                >
+                  <TelegramIcon />
+                </Button>
+                <Button
+                  variant="neutral"
+                  size="icon"
+                  onClick={handleSocialShare("twitter")}
+                >
+                  <TwitterIcon />
+                </Button>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">
