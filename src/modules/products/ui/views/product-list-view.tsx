@@ -10,6 +10,8 @@ import { ProductListSkeleton } from "../components/product-list-card";
 import { ProductListTableSkeleton } from "../components/product-list-table";
 import ProductSorts from "../components/product-sorts";
 import Logo from "@/components/logo";
+import ProductSortsButton from "../components/product-sorts-button";
+import ProductFiltersButton from "../components/product-filters-button";
 
 interface Props {
   category?: string | null;
@@ -34,7 +36,7 @@ const ProductListView = ({
     >
       <div
         className={cn(
-          "flex items-center justify-end sm:justify-between gap-y-2 lg:gap-y-0 border-4 rounded-lg px-4",
+          "flex items-center justify-end flex-wrap sm:justify-between gap-y-2 lg:gap-y-0 border-4 rounded-lg px-4",
           "sticky right-0 z-20 bg-secondary-background py-2 -mr-[4px]",
           tenantSlug ? "top-[calc(36px_+_16px)]" : "top-0"
         )}
@@ -44,6 +46,8 @@ const ProductListView = ({
         </h3>
         <div className="flex items-center gap-x-4">
           <ProductGridToggle />
+          <ProductSortsButton />
+          <ProductFiltersButton />
           <RefreshButton
             queryKey={"products" as RefreshQueryKeys}
             size="icon"
@@ -53,7 +57,7 @@ const ProductListView = ({
       </div>
 
       <div className="flex flex-col md:flex-row gap-x-8 xl:gap-x-12 gap-y-6">
-        <div className="w-full md:w-2/6 lg:w-2/8 xl:w-2/8">
+        <div className="hidden sm:block w-full md:w-2/6 lg:w-2/8 xl:w-2/8">
           <div
             className={cn(
               "sticky left-0",
