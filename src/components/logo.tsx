@@ -8,10 +8,11 @@ const poppins = Poppins({
 });
 
 interface Props {
+  className?: string;
   size?: "sm" | "md" | "lg";
 }
 
-const Logo = ({ size = "md" }: Props) => {
+const Logo = ({ className, size = "md" }: Props) => {
   const sizeClasses = {
     sm: "size-6 text-xl",
     md: "size-8 text-2xl",
@@ -19,7 +20,7 @@ const Logo = ({ size = "md" }: Props) => {
   };
 
   return (
-    <Link href="/" className="flex items-center">
+    <Link href="/" className={cn("flex items-center justify-center", className)}>
       <span
         className={cn(
           poppins.className,
