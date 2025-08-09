@@ -32,7 +32,7 @@ const ProductSorts = () => {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
-        <div className="rounded-base flex items-center justify-between space-x-4 border-2 border-border text-main-foreground bg-main px-4 py-2">
+        <div className="rounded-base shadow-shadow flex items-center justify-between space-x-4 border-2 border-border text-main-foreground bg-main px-4 py-2">
           <h4 className="text-sm font-heading">
             Sort ({getSortLabel(filters.sort)})
           </h4>
@@ -49,7 +49,7 @@ const ProductSorts = () => {
         </div>
       </CollapsibleTrigger>
 
-      <CollapsibleContent className="space-y-2 text-main-foreground font-base">
+      <CollapsibleContent className="rounded-base shadow-shadow space-y-2 text-main-foreground font-base">
         <div className="rounded-base border-2 border-border bg-main px-4 py-3 font-mono text-sm">
           <div className="flex flex-col gap-y-4 gap-2">
             {sortList.map((sort) => (
