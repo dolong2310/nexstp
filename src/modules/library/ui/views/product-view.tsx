@@ -7,7 +7,8 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import { fallbackImageUrl, formatName, generateTenantUrl } from "@/lib/utils";
 import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
@@ -28,6 +29,7 @@ const TabOptions = [
 ];
 
 const ProductView = ({ productId }: Props) => {
+  const { theme } = useTheme();
   const trpc = useTRPC();
   const { data: product, refetch: refetchProduct } = useSuspenseQuery(
     trpc.library.getOne.queryOptions({
@@ -42,7 +44,7 @@ const ProductView = ({ productId }: Props) => {
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
             <Media
-              src={product.image?.url || "/placeholder-bg.jpg"}
+              src={fallbackImageUrl(product.image?.url, theme)}
               alt={product.name}
               title={product.name}
               fill

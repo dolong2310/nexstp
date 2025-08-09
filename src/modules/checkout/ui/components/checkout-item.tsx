@@ -1,6 +1,7 @@
 import Media from "@/components/media";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrency } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import { fallbackImageUrl, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
 interface Props {
@@ -22,10 +23,11 @@ const CheckoutItem = ({
   tenantName,
   onRemove,
 }: Props) => {
+  const { theme } = useTheme();
   return (
     <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 bg-background border-2 rounded-base shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all">
       <Media
-        src={imageUrl || "/placeholder-bg.jpg"}
+        src={fallbackImageUrl(imageUrl, theme)}
         alt={name}
         fill
         className="object-cover border-r-2 rounded-tl-base rounded-bl-base"

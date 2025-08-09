@@ -3,7 +3,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, formatCurrency, formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import {
+  cn,
+  fallbackImageUrl,
+  formatCurrency,
+  formatName,
+  generateTenantUrl,
+} from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import { StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -47,6 +54,7 @@ const ProductCard = ({
   isPurchased,
   isOwner,
 }: Props) => {
+  const { theme } = useTheme();
   const cart = useCart();
   const isCartButtonVisible =
     cart.isProductInCart(id, tenantSlug) || isPurchased || isOwner;
@@ -61,7 +69,7 @@ const ProductCard = ({
     >
       <Link href={`${generateTenantUrl(authorUsername)}/products/${id}`}>
         <Media
-          src={imageUrl || "/placeholder-bg.jpg"}
+          src={fallbackImageUrl(imageUrl, theme)}
           alt={name}
           fill
           className="object-cover"
@@ -83,7 +91,9 @@ const ProductCard = ({
                 {formatName(authorUsername)}
               </AvatarFallback>
             </Avatar>
-            <p className="text-sm underline font-medium truncate overflow-hidden">{authorUsername}</p>
+            <p className="text-sm underline font-medium truncate overflow-hidden">
+              {authorUsername}
+            </p>
           </div>
         </Link>
 

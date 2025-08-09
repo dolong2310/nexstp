@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn, formatName } from "@/lib/utils";
 import { ChatUser, Media } from "@/payload-types";
 import { useMemo } from "react";
 import useActiveList from "../../store/use-active-list";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   src?: string;
@@ -30,12 +30,7 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
         isOnline={isActive}
       >
         <AvatarImage
-          src={
-            src ||
-            (user?.image as Media)?.url ||
-            (user?.image as string) ||
-            "/images/default-avatar.png"
-          }
+          src={src || (user?.image as Media)?.url || (user?.image as string)}
         />
         <AvatarFallback className="rounded-base! outline-none">
           {formatName(user?.name || "User")}

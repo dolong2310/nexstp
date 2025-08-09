@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import Media from "@/components/media";
 import StarRating from "@/components/star-rating";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,7 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatCurrency, formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import {
+  fallbackImageUrl,
+  formatCurrency,
+  formatName,
+  generateTenantUrl,
+} from "@/lib/utils";
 import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RefundPolicy } from "@/types";
@@ -19,6 +24,7 @@ import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment, useState } from "react";
+import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
 
 const CartButton = dynamic(
@@ -41,6 +47,7 @@ const TabOptions = [
 ];
 
 const ProductView = ({ productId, tenantSlug }: Props) => {
+  const { theme } = useTheme();
   const trpc = useTRPC();
   const { data: product } = useSuspenseQuery(
     trpc.products.getOne.queryOptions({ id: productId })
@@ -64,7 +71,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <Media
-            src={product.image?.url || "/placeholder-bg.jpg"}
+            src={fallbackImageUrl(product.image?.url, theme)}
             alt={product.name}
             title={product.name}
             fill

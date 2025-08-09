@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LIMIT } from "@/constants";
+import { useTheme } from "@/contexts/ThemeContext";
 import useSession from "@/hooks/use-session";
 import {
   formatCurrency,
@@ -41,6 +42,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
+  const { theme } = useTheme();
   const { user } = useSession();
 
   const [states, setStates] = useCheckoutState();
@@ -179,7 +181,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
             <Media
-              src={getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"}
+              src={getCurrentImageUrl(launchpad.image, theme)}
               alt={launchpad.title}
               title={launchpad.title}
               fill

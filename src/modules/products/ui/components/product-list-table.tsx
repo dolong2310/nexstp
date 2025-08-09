@@ -7,7 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TABLE_LIMIT } from "@/constants";
-import { cn, formatCurrency, formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import {
+  cn,
+  fallbackImageUrl,
+  formatCurrency,
+  formatName,
+  generateTenantUrl,
+} from "@/lib/utils";
 import { Media as MediaType, Tenant } from "@/payload-types";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
@@ -54,6 +61,7 @@ const ProductListTable = ({
   isFetchingNextPage,
   fetchNextPage,
 }: Props) => {
+  const { theme } = useTheme();
   const dataTableRef = useRef<Product[]>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -66,7 +74,7 @@ const ProductListTable = ({
         product: {
           id: p.id,
           name: p.name,
-          image: p.image?.url || "/placeholder-bg.jpg",
+          image: fallbackImageUrl(p.image?.url, theme),
           tenantSlug: p.tenant.slug,
         },
         tenant: p.tenant,
@@ -97,7 +105,7 @@ const ProductListTable = ({
       width: "35%",
       minWidth: "220px",
       render: (value) => {
-        const image = value.image || "/placeholder-bg.jpg";
+        const image = fallbackImageUrl(value.image, theme);
         const name = value.name;
         const authorUsername = value.tenantSlug;
         const id = value.id;
@@ -355,7 +363,9 @@ export const ProductListTableSkeleton = () => {
         width: "15%",
         minWidth: "100px",
         render: () => {
-          return <Skeleton className="h-5 bg-secondary-background animate-pulse w-16" />;
+          return (
+            <Skeleton className="h-5 bg-secondary-background animate-pulse w-16" />
+          );
         },
       },
       {

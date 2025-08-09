@@ -1,5 +1,6 @@
 import { IS_DEVELOPMENT } from "@/constants";
 import { Media } from "@/payload-types";
+import { ThemeMode } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -57,8 +58,12 @@ export const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export const getCurrentImageUrl = (image: string | Media | undefined) => {
-  const fallback = "/default-avatar.png";
+export const getCurrentImageUrl = (
+  image: string | Media | undefined,
+  theme: ThemeMode
+) => {
+  const fallback =
+    theme === "dark" ? "/default-avatar-dark.png" : "/default-avatar-light.png";
   if (typeof image === "string" && image && image.startsWith("http")) {
     return image;
   }
@@ -66,6 +71,28 @@ export const getCurrentImageUrl = (image: string | Media | undefined) => {
     return process.env.NEXT_PUBLIC_APP_URL! + (image as Media)?.url || fallback;
   }
   return fallback;
+};
+
+export const fallbackImageUrl = (
+  src: string | null | undefined,
+  theme: ThemeMode
+) => {
+  return src
+    ? src
+    : theme === "dark"
+    ? "/placeholder-bg-dark.png"
+    : "/placeholder-bg-light.png";
+};
+
+export const fallbackAvatarUrl = (
+  src: string | null | undefined,
+  theme: ThemeMode
+) => {
+  return src
+    ? src
+    : theme === "dark"
+    ? "/default-avatar-dark.png"
+    : "/default-avatar-light.png";
 };
 
 /** Hàm throttle để giới hạn tần suất gọi */
@@ -81,7 +108,10 @@ export function throttle(func: Function, limit: number) {
   };
 }
 
-export const formatQuantityNumber = (quantity: number, maxNumber: number = 10) => {
+export const formatQuantityNumber = (
+  quantity: number,
+  maxNumber: number = 10
+) => {
   if (quantity > maxNumber) {
     return `+${maxNumber}`;
   }

@@ -2,7 +2,13 @@ import Media from "@/components/media";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import {
+  cn,
+  fallbackImageUrl,
+  formatName,
+  generateTenantUrl,
+} from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,6 +33,7 @@ const ProductCard = ({
   reviewRating,
   reviewCount,
 }: Props) => {
+  const { theme } = useTheme();
   const router = useRouter();
 
   const handleUserClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -44,7 +51,7 @@ const ProductCard = ({
         )}
       >
         <Media
-          src={imageUrl || "/placeholder-bg.jpg"}
+          src={fallbackImageUrl(imageUrl, theme)}
           alt={name}
           fill
           className="object-cover"

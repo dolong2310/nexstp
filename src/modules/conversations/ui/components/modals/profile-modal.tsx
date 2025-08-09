@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useTheme } from "@/contexts/ThemeContext";
 import { getCurrentImageUrl } from "@/lib/utils";
 import { MAX_FILE_SIZE } from "@/modules/conversations/constants";
 import useUploadMedia from "@/modules/conversations/hooks/use-upload-media";
@@ -44,6 +45,7 @@ const profileSchema = z.object({
 });
 
 const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
+  const { theme } = useTheme();
   const router = useRouter();
   const trpc = useTRPC();
 
@@ -81,7 +83,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
     if (uploadMediaHook.previewImage?.url) {
       return uploadMediaHook.previewImage.url;
     }
-    return getCurrentImageUrl(currentUser?.image as string | MediaType);
+    return getCurrentImageUrl(currentUser?.image as string | MediaType, theme);
   }, [uploadMediaHook.previewImage?.url, currentUser?.image]);
 
   // const isSubmitDisabled = useMemo(() => {
