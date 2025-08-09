@@ -21,11 +21,7 @@ const CustomAvatarGroup = ({ users }: Props) => {
         <Button key={user.id} asChild variant="neutral" size="icon">
           <Avatar className="rounded-base! outline-none">
             <AvatarImage
-              src={
-                (user.image as Media)?.url ||
-                (user.image as string) ||
-                "/images/default-avatar.png"
-              }
+              src={(user.image as Media)?.url || (user.image as string)}
               alt={user.name || "Avatar"}
             />
             <AvatarFallback className="rounded-base! outline-none">
@@ -47,7 +43,7 @@ export const CustomAvatarGroupSkeleton = () => {
   return (
     <Button asChild variant="default" size="icon">
       <Avatar>
-        <AvatarImage src="/images/default-avatar.png" alt="Avatar" />
+        <AvatarImage alt="Avatar" />
         <AvatarFallback>{formatName("User")}</AvatarFallback>
       </Avatar>
     </Button>

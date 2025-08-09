@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTheme } from "@/contexts/ThemeContext";
 import {
   cn,
   formatCurrency,
@@ -33,6 +34,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { theme } = useTheme();
 
   const isRefetched = useRef(false);
 
@@ -105,7 +107,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
         <div className="relative">
           {/* Image */}
           <Media
-            src={getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"}
+            src={getCurrentImageUrl(launchpad.image, theme)}
             alt={launchpad.title}
             fill
             className="object-cover"

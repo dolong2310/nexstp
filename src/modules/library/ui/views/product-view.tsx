@@ -7,7 +7,8 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import { fallbackImageUrl, formatName, generateTenantUrl } from "@/lib/utils";
 import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
@@ -16,6 +17,14 @@ import { StarIcon } from "lucide-react";
 import Link from "next/link";
 import { Fragment, Suspense } from "react";
 import ReviewForm, { ReviewFormSkeleton } from "../components/review-form";
+import dynamic from "next/dynamic";
+
+const SocialsShareButton = dynamic(
+  () => import("@/components/socials-share-button"),
+  {
+    ssr: false,
+  }
+);
 
 interface Props {
   productId: string;
@@ -28,6 +37,7 @@ const TabOptions = [
 ];
 
 const ProductView = ({ productId }: Props) => {
+  const { theme } = useTheme();
   const trpc = useTRPC();
   const { data: product, refetch: refetchProduct } = useSuspenseQuery(
     trpc.library.getOne.queryOptions({
@@ -42,7 +52,7 @@ const ProductView = ({ productId }: Props) => {
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
             <Media
-              src={product.image?.url || "/placeholder-bg.jpg"}
+              src={fallbackImageUrl(product.image?.url, theme)}
               alt={product.name}
               title={product.name}
               fill
@@ -56,6 +66,8 @@ const ProductView = ({ productId }: Props) => {
                 <p className="text-xs font-medium">Launchpad</p>
               </Badge>
             )}
+
+            <SocialsShareButton />
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">

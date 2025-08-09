@@ -76,7 +76,7 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
       return (
         <div
           className={cn(
-            "flex items-center justify-center bg-secondary-background rounded-base",
+            "flex items-center justify-center bg-secondary-background rounded-base aspect-square",
             isBordered && "border-2 border-border",
             errorClassName,
             className
@@ -95,7 +95,6 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
       <div
         ref={containerRef}
         className={cn(
-          "media-container",
           "relative aspect-square",
           shadow && "shadow-shadow rounded-base border-2 overflow-hidden",
           shadow &&

@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LIMIT } from "@/constants";
+import { useTheme } from "@/contexts/ThemeContext";
 import useSession from "@/hooks/use-session";
 import {
   formatCurrency,
@@ -26,11 +27,19 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
-import { LoaderIcon, Share2Icon, ShoppingCart, Timer } from "lucide-react";
+import { LoaderIcon, ShoppingCart, Timer } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+
+const SocialsShareButton = dynamic(
+  () => import("@/components/socials-share-button"),
+  {
+    ssr: false,
+  }
+);
 
 interface Props {
   launchpadId: string;
@@ -41,6 +50,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
+  const { theme } = useTheme();
   const { user } = useSession();
 
   const [states, setStates] = useCheckoutState();
@@ -154,24 +164,6 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
     purchaseMutation.mutate({ launchpadId: launchpad.id });
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: launchpad.title,
-          text: launchpad.description || `Check out ${launchpad.title}`,
-          url: window.location.href,
-        });
-      } catch (error) {
-        // User cancelled or error occurred
-      }
-    } else {
-      // Fallback to copying URL
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success("Link copied to clipboard!");
-    }
-  };
-
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
@@ -179,7 +171,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
             <Media
-              src={getCurrentImageUrl(launchpad.image) || "/placeholder-bg.jpg"}
+              src={getCurrentImageUrl(launchpad.image, theme)}
               alt={launchpad.title}
               title={launchpad.title}
               fill
@@ -193,14 +185,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               <p className="text-xs font-medium">-{discountPercentage}%</p>
             </Badge>
 
-            <Button
-              variant="default"
-              size="icon"
-              className="absolute top-4 right-4"
-              onClick={handleShare}
-            >
-              <Share2Icon className="size-4" />
-            </Button>
+            <SocialsShareButton />
           </div>
 
           <Tabs defaultValue="overview" className="gap-4">

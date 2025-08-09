@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import Media from "@/components/media";
 import StarRating from "@/components/star-rating";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,7 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatCurrency, formatName, generateTenantUrl } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
+import {
+  fallbackImageUrl,
+  formatCurrency,
+  formatName,
+  generateTenantUrl,
+} from "@/lib/utils";
 import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RefundPolicy } from "@/types";
@@ -19,6 +24,7 @@ import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Fragment, useState } from "react";
+import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
 
 const CartButton = dynamic(
@@ -26,6 +32,13 @@ const CartButton = dynamic(
   {
     ssr: false,
     loading: () => <CartButtonSkeleton />,
+  }
+);
+
+const SocialsShareButton = dynamic(
+  () => import("@/components/socials-share-button"),
+  {
+    ssr: false,
   }
 );
 
@@ -41,6 +54,7 @@ const TabOptions = [
 ];
 
 const ProductView = ({ productId, tenantSlug }: Props) => {
+  const { theme } = useTheme();
   const trpc = useTRPC();
   const { data: product } = useSuspenseQuery(
     trpc.products.getOne.queryOptions({ id: productId })
@@ -63,16 +77,20 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
       <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
-          <Media
-            src={product.image?.url || "/placeholder-bg.jpg"}
-            alt={product.name}
-            title={product.name}
-            fill
-            shadow
-            shadowTransition
-            containerClassName="aspect-square"
-            className="object-cover"
-          />
+          <div className="relative">
+            <Media
+              src={fallbackImageUrl(product.image?.url, theme)}
+              alt={product.name}
+              title={product.name}
+              fill
+              shadow
+              shadowTransition
+              containerClassName="aspect-square"
+              className="object-cover"
+            />
+
+            <SocialsShareButton />
+          </div>
 
           <Tabs defaultValue="overview" className="gap-4">
             <TabsList className="w-full shadow-shadow">

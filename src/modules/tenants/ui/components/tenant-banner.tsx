@@ -6,6 +6,8 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { useTheme } from "@/contexts/ThemeContext";
+import { fallbackAvatarUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Autoplay from "embla-carousel-autoplay";
@@ -19,12 +21,6 @@ interface Props {
   tenantSlug: string;
 }
 
-// const mockBanners = [
-//   { id: 1, image: { url: "/auth-bg.jpg" } },
-//   { id: 2, image: { url: "/placeholder-bg.jpg" } },
-//   { id: 3, image: { url: "/testbanner.jpg" } },
-// ];
-
 const formatBannerUrl = (url?: string) =>
   url ? process.env.NEXT_PUBLIC_APP_URL! + url : "/auth-bg.jpg";
 
@@ -33,6 +29,7 @@ const AUTOPLAY_CONFIG = {
 } as const;
 
 const TenantBanner = ({ tenantSlug }: Props) => {
+  const { theme } = useTheme();
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(
@@ -99,7 +96,7 @@ const TenantBanner = ({ tenantSlug }: Props) => {
           style={{ transform: `translateY(-${translateY}px)` }}
         >
           <Media
-            src={data.image?.url || "/default-avatar.png"}
+            src={fallbackAvatarUrl(data.image?.url, theme)}
             alt={data.name}
             width={90}
             height={90}
