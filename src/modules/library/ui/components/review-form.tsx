@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import StarPicker from "@/components/star-picker";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,18 +8,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { ReviewGetOneOutput } from "@/modules/reviews/types";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 interface Props {
   productId: string;
-  initialData?: ReviewGetOneOutput;
+  onRefetch: () => void;
+  // initialData?: ReviewGetOneOutput;
 }
 
 const formSchema = z.object({
@@ -28,11 +32,17 @@ const formSchema = z.object({
   description: z.string().min(1, { message: "Description is required" }),
 });
 
-const ReviewForm = ({ productId, initialData }: Props) => {
+const ReviewForm = ({ productId, onRefetch }: Props) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
-  const [isPreview, setIsPreview] = useState(!!initialData);
+  const { data: reviewData } = useSuspenseQuery(
+    trpc.reviews.getOne.queryOptions({
+      productId,
+    })
+  );
+
+  const [isPreview, setIsPreview] = useState(!!reviewData);
 
   const createReview = useMutation(
     trpc.reviews.create.mutationOptions({
@@ -40,6 +50,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
         queryClient.invalidateQueries(
           trpc.reviews.getOne.queryOptions({ productId })
         );
+        onRefetch();
         setIsPreview(true);
       },
       onError: (error) => {
@@ -55,6 +66,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
         queryClient.invalidateQueries(
           trpc.reviews.getOne.queryOptions({ productId })
         );
+        onRefetch();
         setIsPreview(true);
       },
       onError: (error) => {
@@ -67,15 +79,15 @@ const ReviewForm = ({ productId, initialData }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      rating: initialData?.rating ?? 0,
-      description: initialData?.description ?? "",
+      rating: reviewData?.rating ?? 0,
+      description: reviewData?.description ?? "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (initialData) {
+    if (reviewData) {
       updateReview.mutate({
-        reviewId: initialData.id,
+        reviewId: reviewData.id,
         rating: values.rating,
         description: values.description,
       });
@@ -148,7 +160,7 @@ const ReviewForm = ({ productId, initialData }: Props) => {
               (updateReview.isPending && (
                 <LoaderIcon className="size-4 animate-spin" />
               ))}
-            {initialData ? "Update review" : "Post review"}
+            {reviewData ? "Update review" : "Post review"}
           </Button>
         )}
       </form>
@@ -175,7 +187,7 @@ export const ReviewFormSkeleton = () => {
       <StarPicker disabled />
       <Textarea placeholder="Want to leave a written review?" disabled />
       <Button variant="default" size="lg" disabled>
-        Post review
+        <LoaderIcon className="size-4 animate-spin" />
       </Button>
     </div>
   );
