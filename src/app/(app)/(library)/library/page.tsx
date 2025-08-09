@@ -1,5 +1,7 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import LibraryView from "@/modules/library/ui/views/library-view";
+import ProductList, {
+  ProductListSkeleton,
+} from "@/modules/library/ui/components/product-list";
 import { getQueryClient, trpc } from "@/trpc/server";
 import {
   HydrationBoundary,
@@ -8,6 +10,7 @@ import {
 } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import {
   metadataOpenGraph,
   metadataOpenGraphDefaultImage,
@@ -68,7 +71,9 @@ const LibraryPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <LibraryView />
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ProductList />
+      </Suspense>
     </HydrationBoundary>
   );
 };

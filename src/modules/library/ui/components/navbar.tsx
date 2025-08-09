@@ -1,11 +1,27 @@
+"use client";
+
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
-import ProductList, { ProductListSkeleton } from "../components/product-list";
+import { usePathname } from "next/navigation";
 
-const LibraryView = () => {
+const LibraryNavbar = () => {
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
+  const isProductView = segments.length > 1;
+
+  if (isProductView) {
+    return (
+      <nav className="w-full p-4 border-b-2 bg-secondary-background">
+        <Link prefetch href="/library" className="flex items-center gap-2">
+          <ArrowLeftIcon className="size-4" />
+          <span className="text font-medium">Back to Library</span>
+        </Link>
+      </nav>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-secondary-background bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] bg-[size:70px_70px]">
+    <div>
       <nav className="w-full p-4 border-b-2 bg-secondary-background">
         <Link prefetch href="/" className="flex items-center gap-2">
           <ArrowLeftIcon className="size-4" />
@@ -19,14 +35,8 @@ const LibraryView = () => {
           <p className="font-medium">Your purchased and reviews</p>
         </div>
       </header>
-
-      <section className="max-w-screen-xl mx-auto px-4 lg:px-12 py-6 lg:py-10">
-        <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList />
-        </Suspense>
-      </section>
     </div>
   );
 };
 
-export default LibraryView;
+export default LibraryNavbar;

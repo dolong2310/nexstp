@@ -30,7 +30,7 @@ const ProductList = () => {
   }
 
   return (
-    <>
+    <section className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
         {data?.pages.flatMap((page) => {
           return page.docs.map((product) => (
@@ -66,17 +66,19 @@ const ProductList = () => {
           )}
         </InfiniteScroll>
       </div>
-    </>
+    </section>
   );
 };
 
 export const ProductListSkeleton = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-      {Array.from({ length: DEFAULT_LIMIT }).map((_, index) => (
-        <ProductCardSkeleton key={index} />
-      ))}
-    </div>
+    <section className="px-4 lg:px-12 py-6 lg:py-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+        {Array.from({ length: DEFAULT_LIMIT }).map((_, index) => (
+          <ProductCardSkeleton key={index} />
+        ))}
+      </div>
+    </section>
   );
 };
 

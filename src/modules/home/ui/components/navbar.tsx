@@ -48,7 +48,7 @@ const Navbar = ({ fixed }: Props) => {
       )}
     >
       <div className="flex items-center gap-10">
-        <Logo />
+        <Logo size="lg" />
 
         <div className="items-center gap-10 hidden lg:flex">
           {navbarItems.map((item) => (
@@ -63,9 +63,7 @@ const Navbar = ({ fixed }: Props) => {
         {user ? (
           <>
             <Button asChild variant="neutral">
-              <Link href="/admin">
-                Dashboard <LayoutDashboardIcon />
-              </Link>
+              <Link href="/admin">Dashboard</Link>
             </Button>
 
             <Tooltip>

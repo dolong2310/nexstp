@@ -1,8 +1,11 @@
 "use client";
 
+import Logo from "@/components/logo";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -12,7 +15,7 @@ import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 import { ThemeMode } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -78,11 +81,20 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
     <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetContent
         side="left"
+        noCloseButton
         className="p-0 transition-none bg-secondary-background"
         style={backgroundColor ? { backgroundColor } : {}}
       >
-        <SheetHeader className="p-4 border-b">
-          <SheetTitle>Categories</SheetTitle>
+        <SheetHeader className="flex flex-row items-center justify-between p-4 border-b">
+          <SheetTitle className="w-fit">
+            <Logo />
+          </SheetTitle>
+          <SheetClose asChild>
+            <Button variant="neutral" size="icon" className="size-8">
+              <XIcon />
+              <span className="sr-only">Close panel</span>
+            </Button>
+          </SheetClose>
         </SheetHeader>
 
         <ScrollArea className="flex flex-col overflow-auto h-full pb-2">

@@ -1,8 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { ThemeMode } from "@/types";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
@@ -22,6 +24,10 @@ const CategoryDropdown = ({
   isActive,
   isNavigationHovered,
 }: Props) => {
+  const { theme } = useTheme();
+  const themeKey = theme as ThemeMode;
+  const backgroundColor = category.color?.[themeKey];
+
   const [isOpen, setIsOpen] = useState(false);
 
   const onMouseEnter = () => {
@@ -54,6 +60,7 @@ const CategoryDropdown = ({
           className={cn(
             isActive && !isNavigationHovered && "bg-main text-main-foreground"
           )}
+          style={isOpen && backgroundColor ? { backgroundColor } : {}}
         >
           <Link href={`/${category.slug === "all" ? "" : category.slug}`}>
             {category.name}

@@ -32,7 +32,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
   const Component = !user ? Button : Link;
 
   const handlePreventUser = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+    e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLAnchorElement>
   ) => {
     if (!user) {
       e.preventDefault();
@@ -67,28 +67,28 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
             <DropdownMenuContent
               avoidCollisions
               align="end"
-              className="flex flex-col gap-2 min-w-[200px]"
+              className="flex flex-col gap-1 p-2 min-w-[200px] space-y-2 py-3 px-0"
             >
               {tenantCartSlugs.map((tenantSlug) => {
                 const totalItemsOfTenant = cart.getTotalItems(tenantSlug);
                 return (
-                  <DropdownMenuItem asChild key={tenantSlug}>
-                    <Button
-                      asChild
-                      className="flex items-center justify-between gap-2 w-full cursor-pointer"
-                      variant="default"
-                      onClick={handlePreventUser}
+                  <div
+                    key={tenantSlug}
+                    className="px-4"
+                    onClick={handlePreventUser}
+                  >
+                    <Link
+                      href={`${generateTenantUrl(tenantSlug)}/checkout`}
+                      className="flex items-center justify-between gap-2 text-sm font-heading cursor-pointer"
                     >
-                      <Link href={`${generateTenantUrl(tenantSlug)}/checkout`}>
-                        <p className="truncate overflow-hidden whitespace-nowrap max-w-[300px]">
-                          {tenantSlug}
-                        </p>
-                        <span>
-                          ({formatQuantityNumber(totalItemsOfTenant, 99)})
-                        </span>
-                      </Link>
-                    </Button>
-                  </DropdownMenuItem>
+                      <p className="truncate overflow-hidden whitespace-nowrap max-w-[300px]">
+                        {tenantSlug}
+                      </p>
+                      <span>
+                        ({formatQuantityNumber(totalItemsOfTenant, 99)})
+                      </span>
+                    </Link>
+                  </div>
                 );
               })}
             </DropdownMenuContent>

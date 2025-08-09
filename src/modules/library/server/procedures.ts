@@ -1,8 +1,13 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import { Launchpad, Media, Product, Tenant } from "@/payload-types";
+import { Media, Tenant } from "@/payload-types";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import z from "zod";
+import {
+  LaunchpadProduct,
+  LaunchpadProductWithSource,
+  ProductWithSource,
+} from "../types";
 
 export const libraryRouter = createTRPCRouter({
   getOne: protectedProcedure
@@ -12,7 +17,6 @@ export const libraryRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      // Step 1: Tìm order của user với productId này
       const ordersData = await ctx.db.find({
         collection: "orders",
         limit: 1,
@@ -28,12 +32,12 @@ export const libraryRouter = createTRPCRouter({
               or: [
                 {
                   product: {
-                    equals: input.productId, // Check nếu là product thường
+                    equals: input.productId, // product thường
                   },
                 },
                 {
                   launchpad: {
-                    equals: input.productId, // Check nếu là launchpad
+                    equals: input.productId, // launchpad
                   },
                 },
               ],
@@ -51,9 +55,12 @@ export const libraryRouter = createTRPCRouter({
         });
       }
 
+      let productData: ProductWithSource | LaunchpadProductWithSource | null =
+        null;
+
       // Step 2: Determine if this is a product or launchpad order
       if (order.launchpad) {
-        // Đây là order từ launchpad - lấy launchpad data
+        // Product từ launchpad
         const launchpad = await ctx.db.findByID({
           collection: "launchpads",
           id: input.productId,
@@ -68,19 +75,7 @@ export const libraryRouter = createTRPCRouter({
         }
 
         // Convert launchpad data to product format
-        const launchpadData: Omit<
-          Launchpad,
-          | "title"
-          | "launchPrice"
-          | "createdProduct"
-          | "duration"
-          | "startTime"
-          | "endTime"
-          | "priority"
-          | "rejectionReason"
-          | "soldCount"
-          | "status"
-        > & { name: string; price: number; originalPrice: number } = {
+        const launchpadData: LaunchpadProduct = {
           id: launchpad.id,
           name: launchpad.title,
           description: launchpad.description,
@@ -96,17 +91,16 @@ export const libraryRouter = createTRPCRouter({
           updatedAt: launchpad.updatedAt,
         };
 
-        const result = {
+        const result: LaunchpadProductWithSource = {
           ...launchpadData,
-          // Add special fields to identify this is from launchpad
           sourceType: "launchpad",
           sourceLaunchpad: launchpad.id,
           isFromLaunchpad: true,
         };
 
-        return result;
+        productData = result;
       } else {
-        // Đây là order từ product thường
+        // Product thường
         const product = await ctx.db.findByID({
           collection: "products",
           id: input.productId,
@@ -120,19 +114,80 @@ export const libraryRouter = createTRPCRouter({
           });
         }
 
-        const result: Product & {
-          originalPrice: number;
-          sourceType: "launchpad" | "manual";
-          isFromLaunchpad: boolean;
-        } = {
+        const result: ProductWithSource = {
           ...product,
           originalPrice: 0,
           sourceType: "manual",
           isFromLaunchpad: false,
         };
 
-        return result;
+        productData = result;
       }
+
+      // Step 3: Get reviews for the product and calculate rating
+      const reviewsData = await ctx.db.find({
+        collection: "reviews",
+        pagination: false,
+        where: {
+          product: {
+            equals: productData.id,
+          },
+        },
+      });
+
+      let reviewRating = 0;
+
+      if (reviewsData.docs.length > 0) {
+        reviewRating =
+          reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) / reviewsData.totalDocs;
+      }
+
+      /**
+       * Khởi tạo object để đếm phân bố rating (1-5 sao)
+       * Key: số sao (1,2,3,4,5), Value: số lượng reviews có rating đó
+       * Phân bố theo %
+       * ratingDistribution: {
+       *   5: 60,  // 60% reviews 5 sao
+       *   4: 25,  // 25% reviews 4 sao
+       *   3: 10,  // 10% reviews 3 sao
+       *   2: 3,   // 3% reviews 2 sao
+       *   1: 2    // 2% reviews 1 sao
+       * };
+       */
+      const ratingDistribution: Record<number, number> = {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0,
+      };
+
+      if (reviewsData.totalDocs > 0) {
+        reviewsData.docs.forEach((review) => {
+          const rating = review.rating;
+
+          if (rating >= 1 && rating <= 5) {
+            ratingDistribution[rating] = (ratingDistribution[rating] || 0) + 1;
+          }
+        });
+      }
+
+      Object.keys(ratingDistribution).forEach((key) => {
+        const rating = Number(key);
+        const count = ratingDistribution[rating] || 0;
+        const percentage = Math.round((count / reviewsData.totalDocs) * 100);
+        ratingDistribution[rating] = isNaN(percentage) ? 0 : percentage;
+      });
+
+      return {
+        ...productData,
+        image: productData.image as Media | null,
+        cover: productData.cover as Media | null,
+        tenant: productData.tenant as Tenant & { image: Media | null },
+        reviewRating,
+        reviewCount: reviewsData.totalDocs,
+        ratingDistribution,
+      };
     }),
 
   // Procedure lấy danh sách products đã mua của user
