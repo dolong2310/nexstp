@@ -13,7 +13,7 @@ const ProductGridToggle = () => {
 
   return (
     <Tabs defaultValue="grid" value={layout} onValueChange={handleTabChange}>
-      <TabsList>
+      <TabsList className="shadow-shadow">
         <TabsTrigger value="grid">
           <LayoutGrid className="size-5" />
         </TabsTrigger>
