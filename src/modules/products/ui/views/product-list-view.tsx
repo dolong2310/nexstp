@@ -29,7 +29,7 @@ const ProductListView = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 px-4 lg:px-12 pt-4 pb-8",
+        "flex flex-col gap-8 px-4 lg:px-12 pt-8 pb-8",
         !narrowView &&
           "bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] bg-[size:70px_70px]"
       )}
@@ -38,14 +38,16 @@ const ProductListView = ({
         className={cn(
           "flex items-center justify-end flex-wrap sm:justify-between gap-y-2 lg:gap-y-0 shadow-shadow border-2 rounded-base px-4",
           "sticky right-0 z-20 bg-secondary-background py-2",
-          tenantSlug ? "top-[calc(36px_+_16px)]" : "top-0"
+          tenantSlug ? "top-[calc(40px_+_16px)]" : "top-0"
         )}
       >
         <h3 className="hidden sm:block text-2xl font-medium">
           Curated for you
         </h3>
-        <div className="flex items-center gap-x-4">
-          <ProductGridToggle />
+        <div className="w-full sm:w-auto flex items-center gap-x-4">
+          <div className="mr-auto sm:mr-0">
+            <ProductGridToggle />
+          </div>
           <ProductSortsButton />
           <ProductFiltersButton />
           <RefreshButton

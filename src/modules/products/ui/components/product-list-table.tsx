@@ -121,7 +121,7 @@ const ProductListTable = ({
               fill
               isBordered
               containerClassName="size-10"
-              className="rounded-md object-cover"
+              className="rounded-base object-cover"
             />
             <p className="font-medium truncate overflow-hidden">{name}</p>
           </Link>
@@ -222,7 +222,7 @@ const ProductListTable = ({
     <>
       <div
         ref={tableContainerRef}
-        className="overflow-hidden rounded-md border-2"
+        className="overflow-hidden rounded-base border-2"
       >
         <div
           className={cn(
@@ -337,7 +337,7 @@ export const ProductListTableSkeleton = () => {
         render: () => {
           return (
             <div className="flex items-center gap-2">
-              <Skeleton className="relative aspect-square rounded-md bg-secondary-background animate-pulse size-10" />
+              <Skeleton className="relative aspect-square rounded-base bg-secondary-background animate-pulse size-10" />
               <Skeleton className="h-5 w-full bg-secondary-background animate-pulse" />
             </div>
           );
@@ -397,7 +397,7 @@ export const ProductListTableSkeleton = () => {
   const dataTable = useMemo(() => Array.from({ length: TABLE_LIMIT }), []);
 
   return (
-    <div className="overflow-hidden rounded-md border-2">
+    <div className="overflow-hidden rounded-base border-2">
       <div className="custom-table relative w-full overflow-x-auto caption-bottom text-sm">
         <div className="custom-thead">
           <div className="custom-tr relative flex items-center">

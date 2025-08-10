@@ -108,7 +108,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
       <Card
         shadowTransition
         className={cn(
-          "group relative flex flex-col border-2 rounded-md bg-background overflow-hidden h-full",
+          "group relative flex flex-col border-2 rounded-base bg-background overflow-hidden h-full",
           "py-0 gap-0"
         )}
       >
