@@ -1,6 +1,7 @@
 "use client";
 
 import Media from "@/components/media";
+import { SocialsShareButtonSkeleton } from "@/components/socials-share-button";
 import StarRating from "@/components/star-rating";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +28,13 @@ import { Fragment, useState } from "react";
 import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
 
+const PreviewImageModal = dynamic(
+  () => import("@/components/preview-image-modal"),
+  {
+    ssr: false,
+  }
+);
+
 const CartButton = dynamic(
   () => import("../components/cart-button").then((mod) => mod.default),
   {
@@ -39,6 +47,7 @@ const SocialsShareButton = dynamic(
   () => import("@/components/socials-share-button"),
   {
     ssr: false,
+    loading: () => <SocialsShareButtonSkeleton />,
   }
 );
 
@@ -61,6 +70,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
   );
 
   const [isCopied, setIsCopied] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const handleCopy = () => {
     setIsCopied(true);
@@ -85,8 +95,15 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
               fill
               shadow
               shadowTransition
-              containerClassName="aspect-square"
+              containerClassName="aspect-square cursor-pointer"
               className="object-cover"
+              onClick={() => setIsPreviewOpen(true)}
+            />
+            <PreviewImageModal
+              src={fallbackImageUrl(product.image?.url, theme)}
+              alt={product.name}
+              isOpen={isPreviewOpen}
+              onOpenChange={setIsPreviewOpen}
             />
 
             <SocialsShareButton />

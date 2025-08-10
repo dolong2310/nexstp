@@ -55,14 +55,14 @@ const ProductSorts = () => {
             {sortList.map((sort) => (
               <div
                 key={sort.value}
-                className="flex items-center justify-between gap-2"
+                className="flex items-center justify-between gap-2 cursor-pointer"
                 onClick={() =>
                   setFilters({ ...filters, sort: sort.value as SortType })
                 }
               >
                 <Label
                   htmlFor={sort.value}
-                  className="truncate overflow-hidden"
+                  className="truncate overflow-hidden cursor-pointer"
                 >
                   {sort.label}
                 </Label>

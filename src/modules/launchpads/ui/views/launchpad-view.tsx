@@ -1,10 +1,10 @@
+import RefreshButton, { RefreshQueryKeys } from "@/components/refresh-button";
 import { Suspense } from "react";
 import LaunchpadList, {
   LaunchpadListSkeleton,
 } from "../components/launchpad-list";
+import LaunchpadSort from "../components/launchpad-sort";
 import SearchInput from "../components/search-input";
-import SortDropdown from "../components/sort-dropdown";
-import RefreshButton, { RefreshQueryKeys } from "@/components/refresh-button";
 
 const LaunchpadsView = () => {
   return (
@@ -19,7 +19,7 @@ const LaunchpadsView = () => {
 
       <div className="flex items-center gap-2 py-4">
         <SearchInput />
-        <SortDropdown />
+        <LaunchpadSort />
         <RefreshButton
           queryKey={"launchpads" as RefreshQueryKeys}
           size="icon"
@@ -46,7 +46,7 @@ export const LaunchpadsViewSkeleton = () => {
 
       <div className="flex items-center gap-2 py-4">
         <SearchInput disabled />
-        <SortDropdown disabled />
+        <LaunchpadSort disabled />
       </div>
 
       <LaunchpadListSkeleton />
