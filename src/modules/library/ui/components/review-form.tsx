@@ -82,6 +82,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
       rating: reviewData?.rating ?? 0,
       description: reviewData?.description ?? "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

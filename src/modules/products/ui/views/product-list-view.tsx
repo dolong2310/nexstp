@@ -36,8 +36,8 @@ const ProductListView = ({
     >
       <div
         className={cn(
-          "flex items-center justify-end flex-wrap sm:justify-between gap-y-2 lg:gap-y-0 border-4 rounded-lg px-4",
-          "sticky right-0 z-20 bg-secondary-background py-2 -mr-[4px]",
+          "flex items-center justify-end flex-wrap sm:justify-between gap-y-2 lg:gap-y-0 shadow-shadow border-2 rounded-base px-4",
+          "sticky right-0 z-20 bg-secondary-background py-2",
           tenantSlug ? "top-[calc(36px_+_16px)]" : "top-0"
         )}
       >
