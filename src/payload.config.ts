@@ -49,13 +49,13 @@ export default buildConfig({
       robots: "noindex, nofollow",
     },
     avatar: {
-      Component: "@/components/admin/profile-info",
+      Component: "@/components/admin/ui/profile-info",
     },
     components: {
-      beforeNavLinks: ["@/components/stripe-verify#StripeVerify"],
+      beforeNavLinks: ["@/components/admin/ui/stripe-verify#StripeVerify"],
       graphics: {
-        Logo: "@/components/admin/logo",
-        Icon: "@/components/admin/logo",
+        Logo: "@/components/admin/ui/logo",
+        Icon: "@/components/admin/ui/logo",
       },
     },
   },

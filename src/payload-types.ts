@@ -307,6 +307,8 @@ export interface Tag {
   createdAt: string;
 }
 /**
+ * You must verify your account before creating launchpads.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "launchpads".
  */
