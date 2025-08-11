@@ -1,9 +1,11 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import nodemailer from "nodemailer";
 import path from "path";
 import { buildConfig } from "payload";
 import sharp from "sharp";
@@ -74,6 +76,20 @@ export default buildConfig({
     Banners,
     Launchpads,
   ],
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_FROM!,
+    defaultFromName: process.env.SMTP_FROM_NAME!,
+    transport: nodemailer.createTransport({
+      service: "gmail",
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT!),
+      secure: true,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    }),
+  }),
   // cookiePrefix: "nexstp",
   editor: lexicalEditor(),
   // editor: lexicalEditor({

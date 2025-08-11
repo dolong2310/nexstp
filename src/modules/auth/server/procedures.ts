@@ -1,9 +1,15 @@
+import { stripe } from "@/lib/stripe";
+import { User } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { cookies as getCookies, headers as getHeaders } from "next/headers";
-import { loginSchema, registerSchema } from "../schemas";
+import {
+  forgotPasswordSchema,
+  loginSchema,
+  registerSchema,
+  resetPasswordApiSchema,
+} from "../schemas";
 import { generateAuthCookie } from "../utils";
-import { stripe } from "@/lib/stripe";
 
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
@@ -116,4 +122,57 @@ export const authRouter = createTRPCRouter({
     const cookies = await getCookies();
     cookies.delete(`${ctx.db.config.cookiePrefix}-token`);
   }),
+  forgotPassword: baseProcedure
+    .input(forgotPasswordSchema)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const result = await ctx.db.forgotPassword({
+          collection: "users",
+          data: {
+            email: input.email,
+          },
+        });
+
+        return { success: true, message: "Reset email sent successfully" };
+      } catch (error) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Failed to send reset email",
+        });
+      }
+    }),
+  resetPassword: baseProcedure
+    .input(resetPasswordApiSchema)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const result = await ctx.db.resetPassword({
+          collection: "users",
+          data: {
+            token: input.token,
+            password: input.password,
+          },
+          overrideAccess: false,
+        });
+
+        if (!result.token) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Invalid or expired token",
+          });
+        }
+
+        await generateAuthCookie({
+          prefix: ctx.db.config.cookiePrefix,
+          value: result.token,
+        });
+
+        return { token: result.token, user: result.user as unknown as User };
+      } catch (error) {
+        console.log("error reset password: ", error);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Failed to reset password",
+        });
+      }
+    }),
 });

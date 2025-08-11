@@ -160,6 +160,15 @@ const SignInView = () => {
             >
               Login
             </Button>
+
+            <div className="text-center">
+              <Link
+                href="/forgot-password"
+                className="text-base border-none underline"
+              >
+                Forgot your password?
+              </Link>
+            </div>
           </form>
         </Form>
       </div>
