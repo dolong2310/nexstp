@@ -66,9 +66,9 @@ export const SearchFiltersSkeleton = () => {
       <div className="px-4 lg:px-12 py-8 flex flex-col gap-4 w-full border-4 rounded-xl bg-secondary-background">
         <SearchInput disabled />
         <div className="hidden lg:block">
-          <Skeleton className="h-11 animate-pulse bg-secondary-background rounded" />
+          <Skeleton className="h-11 bg-secondary-background shadow-shadow rounded-base" />
         </div>
-        <Skeleton className="h-6 animate-pulse bg-secondary-background rounded w-48" />
+        {/* <Skeleton className="h-6 bg-secondary-background shadow-shadow rounded-base w-48" /> */}
       </div>
     </div>
   );

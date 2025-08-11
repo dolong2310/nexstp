@@ -58,7 +58,7 @@ const Categories = ({ data }: Props) => {
         const itemWidth = item.getBoundingClientRect().width;
 
         // Nếu tổng width vượt quá availableWidth thì dừng
-        if (totalWidth + itemWidth > availableWidth) break;
+        if (totalWidth + itemWidth + viewAllWidth > availableWidth) break;
         totalWidth += itemWidth;
         visible++;
       }
