@@ -87,4 +87,17 @@ const SocialsShareButton = (props: Props) => {
   );
 };
 
+export const SocialsShareButtonSkeleton = () => {
+  return (
+    <Button
+      disabled
+      variant="default"
+      size="icon"
+      className="absolute top-4 right-4"
+    >
+      <Share2Icon className="size-4" />
+    </Button>
+  );
+};
+
 export default SocialsShareButton;

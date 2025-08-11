@@ -1,0 +1,33 @@
+.profile-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: black;
+  background: #5294ff;
+  border: 2px solid black;
+
+  &__icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.launchpad-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__status-text {
+    color: white;
+    font-weight: bold;
+  }
+}

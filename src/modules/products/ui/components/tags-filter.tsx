@@ -55,10 +55,10 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
         return (
           <div
             key={tag.id}
-            className="flex items-center justify-between gap-2"
+            className="flex items-center justify-between gap-2 cursor-pointer"
             onClick={() => onClick(tag.name)}
           >
-            <Label htmlFor={tag.id} className="truncate overflow-hidden">
+            <Label htmlFor={tag.id} className="truncate overflow-hidden cursor-pointer">
               {tag.name}
             </Label>
             <Checkbox

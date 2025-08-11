@@ -121,10 +121,10 @@ export const ConversationBoxSkeleton = () => {
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
           <div className="flex items-center justify-between mb-2">
-            <Skeleton className="h-5 bg-secondary-background rounded-md w-32" />
-            <Skeleton className="h-3 bg-secondary-background rounded-md w-16" />
+            <Skeleton className="h-5 bg-secondary-background w-32" />
+            <Skeleton className="h-3 bg-secondary-background w-16" />
           </div>
-          <Skeleton className="h-5 bg-secondary-background rounded-md w-full" />
+          <Skeleton className="h-5 bg-secondary-background w-full" />
         </div>
       </div>
     </div>

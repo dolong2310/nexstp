@@ -11,9 +11,7 @@ import useProductFilter from "../../hooks/use-product-filter";
 import PriceFilter from "./price-filter";
 import TagsFilter from "./tags-filter";
 
-type Props = {};
-
-const ProductFiltersButton = (props: Props) => {
+const ProductFiltersButton = () => {
   const [filters, setFilters] = useProductFilter();
 
   const hasPriceFilters = Object.entries(filters).some(([key, value]) => {
@@ -52,7 +50,7 @@ const ProductFiltersButton = (props: Props) => {
   };
 
   return (
-    <div className="block sm:hidden">
+    <div className="block md:hidden">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="default" size="sm" className="h-10 shrink-0">

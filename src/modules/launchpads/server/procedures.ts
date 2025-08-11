@@ -14,7 +14,7 @@ import Stripe from "stripe";
 import {
   getLaunchpadSchema,
   getLaunchpadsSchema,
-  purchaseLaunchpadSchema
+  purchaseLaunchpadSchema,
 } from "../schemas";
 
 export const launchpadsRouter = createTRPCRouter({
@@ -116,6 +116,31 @@ export const launchpadsRouter = createTRPCRouter({
         });
       }
 
+      let isPurchased = false;
+
+      if (session?.user) {
+        const ordersData = await ctx.db.find({
+          collection: "orders",
+          where: {
+            and: [
+              {
+                product: {
+                  equals: input.id,
+                },
+              },
+              {
+                user: {
+                  equals: session.user.id,
+                },
+              },
+            ],
+          },
+        });
+
+        isPurchased = !!ordersData.docs[0];
+        // isPurchased = ordersData.totalDocs > 0;
+      }
+
       const isOwner = Boolean(
         session.user?.tenants?.some(
           (tenant) =>
@@ -126,6 +151,7 @@ export const launchpadsRouter = createTRPCRouter({
       return {
         ...launchpad,
         isOwner,
+        isPurchased,
         image: launchpad.image as Media,
         tenant: launchpad.tenant as Tenant & { image: Media | null },
         category: launchpad.category as Category,

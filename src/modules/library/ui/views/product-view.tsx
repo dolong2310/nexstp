@@ -1,6 +1,7 @@
 "use client";
 
 import Media from "@/components/media";
+import { SocialsShareButtonSkeleton } from "@/components/socials-share-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -14,15 +15,23 @@ import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { StarIcon } from "lucide-react";
-import Link from "next/link";
-import { Fragment, Suspense } from "react";
-import ReviewForm, { ReviewFormSkeleton } from "../components/review-form";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { Fragment, Suspense, useState } from "react";
+import ReviewForm, { ReviewFormSkeleton } from "../components/review-form";
+
+const PreviewImageModal = dynamic(
+  () => import("@/components/preview-image-modal"),
+  {
+    ssr: false,
+  }
+);
 
 const SocialsShareButton = dynamic(
   () => import("@/components/socials-share-button"),
   {
     ssr: false,
+    loading: () => <SocialsShareButtonSkeleton />,
   }
 );
 
@@ -45,6 +54,8 @@ const ProductView = ({ productId }: Props) => {
     })
   );
 
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
@@ -60,7 +71,15 @@ const ProductView = ({ productId }: Props) => {
               shadowTransition
               containerClassName="aspect-square"
               className="object-cover"
+              onClick={() => setIsPreviewOpen(true)}
             />
+            <PreviewImageModal
+              src={fallbackImageUrl(product.image?.url, theme)}
+              alt={product.name}
+              isOpen={isPreviewOpen}
+              onOpenChange={setIsPreviewOpen}
+            />
+
             {product.isFromLaunchpad && (
               <Badge className="absolute top-4 left-4">
                 <p className="text-xs font-medium">Launchpad</p>

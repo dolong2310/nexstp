@@ -1,6 +1,8 @@
 "use client";
 
 import Media from "@/components/media";
+import PreviewImageModal from "@/components/preview-image-modal";
+import { Skeleton } from "@/components/ui/skeleton";
 import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
 import { FullMessageType } from "@/modules/conversations/types";
@@ -9,8 +11,6 @@ import { format } from "date-fns";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
-import ImageModal from "../modals/image-modal";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
@@ -72,7 +72,7 @@ const MessageBox = ({ message, isLast, id }: Props) => {
                   className="object-cover cursor-pointer hover:scale-110 transition translate-0"
                   onClick={() => setImageModalOpen(true)}
                 />
-                <ImageModal
+                <PreviewImageModal
                   src={message.image}
                   isOpen={imageModalOpen}
                   onOpenChange={setImageModalOpen}

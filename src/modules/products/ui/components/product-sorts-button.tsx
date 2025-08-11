@@ -23,7 +23,7 @@ const ProductSortsButton = () => {
   const [filters, setFilters] = useProductFilter();
 
   return (
-    <div className="block sm:hidden">
+    <div className="block md:hidden">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="default" size="sm" className="h-10 shrink-0">

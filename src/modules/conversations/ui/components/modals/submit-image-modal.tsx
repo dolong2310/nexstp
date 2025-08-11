@@ -20,7 +20,7 @@ interface Props {
   handleCancelPreview: () => void;
 }
 
-const PreviewImageModal = ({
+const SubmitImageModal = ({
   open,
   src,
   isLoading,
@@ -36,8 +36,7 @@ const PreviewImageModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* showCloseButton={false} */}
-      <DialogContent className="max-w-md">
+      <DialogContent noCloseButton className="max-w-md">
         <DialogHeader>
           <DialogTitle>Send Image</DialogTitle>
         </DialogHeader>
@@ -87,4 +86,4 @@ const PreviewImageModal = ({
   );
 };
 
-export default PreviewImageModal;
+export default SubmitImageModal;

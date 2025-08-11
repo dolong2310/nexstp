@@ -1,7 +1,7 @@
 "use client";
 
-import Countdown from "@/components/countdown";
 import Media from "@/components/media";
+import { SocialsShareButtonSkeleton } from "@/components/socials-share-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LIMIT } from "@/constants";
 import { useTheme } from "@/contexts/ThemeContext";
-import useSession from "@/hooks/use-session";
 import {
   formatCurrency,
   formatName,
@@ -21,23 +20,45 @@ import useCheckoutState from "@/modules/checkout/hooks/use-checkout-state";
 import { useTRPC } from "@/trpc/client";
 import { RefundPolicy } from "@/types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import { format, formatDistanceToNow } from "date-fns";
-import { LoaderIcon, ShoppingCart, Timer } from "lucide-react";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { LoaderIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { LaunchpadProgressSkeleton } from "../components/launchpad-progress";
+import { LaunchpadPurchaseButtonSkeleton } from "../components/launchpad-purchase-button";
+
+const PreviewImageModal = dynamic(
+  () => import("@/components/preview-image-modal"),
+  {
+    ssr: false,
+  }
+);
 
 const SocialsShareButton = dynamic(
   () => import("@/components/socials-share-button"),
   {
     ssr: false,
+    loading: () => <SocialsShareButtonSkeleton />,
+  }
+);
+
+const LaunchpadProgress = dynamic(
+  () => import("../components/launchpad-progress"),
+  {
+    ssr: false,
+    loading: () => <LaunchpadProgressSkeleton />,
+  }
+);
+
+const LaunchpadPurchaseButton = dynamic(
+  () => import("../components/launchpad-purchase-button"),
+  {
+    ssr: false,
+    loading: () => <LaunchpadPurchaseButtonSkeleton />,
   }
 );
 
@@ -51,37 +72,14 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
   const queryClient = useQueryClient();
 
   const { theme } = useTheme();
-  const { user } = useSession();
 
   const [states, setStates] = useCheckoutState();
-
-  const [timeLeft, setTimeLeft] = useState<string>("");
-  const [progress, setProgress] = useState<number>(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // Fetch launchpad data
   const { data: launchpad } = useSuspenseQuery(
     trpc.launchpads.getOne.queryOptions({
       id: launchpadId,
-    })
-  );
-
-  // Purchase mutation
-  const purchaseMutation = useMutation(
-    trpc.launchpads.purchase.mutationOptions({
-      onMutate: () => {
-        setStates({ success: false, cancel: false });
-      },
-      onSuccess: (data) => {
-        // toast.success("Purchase successful! Check your library.");
-        window.location.href = data.url;
-      },
-      onError: (error) => {
-        if (error.data?.code === "UNAUTHORIZED") {
-          router.push("/sign-in");
-        }
-        toast.error(error.message || "Purchase failed");
-      },
     })
   );
 
@@ -109,60 +107,13 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
     trpc.library.getMany,
   ]);
 
-  // Calculate time remaining and progress
-  useEffect(() => {
-    if (!launchpad.endTime || !launchpad.startTime) return;
-
-    const updateTimer = () => {
-      const now = new Date();
-      const endTime = new Date(launchpad.endTime!);
-      const startTime = new Date(launchpad.startTime!);
-
-      if (now >= endTime) {
-        setTimeLeft("Ended");
-        setProgress(100);
-        return;
-      }
-
-      // Calculate time left
-      const timeLeftText = formatDistanceToNow(endTime, { addSuffix: true });
-      setTimeLeft(timeLeftText);
-
-      // Calculate progress (0-100%)
-      const totalDuration = endTime.getTime() - startTime.getTime();
-      const elapsed = now.getTime() - startTime.getTime();
-      const progressPercent = Math.min((elapsed / totalDuration) * 100, 100);
-      setProgress(progressPercent);
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, [launchpad.endTime, launchpad.startTime]);
-
-  const discountPercentage = Math.round(
-    ((launchpad.originalPrice - launchpad.launchPrice) /
-      launchpad.originalPrice) *
-      100
-  );
-
-  const renderPurchaseLabel = () => {
-    if (user?.id && launchpad.isOwner) return "You own this launchpad";
-    return (
-      <>
-        {purchaseMutation.isPending ? (
-          <LoaderIcon className="size-5 animate-spin" />
-        ) : (
-          <ShoppingCart className="size-5" />
-        )}
-        <span>Buy</span>
-      </>
+  const discountPercentage = useMemo(() => {
+    return Math.round(
+      ((launchpad.originalPrice - launchpad.launchPrice) /
+        launchpad.originalPrice) *
+        100
     );
-  };
-
-  const handlePurchase = () => {
-    purchaseMutation.mutate({ launchpadId: launchpad.id });
-  };
+  }, [launchpad.originalPrice, launchpad.launchPrice]);
 
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
@@ -177,8 +128,15 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               fill
               shadow
               shadowTransition
-              containerClassName="aspect-square"
+              containerClassName="aspect-square cursor-pointer"
               className="size-full object-cover"
+              onClick={() => setIsPreviewOpen(true)}
+            />
+            <PreviewImageModal
+              src={getCurrentImageUrl(launchpad.image, theme)}
+              alt={launchpad.title}
+              isOpen={isPreviewOpen}
+              onOpenChange={setIsPreviewOpen}
             />
 
             <Badge className="absolute top-4 left-4">
@@ -298,33 +256,19 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             </div>
 
             <div className="px-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2">
-                    <Timer className="size-4" />
-                    <Countdown targetDate={launchpad.endTime!} />
-                  </span>
-                  <span className="font-medium">{Math.round(progress)}%</span>
-                </div>
-                <Progress value={progress} className="h-3" />
-                <div className="flex items-center justify-between text-sm text-foreground">
-                  <span>Ends {timeLeft}</span>
-                  <span>{launchpad.soldCount || 0} sold</span>
-                </div>
-              </div>
+              <LaunchpadProgress
+                startTime={launchpad.startTime!}
+                endTime={launchpad.endTime!}
+                soldCount={launchpad.soldCount || 0}
+              />
             </div>
 
             <div className="px-6 py-4 border-y-2">
-              <Button
-                variant="default"
-                className="w-full space-x-1 text-lg font-semibold"
-                onClick={handlePurchase}
-                disabled={
-                  (user?.id && launchpad.isOwner) || purchaseMutation.isPending
-                }
-              >
-                {renderPurchaseLabel()}
-              </Button>
+              <LaunchpadPurchaseButton
+                launchpadId={launchpad.id}
+                isOwner={launchpad.isOwner}
+                isPurchased={launchpad.isPurchased}
+              />
             </div>
 
             <div className="px-6 pt-2">
@@ -460,20 +404,7 @@ export const LaunchpadDetailViewSkeleton = () => {
             </div>
 
             <div className="px-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2">
-                    <Timer className="size-4" />
-                    Launch Progress
-                  </span>
-                  <span className="font-medium">0%</span>
-                </div>
-                <Progress value={0} className="h-3 animate-pulse" />
-                <div className="flex items-center justify-between text-sm text-foreground">
-                  <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
-                  <Skeleton className="bg-secondary-background w-12 h-4 animate-pulse rounded" />
-                </div>
-              </div>
+              <LaunchpadProgressSkeleton />
             </div>
 
             <div className="px-6 py-4 border-y-2">

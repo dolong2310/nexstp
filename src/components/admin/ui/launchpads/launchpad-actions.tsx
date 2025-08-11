@@ -88,14 +88,14 @@ export const LaunchpadActions = () => {
   if (!initialData) return null;
 
   return (
-    <div
-      className="flex items-center gap-2"
-      style={{ display: "flex", alignItems: "center", gap: "8px" }}
-    >
+    <div className="launchpad-actions">
       {/* Status Display */}
-      <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+      <div className="launchpad-actions__status">
         <span>Current Status:</span>
-        <span style={{ color: colorStatus, fontWeight: "bold" }}>
+        <span
+          className="launchpad-actions__status-text"
+          style={{ color: colorStatus }}
+        >
           {initialData?.status}
         </span>
       </div>

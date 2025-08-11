@@ -29,7 +29,7 @@ const sortOptions = [
   },
 ];
 
-const SortDropdown = ({ disabled }: Props) => {
+const LaunchpadSort = ({ disabled }: Props) => {
   const [filters, setFilters] = useLaunchpadFilter();
 
   const handleSortChange = (value: SortValue) => () => {
@@ -43,8 +43,10 @@ const SortDropdown = ({ disabled }: Props) => {
           key={option.value}
           variant="default"
           className={cn(
-            "hover:bg-main",
-            filters.sort === option.value ? "bg-main" : "bg-background"
+            "hover:bg-main hover:text-main-foreground",
+            filters.sort === option.value
+              ? "bg-main"
+              : "bg-background text-foreground"
           )}
           disabled={disabled}
           onClick={handleSortChange(option.value as SortValue)}
@@ -57,4 +59,4 @@ const SortDropdown = ({ disabled }: Props) => {
   );
 };
 
-export default SortDropdown;
+export default LaunchpadSort;

@@ -23,8 +23,10 @@ import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997e
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
-import { LaunchpadActions as LaunchpadActions_e18d258b07d04af8600183ae41689bf8 } from '@/components/admin/launchpads/launchpad-actions'
-import { StripeVerify as StripeVerify_3d63505f77dc32b509ca42328ad7cf9d } from '@/components/stripe-verify'
+import { LaunchpadActions as LaunchpadActions_f17a3bf69cf651eef3a5740562f2a598 } from '@/components/admin/ui/launchpads/launchpad-actions'
+import { default as default_c7316a93babf4982325394e6efd03031 } from '@/components/admin/ui/profile-info'
+import { default as default_e92f38d8c6dd0a8dae8833b5c4c40f4e } from '@/components/admin/ui/logo'
+import { StripeVerify as StripeVerify_674e757b1bfb30110f67a69edf045747 } from '@/components/admin/ui/stripe-verify'
 import { TenantSelector as TenantSelector_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
@@ -55,8 +57,10 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,
-  "@/components/admin/launchpads/launchpad-actions#LaunchpadActions": LaunchpadActions_e18d258b07d04af8600183ae41689bf8,
-  "@/components/stripe-verify#StripeVerify": StripeVerify_3d63505f77dc32b509ca42328ad7cf9d,
+  "@/components/admin/ui/launchpads/launchpad-actions#LaunchpadActions": LaunchpadActions_f17a3bf69cf651eef3a5740562f2a598,
+  "@/components/admin/ui/profile-info#default": default_c7316a93babf4982325394e6efd03031,
+  "@/components/admin/ui/logo#default": default_e92f38d8c6dd0a8dae8833b5c4c40f4e,
+  "@/components/admin/ui/stripe-verify#StripeVerify": StripeVerify_674e757b1bfb30110f67a69edf045747,
   "@payloadcms/plugin-multi-tenant/client#TenantSelector": TenantSelector_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelectionProvider": TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e

@@ -24,7 +24,7 @@ import {
   useForm,
 } from "react-hook-form";
 import z from "zod";
-import PreviewImageModal from "../modals/preview-image-modal";
+import SubmitImageModal from "../modals/submit-image-modal";
 
 const messageSchema = z.object({
   conversationId: z.string(),
@@ -180,7 +180,7 @@ const ConversationForm = () => {
         </Form>
       </div>
 
-      <PreviewImageModal
+      <SubmitImageModal
         open={uploadMediaHook.isPreviewOpen}
         src={uploadMediaHook.previewImage?.url}
         isLoading={sendMessage.isPending || uploadMediaHook.isUploading}

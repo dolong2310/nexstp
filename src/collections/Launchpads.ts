@@ -1,4 +1,4 @@
-import { isSuperAdmin, isOwnerOrSuperAdmin } from "@/lib/access";
+import { isSuperAdmin } from "@/lib/access";
 import { Tenant } from "@/payload-types";
 import type { CollectionConfig } from "payload";
 
@@ -33,8 +33,15 @@ export const Launchpads: CollectionConfig = {
       };
     },
     create: ({ req }) => {
+      if (isSuperAdmin(req.user)) return true;
       // Chỉ tenant có thể tạo
-      return !!(req.user && req.user.tenants && req.user.tenants.length > 0);
+      const tenants = req.user?.tenants || [];
+      if (!tenants.length) return false;
+      // Check if tenant has submitted Stripe details
+      return tenants.some((tenant) =>
+        Boolean((tenant.tenant as Tenant).stripeDetailsSubmitted)
+      );
+      // return !!(req.user && req.user.tenants && req.user.tenants.length > 0);
     },
     update: ({ req, data, id }) => {
       // Super admin có thể update tất cả
@@ -75,11 +82,12 @@ export const Launchpads: CollectionConfig = {
   },
   admin: {
     useAsTitle: "title",
+    description: "You must verify your account before creating launchpads.",
     defaultColumns: ["title", "status", "tenant", "startTime", "endTime"],
     components: {
       edit: {
         beforeDocumentControls: [
-          "@/components/admin/launchpads/launchpad-actions#LaunchpadActions",
+          "@/components/admin/ui/launchpads/launchpad-actions#LaunchpadActions",
         ],
       },
     },

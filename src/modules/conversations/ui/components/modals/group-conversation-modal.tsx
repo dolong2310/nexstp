@@ -84,8 +84,7 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
-      {/* showCloseButton={false} */}
-      <DialogContent>
+      <DialogContent noCloseButton>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>

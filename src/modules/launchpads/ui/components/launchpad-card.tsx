@@ -4,7 +4,6 @@ import Media from "@/components/media";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
 import {
@@ -18,10 +17,19 @@ import { Launchpad, Media as MediaType, Tenant } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
-import { Clock, Timer, Users } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { LaunchpadProgressSkeleton } from "./launchpad-progress";
+
+const LaunchpadProgress = dynamic(
+  () => import("../components/launchpad-progress"),
+  {
+    ssr: false,
+    loading: () => <LaunchpadProgressSkeleton />,
+  }
+);
 
 interface LaunchpadCardProps {
   launchpad: Launchpad & {
@@ -100,7 +108,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
       <Card
         shadowTransition
         className={cn(
-          "group relative flex flex-col border-2 rounded-md bg-background overflow-hidden h-full",
+          "group relative flex flex-col border-2 rounded-base bg-background overflow-hidden h-full",
           "py-0 gap-0"
         )}
       >
@@ -164,27 +172,13 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
           </div>
 
           {/* Progress Bar */}
-          <div className="px-4">
-            <div className="flex justify-between text-xs text-foreground mb-3">
-              <p className="flex items-center gap-2">
-                <Timer className="size-4" />
-                <span>Launch Progress</span>
-              </p>
-              <span>{Math.round(progress)}%</span>
-            </div>
-            <Progress value={progress} className="h-3" />
-          </div>
-
-          {/* Stats */}
-          <div className="flex items-center justify-between text-xs text-foreground px-4">
-            <div className="flex items-center gap-1">
-              <Users className="w-3 h-3" />
-              <span>{launchpad.soldCount || 0} sold</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              <span>{timeLeft}</span>
-            </div>
+          <div className="px-4 mt-2">
+            <LaunchpadProgress
+              isCardLayout
+              startTime={launchpad.startTime!}
+              endTime={launchpad.endTime!}
+              soldCount={launchpad.soldCount || 0}
+            />
           </div>
         </div>
       </Card>
@@ -223,28 +217,8 @@ export const LaunchpadCardSkeleton = () => {
         </div>
 
         {/* Progress Bar */}
-        <div className="mt-2 px-4">
-          <div className="flex justify-between text-xs text-foreground mb-3">
-            <p className="flex items-center gap-2">
-              <Timer className="size-4" />
-              <span>Launch Progress</span>
-            </p>
-            <Skeleton className="h-3 bg-secondary-background animate-pulse w-8" />
-          </div>
-          <Progress value={0} className="h-3" />
-          {/* <div className="bg-secondary-background h-3 w-full animate-pulse" /> */}
-        </div>
-
-        {/* Stats */}
-        <div className="flex items-center justify-between text-xs text-foreground px-4">
-          <div className="flex items-center gap-1">
-            <Users className="w-3 h-3" />
-            <Skeleton className="h-3 bg-secondary-background animate-pulse w-12" />
-          </div>
-          <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <Skeleton className="h-3 bg-secondary-background animate-pulse w-16" />
-          </div>
+        <div className="px-4 mt-2">
+          <LaunchpadProgressSkeleton isCardLayout />
         </div>
       </div>
     </article>

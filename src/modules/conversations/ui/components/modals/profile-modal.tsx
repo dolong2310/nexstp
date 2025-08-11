@@ -129,19 +129,9 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
     }
   };
 
-  // console.log({
-  //   errors: Object.keys(form.formState.errors).length > 0,
-  //   isDirty: form.formState.isDirty,
-  //   "updateProfile.isPending": updateProfile.isPending,
-  //   "uploadMediaHook.isUploading": uploadMediaHook.isUploading,
-  //   formValues: form.getValues(),
-  //   // RESULT: isSubmitDisabled,
-  // });
-
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
-      {/* showCloseButton={false} */}
-      <DialogContent>
+      <DialogContent noCloseButton>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>

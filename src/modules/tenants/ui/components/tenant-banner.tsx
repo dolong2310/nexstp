@@ -16,6 +16,7 @@ import useScrollDynamicSize, {
   MAX_SIZE_AVATAR,
   MIN_SIZE_AVATAR,
 } from "../../hooks/use-scroll-dynamic-size";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   tenantSlug: string;
@@ -48,9 +49,9 @@ const TenantBanner = ({ tenantSlug }: Props) => {
   const [containerHeight, avatarSize, translateY] = useScrollDynamicSize({});
 
   return (
-    <div className="sticky top-0 left-0 px-4 lg:px-12 mt-4 -mr-[4px] z-20 bg-transparent">
+    <div className="px-4 lg:px-12 mt-8 z-20 bg-transparent">
       <div
-        className="p-6 overflow-hidden relative z-10 border-4 rounded-xl bg-background"
+        className="py-6 px-4 lg:px-8 overflow-hidden relative z-10 border-4 rounded-xl bg-background -mr-[4px]"
         style={{
           maxHeight: containerHeight,
           transition: "max-height 0.1s ease-out",
@@ -110,7 +111,7 @@ const TenantBanner = ({ tenantSlug }: Props) => {
               maxHeight: MAX_SIZE_AVATAR,
               maxWidth: MAX_SIZE_AVATAR,
             }}
-            className="rounded-md object-cover w-auto"
+            className="rounded-base object-cover w-auto"
             style={{
               width: avatarSize,
               height: avatarSize,
@@ -141,21 +142,20 @@ export const TenantBannerSkeleton = () => {
   const [containerHeight, avatarSize, translateY] = useScrollDynamicSize({});
 
   return (
-    <div className="sticky top-0 left-0 px-4 lg:px-12 pt-4 mt-4 z-20 bg-secondary-background">
+    <div className="sticky top-0 left-0 px-4 lg:px-12 mt-4 z-20 bg-transparent">
       <div
-        className="p-6 overflow-hidden relative z-10 border rounded-xl bg-main"
+        className="p-6 overflow-hidden relative z-10 border-4 rounded-xl bg-background -mr-[4px]"
         style={{
           maxHeight: containerHeight,
           transition: "max-height 0.1s ease-out",
         }}
       >
-        <div className="rounded-xl absolute top-0 right-0 left-0 bottom-0 bg-secondary-background animate-pulse" />
         <div
           className="flex gap-4"
           style={{ transform: `translateY(-${translateY}px)` }}
         >
-          <div
-            className="w-[90px] h-[90px] shrink-0 bg-gray-300 animate-pulse rounded-md"
+          <Skeleton
+            className="w-[90px] h-[90px] shrink-0"
             style={{
               width: avatarSize,
               height: avatarSize,
@@ -163,9 +163,9 @@ export const TenantBannerSkeleton = () => {
             }}
           />
           <div className="flex flex-col gap-2 w-full">
-            <div className="h-[24px] bg-gray-300 animate-pulse w-1/3 rounded-md my-1" />
-            <div className="h-[16px] bg-gray-300 animate-pulse w-full rounded-md" />
-            <div className="h-[16px] bg-gray-300 animate-pulse w-full rounded-md" />
+            <Skeleton className="h-[24px] w-1/3 my-1" />
+            <Skeleton className="h-[16px] w-full" />
+            <Skeleton className="h-[16px] w-full" />
           </div>
         </div>
       </div>

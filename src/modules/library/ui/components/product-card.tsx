@@ -46,7 +46,7 @@ const ProductCard = ({
       <Card
         shadowTransition
         className={cn(
-          "group relative flex flex-col border-2 rounded-md bg-background overflow-hidden h-full",
+          "group relative flex flex-col border-2 rounded-base bg-background overflow-hidden h-full",
           "py-0 gap-0"
         )}
       >
@@ -92,11 +92,11 @@ export const ProductCardSkeleton = () => {
   return (
     <Card
       className={cn(
-        "relative flex flex-col border rounded-md bg-background overflow-hidden h-full",
+        "relative flex flex-col border-2 rounded-base bg-background overflow-hidden h-full",
         "py-0 gap-0"
       )}
     >
-      <Skeleton className="w-full aspect-square bg-secondary-background animate-pulse rounded-bl-none rounded-br-none" />
+      <Skeleton className="w-full aspect-square bg-secondary-background animate-pulse border-0 border-b-2 rounded-bl-none rounded-br-none" />
 
       <div className="flex flex-col gap-3 flex-1 border-y p-4">
         <Skeleton className="h-6 bg-secondary-background animate-pulse w-full" />
