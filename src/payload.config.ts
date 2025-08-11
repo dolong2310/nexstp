@@ -35,8 +35,28 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      title: "Admin",
+      titleSuffix: "| Nexstp",
+      description: "Nexstp Admin Dashboard",
+      icons: [
+        {
+          rel: "icon",
+          type: "image/ico",
+          url: "/favicon.ico",
+        },
+      ],
+      robots: "noindex, nofollow",
+    },
+    avatar: {
+      Component: "@/components/admin/profile-info",
+    },
     components: {
       beforeNavLinks: ["@/components/stripe-verify#StripeVerify"],
+      graphics: {
+        Logo: "@/components/admin/logo",
+        Icon: "@/components/admin/logo",
+      },
     },
   },
   collections: [
