@@ -10,6 +10,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "@/contexts/ThemeContext";
 import { fallbackImageUrl, formatName, generateTenantUrl } from "@/lib/utils";
+import ProductReviews, {
+  ProductReviewsSkeleton,
+} from "@/modules/products/ui/components/product-reviews";
 import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
@@ -102,11 +105,8 @@ const ProductView = ({ productId }: Props) => {
               ))}
             </TabsList>
 
-            <TabsContent
-              className="shadow-shadow rounded-base"
-              value="overview"
-            >
-              <div className="border-2 rounded-sm bg-background overflow-hidden">
+            <TabsContent value="overview">
+              <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   {product.description ? (
                     <p className="font-medium break-words">
@@ -133,8 +133,8 @@ const ProductView = ({ productId }: Props) => {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent className="shadow-shadow rounded-base" value="content">
-              <div className="border-2 rounded-sm bg-background overflow-hidden">
+            <TabsContent value="content">
+              <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   {product.content ? (
                     <RichText data={product.content} />
@@ -146,8 +146,8 @@ const ProductView = ({ productId }: Props) => {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent className="shadow-shadow rounded-base" value="ratings">
-              <div className="border-2 rounded-sm bg-background overflow-hidden">
+            <TabsContent className="space-y-4" value="ratings">
+              <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-medium">Ratings</h3>
@@ -176,6 +176,10 @@ const ProductView = ({ productId }: Props) => {
                   </div>
                 </div>
               </div>
+
+              <Suspense fallback={<ProductReviewsSkeleton />}>
+                <ProductReviews productId={productId} />
+              </Suspense>
             </TabsContent>
           </Tabs>
         </div>

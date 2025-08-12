@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT } from "@/constants";
-import { Category, Media, Product, Tenant } from "@/payload-types";
+import { Category, Media, Tenant, User } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { headers as getHeaders } from "next/headers";
@@ -131,6 +131,7 @@ export const productsRouter = createTRPCRouter({
         ratingDistribution, // Phân bố rating theo % (VD: {5:60, 4:25, 3:10, 2:3, 1:2})
       };
     }),
+
   getMany: baseProcedure
     .input(
       z.object({
@@ -361,9 +362,45 @@ export const productsRouter = createTRPCRouter({
         ...data,
         docs: dataWithSummarizedReviews.map((doc) => ({
           ...doc,
-          isOwner: (session.user?.tenants || []).map((t) => (t.tenant as Tenant).id).includes((doc.tenant as Tenant).id),
+          isOwner: (session.user?.tenants || [])
+            .map((t) => (t.tenant as Tenant).id)
+            .includes((doc.tenant as Tenant).id),
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & { image: Media | null },
+        })),
+      };
+    }),
+
+  getReviews: baseProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+        cursor: z.number().default(1),
+        limit: z.number().default(DEFAULT_LIMIT),
+        sort: z
+          .enum(["-createdAt", "+createdAt", "-rating", "+rating"])
+          .default("-createdAt"),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const reviewsData = await ctx.db.find({
+        collection: "reviews",
+        depth: 1, // Populate user field để lấy thông tin người review
+        where: {
+          product: {
+            equals: input.productId,
+          },
+        },
+        sort: input.sort,
+        page: input.cursor,
+        limit: input.limit,
+      });
+
+      return {
+        ...reviewsData,
+        docs: reviewsData.docs.map((review) => ({
+          ...review,
+          user: review.user as User,
         })),
       };
     }),
