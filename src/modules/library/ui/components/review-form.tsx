@@ -24,7 +24,6 @@ import z from "zod";
 interface Props {
   productId: string;
   onRefetch: () => void;
-  // initialData?: ReviewGetOneOutput;
 }
 
 const formSchema = z.object({
@@ -47,14 +46,9 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
   const createReview = useMutation(
     trpc.reviews.create.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(
-          trpc.reviews.getOne.queryOptions({ productId })
-        );
-        onRefetch();
-        setIsPreview(true);
+        handleSuccess();
       },
       onError: (error) => {
-        console.error("Error creating review:", error);
         toast.error(error.message);
       },
     })
@@ -63,14 +57,9 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
   const updateReview = useMutation(
     trpc.reviews.update.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(
-          trpc.reviews.getOne.queryOptions({ productId })
-        );
-        onRefetch();
-        setIsPreview(true);
+        handleSuccess();
       },
       onError: (error) => {
-        console.error("Error creating review:", error);
         toast.error(error.message);
       },
     })
@@ -84,6 +73,17 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
     },
     mode: "onChange",
   });
+
+  const handleSuccess = () => {
+    queryClient.invalidateQueries(
+      trpc.reviews.getOne.queryOptions({ productId })
+    );
+    onRefetch();
+    queryClient.refetchQueries({
+      queryKey: [trpc.products.getReviews.queryKey()?.[0]],
+    });
+    setIsPreview(true);
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (reviewData) {

@@ -24,9 +24,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, Suspense, useState } from "react";
 import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
+import ProductReviews, {
+  ProductReviewsSkeleton,
+} from "../components/product-reviews";
 
 const PreviewImageModal = dynamic(
   () => import("@/components/preview-image-modal"),
@@ -122,11 +125,8 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
               ))}
             </TabsList>
 
-            <TabsContent
-              className="shadow-shadow rounded-base"
-              value="overview"
-            >
-              <div className="border-2 rounded-sm bg-background overflow-hidden">
+            <TabsContent value="overview">
+              <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   {product.description ? (
                     <p className="font-medium break-words">
@@ -153,8 +153,8 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent className="shadow-shadow rounded-base" value="content">
-              <div className="border-2 rounded-sm bg-background overflow-hidden">
+            <TabsContent value="content">
+              <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   {product.content ? (
                     <RichText data={product.content} />
@@ -166,8 +166,8 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent className="shadow-shadow rounded-base" value="ratings">
-              <div className="border-2 rounded-sm bg-background overflow-hidden">
+            <TabsContent className="space-y-4" value="ratings">
+              <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-medium">Ratings</h3>
@@ -196,6 +196,10 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                   </div>
                 </div>
               </div>
+
+              <Suspense fallback={<ProductReviewsSkeleton />}>
+                <ProductReviews productId={productId} />
+              </Suspense>
             </TabsContent>
           </Tabs>
         </div>
