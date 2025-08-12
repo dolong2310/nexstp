@@ -59,7 +59,45 @@ export const Users: CollectionConfig = {
     hidden: ({ user }) => !isSuperAdmin(user),
   },
   auth: {
-    tokenExpiration: 1000000, // for testing
+    tokenExpiration: 7 * 24 * 60 * 60 * 1000, // 7 days
+    verify: {
+      generateEmailHTML: ({ token, user }) => {
+        const verifyURL = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;
+        console.log("Verify URL: ", verifyURL);
+
+        return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Verify Your Email Address</h2>
+          <p>Hello ${user.username || user.email},</p>
+          <p>Thank you for signing up! Please click the link below to verify your email address:</p>
+          <a href="${verifyURL}" style="background-color: #007cba; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Verify Email</a>
+          <p>If you didn't create this account, please ignore this email.</p>
+          <p>This link will expire in 24 hours.</p>
+        </div>
+      `;
+      },
+      generateEmailSubject: () => "Please verify your email address",
+    },
+    forgotPassword: {
+      expiration: 60 * 60 * 1000, // 1 hour
+      generateEmailHTML: (params) => {
+        const token = params?.token;
+        const user = params?.user;
+        const resetURL = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+
+        return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Reset Your Password</h2>
+          <p>Hello ${user.username || user.email},</p>
+          <p>You requested to reset your password. Click the link below to reset it:</p>
+          <a href="${resetURL}" style="background-color: #5294ff; color: black; padding: 12px 24px; text-decoration: none; border: 2px solid black; border-radius: 4px; display: inline-block;">Reset Password</a>
+          <p>If you didn't request this, please ignore this email.</p>
+          <p>This link will expire in 1 hour.</p>
+        </div>
+      `;
+      },
+      generateEmailSubject: () => "Reset your password",
+    },
     cookies: {
       ...(IS_PRODUCTION && {
         sameSite: "None",

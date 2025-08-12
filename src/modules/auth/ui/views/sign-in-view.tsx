@@ -40,6 +40,12 @@ const SignInView = () => {
   const loginMutation = useMutation(
     trpc.auth.login.mutationOptions({
       onSuccess: async (data) => {
+        // Kiểm tra nếu email chưa verified
+        if (!data.user._verified) {
+          toast.error("Please verify your email before signing in.");
+          return;
+        }
+
         addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
         cart.clearAllCarts();
@@ -160,6 +166,15 @@ const SignInView = () => {
             >
               Login
             </Button>
+
+            <div className="text-center">
+              <Link
+                href="/forgot-password"
+                className="text-base border-none underline"
+              >
+                Forgot your password?
+              </Link>
+            </div>
           </form>
         </Form>
       </div>

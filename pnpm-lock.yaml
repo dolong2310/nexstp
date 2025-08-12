@@ -14,6 +14,9 @@ importers:
       '@payloadcms/db-mongodb':
         specifier: 3.49.1
         version: 3.49.1(@aws-sdk/credential-providers@3.864.0)(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))
+      '@payloadcms/email-nodemailer':
+        specifier: ^3.50.0
+        version: 3.50.0(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))
       '@payloadcms/next':
         specifier: 3.49.1
         version: 3.49.1(@types/react@19.1.9)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.77.4))(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)
@@ -170,6 +173,9 @@ importers:
       node-cron:
         specifier: ^4.2.1
         version: 4.2.1
+      nodemailer:
+        specifier: ^7.0.5
+        version: 7.0.5
       nuqs:
         specifier: ^2.4.1
         version: 2.4.3(next@15.2.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.77.4))(react@19.1.1)
@@ -246,6 +252,9 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.19.10
+      '@types/nodemailer':
+        specifier: ^6.4.17
+        version: 6.4.17
       '@types/react':
         specifier: ^19
         version: 19.1.9
@@ -1407,6 +1416,12 @@ packages:
     peerDependencies:
       payload: 3.49.1
 
+  '@payloadcms/email-nodemailer@3.50.0':
+    resolution: {integrity: sha512-/cI57DBLyM5/N1rzxWvbpqLKrrx4hAxODaqjSC1Q5okBvmSc7okJzRxSL9yXqziAk+Xd+tzQ+fLzyr23fvT40A==}
+    engines: {node: ^18.20.2 || >=20.9.0}
+    peerDependencies:
+      payload: 3.50.0
+
   '@payloadcms/graphql@3.49.1':
     resolution: {integrity: sha512-L0FFRbYeVrVV5eFScJFKqxgxCsFGPnyjr0RThr159ZNO8JU43s9tLRwPbOxTPKjBIg7haoms/0zf+d6D+cTi5w==}
     hasBin: true
@@ -2512,6 +2527,9 @@ packages:
 
   '@types/node@20.19.10':
     resolution: {integrity: sha512-iAFpG6DokED3roLSP0K+ybeDdIX6Bc0Vd3mLW5uDqThPWtNos3E+EqOM11mPQHKzfWHqEBuLjIlsBQQ8CsISmQ==}
+
+  '@types/nodemailer@6.4.17':
+    resolution: {integrity: sha512-I9CCaIp6DTldEg7vyUTZi8+9Vo0hi1/T8gv3C89yk1rSAAzoKQ8H8ki/jBYJSFoH/BisgLP8tkZMlQ91CIquww==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -4231,6 +4249,10 @@ packages:
 
   nodemailer@6.9.16:
     resolution: {integrity: sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ==}
+    engines: {node: '>=6.0.0'}
+
+  nodemailer@7.0.5:
+    resolution: {integrity: sha512-nsrh2lO3j4GkLLXoeEksAMgAOqxOv6QumNRVQTJwKH4nuiww6iC2y7GyANs9kRAxCexg3+lTWM3PZ91iLlVjfg==}
     engines: {node: '>=6.0.0'}
 
   normalize-path@3.0.0:
@@ -6609,6 +6631,11 @@ snapshots:
       nodemailer: 6.9.16
       payload: 3.49.1(graphql@16.11.0)(typescript@5.9.2)
 
+  '@payloadcms/email-nodemailer@3.50.0(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))':
+    dependencies:
+      nodemailer: 6.9.16
+      payload: 3.49.1(graphql@16.11.0)(typescript@5.9.2)
+
   '@payloadcms/graphql@3.49.1(graphql@16.11.0)(payload@3.49.1(graphql@16.11.0)(typescript@5.9.2))(typescript@5.9.2)':
     dependencies:
       graphql: 16.11.0
@@ -7963,6 +7990,10 @@ snapshots:
   '@types/node@20.19.10':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/nodemailer@6.4.17':
+    dependencies:
+      '@types/node': 20.19.10
 
   '@types/parse-json@4.0.2': {}
 
@@ -9953,6 +9984,8 @@ snapshots:
       whatwg-url: 5.0.0
 
   nodemailer@6.9.16: {}
+
+  nodemailer@7.0.5: {}
 
   normalize-path@3.0.0: {}
 

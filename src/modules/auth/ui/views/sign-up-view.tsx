@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,14 +14,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { registerSchema } from "../../schemas";
-import { useUserStore } from "../../store/use-user-store";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,18 +29,19 @@ const poppins = Poppins({
 });
 
 const SignUpView = () => {
-  const router = useRouter();
-  const addUser = useUserStore((state) => state.add);
-
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
+
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
 
   const registerMutation = useMutation(
     trpc.auth.register.mutationOptions({
       onSuccess: async (data) => {
-        addUser(data.user);
-        await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
-        router.push("/");
+        if (data.requiresVerification) {
+          setShowVerificationMessage(true);
+          toast.success(
+            "Registration successful! Please check your email to verify your account."
+          );
+        }
       },
       onError: (error) => {
         toast.error(error.message);
@@ -66,6 +66,38 @@ const SignUpView = () => {
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
     registerMutation.mutate(values);
   };
+
+  if (showVerificationMessage) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-5">
+        <div className="flex flex-col justify-center h-screen w-full md:col-span-2 overflow-auto bg-background">
+          <div className="flex flex-col gap-8 p-4 lg:py-16 lg:px-20">
+            <div className="text-center">
+              <h1 className="text-3xl font-heading">Check your email</h1>
+              <p className="mt-4 text-muted-foreground">
+                We've sent a verification link to your email address. Please
+                click the link to verify your account.
+              </p>
+            </div>
+
+            <Button asChild variant="neutral" className="w-full">
+              <Link href="/sign-in">Back to Sign In</Link>
+            </Button>
+          </div>
+        </div>
+
+        <div
+          className="h-screen w-full md:col-span-3 hidden md:block"
+          style={{
+            backgroundImage: "url('/auth-bg.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
