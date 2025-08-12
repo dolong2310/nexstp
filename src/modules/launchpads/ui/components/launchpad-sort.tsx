@@ -15,17 +15,17 @@ const sortOptions = [
   {
     label: "Featured",
     value: "priority",
-    icon: <TrendingUpIcon className="size-4 mr-1" />,
+    icon: <TrendingUpIcon className="size-4" />,
   },
   {
     label: "Newest",
     value: "newest",
-    icon: <NewspaperIcon className="size-4 mr-1" />,
+    icon: <NewspaperIcon className="size-4" />,
   },
   {
     label: "Ending Soon",
     value: "ending-soon",
-    icon: <TimerIcon className="size-4 mr-1" />,
+    icon: <TimerIcon className="size-4" />,
   },
 ];
 
@@ -43,7 +43,7 @@ const LaunchpadSort = ({ disabled }: Props) => {
           key={option.value}
           variant="default"
           className={cn(
-            "hover:bg-main hover:text-main-foreground",
+            "hover:bg-main hover:text-main-foreground size-10 md:size-auto",
             filters.sort === option.value
               ? "bg-main"
               : "bg-background text-foreground"

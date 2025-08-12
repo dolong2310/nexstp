@@ -70,7 +70,7 @@ export const Users: CollectionConfig = {
           <h2>Verify Your Email Address</h2>
           <p>Hello ${user.username || user.email},</p>
           <p>Thank you for signing up! Please click the link below to verify your email address:</p>
-          <a href="${verifyURL}" style="background-color: #007cba; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Verify Email</a>
+          <a href="${verifyURL}" style="background-color: #5294ff; color: black; padding: 12px 24px; text-decoration: none; border: 2px solid black; border-radius: 4px; display: inline-block;">Verify Email</a>
           <p>If you didn't create this account, please ignore this email.</p>
           <p>This link will expire in 24 hours.</p>
         </div>
