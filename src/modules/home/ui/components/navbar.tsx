@@ -62,7 +62,7 @@ const Navbar = ({ fixed }: Props) => {
       <div className="hidden lg:flex items-center gap-4">
         {user ? (
           <>
-            <Button asChild variant="neutral">
+            <Button asChild variant="default">
               <Link href="/admin">Dashboard</Link>
             </Button>
 

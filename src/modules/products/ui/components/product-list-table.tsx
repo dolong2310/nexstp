@@ -227,7 +227,7 @@ const ProductListTable = ({
         <div
           className={cn(
             "custom-table",
-            "relative w-full overflow-x-auto caption-bottom text-sm"
+            "relative w-full overflow-x-auto caption-bottom text-sm bg-secondary-background"
           )}
         >
           {/* Table Head */}

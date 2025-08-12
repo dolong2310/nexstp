@@ -56,7 +56,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
   return (
     <div>
       <Drawer direction="right" open={isOpen} onOpenChange={onClose}>
-        <DrawerContent className="py-3 px-4 sm:px-6">
+        <DrawerContent className="py-3 px-4 sm:px-6 bg-secondary-background">
           <DrawerTitle className="sr-only"></DrawerTitle>
           <div className="flex items-start justify-end mt-2">
             <Button variant="default" size="icon" onClick={onClose}>
@@ -109,7 +109,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   )}
                   {!conversation.isGroup && (
                     <>
-                      <hr />
+                      <hr className="border-1" />
                       <div>
                         <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
                           Joined

@@ -88,7 +88,7 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
           <LogOutIcon className={iconClassName} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="bg-secondary-background flex items-center gap-2 w-fit">
+      <PopoverContent align="end" sideOffset={10} className="bg-secondary-background flex items-center gap-2 w-fit">
         <span className="font-medium text-center">You want to</span>
         <Button variant="default" size="sm" onClick={handleLogout}>
           sign out
