@@ -59,7 +59,7 @@ export const Users: CollectionConfig = {
     hidden: ({ user }) => !isSuperAdmin(user),
   },
   auth: {
-    tokenExpiration: 1000000, // for testing
+    tokenExpiration: 7 * 24 * 60 * 60 * 1000, // 7 days
     verify: {
       generateEmailHTML: ({ token, user }) => {
         const verifyURL = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;
