@@ -12,7 +12,7 @@ import {
 import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
 import useConversationNotifications from "@/modules/conversations/hooks/use-conversation-notifications";
-import { LayoutDashboardIcon, MenuIcon, MessageSquareIcon } from "lucide-react";
+import { MenuIcon, MessageSquareIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";

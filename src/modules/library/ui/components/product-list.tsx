@@ -26,7 +26,11 @@ const ProductList = () => {
     );
 
   if (data.pages?.[0]?.totalDocs === 0) {
-    return <ProductListEmpty />;
+    return (
+      <section className="px-4 lg:px-12 py-6 lg:py-10">
+        <ProductListEmpty />
+      </section>
+    );
   }
 
   return (

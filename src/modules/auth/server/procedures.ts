@@ -12,6 +12,8 @@ import {
   verifyEmailSchema,
 } from "../schemas";
 import { generateAuthCookie } from "../utils";
+import { deleteAuthCookie } from "@/lib/auth/cookie-manager";
+import { IS_PRODUCTION } from "@/constants";
 
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
@@ -134,7 +136,24 @@ export const authRouter = createTRPCRouter({
 
   logout: baseProcedure.mutation(async ({ ctx }) => {
     const cookies = await getCookies();
-    cookies.delete(`${ctx.db.config.cookiePrefix}-token`);
+    const cookieName = `${ctx.db.config.cookiePrefix}-token`;
+
+    console.log("🍪 Logout cookie debug:", {
+      cookieName,
+      isProduction: IS_PRODUCTION,
+      domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+      currentCookies: cookies.getAll().map((c) => c.name),
+    });
+
+    await deleteAuthCookie(cookieName);
+
+    console.log("🍪 After delete:", {
+      remainingCookies: cookies.getAll().map((c) => c.name),
+    });
+    // await deleteAuthCookie(`${ctx.db.config.cookiePrefix}-token`);
+
+    // const cookies = await getCookies();
+    // cookies.delete(`${ctx.db.config.cookiePrefix}-token`);
   }),
 
   forgotPassword: baseProcedure
