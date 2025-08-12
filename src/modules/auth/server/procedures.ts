@@ -1,8 +1,9 @@
+import { deleteAuthCookie, setAuthCookie } from "@/lib/auth/cookie-manager";
 import { stripe } from "@/lib/stripe";
 import { User } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { cookies as getCookies, headers as getHeaders } from "next/headers";
+import { headers as getHeaders } from "next/headers";
 import {
   forgotPasswordSchema,
   loginSchema,
@@ -11,9 +12,6 @@ import {
   resetPasswordApiSchema,
   verifyEmailSchema,
 } from "../schemas";
-import { generateAuthCookie } from "../utils";
-import { deleteAuthCookie } from "@/lib/auth/cookie-manager";
-import { IS_PRODUCTION } from "@/constants";
 
 export const authRouter = createTRPCRouter({
   session: baseProcedure.query(async ({ ctx }) => {
@@ -102,10 +100,7 @@ export const authRouter = createTRPCRouter({
       //   });
       // }
 
-      // await generateAuthCookie({
-      //   prefix: ctx.db.config.cookiePrefix,
-      //   value: data.token,
-      // });
+      // await setAuthCookie(`${ctx.db.config.cookiePrefix}-token`, data.token);
 
       // return data;
     }),
@@ -126,41 +121,20 @@ export const authRouter = createTRPCRouter({
       });
     }
 
-    await generateAuthCookie({
-      prefix: ctx.db.config.cookiePrefix,
-      value: data.token,
-    });
+    await setAuthCookie(`${ctx.db.config.cookiePrefix}-token`, data.token);
 
     return data;
   }),
 
   logout: baseProcedure.mutation(async ({ ctx }) => {
-    const cookies = await getCookies();
-    const cookieName = `${ctx.db.config.cookiePrefix}-token`;
-
-    console.log("🍪 Logout cookie debug:", {
-      cookieName,
-      isProduction: IS_PRODUCTION,
-      domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
-      currentCookies: cookies.getAll().map((c) => c.name),
-    });
-
-    await deleteAuthCookie(cookieName);
-
-    console.log("🍪 After delete:", {
-      remainingCookies: cookies.getAll().map((c) => c.name),
-    });
-    // await deleteAuthCookie(`${ctx.db.config.cookiePrefix}-token`);
-
-    // const cookies = await getCookies();
-    // cookies.delete(`${ctx.db.config.cookiePrefix}-token`);
+    await deleteAuthCookie(`${ctx.db.config.cookiePrefix}-token`);
   }),
 
   forgotPassword: baseProcedure
     .input(forgotPasswordSchema)
     .mutation(async ({ input, ctx }) => {
       try {
-        const result = await ctx.db.forgotPassword({
+        await ctx.db.forgotPassword({
           collection: "users",
           data: {
             email: input.email,
@@ -196,10 +170,10 @@ export const authRouter = createTRPCRouter({
           });
         }
 
-        await generateAuthCookie({
-          prefix: ctx.db.config.cookiePrefix,
-          value: result.token,
-        });
+        await setAuthCookie(
+          `${ctx.db.config.cookiePrefix}-token`,
+          result.token
+        );
 
         return { token: result.token, user: result.user as unknown as User };
       } catch (error) {
