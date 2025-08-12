@@ -3,7 +3,7 @@ export const TABLE_LIMIT = 20;
 export const PLATFORM_FEE_PERCENTAGE = 10;
 export const THROTTLE_INTERVAL_MS = 4; // 4ms to match 240fps, 8ms to match 120fps, 12ms to match 60fps
 
-export const AUTH_PATHS = ["/sign-in", "/sign-up", "/forgot-password", "/reset-password"];
+export const AUTH_PATHS = ["/sign-in", "/sign-up", "/forgot-password", "/reset-password", "/verify-email"];
 export const PRIVATE_PATHS = ["/library", "/conversations", "/checkout"];
 
 export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";

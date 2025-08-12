@@ -7,7 +7,9 @@ import {
   forgotPasswordSchema,
   loginSchema,
   registerSchema,
+  resendVerificationSchema,
   resetPasswordApiSchema,
+  verifyEmailSchema,
 } from "../schemas";
 import { generateAuthCookie } from "../utils";
 
@@ -17,6 +19,7 @@ export const authRouter = createTRPCRouter({
     const session = await ctx.db.auth({ headers });
     return session;
   }),
+
   register: baseProcedure
     .input(registerSchema)
     .mutation(async ({ input, ctx }) => {
@@ -58,7 +61,7 @@ export const authRouter = createTRPCRouter({
       });
 
       // register
-      await ctx.db.create({
+      const user = await ctx.db.create({
         collection: "users",
         data: {
           username: input.username,
@@ -69,32 +72,42 @@ export const authRouter = createTRPCRouter({
               tenant: tenant.id,
             },
           ],
+
+          _verified: false, // Đặt thành false để yêu cầu verify
         },
       });
+
+      return {
+        user,
+        message:
+          "Registration successful! Please check your email to verify your account.",
+        requiresVerification: true,
+      };
 
       // login
-      const data = await ctx.db.login({
-        collection: "users",
-        data: {
-          email: input.email,
-          password: input.password,
-        },
-      });
+      // const data = await ctx.db.login({
+      //   collection: "users",
+      //   data: {
+      //     email: input.email,
+      //     password: input.password,
+      //   },
+      // });
 
-      if (!data.token) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Invalid email or password",
-        });
-      }
+      // if (!data.token) {
+      //   throw new TRPCError({
+      //     code: "UNAUTHORIZED",
+      //     message: "Invalid email or password",
+      //   });
+      // }
 
-      await generateAuthCookie({
-        prefix: ctx.db.config.cookiePrefix,
-        value: data.token,
-      });
+      // await generateAuthCookie({
+      //   prefix: ctx.db.config.cookiePrefix,
+      //   value: data.token,
+      // });
 
-      return data;
+      // return data;
     }),
+
   login: baseProcedure.input(loginSchema).mutation(async ({ input, ctx }) => {
     const data = await ctx.db.login({
       collection: "users",
@@ -118,10 +131,12 @@ export const authRouter = createTRPCRouter({
 
     return data;
   }),
+
   logout: baseProcedure.mutation(async ({ ctx }) => {
     const cookies = await getCookies();
     cookies.delete(`${ctx.db.config.cookiePrefix}-token`);
   }),
+
   forgotPassword: baseProcedure
     .input(forgotPasswordSchema)
     .mutation(async ({ input, ctx }) => {
@@ -141,6 +156,7 @@ export const authRouter = createTRPCRouter({
         });
       }
     }),
+
   resetPassword: baseProcedure
     .input(resetPasswordApiSchema)
     .mutation(async ({ input, ctx }) => {
@@ -172,6 +188,89 @@ export const authRouter = createTRPCRouter({
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Failed to reset password",
+        });
+      }
+    }),
+
+  verifyEmail: baseProcedure
+    .input(verifyEmailSchema)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const verifyResult = await ctx.db.verifyEmail({
+          collection: "users",
+          token: input.token,
+        });
+
+        if (!verifyResult) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Invalid or expired verification token",
+          });
+        }
+
+        return {
+          success: true,
+          message: "Email verified successfully! Please login to continue.",
+          requiresLogin: true,
+        };
+      } catch (error) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Failed to verify email. Token may be invalid or expired.",
+        });
+      }
+    }),
+
+  resendVerification: baseProcedure
+    .input(resendVerificationSchema)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        // Tìm user theo email
+        const usersData = await ctx.db.find({
+          collection: "users",
+          where: {
+            email: {
+              equals: input.email,
+            },
+          },
+          limit: 1,
+        });
+
+        const user = usersData.docs[0];
+
+        if (!user) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "User not found",
+          });
+        }
+
+        if (user._verified) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Email is already verified",
+          });
+        }
+
+        // Generate new verification token
+        await ctx.db.forgotPassword({
+          collection: "users",
+          data: {
+            email: input.email,
+          },
+          disableEmail: false,
+          expiration: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+        });
+
+        return {
+          success: true,
+          message: "Verification email sent successfully",
+        };
+      } catch (error) {
+        console.error("❌ Resend verification error:", error);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Failed to send verification email",
         });
       }
     }),

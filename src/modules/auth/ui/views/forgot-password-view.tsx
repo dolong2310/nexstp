@@ -60,8 +60,8 @@ const ForgotPasswordView = () => {
               </p>
             </div>
 
-            <Button variant="neutral" className="w-full">
-              Back to Sign In
+            <Button asChild variant="neutral" className="w-full">
+              <Link href="/sign-in">Back to Sign In</Link>
             </Button>
           </div>
         </div>

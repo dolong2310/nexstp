@@ -41,3 +41,11 @@ export const resetPasswordApiSchema = z.object({
   token: z.string(),
   password: z.string().min(6),
 });
+
+export const verifyEmailSchema = z.object({
+  token: z.string(),
+});
+
+export const resendVerificationSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});

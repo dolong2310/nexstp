@@ -60,8 +60,26 @@ export const Users: CollectionConfig = {
   },
   auth: {
     tokenExpiration: 1000000, // for testing
+    verify: {
+      generateEmailHTML: ({ token, user }) => {
+        const verifyURL = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;
+        console.log("Verify URL: ", verifyURL);
+
+        return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Verify Your Email Address</h2>
+          <p>Hello ${user.username || user.email},</p>
+          <p>Thank you for signing up! Please click the link below to verify your email address:</p>
+          <a href="${verifyURL}" style="background-color: #007cba; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Verify Email</a>
+          <p>If you didn't create this account, please ignore this email.</p>
+          <p>This link will expire in 24 hours.</p>
+        </div>
+      `;
+      },
+      generateEmailSubject: () => "Please verify your email address",
+    },
     forgotPassword: {
-      expiration: 3600000, // 1 hour
+      expiration: 60 * 60 * 1000, // 1 hour
       generateEmailHTML: (params) => {
         const token = params?.token;
         const user = params?.user;

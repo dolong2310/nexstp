@@ -273,7 +273,7 @@ const seed = async () => {
     collection: "users",
     data: {
       username: "admin",
-      email: "admin@demo.com",
+      email: "nexstp@gmail.com",
       password: "123123",
       roles: ["super-admin"],
       tenants: [
@@ -281,7 +281,10 @@ const seed = async () => {
           tenant: adminTenant.id,
         },
       ],
+      _verified: true, // Đặt thành true để không cần verify email
+      _verificationToken: null, // Đặt thành null để không cần verify email
     },
+    disableVerificationEmail: true,
   });
 
   const createdCategories: Record<string, any> = {};
