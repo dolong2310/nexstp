@@ -59,6 +59,9 @@ export default buildConfig({
         Logo: "@/components/admin/ui/logo",
         Icon: "@/components/admin/ui/logo",
       },
+      logout: {
+        Button: '@/components/admin/ui/logout-admin-button',
+      },
     },
   },
   collections: [
