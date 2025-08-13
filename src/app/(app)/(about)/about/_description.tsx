@@ -196,13 +196,13 @@ const AboutDescription = () => {
 
   return (
     <div className="mt-6 font-base text-base sm:text-xl">
-      {language?.description}
       <span
-        className="inline-block ml-2 mt-4 font-bold cursor-pointer"
+        className="inline-block ml-2 mb-4 font-bold cursor-pointer"
         onClick={handleToggleLanguage}
       >
-        ...{language?.code === "vi" ? "English" : "Vietnamese"}
+        {language?.code === "vi" ? "English" : "Vietnamese"}
       </span>
+      {language?.description}
     </div>
   );
 };
