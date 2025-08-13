@@ -273,7 +273,7 @@ const seed = async () => {
     collection: "users",
     data: {
       username: "admin",
-      email: "nexstp@gmail.com",
+      email: "nexstp.store@gmail.com",
       password: "123123",
       roles: ["super-admin"],
       tenants: [
