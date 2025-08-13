@@ -140,7 +140,7 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
           src={src}
           alt={alt}
           className={cn(
-            "transition-opacity duration-200",
+            "transition-opacity duration-200 bg-secondary-background",
             imageLoading ? "opacity-0" : "opacity-100",
             imageError && "opacity-0",
             isBordered && "border-2 border-border",
