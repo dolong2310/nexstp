@@ -24,12 +24,11 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Fragment, Suspense, useState } from "react";
+import { Fragment, useState } from "react";
 import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
-import ProductReviews, {
-  ProductReviewsSkeleton,
-} from "../components/product-reviews";
+import { ProductReviewsSkeleton } from "../components/product-reviews";
+import { TenantProductsCarouselSkeleton } from "../components/product-tenant-carousel";
 
 const PreviewImageModal = dynamic(
   () => import("@/components/preview-image-modal"),
@@ -51,6 +50,19 @@ const SocialsShareButton = dynamic(
   {
     ssr: false,
     loading: () => <SocialsShareButtonSkeleton />,
+  }
+);
+
+const ProductReviews = dynamic(() => import("../components/product-reviews"), {
+  ssr: false,
+  loading: () => <ProductReviewsSkeleton />,
+});
+
+const TenantProductsCarousel = dynamic(
+  () => import("../components/product-tenant-carousel"),
+  {
+    ssr: false,
+    loading: () => <TenantProductsCarouselSkeleton />,
   }
 );
 
@@ -197,9 +209,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                 </div>
               </div>
 
-              <Suspense fallback={<ProductReviewsSkeleton />}>
-                <ProductReviews productId={productId} />
-              </Suspense>
+              <ProductReviews productId={productId} />
             </TabsContent>
           </Tabs>
         </div>
@@ -279,6 +289,14 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="pt-8">
+        <TenantProductsCarousel
+          tenantSlug={tenantSlug}
+          currentProductId={productId}
+          tenantName={product.tenant.name}
+        />
       </div>
     </div>
   );
