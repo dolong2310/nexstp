@@ -1,5 +1,6 @@
 import Image from "next/image";
 import AboutDescription from "./_description";
+import UserGuide from "./_user-guide";
 
 const LIST_PACKAGE = [
   {
@@ -115,7 +116,13 @@ const AboutPage = () => {
 
         {/* Right column */}
         <div className="w-full md:w-[calc(50%_-_1rem)]">
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-8 w-full">
+          <h2 className="font-heading text-3xl sm:text-[44px]">User Guide</h2>
+          <UserGuide />
+
+          <h2 className="font-heading text-3xl sm:text-[44px] mt-8">
+            Packages Used
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-8 w-full mt-6">
             {LIST_PACKAGE.map((p, index) => (
               <div
                 key={index}
