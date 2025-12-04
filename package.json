@@ -14,7 +14,8 @@
     "db:seed": "tsx --env-file=.env src/seed.ts",
     "db:seed-banner": "tsx --env-file=.env src/seed-banners.ts",
     "db:reset": "pnpm run db:fresh && pnpm run db:seed",
-    "importmap": "pnpm dlx payload generate:importmap"
+    "importmap": "pnpm dlx payload generate:importmap",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -96,6 +97,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.2.4",
     "@tailwindcss/postcss": "^4",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash-es": "^4.17.12",
@@ -105,6 +107,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "eslint-plugin-import": "^2.31.0",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",
     "typescript": "^5"

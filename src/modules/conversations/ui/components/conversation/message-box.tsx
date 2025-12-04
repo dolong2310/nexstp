@@ -1,7 +1,6 @@
 "use client";
 
 import Media from "@/components/media";
-import PreviewImageModal from "@/components/preview-image-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
@@ -11,6 +10,13 @@ import { format } from "date-fns";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
+
+const PreviewImageModal = dynamic(
+  () => import("@/components/preview-image-modal"),
+  {
+    ssr: false,
+  }
+);
 
 const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,

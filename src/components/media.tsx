@@ -1,9 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { ImageIcon, LoaderIcon } from "lucide-react";
 import Image, { ImageProps } from "next/image";
-import { useState, forwardRef } from "react";
-import { cn } from "@/lib/utils";
+import { forwardRef, memo, useState } from "react";
 
 interface MediaProps extends Omit<ImageProps, "onLoad" | "onError"> {
   containerRef?: React.Ref<HTMLDivElement>;
@@ -157,4 +157,12 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
 
 Media.displayName = "Media";
 
-export default Media;
+export default memo(Media, (prev, next) => {
+  return (
+    prev.src === next.src &&
+    prev.className === next.className &&
+    prev.alt === next.alt &&
+    prev.fill === next.fill &&
+    prev.priority === next.priority
+  );
+});

@@ -15,6 +15,7 @@ import useCart from "@/modules/checkout/hooks/use-cart";
 import { StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { memo, useMemo } from "react";
 import { CartButtonSkeleton } from "../components/cart-button";
 
 const CartButton = dynamic(
@@ -39,6 +40,7 @@ interface Props {
   tenantSlug: string;
   isPurchased?: boolean;
   isOwner?: boolean;
+  priority?: boolean; // For LCP optimization
 }
 
 const ProductCard = ({
@@ -53,11 +55,30 @@ const ProductCard = ({
   tenantSlug,
   isPurchased,
   isOwner,
+  priority = false,
 }: Props) => {
   const { theme } = useTheme();
   const cart = useCart();
-  const isCartButtonVisible =
-    cart.isProductInCart(id, tenantSlug) || isPurchased || isOwner;
+
+  const isCartButtonVisible = useMemo(
+    () => cart.isProductInCart(id, tenantSlug) || isPurchased || isOwner,
+    [cart.isProductInCart, id, tenantSlug, isPurchased, isOwner]
+  );
+
+  const imageSource = useMemo(
+    () => fallbackImageUrl(imageUrl, theme),
+    [imageUrl, theme]
+  );
+
+  const tenantUrl = useMemo(
+    () => generateTenantUrl(authorUsername),
+    [authorUsername]
+  );
+
+  const productUrl = useMemo(
+    () => `${tenantUrl}/products/${id}`,
+    [tenantUrl, id]
+  );
 
   return (
     <Card
@@ -67,23 +88,25 @@ const ProductCard = ({
         "py-0 gap-0"
       )}
     >
-      <Link href={`${generateTenantUrl(authorUsername)}/products/${id}`}>
+      <Link href={productUrl}>
         <Media
-          src={fallbackImageUrl(imageUrl, theme)}
+          src={imageSource}
           alt={name}
           fill
+          priority={priority}
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
           className="object-cover"
         />
       </Link>
 
       <div className="flex flex-col gap-3 flex-1 border-y-2 p-4">
-        <Link href={`${generateTenantUrl(authorUsername)}/products/${id}`}>
-          <h2 className="text-lg font-medium line-clamp-2 break-words">
+        <Link href={productUrl}>
+          <h2 className="text-lg font-medium line-clamp-2 wrap-break-word">
             {name}
           </h2>
         </Link>
 
-        <Link href={generateTenantUrl(authorUsername)}>
+        <Link href={tenantUrl}>
           <div className="flex items-center gap-2">
             <Avatar className="size-4">
               <AvatarImage src={authorImageUrl!} alt={authorUsername} />
@@ -109,7 +132,7 @@ const ProductCard = ({
 
       <div
         className={cn(
-          "p-4",
+          "p-4"
           // "p-4 opacity-100 group-hover:opacity-0 transition-all",
           // isCartButtonVisible && "opacity-0 pointer-events-none"
         )}
@@ -148,6 +171,7 @@ const ProductCard = ({
     </Card>
   );
 };
+ProductCard.displayName = "ProductCard";
 
 export const ProductCardSkeleton = () => {
   return (
@@ -172,4 +196,4 @@ export const ProductCardSkeleton = () => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

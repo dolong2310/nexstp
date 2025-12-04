@@ -16,6 +16,7 @@ import useUploadMedia from "@/modules/conversations/hooks/use-upload-media";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { SendIcon, UploadIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 import React, { useRef } from "react";
 import {
   ControllerRenderProps,
@@ -24,7 +25,10 @@ import {
   useForm,
 } from "react-hook-form";
 import z from "zod";
-import SubmitImageModal from "../modals/submit-image-modal";
+
+const SubmitImageModal = dynamic(() => import("../modals/submit-image-modal"), {
+  ssr: false,
+});
 
 const messageSchema = z.object({
   conversationId: z.string(),

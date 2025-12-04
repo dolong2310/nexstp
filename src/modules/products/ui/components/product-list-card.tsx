@@ -144,12 +144,14 @@ const ProductListCard = ({
                 }}
               >
                 {columnVirtualizer.getVirtualItems().map((virtualColumn) => {
-                  const product =
-                    productData[
-                      virtualRow.index * columns + virtualColumn.index
-                    ];
+                  const productIndex =
+                    virtualRow.index * columns + virtualColumn.index;
+                  const product = productData[productIndex];
 
                   if (!product) return null;
+
+                  // Priority loading cho images above the fold (first 8 products)
+                  const isPriority = productIndex < 8;
 
                   return (
                     <div
@@ -170,6 +172,7 @@ const ProductListCard = ({
                         tenantSlug={product.tenant.slug}
                         isPurchased={product.isPurchased}
                         isOwner={product.isOwner}
+                        priority={isPriority}
                       />
                     </div>
                   );

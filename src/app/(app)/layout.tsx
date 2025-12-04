@@ -15,7 +15,18 @@ import {
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
+  display: "swap", // Prevent FOIT (Flash of Invisible Text)
+  preload: true, // Preload font for better performance
+  fallback: ["system-ui", "arial", "sans-serif"], // Fallback fonts
+  adjustFontFallback: true, // Adjust fallback font metrics to minimize layout shift
 });
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5, // Allow zoom for accessibility
+  userScalable: true,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),

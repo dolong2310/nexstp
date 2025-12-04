@@ -3,12 +3,18 @@ import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 const useSession = () => {
   const forceLogout = useGlobalStore((state) => state.forceLogout);
-  const user = useUserStore((state) => state.user);
-  const addUser = useUserStore((state) => state.add);
-  const hasHydrated = useUserStore((state) => state._hasHydrated);
+
+  const { user, addUser, hasHydrated } = useUserStore(
+    useShallow((state) => ({
+      user: state.user,
+      addUser: state.add,
+      hasHydrated: state._hasHydrated,
+    }))
+  );
 
   const trpc = useTRPC();
   const { data: session, isFetching: isSessionLoading } = useQuery(
