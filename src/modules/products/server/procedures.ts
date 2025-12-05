@@ -261,22 +261,6 @@ export const productsRouter = createTRPCRouter({
         };
       }
 
-      // const ordersData = await ctx.db.find({
-      //   collection: "orders",
-      //   pagination: false,
-      //   where: {
-      //     user: { equals: session.user?.id },
-      //   },
-      // });
-      // const purchasedProductIds = ordersData.docs.map((order) => (order.product as Product).id);
-
-      // // Nếu có purchasedProductIds thì sẽ lọc ra các sản phẩm mà user đã mua
-      // if (purchasedProductIds.length > 0) {
-      //   where.id = {
-      //     not_in: purchasedProductIds,
-      //   };
-      // }
-
       const data = await ctx.db.find({
         collection: "products",
         depth: 2, // Populate "category", "image", "tenant" fields & "tenant.image" (this is a second level)
@@ -289,78 +273,89 @@ export const productsRouter = createTRPCRouter({
         },
       });
 
-      const dataWithOrders = await Promise.all(
-        data.docs.map(async (product) => {
-          let isPurchased = false;
+      // OPTIMIZATION: Batch fetch orders và reviews một lần thay vì N+1 queries
+      const productIds = data.docs.map((product) => product.id);
 
-          if (session?.user) {
-            // Lấy tất cả orders của product hiện tại
-            const ordersData = await ctx.db.find({
-              collection: "orders",
-              where: {
-                and: [
-                  {
-                    product: {
-                      equals: product.id,
-                    },
-                  },
-                  {
-                    user: {
-                      equals: session.user?.id,
-                    },
-                  },
-                ],
+      // Lấy tất cả orders của user một lần duy nhất
+      let purchasedProductIds = new Set<string>();
+      if (session?.user) {
+        const ordersData = await ctx.db.find({
+          collection: "orders",
+          where: {
+            and: [
+              {
+                product: {
+                  in: productIds,
+                },
               },
-            });
+              {
+                user: {
+                  equals: session.user.id,
+                },
+              },
+            ],
+          },
+          pagination: false,
+        });
 
-            isPurchased = !!ordersData.docs[0];
+        purchasedProductIds = new Set(
+          ordersData.docs.map((order) =>
+            typeof order.product === "string" ? order.product : order.product.id
+          )
+        );
+      }
+
+      // Lấy tất cả reviews một lần duy nhất
+      const reviewsData = await ctx.db.find({
+        collection: "reviews",
+        where: {
+          product: {
+            in: productIds,
+          },
+        },
+        pagination: false,
+      });
+
+      // Group reviews theo productId
+      const reviewsByProduct = reviewsData.docs.reduce(
+        (acc, review) => {
+          const productId =
+            typeof review.product === "string"
+              ? review.product
+              : review.product.id;
+          if (!acc[productId]) {
+            acc[productId] = [];
           }
-
-          // Trả về product với thông tin isPurchased
-          return {
-            ...product,
-            isPurchased,
-          };
-        })
+          acc[productId].push(review);
+          return acc;
+        },
+        {} as Record<string, typeof reviewsData.docs>
       );
 
-      // Thêm thông tin tóm tắt reviews (rating trung bình và số lượng reviews) cho mỗi product
-      const dataWithSummarizedReviews = await Promise.all(
-        dataWithOrders.map(async (product) => {
-          // Lấy tất cả reviews của product hiện tại
-          const reviewsData = await ctx.db.find({
-            collection: "reviews",
-            pagination: false, // Lấy tất cả reviews (không phân trang)
-            where: {
-              product: {
-                equals: product.id, // Chỉ lấy reviews thuộc về product này
-              },
-            },
-          });
+      // Helper function để tính rating trung bình
+      const calculateRating = (reviews: typeof reviewsData.docs) => {
+        if (reviews.length === 0) return 0;
+        const totalRating = reviews.reduce(
+          (acc, review) => acc + review.rating,
+          0
+        );
+        return totalRating / reviews.length;
+      };
 
-          // Khởi tạo rating trung bình = 0 (mặc định khi không có reviews)
-          let reviewRating = 0;
-
-          // Tính rating trung bình nếu có reviews
-          if (reviewsData.docs.length > 0) {
-            // Tính tổng tất cả ratings và chia cho số lượng reviews
-            reviewRating =
-              reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) / // Tổng ratings
-              reviewsData.totalDocs; // Chia cho tổng số reviews
-          }
-
-          // Trả về product với thông tin reviews đã được tóm tắt
-          return {
-            ...product,
-            reviewCount: reviewsData.totalDocs, // Thêm số lượng reviews
-            reviewRating, // Thêm rating trung bình
-          };
-        })
-      );
+      // Map data một lần duy nhất với thông tin đã fetch
+      const enrichedData = data.docs.map((product) => {
+        const productReviews = reviewsByProduct[product.id] || [];
+        return {
+          ...product,
+          isPurchased: purchasedProductIds.has(product.id),
+          reviewCount: productReviews.length,
+          reviewRating: calculateRating(productReviews),
+        };
+      });
 
       return {
         ...data,
-        docs: dataWithSummarizedReviews.map((doc) => ({
+        docs: enrichedData.map((doc) => ({
           ...doc,
           isOwner: (session.user?.tenants || [])
             .map((t) => (t.tenant as Tenant).id)

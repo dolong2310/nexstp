@@ -13,7 +13,13 @@ import { useEffect, useMemo, useState } from "react";
 import useConversation from "../../hooks/use-conversation";
 import { FullConversationType } from "../../types";
 import { ConversationBoxSkeleton } from "./conversation-box";
-import GroupConversationModal from "./modals/group-conversation-modal";
+
+const GroupConversationModal = dynamic(
+  () => import("./modals/group-conversation-modal"),
+  {
+    ssr: false,
+  }
+);
 
 const ConversationBox = dynamic(() => import("./conversation-box"), {
   ssr: false,

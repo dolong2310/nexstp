@@ -6,10 +6,13 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
-import ProfileModal from "../modals/profile-modal";
 import ConversationDesktopItem, {
   ConversationDesktopItemSkeleton,
 } from "./conversation-desktop-item";
+
+const ProfileModal = dynamic(() => import("../modals/profile-modal"), {
+  ssr: false,
+});
 
 const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,

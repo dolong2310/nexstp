@@ -861,32 +861,61 @@ export const conversationsRouter = createTRPCRouter({
         pagination: false,
       });
 
+      if (conversations.docs.length === 0) {
+        return 0;
+      }
+
+      // OPTIMIZATION: Fetch all latest messages in one query thay vì N queries
+      const conversationIds = conversations.docs.map((conv) => conv.id);
+
+      // Fetch all messages from all conversations, sorted by conversation and createdAt
+      const allMessagesData = await ctx.db.find({
+        collection: "messages",
+        where: {
+          conversation: {
+            in: conversationIds,
+          },
+        },
+        depth: 1, // Populate sender và seen
+        pagination: false,
+        sort: "-createdAt",
+      });
+
+      // Group messages by conversation và lấy message mới nhất của mỗi conversation
+      const latestMessageByConversation = allMessagesData.docs.reduce(
+        (acc, message) => {
+          const convId =
+            typeof message.conversation === "string"
+              ? message.conversation
+              : message.conversation.id;
+
+          // Chỉ lưu message đầu tiên (mới nhất) cho mỗi conversation
+          if (!acc[convId]) {
+            acc[convId] = message;
+          }
+          return acc;
+        },
+        {} as Record<string, (typeof allMessagesData.docs)[0]>
+      );
+
+      // Count unread messages
       let totalUnreadCount = 0;
 
-      // For each conversation, count unread messages
       for (const conversation of conversations.docs) {
-        // Get latest message in conversation
-        const messagesData = await ctx.db.find({
-          collection: "messages",
-          where: {
-            conversation: {
-              equals: conversation.id,
-            },
-          },
-          sort: "-createdAt",
-          limit: 1,
-          depth: 1,
-        });
+        const lastMessage = latestMessageByConversation[conversation.id];
 
-        if (messagesData.docs.length > 0) {
-          const lastMessage = messagesData.docs[0] as Message;
+        if (lastMessage) {
           const seenUserIds =
             (lastMessage.seen as ChatUser[]).map((user) => user.id) || [];
+          const senderId =
+            typeof lastMessage.sender === "string"
+              ? lastMessage.sender
+              : lastMessage.sender.id;
 
-          // If current user hasn't seen the last message, increment count
+          // If current user hasn't seen the last message and not the sender, increment count
           if (
             !seenUserIds.includes(currentChatUser.id) &&
-            lastMessage.sender !== currentChatUser.id
+            senderId !== currentChatUser.id
           ) {
             totalUnreadCount += 1;
           }

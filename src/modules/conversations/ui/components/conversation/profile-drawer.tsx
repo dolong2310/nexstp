@@ -4,19 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import useOtherUser from "@/modules/conversations/hooks/use-other-user";
 import useActiveList from "@/modules/conversations/store/use-active-list";
-import { Conversation, ChatUser } from "@/payload-types";
+import { ChatUser, Conversation } from "@/payload-types";
 import { format } from "date-fns";
 import { XIcon } from "lucide-react";
-import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
 import { CustomAvatarGroupSkeleton } from "../custom-avatar-group";
-import ConfirmModal from "../modals/confirm-modal";
+
+const ConfirmModal = dynamic(() => import("../modals/confirm-modal"), {
+  ssr: false,
+});
 
 const CustomAvatar = dynamic(() => import("../custom-avatar"), {
   ssr: false,
   loading: () => <CustomAvatarSkeleton className="size-16" />,
 });
+
 const CustomAvatarGroup = dynamic(() => import("../custom-avatar-group"), {
   ssr: false,
   loading: () => <CustomAvatarGroupSkeleton />,
@@ -74,7 +78,9 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   <CustomAvatar user={otherUser} className="size-16" />
                 )}
               </div>
-              <p className="text-center w-full line-clamp-2 break-words">{title}</p>
+              <p className="text-center w-full line-clamp-2 break-words">
+                {title}
+              </p>
               <p className="text-sm mt-1">{statusText}</p>
               <div className="flex gap-10 my-8">
                 <ConfirmModal
