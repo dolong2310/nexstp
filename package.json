@@ -6,8 +6,8 @@
   "author": "LongDoo",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:webpack": "next build --webpack",
+    "build": "next build --webpack",
+    "build:turbopack": "next build",
     "start": "next start",
     "lint": "next lint",
     "check-types": "tsc --noEmit",
@@ -17,7 +17,7 @@
     "db:seed-banner": "tsx --env-file=.env src/seed-banners.ts",
     "db:reset": "pnpm run db:fresh && pnpm run db:seed",
     "importmap": "pnpm dlx payload generate:importmap",
-    "analyze": "ANALYZE=true next build",
+    "analyze": "ANALYZE=true next build --webpack",
     "benchmark": "node scripts/benchmark.js"
   },
   "dependencies": {
