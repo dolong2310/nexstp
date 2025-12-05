@@ -62,7 +62,7 @@ const ProductCard = ({
 
   const isCartButtonVisible = useMemo(
     () => cart.isProductInCart(id, tenantSlug) || isPurchased || isOwner,
-    [cart.isProductInCart, id, tenantSlug, isPurchased, isOwner]
+    [cart, id, tenantSlug, isPurchased, isOwner]
   );
 
   const imageSource = useMemo(
