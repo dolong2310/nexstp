@@ -7,9 +7,9 @@
  * Usage: node scripts/benchmark.js
  */
 
-const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+import { execSync } from "child_process";
+import fs from "fs";
+import path from "path";
 
 const COLORS = {
   reset: "\x1b[0m",
