@@ -1,11 +1,9 @@
 "use client";
 
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useSession from "@/hooks/use-session";
@@ -13,15 +11,21 @@ import { cn, formatQuantityNumber, generateTenantUrl } from "@/lib/utils";
 import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import { useCartStore } from "../../store/use-cart-store";
 
 interface Props {
   className?: string;
   tenantSlug?: string;
+  hasTotalLabel?: boolean;
 }
 
-const CheckoutButton = ({ className, tenantSlug }: Props) => {
+const CheckoutButton = ({
+  className,
+  tenantSlug,
+  hasTotalLabel = true,
+}: Props) => {
   const router = useRouter();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const cart = useCart();
@@ -30,6 +34,8 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
   const tenantCarts = cart.tenantCarts;
   const tenantCartSlugs = Object.keys(tenantCarts);
   const Component = !user ? Button : Link;
+  const totalLabel =
+    hasTotalLabel && totalItems > 0 ? formatQuantityNumber(totalItems) : "";
 
   const handlePreventUser = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLAnchorElement>
@@ -59,8 +65,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
                 size="sm"
                 className={cn("h-10 shrink-0", className)}
               >
-                <ShoppingCartIcon />{" "}
-                {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
+                <ShoppingCartIcon /> {totalLabel}
               </Button>
             </DropdownMenuTrigger>
 
@@ -105,8 +110,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
                 tenantCartSlugs[0] as string
               )}/checkout`}
             >
-              <ShoppingCartIcon />{" "}
-              {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
+              <ShoppingCartIcon /> {totalLabel}
             </Link>
           </Button>
         )}
@@ -125,8 +129,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
         href={`${generateTenantUrl(tenantSlug)}/checkout`}
         onClick={handlePreventUser}
       >
-        <ShoppingCartIcon />{" "}
-        {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
+        <ShoppingCartIcon /> {totalLabel}
       </Component>
     </Button>
   );
