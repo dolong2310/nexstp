@@ -95,7 +95,7 @@ const AboutPage = () => {
     <div className="max-w-screen-xl mx-auto h-full w-full px-4 lg:px-12 py-8">
       <div className="flex flex-wrap gap-8">
         {/* Left column */}
-        <div className="w-full md:w-[calc(50%-1rem)]">
+        <div className="w-full md:w-[calc(50%_-_1rem)]">
           <div className="sticky top-4 left-0">
             <Image
               className="size-50 rounded-full border-4 object-cover"
@@ -115,7 +115,7 @@ const AboutPage = () => {
         </div>
 
         {/* Right column */}
-        <div className="w-full md:w-[calc(50%-1rem)]">
+        <div className="w-full md:w-[calc(50%_-_1rem)]">
           <h2 className="font-heading text-3xl sm:text-[44px]">User Guide</h2>
           <UserGuide />
 

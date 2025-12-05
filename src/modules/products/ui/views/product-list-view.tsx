@@ -64,8 +64,8 @@ const ProductListView = ({
         <div className={cn("hidden md:block w-full md:w-2/6 lg:w-2/8 xl:w-2/8", !tenantSlug && "2xl:w-2/10")}>
           <div
             className={cn(
-              "sticky top-[calc(72px+16px)] left-0"
-              // tenantSlug ? "top-[calc(124px+16px)]" : "top-[calc(72px+16px)]"
+              "sticky top-[calc(72px_+_16px)] left-0"
+              // tenantSlug ? "top-[calc(124px+_16px)]" : "top-[calc(72px_+_16px)]"
             )}
           >
             <ProductSorts />
