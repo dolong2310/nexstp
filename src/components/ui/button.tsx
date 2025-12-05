@@ -28,8 +28,7 @@ const buttonVariants = cva(
           "bg-background text-foreground border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none",
         noShadowBackground:
           "bg-background text-foreground border-2 border-border",
-        ghost:
-          "bg-transparent text-foreground",
+        ghost: "bg-transparent text-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",
