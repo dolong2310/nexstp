@@ -61,7 +61,7 @@ const ProductView = ({ productId }: Props) => {
 
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
@@ -109,7 +109,7 @@ const ProductView = ({ productId }: Props) => {
               <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   {product.description ? (
-                    <p className="font-medium break-words">
+                    <p className="font-medium wrap-break-word">
                       {product.description}
                     </p>
                   ) : (
@@ -166,7 +166,7 @@ const ProductView = ({ productId }: Props) => {
                         </div>
                         <Progress
                           value={product.ratingDistribution[stars]}
-                          className="h-[1lh]"
+                          className="h-lh"
                         />
                         <div className="font-medium">
                           {product.ratingDistribution[stars]}%
@@ -208,7 +208,7 @@ const ProductView = ({ productId }: Props) => {
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium line-clamp-2 break-words">
+              <h1 className="text-4xl font-medium line-clamp-2 wrap-break-word">
                 {product.name}
               </h1>
             </div>
@@ -228,7 +228,7 @@ const ProductView = ({ productId }: Props) => {
 export const ProductViewSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
@@ -272,7 +272,7 @@ export const ProductViewSkeleton = () => {
                     className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
                   >
                     <span>{stars} stars</span>
-                    <Progress value={0} className="h-[1lh]" />
+                    <Progress value={0} className="h-lh" />
                     <span>0%</span>
                   </div>
                 ))}

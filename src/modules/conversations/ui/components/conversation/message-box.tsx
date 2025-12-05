@@ -46,7 +46,7 @@ const MessageBox = ({ message, isLast, id }: Props) => {
   const avatar = cn(isOwn ? "order-2" : "order-1");
   const body = cn("flex flex-col gap-2", isOwn ? "items-end" : "items-start");
   const messageText = cn(
-    "text-sm w-fit max-w-[500px] break-words rounded-base overflow-hidden shadow-shadow border-2",
+    "text-sm w-fit max-w-[500px] wrap-break-word rounded-base overflow-hidden shadow-shadow border-2",
     isOwn ? "bg-main text-white" : "bg-secondary-background",
     message.image ? "p-0" : "py-2 px-3"
   );

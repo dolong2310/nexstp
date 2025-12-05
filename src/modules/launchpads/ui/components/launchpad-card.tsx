@@ -148,12 +148,12 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
           </div>
 
           {/* Title */}
-          <h2 className="text-lg font-medium line-clamp-2 px-4 break-words">
+          <h2 className="text-lg font-medium line-clamp-2 px-4 wrap-break-word">
             {launchpad.title}
           </h2>
 
           {/* Description */}
-          <p className="text-sm text-foreground mb-3 line-clamp-2 px-4 break-words">
+          <p className="text-sm text-foreground mb-3 line-clamp-2 px-4 wrap-break-word">
             {launchpad.description}
           </p>
 
