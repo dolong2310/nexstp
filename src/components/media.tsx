@@ -157,12 +157,13 @@ const Media = forwardRef<HTMLImageElement, MediaProps>(
 
 Media.displayName = "Media";
 
-export default memo(Media, (prev, next) => {
-  return (
-    prev.src === next.src &&
-    prev.className === next.className &&
-    prev.alt === next.alt &&
-    prev.fill === next.fill &&
-    prev.priority === next.priority
-  );
-});
+export default memo(Media);
+// export default memo(Media, (prev, next) => {
+//   return (
+//     prev.src === next.src &&
+//     prev.className === next.className &&
+//     prev.alt === next.alt &&
+//     prev.fill === next.fill &&
+//     prev.priority === next.priority
+//   );
+// });

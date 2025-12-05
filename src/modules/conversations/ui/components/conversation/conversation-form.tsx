@@ -154,7 +154,7 @@ const ConversationForm = () => {
           <form
             autoComplete="off"
             className="flex items-end gap-2 lg:gap-4 w-full"
-            onSubmit={form.handleSubmit(onSubmit)}
+            // onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
               name="message"
@@ -177,7 +177,11 @@ const ConversationForm = () => {
               )}
             />
 
-            <Button type="submit" variant="default">
+            <Button
+              type="submit"
+              variant="default"
+              onClick={form.handleSubmit(onSubmit)}
+            >
               Send <SendIcon size={18} />
             </Button>
           </form>

@@ -32,9 +32,13 @@ class PusherManager {
   subscribe(channel: string, event: string, callback: EventCallback): void {
     const key: SubscriptionKey = `${channel}:${event}`;
 
+    // Get or create channel subscription
+    let channelObj = pusherClient.channel(channel);
+
     // Subscribe to channel if not already subscribed
     if (!this.channels.has(channel)) {
-      pusherClient.subscribe(channel);
+      // pusherClient.subscribe(channel);
+      channelObj = pusherClient.subscribe(channel);
       this.channels.add(channel);
     }
 
@@ -43,7 +47,8 @@ class PusherManager {
       this.subscriptions.set(key, new Set());
 
       // Bind event listener once
-      pusherClient.bind(event, (data: any) => {
+      // pusherClient.bind(event, (data: any) => {
+      channelObj.bind(event, (data: any) => {
         const callbacks = this.subscriptions.get(key);
         if (callbacks) {
           callbacks.forEach((cb) => cb(data));
@@ -66,7 +71,11 @@ class PusherManager {
 
       // If no more callbacks for this event, unbind it
       if (callbacks.size === 0) {
-        pusherClient.unbind(event);
+        // pusherClient.unbind(event);
+        const channelObj = pusherClient.channel(channel);
+        if (channelObj) {
+          channelObj.unbind(event);
+        }
         this.subscriptions.delete(key);
       }
     }
@@ -82,10 +91,15 @@ class PusherManager {
     // Remove all subscriptions for this channel
     const keysToDelete: SubscriptionKey[] = [];
 
+    const channelObj = pusherClient.channel(channel);
+
     this.subscriptions.forEach((_, key) => {
       if (key.startsWith(`${channel}:`)) {
         const event = key.split(":")[1];
-        pusherClient.unbind(event);
+        // pusherClient.unbind(event);
+        if (channelObj) {
+          channelObj.unbind(event);
+        }
         keysToDelete.push(key);
       }
     });
@@ -132,13 +146,28 @@ class PusherManager {
    * Clear all subscriptions and channels
    */
   clearAll(): void {
-    this.channels.forEach((channel) => {
-      pusherClient.unsubscribe(channel);
+    // this.channels.forEach((channel) => {
+    //   pusherClient.unsubscribe(channel);
+    // });
+
+    // this.subscriptions.forEach((_, key) => {
+    //   const event = key.split(":")[1];
+    //   pusherClient.unbind(event);
+    // });
+    // Unbind all events from their respective channels
+    this.subscriptions.forEach((_, key) => {
+      const [channel, event] = key.split(":");
+      if (channel) {
+        const channelObj = pusherClient.channel(channel);
+        if (channelObj) {
+          channelObj.unbind(event);
+        }
+      }
     });
 
-    this.subscriptions.forEach((_, key) => {
-      const event = key.split(":")[1];
-      pusherClient.unbind(event);
+    // Unsubscribe all channels
+    this.channels.forEach((channel) => {
+      pusherClient.unsubscribe(channel);
     });
 
     this.channels.clear();

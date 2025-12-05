@@ -1,5 +1,5 @@
 import useSession from "@/hooks/use-session";
-import { pusherManager } from "@/lib/pusher-manager";
+import { pusherClient } from "@/lib/pusher";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -25,6 +25,9 @@ const useConversationNotifications = () => {
 
   useEffect(() => {
     if (!user?.email) return;
+
+    // Subscribe to user's private channel
+    pusherClient.subscribe(user.email);
 
     // Handler for new messages
     const handleNewMessage = (data: FullConversationType) => {
@@ -62,30 +65,14 @@ const useConversationNotifications = () => {
       }
     };
 
-    // Subscribe using Pusher Manager
-    pusherManager.subscribe(
-      user.email,
-      "conversation:new_message",
-      handleNewMessage
-    );
-    pusherManager.subscribe(
-      user.email,
-      "conversation:update",
-      handleConversationUpdate
-    );
+    // Bind events
+    pusherClient.bind("conversation:new_message", handleNewMessage);
+    pusherClient.bind("conversation:update", handleConversationUpdate);
 
     return () => {
-      // Cleanup subscriptions
-      pusherManager.unsubscribe(
-        user.email,
-        "conversation:new_message",
-        handleNewMessage
-      );
-      pusherManager.unsubscribe(
-        user.email,
-        "conversation:update",
-        handleConversationUpdate
-      );
+      pusherClient.unsubscribe(user.email);
+      pusherClient.unbind("conversation:new_message", handleNewMessage);
+      pusherClient.unbind("conversation:update", handleConversationUpdate);
     };
   }, [user?.email]);
 
