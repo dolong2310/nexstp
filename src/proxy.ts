@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { AUTH_PATHS, PRIVATE_PATHS } from "./constants";
 
-export function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const url = req.nextUrl;
   const pathname = url.pathname;
   const hostname = req.headers.get("host") || "";
