@@ -111,6 +111,14 @@ export default buildConfig({
   },
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || "",
+    // OPTIMIZATION: Connection pooling for better performance
+    connectOptions: {
+      maxPoolSize: 10, // Increase pool size for concurrent requests
+      minPoolSize: 2, // Keep minimum connections alive
+      maxIdleTimeMS: 10000, // Keep connections alive for 10s
+      serverSelectionTimeoutMS: 5000, // Timeout for server selection
+      socketTimeoutMS: 45000, // Socket timeout
+    },
   }),
   sharp,
   plugins: [
