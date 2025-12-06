@@ -109,7 +109,7 @@ const ProductView = ({ productId }: Props) => {
               <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   {product.description ? (
-                    <p className="font-medium wrap-break-word">
+                    <p className="font-medium break-words">
                       {product.description}
                     </p>
                   ) : (
@@ -166,7 +166,7 @@ const ProductView = ({ productId }: Props) => {
                         </div>
                         <Progress
                           value={product.ratingDistribution[stars]}
-                          className="h-lh"
+                          className="h-[1lh]"
                         />
                         <div className="font-medium">
                           {product.ratingDistribution[stars]}%
@@ -208,7 +208,7 @@ const ProductView = ({ productId }: Props) => {
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium line-clamp-2 wrap-break-word">
+              <h1 className="text-4xl font-medium line-clamp-2 break-words">
                 {product.name}
               </h1>
             </div>
@@ -272,7 +272,7 @@ export const ProductViewSkeleton = () => {
                     className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
                   >
                     <span>{stars} stars</span>
-                    <Progress value={0} className="h-lh" />
+                    <Progress value={0} className="h-[1lh]" />
                     <span>0%</span>
                   </div>
                 ))}

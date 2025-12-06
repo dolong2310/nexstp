@@ -163,7 +163,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               <div className="border-2 rounded-sm bg-background overflow-hidden">
                 <div className="p-6">
                   {launchpad.description ? (
-                    <p className="font-medium wrap-break-word">
+                    <p className="font-medium break-words">
                       {launchpad.description}
                     </p>
                   ) : (
@@ -227,7 +227,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             </div>
 
             <div className="px-6">
-              <h1 className="text-4xl font-medium line-clamp-2 wrap-break-word">
+              <h1 className="text-4xl font-medium line-clamp-2 break-words">
                 {launchpad.title}
               </h1>
             </div>
@@ -378,7 +378,7 @@ export const LaunchpadDetailViewSkeleton = () => {
                     className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
                   >
                     <span>{stars} stars</span>
-                    <Progress value={0} className="h-lh" />
+                    <Progress value={0} className="h-[1lh]" />
                     <span>0%</span>
                   </div>
                 ))}

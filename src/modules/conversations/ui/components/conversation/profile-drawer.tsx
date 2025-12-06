@@ -78,7 +78,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   <CustomAvatar user={otherUser} className="size-16" />
                 )}
               </div>
-              <p className="text-center w-full line-clamp-2 wrap-break-word">
+              <p className="text-center w-full line-clamp-2 break-words">
                 {title}
               </p>
               <p className="text-sm mt-1">{statusText}</p>

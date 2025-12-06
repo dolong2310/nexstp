@@ -101,7 +101,7 @@ const ProductCard = ({
 
       <div className="flex flex-col gap-3 flex-1 border-y-2 p-4">
         <Link href={productUrl}>
-          <h2 className="text-lg font-medium line-clamp-2 wrap-break-word">
+          <h2 className="text-lg font-medium line-clamp-2 break-words">
             {name}
           </h2>
         </Link>
