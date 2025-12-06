@@ -61,7 +61,7 @@ const ProductView = ({ productId }: Props) => {
 
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
@@ -228,7 +228,7 @@ const ProductView = ({ productId }: Props) => {
 export const ProductViewSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">

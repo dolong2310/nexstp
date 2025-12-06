@@ -123,6 +123,9 @@ export const productsRouter = createTRPCRouter({
       return {
         ...product,
         isPurchased,
+        isOwner: (session?.user?.tenants || [])
+          .map((t) => (t.tenant as Tenant).id)
+          .includes((product.tenant as Tenant).id),
         image: product.image as Media | null,
         cover: product.cover as Media | null,
         tenant: product.tenant as Tenant & { image: Media | null },
@@ -317,20 +320,17 @@ export const productsRouter = createTRPCRouter({
       });
 
       // Group reviews theo productId
-      const reviewsByProduct = reviewsData.docs.reduce(
-        (acc, review) => {
-          const productId =
-            typeof review.product === "string"
-              ? review.product
-              : review.product.id;
-          if (!acc[productId]) {
-            acc[productId] = [];
-          }
-          acc[productId].push(review);
-          return acc;
-        },
-        {} as Record<string, typeof reviewsData.docs>
-      );
+      const reviewsByProduct = reviewsData.docs.reduce((acc, review) => {
+        const productId =
+          typeof review.product === "string"
+            ? review.product
+            : review.product.id;
+        if (!acc[productId]) {
+          acc[productId] = [];
+        }
+        acc[productId].push(review);
+        return acc;
+      }, {} as Record<string, typeof reviewsData.docs>);
 
       // Helper function để tính rating trung bình
       const calculateRating = (reviews: typeof reviewsData.docs) => {

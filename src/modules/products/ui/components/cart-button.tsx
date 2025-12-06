@@ -12,6 +12,7 @@ import {
   TrashIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { useCallback } from "react";
 
 interface Props {
   className?: string;
@@ -22,6 +23,8 @@ interface Props {
   isOwner?: boolean;
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
+  customLabel?: string;
+  isDisabled?: boolean;
 }
 
 const CartButton = ({
@@ -33,6 +36,8 @@ const CartButton = ({
   isOwner,
   variant,
   size,
+  isDisabled = false,
+  customLabel = "",
 }: Props) => {
   const { user } = useSession();
   const cart = useCart();
@@ -48,21 +53,35 @@ const CartButton = ({
     cart.toggleProduct(productId, tenantSlug);
   };
 
+  const getVariant = useCallback(
+    (isDefault?: boolean) => {
+      if (variant) return variant;
+      if (isIconButton) return isDefault ? "default" : "background";
+      return isDefault ? "noShadowDefault" : "noShadowBackground";
+    },
+    [variant, isIconButton]
+  );
+
+  const getSize = useCallback(() => {
+    if (size) return size;
+    if (isIconButton) return "icon";
+    return "default";
+  }, [size, isIconButton]);
+
   if (isOwner) {
     return (
       <Button
-        asChild
-        variant={
-          variant ? variant : isIconButton ? "background" : "noShadowBackground"
-        }
-        size={size ? size : isIconButton ? "icon" : "default"}
+        asChild={!isDisabled}
+        variant={getVariant()}
+        size={getSize()}
         className={cn("flex-1 font-medium", className)}
+        disabled={isDisabled}
       >
         <Link href={`${generateTenantUrl(tenantSlug)}/products/${productId}`}>
           {isIconButton ? (
             <CornerDownLeftIcon className="size-4" />
           ) : (
-            "View Product"
+            customLabel || "View Product"
           )}
         </Link>
       </Button>
@@ -72,18 +91,17 @@ const CartButton = ({
   if (isPurchased) {
     return (
       <Button
-        asChild
-        variant={
-          variant ? variant : isIconButton ? "background" : "noShadowBackground"
-        }
-        size={size ? size : isIconButton ? "icon" : "default"}
+        asChild={!isDisabled}
+        variant={getVariant()}
+        size={getSize()}
         className={cn("flex-1 font-medium", className)}
+        disabled={isDisabled}
       >
         <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library`}>
           {isIconButton ? (
             <ArchiveIcon className="size-4" />
           ) : (
-            "View in Library"
+            customLabel || "View in Library"
           )}
         </Link>
       </Button>
@@ -95,22 +113,23 @@ const CartButton = ({
       return isIconButton ? (
         <TrashIcon className="size-4" />
       ) : (
-        "Remove from Cart"
+        customLabel || "Remove from Cart"
       );
     }
     return isIconButton ? (
       <ShoppingCartIcon className="size-4" />
     ) : (
-      "Add to Cart"
+      customLabel || "Add to Cart"
     );
   };
 
   return (
     <Button
-      variant={variant ? variant : isIconButton ? "default" : "noShadowDefault"}
-      size={size ? size : isIconButton ? "icon" : "default"}
+      variant={getVariant(true)}
+      size={getSize()}
       className={cn("flex-1", className)}
       onClick={handleClick}
+      disabled={isDisabled}
     >
       {renderLabel()}
     </Button>

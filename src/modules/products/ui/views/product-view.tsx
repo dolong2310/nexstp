@@ -16,6 +16,8 @@ import {
   formatName,
   generateTenantUrl,
 } from "@/lib/utils";
+import useCart from "@/modules/checkout/hooks/use-cart";
+import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
 import { Tag } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { RefundPolicy } from "@/types";
@@ -79,6 +81,8 @@ const TabOptions = [
 
 const ProductView = ({ productId, tenantSlug }: Props) => {
   const { theme } = useTheme();
+  const cart = useCart();
+  const isProductInCart = cart.isProductInCart(productId, tenantSlug);
   const trpc = useTRPC();
   const { data: product } = useSuspenseQuery(
     trpc.products.getOne.queryOptions({ id: productId })
@@ -99,7 +103,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
@@ -268,7 +272,17 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                   tenantSlug={tenantSlug}
                   productId={productId}
                   isPurchased={product.isPurchased}
+                  isOwner={product.isOwner}
+                  isDisabled={product.isOwner}
+                  customLabel={product.isOwner ? "You own this product" : ""}
                 />
+                {isProductInCart && (
+                  <CheckoutButton
+                    tenantSlug={tenantSlug}
+                    className="h-11"
+                    hasTotalLabel={false}
+                  />
+                )}
                 <Button
                   disabled={isCopied}
                   variant="default"
@@ -305,7 +319,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 export const ProductViewSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
