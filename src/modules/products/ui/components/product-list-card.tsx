@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { LoaderIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { ProductsGetManyOutput } from "../../types";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
@@ -35,6 +36,7 @@ const ProductListCard = ({
   narrowView,
   fetchNextPage,
 }: Props) => {
+  const t = useTranslations();
   const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
 
   const [columns, setColumns] = useState<number>(4);
@@ -196,7 +198,7 @@ const ProductListCard = ({
               variant="default"
               disabled
             >
-              Load more <LoaderIcon className="size-8 animate-spin" />
+              {t("Load more")} <LoaderIcon className="size-8 animate-spin" />
             </Button>
           )}
         </InfiniteScroll>

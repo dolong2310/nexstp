@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
+import { Link } from "@/i18n/navigation";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import useProductFilter from "../../hooks/use-product-filter";
 import useProductGridLayout from "../../hooks/use-product-grid-layout";
 import { ProductsGetManyOutput } from "../../types";
@@ -75,13 +76,14 @@ export const ProductListEmpty = ({
 }: {
   visibleLibraryButton?: boolean;
 }) => {
+  const t = useTranslations();
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-base bg-background border-4 p-8">
       <InboxIcon />
-      <p className="text-base font-medium">No products found</p>
+      <p className="text-base font-medium">{t("No products found")}</p>
       {visibleLibraryButton && (
         <Button asChild variant="default" size="sm" className="mt-2">
-          <Link href="/library">Library</Link>
+          <Link href="/library">{t("Library")}</Link>
         </Button>
       )}
     </div>

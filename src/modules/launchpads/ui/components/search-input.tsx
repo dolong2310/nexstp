@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/use-debounce";
 import { SearchIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, useEffect, useState } from "react";
 import useLaunchpadFilter from "../../hooks/use-launchpad-filter";
 
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const SearchInput = ({ disabled }: Props) => {
+  const t = useTranslations();
   const [filters, setFilters] = useLaunchpadFilter();
 
   const [searchTerm, setSearchTerm] = useState(filters.search || "");
@@ -28,16 +29,16 @@ const SearchInput = ({ disabled }: Props) => {
 
   return (
     // <Button asChild variant="neutral" className="p-0">
-      <div className="relative w-full">
-        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
-        <Input
-          className="pl-8 shadow-shadow"
-          placeholder="Search launchpads"
-          disabled={disabled}
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
+    <div className="relative w-full">
+      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
+      <Input
+        className="pl-8 shadow-shadow"
+        placeholder={t("Search launchpads")}
+        disabled={disabled}
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+    </div>
     // </Button>
   );
 };

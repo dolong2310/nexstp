@@ -16,6 +16,7 @@ import useUploadMedia from "@/modules/conversations/hooks/use-upload-media";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { SendIcon, UploadIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import React, { useRef } from "react";
 import {
@@ -37,6 +38,7 @@ const messageSchema = z.object({
 });
 
 const ConversationForm = () => {
+  const t = useTranslations();
   const typingRef = useRef(false);
   const trpc = useTRPC();
   const { user } = useSession();
@@ -164,7 +166,7 @@ const ConversationForm = () => {
                     <AutosizeTextarea
                       {...field}
                       className="min-h-10 resize-none"
-                      placeholder="Write a message"
+                      placeholder={t("Write a message")}
                       minHeight={40}
                       maxHeight={192}
                       value={field.value}
@@ -182,7 +184,7 @@ const ConversationForm = () => {
               variant="default"
               onClick={form.handleSubmit(onSubmit)}
             >
-              Send <SendIcon size={18} />
+              {t("Send")} <SendIcon size={18} />
             </Button>
           </form>
         </Form>

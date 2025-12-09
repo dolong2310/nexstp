@@ -10,14 +10,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Link, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { Poppins } from "next/font/google";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -30,6 +30,7 @@ const poppins = Poppins({
 });
 
 const SignInView = () => {
+  const t = useTranslations();
   const router = useRouter();
   const addUser = useUserStore((state) => state.add);
   const cart = useCart();
@@ -42,7 +43,7 @@ const SignInView = () => {
       onSuccess: async (data) => {
         // Kiểm tra nếu email chưa verified
         if (!data.user._verified) {
-          toast.error("Please verify your email before signing in.");
+          toast.error(t("Please verify your email before signing in"));
           return;
         }
 
@@ -57,7 +58,7 @@ const SignInView = () => {
         router.push("/");
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(t(error.message));
       },
     })
   );
@@ -122,17 +123,19 @@ const SignInView = () => {
                 href="/sign-up"
                 className="text-base border-none underline"
               >
-                Sign up
+                {t("Sign up")}
               </Link>
             </div>
 
-            <h1 className="text-4xl font-medium">Welcome back to Nexstp.</h1>
+            <h1 className="text-4xl font-medium">
+              {t("Welcome back to Nexstp")}
+            </h1>
 
             <FormField
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Email</FormLabel>
+                  <FormLabel className="text-base">{t("Email")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="shadow-shadow" />
                   </FormControl>
@@ -145,7 +148,7 @@ const SignInView = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Password</FormLabel>
+                  <FormLabel className="text-base">{t("Password")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -164,7 +167,7 @@ const SignInView = () => {
               size="lg"
               disabled={loginMutation.isPending}
             >
-              Login
+              {t("Login")}
             </Button>
 
             <div className="text-center">
@@ -172,7 +175,7 @@ const SignInView = () => {
                 href="/forgot-password"
                 className="text-base border-none underline"
               >
-                Forgot your password?
+                {t("Forgot your password?")}
               </Link>
             </div>
           </form>

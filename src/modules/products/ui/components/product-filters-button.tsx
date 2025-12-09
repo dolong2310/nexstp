@@ -7,11 +7,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FunnelIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import useProductFilter from "../../hooks/use-product-filter";
 import PriceFilter from "./price-filter";
 import TagsFilter from "./tags-filter";
 
 const ProductFiltersButton = () => {
+  const t = useTranslations();
   const [filters, setFilters] = useProductFilter();
 
   const hasPriceFilters = Object.entries(filters).some(([key, value]) => {
@@ -66,14 +68,14 @@ const ProductFiltersButton = () => {
           <div className="flex flex-col gap-y-4 gap-2">
             <div className="px-4 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <h4 className="text-md font-heading">Price</h4>
+                <h4 className="text-md font-heading">{t("Price")}</h4>
                 {hasPriceFilters && (
                   <button
                     type="button"
                     className="underline cursor-pointer"
                     onClick={onClear("price")}
                   >
-                    Clear
+                    {t("Clear")}
                   </button>
                 )}
               </div>
@@ -89,14 +91,14 @@ const ProductFiltersButton = () => {
 
             <div className="px-4 space-y-4">
               <div className="flex items-center justify-between gap-2">
-                <h4 className="text-md font-heading">Tags</h4>
+                <h4 className="text-md font-heading">{t("Tags")}</h4>
                 {hasTagFilters && (
                   <button
                     type="button"
                     className="underline cursor-pointer"
                     onClick={onClear("tags")}
                   >
-                    Clear
+                    {t("Clear")}
                   </button>
                 )}
               </div>

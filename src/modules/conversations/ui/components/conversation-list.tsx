@@ -2,13 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import useSession from "@/hooks/use-session";
+import { useRouter } from "@/i18n/navigation";
 import { pusherClient } from "@/lib/pusher";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import useConversation from "../../hooks/use-conversation";
 import { FullConversationType } from "../../types";
@@ -26,6 +27,7 @@ const ConversationBox = dynamic(() => import("./conversation-box"), {
 });
 
 const ConversationList = () => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
   const { user } = useSession();
@@ -109,7 +111,9 @@ const ConversationList = () => {
       >
         <div className="flex flex-col gap-y-3 px-5">
           <div className="flex justify-between py-4">
-            <h2 className="text-2xl font-bold text-foreground">Messages</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              {t("Messages")}
+            </h2>
             <Button
               variant="default"
               size="icon"
@@ -134,11 +138,14 @@ const ConversationList = () => {
 };
 
 export const ConversationListSkeleton = () => {
+  const t = useTranslations();
   return (
     <aside className="mt-18 fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto bg-secondary-background lg:border-r-4 block w-full left-0">
       <div className="flex flex-col gap-y-3 px-5">
         <div className="flex justify-between py-4">
-          <div className="text-2xl font-bold text-foreground">Messages</div>
+          <div className="text-2xl font-bold text-foreground">
+            {t("Messages")}
+          </div>
           <Button variant="default" size="icon" disabled>
             <UserPlus />
           </Button>

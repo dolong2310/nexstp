@@ -1,9 +1,9 @@
 "use client";
 
+import { useRouter } from "@/i18n/navigation";
 import { isSuperAdmin as isSuperAdminHelper } from "@/lib/access";
 import { Tenant } from "@/payload-types";
 import { Button, useAuth, useDocumentInfo } from "@payloadcms/ui";
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 

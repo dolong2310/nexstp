@@ -1,17 +1,17 @@
 "use client";
 
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "@/i18n/navigation";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { toast } from "sonner";
 import { CustomAvatarSkeleton } from "./custom-avatar";
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {
   ssr: false,
@@ -23,6 +23,7 @@ interface Props {
 }
 
 const UserBox = ({ user }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
 
@@ -32,7 +33,7 @@ const UserBox = ({ user }: Props) => {
         router.push(`/conversations/${data.id}`);
       },
       onError: (error) => {
-        toast.error(error.message || "Something went wrong!");
+        toast.error(error.message || t("Something went wrong!"));
       },
     })
   );

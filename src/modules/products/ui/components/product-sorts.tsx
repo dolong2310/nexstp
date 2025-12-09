@@ -7,10 +7,11 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Label } from "@/components/ui/label";
 import { ChevronDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import useProductFilter from "../../hooks/use-product-filter";
-import { Label } from "@/components/ui/label";
 
 type SortType = "curated" | "trending" | "hot_and_new" | "newest" | "oldest";
 
@@ -21,12 +22,13 @@ const sortList = [
 ];
 
 const ProductSorts = () => {
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
 
   const [filters, setFilters] = useProductFilter();
   const getSortLabel = (sort: SortType) => {
     const found = sortList.find((s) => s.value === sort);
-    return found ? found.label : "Unknown";
+    return found ? t(found.label) : t("Unknown");
   };
 
   return (
@@ -34,7 +36,7 @@ const ProductSorts = () => {
       <CollapsibleTrigger asChild>
         <div className="rounded-base shadow-shadow flex items-center justify-between space-x-4 border-2 border-border text-main-foreground bg-main px-4 py-2">
           <h4 className="text-sm font-heading">
-            Sort ({getSortLabel(filters.sort)})
+            {t("Sort")} ({getSortLabel(filters.sort)})
           </h4>
           <Button
             variant="ghost"
@@ -44,7 +46,7 @@ const ProductSorts = () => {
             <ChevronDownIcon
               className={isOpen ? "size-4 rotate-180" : "size-4"}
             />
-            <span className="sr-only">Toggle</span>
+            <span className="sr-only">{t("Toggle")}</span>
           </Button>
         </div>
       </CollapsibleTrigger>
@@ -64,7 +66,7 @@ const ProductSorts = () => {
                   htmlFor={sort.value}
                   className="truncate overflow-hidden cursor-pointer"
                 >
-                  {sort.label}
+                  {t(sort.label)}
                 </Label>
                 <Checkbox
                   id={sort.value}

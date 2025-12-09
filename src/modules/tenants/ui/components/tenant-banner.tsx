@@ -6,17 +6,18 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
 import { fallbackAvatarUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Autoplay from "embla-carousel-autoplay";
+import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import useScrollDynamicSize, {
   MAX_SIZE_AVATAR,
   MIN_SIZE_AVATAR,
 } from "../../hooks/use-scroll-dynamic-size";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   tenantSlug: string;
@@ -30,6 +31,7 @@ const AUTOPLAY_CONFIG = {
 } as const;
 
 const TenantBanner = ({ tenantSlug }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
   const trpc = useTRPC();
@@ -124,14 +126,14 @@ const TenantBanner = ({ tenantSlug }: Props) => {
               <p className="line-clamp-2 overflow-hidden">{data.description}</p>
             ) : (
               <p className="text-foreground italic">
-                No description available.
+                {t("No description available")}
               </p>
             )}
           </div>
         </div>
 
         <p className="flex mt-4 text-sm text-foreground">
-          {"More information about the store."}
+          {t("More information about the store")}
         </p>
       </div>
     </div>

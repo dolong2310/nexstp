@@ -1,8 +1,9 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"
-import React, { ChangeEvent } from "react";
+import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
+import { ChangeEvent } from "react";
 
 interface Props {
   minPrice?: string | null;
@@ -37,6 +38,7 @@ const PriceFilter = ({
   onMinPriceChange,
   onMaxPriceChange,
 }: Props) => {
+  const t = useTranslations();
   const handleMinimumPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     // Get the raw input value and extract only numeric values
     const numericValue = e.target.value.replace(/[^0-9.]/g, "");
@@ -52,9 +54,7 @@ const PriceFilter = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <Label htmlFor="min-price">
-          Minimum price
-        </Label>
+        <Label htmlFor="min-price">{t("Minimum price")}</Label>
         <Input
           id="min-price"
           type="text"
@@ -65,9 +65,7 @@ const PriceFilter = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="max-price">
-          Maximum price
-        </Label>
+        <Label htmlFor="max-price">{t("Maximum price")}</Label>
         <Input
           id="max-price"
           type="text"

@@ -1,18 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Link } from "@/i18n/navigation";
 import useOtherUser from "@/modules/conversations/hooks/use-other-user";
 import useActiveList from "@/modules/conversations/store/use-active-list";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, EllipsisVerticalIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
 import { CustomAvatarGroupSkeleton } from "../custom-avatar-group";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const ProfileDrawer = dynamic(() => import("./profile-drawer"), {
   ssr: false,
@@ -29,6 +30,7 @@ const CustomAvatarGroup = dynamic(() => import("../custom-avatar-group"), {
 });
 
 const ConversationHeader = () => {
+  const t = useTranslations();
   const params = useParams();
   const conversationId = params.conversationId as string;
   const trpc = useTRPC();
@@ -44,12 +46,12 @@ const ConversationHeader = () => {
 
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
-      return `${conversation.users.length} members`;
+      return `${conversation.users.length} ${t("members")}`;
     }
     if (isOnline) {
-      return "Online";
+      return t("Online");
     }
-    return "Offline";
+    return t("Offline");
   }, [conversation, isOnline]);
 
   return (
@@ -76,9 +78,7 @@ const ConversationHeader = () => {
             <p className="max-w-[500px] truncate overflow-hidden">
               {conversation.name || otherUser.name}
             </p>
-            <p className="text-sm font-light text-foreground">
-              {statusText}
-            </p>
+            <p className="text-sm font-light text-foreground">{statusText}</p>
           </div>
         </div>
 

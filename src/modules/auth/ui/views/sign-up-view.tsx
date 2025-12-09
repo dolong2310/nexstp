@@ -11,12 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { Poppins } from "next/font/google";
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,6 +30,7 @@ const poppins = Poppins({
 });
 
 const SignUpView = () => {
+  const t = useTranslations();
   const trpc = useTRPC();
 
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
@@ -39,12 +41,14 @@ const SignUpView = () => {
         if (data.requiresVerification) {
           setShowVerificationMessage(true);
           toast.success(
-            "Registration successful! Please check your email to verify your account."
+            t(
+              "Registration successful! Please check your email to verify your account"
+            )
           );
         }
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(t(error.message));
       },
     })
   );
@@ -73,15 +77,16 @@ const SignUpView = () => {
         <div className="flex flex-col justify-center h-screen w-full md:col-span-2 overflow-auto bg-background">
           <div className="flex flex-col gap-8 p-4 lg:py-16 lg:px-20">
             <div className="text-center">
-              <h1 className="text-3xl font-heading">Check your email</h1>
+              <h1 className="text-3xl font-heading">{t("Check your email")}</h1>
               <p className="mt-4 text-muted-foreground">
-                We've sent a verification link to your email address. Please
-                click the link to verify your account.
+                {t(
+                  "We've sent a verification link to your email address Please click the link to verify your account"
+                )}
               </p>
             </div>
 
             <Button asChild variant="neutral" className="w-full">
-              <Link href="/sign-in">Back to Sign In</Link>
+              <Link href="/sign-in">{t("Back to Sign In")}</Link>
             </Button>
           </div>
         </div>
@@ -121,26 +126,26 @@ const SignUpView = () => {
                 href="/sign-in"
                 className="text-base border-none underline"
               >
-                Sign in
+                {t("Sign in")}
               </Link>
             </div>
 
             <h1 className="text-4xl font-medium">
-              Join over "Nexer" creators earning money on Nexstp.
+              {t("Join over 'Nexer' creators earning money on Nexstp")}
             </h1>
 
             <FormField
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Username</FormLabel>
+                  <FormLabel className="text-base">{t("Username")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="shadow-shadow" />
                   </FormControl>
                   <FormDescription
                     className={cn("hidden", showPreview && "block")}
                   >
-                    Your store will be available at&nbsp;
+                    {t("Your store will be available at")}&nbsp;
                     <strong>{username}</strong>.nexstp.com
                   </FormDescription>
                   <FormMessage />
@@ -152,7 +157,7 @@ const SignUpView = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Email</FormLabel>
+                  <FormLabel className="text-base">{t("Email")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="shadow-shadow" />
                   </FormControl>
@@ -165,7 +170,7 @@ const SignUpView = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Password</FormLabel>
+                  <FormLabel className="text-base">{t("Password")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -184,7 +189,7 @@ const SignUpView = () => {
               size="lg"
               disabled={registerMutation.isPending}
             >
-              Create account
+              {t("Create account")}
             </Button>
           </form>
         </Form>

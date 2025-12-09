@@ -10,10 +10,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Link } from "@/i18n/navigation";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -21,6 +22,7 @@ import { z } from "zod";
 import { forgotPasswordSchema } from "../../schemas";
 
 const ForgotPasswordView = () => {
+  const t = useTranslations();
   const [isEmailSent, setIsEmailSent] = useState(false);
   const trpc = useTRPC();
 
@@ -28,10 +30,10 @@ const ForgotPasswordView = () => {
     trpc.auth.forgotPassword.mutationOptions({
       onSuccess: () => {
         setIsEmailSent(true);
-        toast.success("Reset email sent! Check your inbox.");
+        toast.success(t("Reset email sent! Check your inbox"));
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(t(error.message));
       },
     })
   );
@@ -54,14 +56,14 @@ const ForgotPasswordView = () => {
         <div className="flex flex-col justify-center h-screen w-full md:col-span-2 overflow-auto bg-background">
           <div className="flex flex-col gap-8 p-4 lg:py-16 lg:px-20">
             <div className="text-center">
-              <h1 className="text-3xl font-heading">Check your email</h1>
+              <h1 className="text-3xl font-heading">{t("Check your email")}</h1>
               <p className="mt-4 text-muted-foreground">
-                We've sent a password reset link to your email address.
+                {t("We've sent a password reset link to your email address")}
               </p>
             </div>
 
             <Button asChild variant="neutral" className="w-full">
-              <Link href="/sign-in">Back to Sign In</Link>
+              <Link href="/sign-in">{t("Back to Sign In")}</Link>
             </Button>
           </div>
         </div>
@@ -88,10 +90,13 @@ const ForgotPasswordView = () => {
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div>
-              <h1 className="text-3xl font-heading">Forgot your password?</h1>
+              <h1 className="text-3xl font-heading">
+                {t("Forgot your password?")}
+              </h1>
               <p className="mt-4 text-muted-foreground">
-                Enter your email address and we'll send you a link to reset your
-                password.
+                {t(
+                  "Enter your email address and we'll send you a link to reset your password"
+                )}
               </p>
             </div>
 
@@ -99,7 +104,7 @@ const ForgotPasswordView = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Email</FormLabel>
+                  <FormLabel className="text-base">{t("Email")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="shadow-shadow" />
                   </FormControl>
@@ -115,13 +120,13 @@ const ForgotPasswordView = () => {
               disabled={forgotPasswordMutation.isPending}
             >
               {forgotPasswordMutation.isPending
-                ? "Sending..."
-                : "Send Reset Link"}
+                ? `${t("Sending")}...`
+                : t("Send Reset Link")}
             </Button>
 
             <div className="text-center">
               <Link href="/sign-in" className="text-base border-none underline">
-                Back to Sign In
+                {t("Back to Sign In")}
               </Link>
             </div>
           </form>

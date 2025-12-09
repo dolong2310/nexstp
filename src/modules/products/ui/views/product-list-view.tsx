@@ -1,6 +1,7 @@
 import RefreshButton, { RefreshQueryKeys } from "@/components/refresh-button";
 import { cn } from "@/lib/utils";
 import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
+import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import ProductFilterPrice from "../components/product-filter-price";
 import ProductFilterTag from "../components/product-filter-tag";
@@ -25,6 +26,7 @@ const ProductListView = ({
   narrowView,
   isLayoutTable,
 }: Props) => {
+  const t = useTranslations();
   return (
     <div
       className={cn(
@@ -43,7 +45,7 @@ const ProductListView = ({
         )}
       >
         <h3 className="hidden md:block text-2xl font-medium">
-          Curated for you
+          {t("Curated for you")}
         </h3>
         <div className="w-full md:w-auto flex items-center gap-x-4">
           <div className="mr-auto md:mr-0">
@@ -61,7 +63,12 @@ const ProductListView = ({
 
       <div className="flex flex-col md:flex-row gap-x-8 gap-y-6">
         {/* Product Filters */}
-        <div className={cn("hidden md:block w-full md:w-2/6 lg:w-2/8 xl:w-2/8", !tenantSlug && "2xl:w-2/10")}>
+        <div
+          className={cn(
+            "hidden md:block w-full md:w-2/6 lg:w-2/8 xl:w-2/8",
+            !tenantSlug && "2xl:w-2/10"
+          )}
+        >
           <div
             className={cn(
               "sticky top-[calc(72px_+_16px)] left-0"
@@ -77,7 +84,12 @@ const ProductListView = ({
         </div>
 
         {/* Product List */}
-        <div className={cn("w-full md:w-4/6 lg:w-6/8 xl:w-6/8", !tenantSlug && "2xl:w-8/10")}>
+        <div
+          className={cn(
+            "w-full md:w-4/6 lg:w-6/8 xl:w-6/8",
+            !tenantSlug && "2xl:w-8/10"
+          )}
+        >
           <Suspense
             fallback={
               isLayoutTable ? (

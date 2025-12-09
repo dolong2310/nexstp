@@ -11,6 +11,7 @@ import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { VariantProps } from "class-variance-authority";
 import { RefreshCwIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
 
@@ -36,6 +37,7 @@ const RefreshButton = ({
   variant = "default",
   size = "sm",
 }: Props) => {
+  const t = useTranslations();
   const queryClient = useQueryClient();
   const trpc = useTRPC();
 
@@ -131,7 +133,7 @@ const RefreshButton = ({
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>Refresh</p>
+        <p>{t("Refresh")}</p>
       </TooltipContent>
     </Tooltip>
   );

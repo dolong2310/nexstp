@@ -10,11 +10,12 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link } from "@/i18n/navigation";
 import {
   fallbackImageUrl,
   formatCurrency,
   formatName,
-  generateTenantUrl,
+  generateTenantPathname,
 } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
@@ -24,8 +25,8 @@ import { RefundPolicy } from "@/types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { Fragment, useState } from "react";
 import { toast } from "sonner";
 import { CartButtonSkeleton } from "../components/cart-button";
@@ -80,6 +81,7 @@ const TabOptions = [
 ];
 
 const ProductView = ({ productId, tenantSlug }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   const cart = useCart();
   const isProductInCart = cart.isProductInCart(productId, tenantSlug);
@@ -94,7 +96,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
   const handleCopy = () => {
     setIsCopied(true);
     navigator.clipboard.writeText(window.location.href);
-    toast.message("URL copied to clipboard", { duration: 1000 });
+    toast.message(t("URL copied to clipboard"), { duration: 1000 });
 
     setTimeout(() => {
       setIsCopied(false);
@@ -136,7 +138,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                   className="w-full"
                   value={tab.value}
                 >
-                  {tab.label}
+                  {t(tab.label)}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -150,13 +152,13 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                     </p>
                   ) : (
                     <p className="font-medium text-foreground italic">
-                      No description available
+                      {t("No description available")}
                     </p>
                   )}
 
                   {product.tags && product.tags.length > 0 && (
                     <div className="mt-4 space-y-2">
-                      <h3 className="font-semibold">Tags</h3>
+                      <h3 className="font-semibold">{t("Tags")}</h3>
                       <div className="flex flex-wrap gap-2">
                         {(product.tags as Tag[]).map((tag) => (
                           <Badge key={tag.id}>
@@ -176,7 +178,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                     <RichText data={product.content} />
                   ) : (
                     <p className="font-medium text-foreground italic">
-                      No content available
+                      {t("No content available")}
                     </p>
                   )}
                 </div>
@@ -186,11 +188,13 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
               <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-medium">Ratings</h3>
+                    <h3 className="text-xl font-medium">{t("Ratings")}</h3>
                     <div className="flex items-center gap-x-1 font-medium">
                       <StarIcon className="size-4 fill-black dark:fill-white" />
                       <p>({product.reviewRating})</p>
-                      <p className="text-base">{product.reviewCount} ratings</p>
+                      <p className="text-base">
+                        {product.reviewCount} {t("ratings")}
+                      </p>
                     </div>
                   </div>
 
@@ -198,7 +202,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                     {[5, 4, 3, 2, 1].map((stars) => (
                       <Fragment key={stars}>
                         <div className="font-medium">
-                          {stars} {stars === 1 ? "star" : "stars"}
+                          {stars} {stars === 1 ? t("star") : t("stars")}
                         </div>
                         <Progress
                           value={product.ratingDistribution[stars]}
@@ -223,7 +227,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
           <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4 sticky top-4 right-0">
             <div className="px-6">
               <Link
-                href={generateTenantUrl(tenantSlug)}
+                href={generateTenantPathname(tenantSlug)}
                 className="flex items-center gap-2"
               >
                 <Avatar className="size-6">
@@ -259,7 +263,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
               <div className="flex items-center gap-2">
                 <StarRating rating={product.reviewRating} />
                 <p className="text-base font-medium">
-                  {product.reviewCount} ratings
+                  {product.reviewCount} {t("ratings")}
                 </p>
               </div>
             </div>
@@ -274,7 +278,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                   isPurchased={product.isPurchased}
                   isOwner={product.isOwner}
                   isDisabled={product.isOwner}
-                  customLabel={product.isOwner ? "You own this product" : ""}
+                  customLabel={product.isOwner ? t("You own this product") : ""}
                 />
                 {isProductInCart && (
                   <CheckoutButton
@@ -295,10 +299,8 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 
               <p className="text-center font-medium">
                 {product.refundPolicy === "no-refunds"
-                  ? "No refunds"
-                  : `${
-                      RefundPolicy[product.refundPolicy!]
-                    } money back guarantee`}
+                  ? t("No refunds")
+                  : `${t(RefundPolicy[product.refundPolicy!])} ${t("money back guarantee")}`}
               </p>
             </div>
           </div>
@@ -317,6 +319,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 };
 
 export const ProductViewSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
@@ -334,7 +337,7 @@ export const ProductViewSkeleton = () => {
                   className="w-full"
                   value={tab.value}
                 >
-                  {tab.label}
+                  {t(tab.label)}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -356,13 +359,17 @@ export const ProductViewSkeleton = () => {
             </TabsContent>
             <TabsContent className="shadow-shadow rounded-base" value="ratings">
               <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-4">
-                <h3 className="text-xl font-medium animate-pulse">Ratings</h3>
+                <h3 className="text-xl font-medium animate-pulse">
+                  {t("Ratings")}
+                </h3>
                 {[5, 4, 3, 2, 1].map((stars) => (
                   <div
                     key={stars}
                     className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
                   >
-                    <span>{stars} stars</span>
+                    <span>
+                      {stars} {t("stars")}
+                    </span>
                     <Progress value={0} className="h-[1lh]" />
                     <span>0%</span>
                   </div>
@@ -392,7 +399,7 @@ export const ProductViewSkeleton = () => {
               <div className="flex items-center gap-2">
                 <StarRating rating={0} />
                 <Skeleton className="text-base font-medium bg-secondary-background w-8 h-5 animate-pulse" />{" "}
-                ratings
+                {t("ratings")}
               </div>
             </div>
 

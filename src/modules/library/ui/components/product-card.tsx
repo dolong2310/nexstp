@@ -3,15 +3,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
   cn,
   fallbackImageUrl,
   formatName,
-  generateTenantUrl,
+  generateTenantPathname,
 } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { MouseEvent } from "react";
 
 interface Props {
@@ -38,7 +37,7 @@ const ProductCard = ({
 
   const handleUserClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    router.push(generateTenantUrl(authorUsername));
+    router.push(generateTenantPathname(authorUsername));
   };
 
   return (

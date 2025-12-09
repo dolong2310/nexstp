@@ -6,11 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
   cn,
   formatCurrency,
   formatName,
-  generateTenantUrl,
+  generateTenantPathname,
   getCurrentImageUrl,
 } from "@/lib/utils";
 import { Launchpad, Media as MediaType, Tenant } from "@/payload-types";
@@ -18,8 +19,6 @@ import { useTRPC } from "@/trpc/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LaunchpadProgressSkeleton } from "./launchpad-progress";
 
@@ -100,7 +99,7 @@ export const LaunchpadCard = ({ launchpad }: LaunchpadCardProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    router.push(generateTenantUrl(launchpad.tenant.slug));
+    router.push(generateTenantPathname(launchpad.tenant.slug));
   };
 
   return (

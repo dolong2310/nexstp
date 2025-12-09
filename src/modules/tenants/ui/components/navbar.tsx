@@ -1,10 +1,10 @@
 "use client";
 
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { CheckoutButtonSkeleton } from "@/modules/checkout/ui/components/checkout-button";
 import dynamic from "next/dynamic";
 import { Poppins } from "next/font/google";
-import Link from "next/link";
 
 const CheckoutButton = dynamic(
   () => import("@/modules/checkout/ui/components/checkout-button"),

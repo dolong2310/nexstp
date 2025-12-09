@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,13 +6,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 interface Props {
   activeCategory?: string | null;
   activeCategoryName?: string | null;
   activeSubcategoryName?: string | null;
-};
+}
 
 const BreadcrumbNavigation = ({
   activeCategory,
@@ -28,10 +27,7 @@ const BreadcrumbNavigation = ({
         {activeSubcategoryName ? (
           <>
             <BreadcrumbItem>
-              <BreadcrumbLink
-                asChild
-                className="text-lg font-medium underline"
-              >
+              <BreadcrumbLink asChild className="text-lg font-medium underline">
                 <Link href={`/${activeCategory}`}>{activeCategoryName}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>

@@ -1,7 +1,7 @@
-import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
 import useSession from "@/hooks/use-session";
-import { cn, generateTenantUrl } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import { cn, generateTenantPathname } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import { VariantProps } from "class-variance-authority";
 import {
@@ -11,8 +11,9 @@ import {
   ShoppingCartIcon,
   TrashIcon,
 } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 interface Props {
   className?: string;
@@ -39,6 +40,7 @@ const CartButton = ({
   isDisabled = false,
   customLabel = "",
 }: Props) => {
+  const t = useTranslations();
   const { user } = useSession();
   const cart = useCart();
   const isProductInCart = cart.isProductInCart(productId, tenantSlug);
@@ -47,7 +49,7 @@ const CartButton = ({
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      toast.info("Please sign in to add products to your cart.");
+      toast.info(t("Please sign in to add products to your cart"));
       return;
     }
     cart.toggleProduct(productId, tenantSlug);
@@ -77,11 +79,11 @@ const CartButton = ({
         className={cn("flex-1 font-medium", className)}
         disabled={isDisabled}
       >
-        <Link href={`${generateTenantUrl(tenantSlug)}/products/${productId}`}>
+        <Link href={`${generateTenantPathname(tenantSlug)}/products/${productId}`}>
           {isIconButton ? (
             <CornerDownLeftIcon className="size-4" />
           ) : (
-            customLabel || "View Product"
+            customLabel || t("View Product")
           )}
         </Link>
       </Button>
@@ -97,11 +99,11 @@ const CartButton = ({
         className={cn("flex-1 font-medium", className)}
         disabled={isDisabled}
       >
-        <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library`}>
+        <Link href="/library">
           {isIconButton ? (
             <ArchiveIcon className="size-4" />
           ) : (
-            customLabel || "View in Library"
+            customLabel || t("View in Library")
           )}
         </Link>
       </Button>
@@ -113,13 +115,13 @@ const CartButton = ({
       return isIconButton ? (
         <TrashIcon className="size-4" />
       ) : (
-        customLabel || "Remove from Cart"
+        customLabel || t("Remove from Cart")
       );
     }
     return isIconButton ? (
       <ShoppingCartIcon className="size-4" />
     ) : (
-      customLabel || "Add to Cart"
+      customLabel || t("Add to Cart")
     );
   };
 

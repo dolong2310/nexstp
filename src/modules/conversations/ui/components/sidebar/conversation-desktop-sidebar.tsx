@@ -9,6 +9,7 @@ import { CustomAvatarSkeleton } from "../custom-avatar";
 import ConversationDesktopItem, {
   ConversationDesktopItemSkeleton,
 } from "./conversation-desktop-item";
+// import ProfileModal from "../modals/profile-modal";
 
 const ProfileModal = dynamic(() => import("../modals/profile-modal"), {
   ssr: false,

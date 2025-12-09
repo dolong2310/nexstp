@@ -1,6 +1,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { AUTH_PATHS, PRIVATE_PATHS } from "./constants";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
+
+const intlMiddleware = createMiddleware(routing);
 
 export default function proxy(req: NextRequest) {
   const url = req.nextUrl;
@@ -15,11 +19,15 @@ export default function proxy(req: NextRequest) {
     );
   }
 
+  // Loại bỏ locale prefix để check auth paths
+  // pathname có thể là /en/sign-in hoặc /vi/sign-in
+  const pathnameWithoutLocale = pathname.replace(/^\/(en|vi)/, "") || "/";
+
   const payloadToken = req.cookies.get("payload-token")?.value;
-  if (AUTH_PATHS.includes(pathname) && payloadToken) {
+  if (AUTH_PATHS.includes(pathnameWithoutLocale) && payloadToken) {
     return NextResponse.redirect(new URL("/", req.url));
   }
-  if (PRIVATE_PATHS.includes(pathname) && !payloadToken) {
+  if (PRIVATE_PATHS.includes(pathnameWithoutLocale) && !payloadToken) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
@@ -29,7 +37,9 @@ export default function proxy(req: NextRequest) {
   //   // req.headers.set("x-theme", theme); "/((?!api(?:/|$)|_next(?:/|$)|_static(?:/|$)|_vercel(?:/|$)|media(?:/|$)|[\\w-]+\\.\\w+$).*)",
   //   return response;
 
-  return NextResponse.next();
+  // return NextResponse.next();
+
+  return intlMiddleware(req);
 }
 
 export const config = {
@@ -40,8 +50,10 @@ export const config = {
      * 2. /_next (Next.js internals)
      * 3. /_static (inside the /public folder)
      * 4. all root files inside the /public folder (e.g. /favicon.ico, robots.txt, etc.)
+     * 5. /flags (flag icons)
+     * 6. /icons (tech icons)
      */
-    "/((?!api/|_next/|_static/|_vercel|media/|[\\w-]+\\.\\w+).*)",
+    "/((?!api/|_next/|_static/|_vercel|media/|flags/|icons/|[\\w-]+\\.\\w+).*)",
     "/library/:path*",
     "/conversations/:path*",
     "/checkout",

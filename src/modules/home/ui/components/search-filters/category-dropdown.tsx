@@ -2,11 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { ThemeMode } from "@/types";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useState } from "react";
 
 const SubcategoryMenu = dynamic(() => import("./subcategory-menu"), {
@@ -24,6 +25,7 @@ const CategoryDropdown = ({
   isActive,
   isNavigationHovered,
 }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   const themeKey = theme as ThemeMode;
   const backgroundColor = category.color?.[themeKey];
@@ -63,7 +65,7 @@ const CategoryDropdown = ({
           style={isOpen && backgroundColor ? { backgroundColor } : {}}
         >
           <Link href={`/${category.slug === "all" ? "" : category.slug}`}>
-            {category.name}
+            {t(category.name)}
           </Link>
         </Button>
         {category.subcategories && category.subcategories.length > 0 && (

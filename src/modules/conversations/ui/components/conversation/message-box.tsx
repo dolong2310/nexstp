@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { FullMessageType } from "@/modules/conversations/types";
 import { ChatUser, User } from "@/payload-types";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
@@ -30,6 +31,7 @@ interface Props {
 }
 
 const MessageBox = ({ message, isLast, id }: Props) => {
+  const t = useTranslations();
   const { user } = useSession();
 
   const [imageModalOpen, setImageModalOpen] = useState(false);
@@ -91,7 +93,7 @@ const MessageBox = ({ message, isLast, id }: Props) => {
 
           {isLast && isOwn && seenList.length > 0 && (
             <p className="text-xs font-light text-foreground mt-1">
-              Seen by {seenList}
+              {t("Seen by")} {seenList}
             </p>
           )}
         </div>

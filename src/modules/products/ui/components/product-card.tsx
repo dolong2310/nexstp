@@ -4,17 +4,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link } from "@/i18n/navigation";
 import {
   cn,
   fallbackImageUrl,
   formatCurrency,
   formatName,
-  generateTenantUrl,
+  generateTenantPathname,
 } from "@/lib/utils";
 import useCart from "@/modules/checkout/hooks/use-cart";
 import { StarIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { memo, useMemo } from "react";
 import { CartButtonSkeleton } from "../components/cart-button";
 
@@ -70,14 +70,14 @@ const ProductCard = ({
     [imageUrl, theme]
   );
 
-  const tenantUrl = useMemo(
-    () => generateTenantUrl(authorUsername),
+  const tenantPathname = useMemo(
+    () => generateTenantPathname(authorUsername),
     [authorUsername]
   );
 
-  const productUrl = useMemo(
-    () => `${tenantUrl}/products/${id}`,
-    [tenantUrl, id]
+  const productPathname = useMemo(
+    () => `${tenantPathname}/products/${id}`,
+    [tenantPathname, id]
   );
 
   return (
@@ -88,7 +88,7 @@ const ProductCard = ({
         "py-0 gap-0"
       )}
     >
-      <Link href={productUrl}>
+      <Link href={productPathname}>
         <Media
           src={imageSource}
           alt={name}
@@ -100,13 +100,13 @@ const ProductCard = ({
       </Link>
 
       <div className="flex flex-col gap-3 flex-1 border-y-2 p-4">
-        <Link href={productUrl}>
+        <Link href={productPathname}>
           <h2 className="text-lg font-medium line-clamp-2 break-words">
             {name}
           </h2>
         </Link>
 
-        <Link href={tenantUrl}>
+        <Link href={tenantPathname}>
           <div className="flex items-center gap-2">
             <Avatar className="size-4">
               <AvatarImage src={authorImageUrl!} alt={authorUsername} />

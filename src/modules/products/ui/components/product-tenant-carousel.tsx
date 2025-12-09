@@ -12,6 +12,7 @@ import { DEFAULT_LIMIT } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Autoplay from "embla-carousel-autoplay";
+import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
 
@@ -32,6 +33,7 @@ const TenantProductsCarousel = ({
   currentProductId,
   tenantName,
 }: TenantProductsCarouselProps) => {
+  const t = useTranslations();
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
 
   const trpc = useTRPC();
@@ -61,7 +63,7 @@ const TenantProductsCarousel = ({
       >
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-xl font-medium truncate overflow-hidden">
-            More from {tenantName}
+            {t("More from")} {tenantName}
           </h3>
           <div className="flex items-center gap-2">
             <CarouselPrevious className="relative top-auto right-auto left-auto bottom-auto translate-y-0 animate-in fade-in-0 duration-200" />
@@ -97,12 +99,13 @@ const TenantProductsCarousel = ({
 };
 
 export const TenantProductsCarouselSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="py-6">
       <Carousel className="relative space-y-4" opts={{ align: "start" }}>
         <div className="flex items-center justify-between gap-2">
           <h3 className="flex items-center gap-2 text-xl font-medium whitespace-nowrap">
-            More from <Skeleton className="shrink-0 h-6 w-full" />
+            {t("More from")} <Skeleton className="shrink-0 h-6 w-full" />
           </h3>
           <div className="flex items-center gap-2">
             <CarouselPrevious

@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { ListFilterIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import CategoryDropdown from "./category-dropdown";
 
 const CategoriesSidebar = dynamic(() => import("./categories-sidebar"), {
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const Categories = ({ data }: Props) => {
+  const t = useTranslations();
   const params = useParams();
 
   const containerRef = useRef<HTMLDivElement>(null); // Container chứa categories hiển thị
@@ -36,7 +38,7 @@ const Categories = ({ data }: Props) => {
   const isActiveCategoryHidden =
     activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1; // Kiểm tra category active có bị ẩn không
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Hàm tính toán số lượng category có thể hiển thị dựa trên kích thước container
     const calculateVisible = () => {
       // Kiểm tra các ref có tồn tại không
@@ -125,7 +127,7 @@ const Categories = ({ data }: Props) => {
             )}
             onClick={() => setIsSidebarOpen(true)}
           >
-            View All
+            {t("View All")}
             <ListFilterIcon className="ml-2" />
           </Button>
         </div>

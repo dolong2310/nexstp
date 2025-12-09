@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { LoaderIcon, SendIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { KeyboardEvent } from "react";
 
 interface Props {
@@ -28,6 +29,7 @@ const SubmitImageModal = ({
   handleSendImage,
   handleCancelPreview,
 }: Props) => {
+  const t = useTranslations();
   const handlePressEnter = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === "Enter") {
       handleSendImage();
@@ -38,13 +40,13 @@ const SubmitImageModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent noCloseButton className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Send Image</DialogTitle>
+          <DialogTitle>{t("Send Image")}</DialogTitle>
         </DialogHeader>
 
         {src && (
           <Media
             src={src}
-            alt="Preview"
+            alt={t("Preview")}
             width={400}
             height={300}
             isBordered
@@ -61,7 +63,7 @@ const SubmitImageModal = ({
               onClick={handleCancelPreview}
               disabled={isLoading}
             >
-              Cancel
+              {t("Cancel")}
             </Button>
           </DialogClose>
 
@@ -76,7 +78,7 @@ const SubmitImageModal = ({
               <LoaderIcon className="size-4 animate-spin" />
             ) : (
               <>
-                Send <SendIcon size={18} />
+                {t("Send")} <SendIcon size={18} />
               </>
             )}
           </Button>

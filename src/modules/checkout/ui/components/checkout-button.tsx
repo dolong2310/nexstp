@@ -7,10 +7,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useSession from "@/hooks/use-session";
-import { cn, formatQuantityNumber, generateTenantUrl } from "@/lib/utils";
+import { Link, useRouter } from "@/i18n/navigation";
+import { cn, formatQuantityNumber, generateTenantPathname } from "@/lib/utils";
 import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import { useCartStore } from "../../store/use-cart-store";
@@ -26,6 +26,7 @@ const CheckoutButton = ({
   tenantSlug,
   hasTotalLabel = true,
 }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const cart = useCart();
@@ -43,7 +44,7 @@ const CheckoutButton = ({
     if (!user) {
       e.preventDefault();
       e.stopPropagation();
-      toast.info("Please sign in to proceed with checkout");
+      toast.info(t("Please sign in to proceed with checkout"));
       setTimeout(() => router.push("/sign-in"), 2000);
     }
   };
@@ -83,7 +84,7 @@ const CheckoutButton = ({
                     onClick={handlePreventUser}
                   >
                     <Link
-                      href={`${generateTenantUrl(tenantSlug)}/checkout`}
+                      href={`${generateTenantPathname(tenantSlug)}/checkout`}
                       className="flex items-center justify-between gap-2 text-sm font-heading cursor-pointer"
                     >
                       <p className="truncate overflow-hidden whitespace-nowrap max-w-[300px]">
@@ -106,7 +107,7 @@ const CheckoutButton = ({
             className={cn("h-10 shrink-0", className)}
           >
             <Link
-              href={`${generateTenantUrl(
+              href={`${generateTenantPathname(
                 tenantCartSlugs[0] as string
               )}/checkout`}
             >
@@ -126,7 +127,7 @@ const CheckoutButton = ({
       className={cn("h-10 shrink-0", className)}
     >
       <Component
-        href={`${generateTenantUrl(tenantSlug)}/checkout`}
+        href={`${generateTenantPathname(tenantSlug)}/checkout`}
         onClick={handlePreventUser}
       >
         <ShoppingCartIcon /> {totalLabel}

@@ -1,10 +1,11 @@
-import { toast } from "sonner";
 import { fileToBase64 } from "@/lib/utils";
 import { PreviewImageType } from "@/modules/conversations/types";
 import { Media } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { MAX_FILE_SIZE } from "../constants";
 
 interface UseUploadMediaProps {
@@ -45,6 +46,7 @@ const useUploadMedia = ({
   onUploadError,
   uploadMode = "manual",
 }: UseUploadMediaProps = {}): UseUploadMediaReturn => {
+  const t = useTranslations();
   const trpc = useTRPC();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -63,7 +65,7 @@ const useUploadMedia = ({
         }
       },
       onError: (error) => {
-        const errorMessage = "Failed to upload media";
+        const errorMessage = t("Failed to upload media");
         toast.error(errorMessage);
         onUploadError?.(errorMessage);
       },
@@ -83,14 +85,20 @@ const useUploadMedia = ({
 
       if (!isValidType) {
         const acceptedTypes = allowedTypes.join(", ");
-        toast.error(`Please select a valid file type: ${acceptedTypes}`);
+        toast.error(
+          t("Please select a valid file type: {acceptedTypes}", {
+            acceptedTypes,
+          })
+        );
         return false;
       }
 
       // Check file size
       if (file.size > maxFileSize) {
         const maxSizeMB = (maxFileSize / (1024 * 1024)).toFixed(1);
-        toast.error(`File size must be less than ${maxSizeMB}MB`);
+        toast.error(
+          t("File size must be less than {maxSizeMB}MB", { maxSizeMB })
+        );
         return false;
       }
 
@@ -130,7 +138,7 @@ const useUploadMedia = ({
               mimeType: file.type,
             });
           } catch (error) {
-            toast.error("Failed to process file");
+            toast.error(t("Failed to process file"));
             handleCancelPreview();
           }
           break;
@@ -161,7 +169,7 @@ const useUploadMedia = ({
         mimeType: previewImage.file.type,
       });
     } catch (error) {
-      toast.error("Failed to process file");
+      toast.error(t("Failed to process file"));
       throw error;
     }
   }, [previewImage, uploadMedia]);
@@ -177,7 +185,7 @@ const useUploadMedia = ({
         mimeType: previewImage.file.type,
       });
     } catch (error) {
-      toast.error("Failed to process file");
+      toast.error(t("Failed to process file"));
     }
   }, [previewImage, uploadMedia]);
 

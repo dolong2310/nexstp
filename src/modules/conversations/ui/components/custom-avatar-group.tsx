@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatName } from "@/lib/utils";
 import { ChatUser, Media } from "@/payload-types";
+import { useTranslations } from "next-intl";
 
 interface Props {
   users: ChatUser[];
@@ -11,6 +12,7 @@ interface Props {
 const MAX_DISPLAY = 3;
 
 const CustomAvatarGroup = ({ users }: Props) => {
+  const t = useTranslations();
   const showUsers =
     users.length > MAX_DISPLAY ? users.slice(0, MAX_DISPLAY - 1) : users;
   const remaining = users.length - (MAX_DISPLAY - 1);
@@ -22,10 +24,10 @@ const CustomAvatarGroup = ({ users }: Props) => {
           <Avatar className="rounded-base! outline-none">
             <AvatarImage
               src={(user.image as Media)?.url || (user.image as string)}
-              alt={user.name || "Avatar"}
+              alt={user.name || t("Avatar")}
             />
             <AvatarFallback className="rounded-base! outline-none">
-              {formatName(user.name || "User")}
+              {formatName(user.name || t("User"))}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -40,11 +42,12 @@ const CustomAvatarGroup = ({ users }: Props) => {
 };
 
 export const CustomAvatarGroupSkeleton = () => {
+  const t = useTranslations();
   return (
     <Button asChild variant="default" size="icon">
       <Avatar>
         <AvatarImage alt="Avatar" />
-        <AvatarFallback>{formatName("User")}</AvatarFallback>
+        <AvatarFallback>{formatName(t("User"))}</AvatarFallback>
       </Avatar>
     </Button>
   );

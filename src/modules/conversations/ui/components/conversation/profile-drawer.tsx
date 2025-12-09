@@ -7,6 +7,7 @@ import useActiveList from "@/modules/conversations/store/use-active-list";
 import { ChatUser, Conversation } from "@/payload-types";
 import { format } from "date-fns";
 import { XIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { CustomAvatarSkeleton } from "../custom-avatar";
@@ -33,6 +34,7 @@ interface Props {
 }
 
 const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
+  const t = useTranslations();
   const otherUser = useOtherUser(conversation);
   const { members } = useActiveList();
   const isOnline = members.includes(otherUser?.email || "");
@@ -49,12 +51,12 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
 
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
-      return `${conversation.users.length} members`;
+      return `${conversation.users.length} ${t("members")}`;
     }
     if (isOnline) {
-      return "Online";
+      return t("Online");
     }
-    return "Offline";
+    return t("Offline");
   }, [conversation, isOnline]);
 
   return (
@@ -64,7 +66,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
           <DrawerTitle className="sr-only"></DrawerTitle>
           <div className="flex items-start justify-end mt-2">
             <Button variant="default" size="icon" onClick={onClose}>
-              <span className="sr-only">Close panel</span>
+              <span className="sr-only">{t("Close panel")}</span>
               <XIcon />
             </Button>
           </div>
@@ -94,7 +96,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   {conversation.isGroup && (
                     <div>
                       <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
-                        Emails
+                        {t("Emails")}
                       </dt>
                       <dd className="mt-1 text-sm text-foreground sm:col-span-2">
                         {conversation.users.map((user: ChatUser) => (
@@ -106,7 +108,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                   {!conversation.isGroup && (
                     <div>
                       <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
-                        Email
+                        {t("Email")}
                       </dt>
                       <dd className="mt-1 text-sm text-foreground sm:col-span-2">
                         {otherUser.email}
@@ -118,7 +120,7 @@ const ProfileDrawer = ({ conversation, isOpen, onClose }: Props) => {
                       <hr className="border-1" />
                       <div>
                         <dt className="text-sm font-medium text-foreground sm:w-40 sm:shrink-0">
-                          Joined
+                          {t("Joined")}
                         </dt>
                         <dd className="mt-1 text-sm text-foreground sm:col-span-2">
                           <time dateTime={joinedDate}>{joinedDate}</time>

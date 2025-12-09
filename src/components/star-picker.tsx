@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface Props {
   value?: number;
   disabled?: boolean;
   className?: string;
   onChange?: (value: number) => void;
-};
+}
 
 const StarPicker = ({ value = 0, disabled, className, onChange }: Props) => {
   const [hoverValue, setHoverValue] = useState(0);
