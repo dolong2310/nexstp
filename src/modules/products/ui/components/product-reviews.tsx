@@ -8,6 +8,7 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { LoaderIcon, StarIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface Props {
@@ -25,6 +26,7 @@ const sortOptions: TSortOption[] = [
 ];
 
 const ProductReviews = ({ productId }: Props) => {
+  const t = useTranslations();
   const trpc = useTRPC();
 
   const [sort, setSort] = useState<TSort>(
@@ -67,7 +69,7 @@ const ProductReviews = ({ productId }: Props) => {
             })}
             onClick={handleSort(option.value)}
           >
-            {option.label}
+            {t(option.label)}
           </Button>
         ))}
       </div>
@@ -110,7 +112,7 @@ const ProductReviews = ({ productId }: Props) => {
             disabled={isFetchingNextPage}
             onClick={() => fetchNextPage()}
           >
-            Load more
+            {t("Load more")}
             {isFetchingNextPage && (
               <LoaderIcon className="size-8 animate-spin" />
             )}
@@ -122,6 +124,7 @@ const ProductReviews = ({ productId }: Props) => {
 };
 
 export const ProductReviewsSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-end gap-2">
@@ -131,7 +134,7 @@ export const ProductReviewsSkeleton = () => {
             variant="background"
             className="pointer-events-none"
           >
-            {option.label}
+            {t(option.label)}
           </Button>
         ))}
       </div>

@@ -5,6 +5,7 @@ import { cn, formatName } from "@/lib/utils";
 import { ChatUser, Media } from "@/payload-types";
 import { useMemo } from "react";
 import useActiveList from "../../store/use-active-list";
+import { useTranslations } from "next-intl";
 
 interface Props {
   src?: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
+  const t = useTranslations();
   const { members } = useActiveList();
 
   const isActive = useMemo(() => {
@@ -33,7 +35,7 @@ const CustomAvatar = ({ src, user, className, isOnline }: Props) => {
           src={src || (user?.image as Media)?.url || (user?.image as string)}
         />
         <AvatarFallback className="rounded-base! outline-none">
-          {formatName(user?.name || "User")}
+          {formatName(user?.name || t("User"))}
         </AvatarFallback>
       </Avatar>
     </Button>

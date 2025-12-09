@@ -80,7 +80,7 @@ export const authRouter = createTRPCRouter({
       return {
         user,
         message:
-          "Registration successful! Please check your email to verify your account.",
+          "Registration successful! Please check your email to verify your account",
         requiresVerification: true,
       };
 
@@ -203,13 +203,13 @@ export const authRouter = createTRPCRouter({
 
         return {
           success: true,
-          message: "Email verified successfully! Please login to continue.",
+          message: "Email verified successfully! Please login to continue",
           requiresLogin: true,
         };
       } catch (error) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Failed to verify email. Token may be invalid or expired.",
+          message: "Failed to verify email Token may be invalid or expired",
         });
       }
     }),

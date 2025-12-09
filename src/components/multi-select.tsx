@@ -21,6 +21,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Checkbox } from "./ui/checkbox";
+import { useTranslations } from "next-intl";
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -117,6 +118,7 @@ export const MultiSelect = React.forwardRef<
     },
     ref
   ) => {
+    const t = useTranslations();
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
@@ -219,7 +221,7 @@ export const MultiSelect = React.forwardRef<
                         multiSelectVariants({ variant })
                       )}
                     >
-                      {`+ ${selectedValues.length - maxCount} more`}
+                      {`+ ${selectedValues.length - maxCount} ${t("more")}`}
                       <XCircle
                         className="ml-2 size-4 cursor-pointer"
                         onClick={(event) => {
@@ -265,12 +267,12 @@ export const MultiSelect = React.forwardRef<
         >
           <Command className="border-0 rounded-base">
             <CommandInput
-              placeholder="Search..."
+              placeholder={`${t("Search")}...`}
               onKeyDown={handleInputKeyDown}
             />
 
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty>{t("No results found")}</CommandEmpty>
               <CommandGroup>
                 <CommandItem
                   key="all"
@@ -280,7 +282,7 @@ export const MultiSelect = React.forwardRef<
                   <Checkbox
                     checked={selectedValues.length === options.length}
                   />
-                  <span>(Select All)</span>
+                  <span>({t("Select All")})</span>
                 </CommandItem>
 
                 {options.map((option) => {
@@ -312,7 +314,7 @@ export const MultiSelect = React.forwardRef<
                       className="flex-1 justify-center cursor-pointer"
                       onClick={handleClear}
                     >
-                      Clear
+                      {t("Clear")}
                     </Button>
                   )}
                   <Button
@@ -321,7 +323,7 @@ export const MultiSelect = React.forwardRef<
                     className="flex-1 justify-center cursor-pointer max-w-full"
                     onClick={() => setIsPopoverOpen(false)}
                   >
-                    Close
+                    {t("Close")}
                   </Button>
                 </div>
               </CommandGroup>

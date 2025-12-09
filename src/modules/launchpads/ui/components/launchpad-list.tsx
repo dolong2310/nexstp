@@ -3,14 +3,16 @@
 import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
+import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { InboxIcon, LoaderIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import useLaunchpadFilter from "../../hooks/use-launchpad-filter";
 import { LaunchpadCard, LaunchpadCardSkeleton } from "./launchpad-card";
-import { useGlobalStore } from "@/store/use-global-store";
 
 const LaunchpadList = () => {
+  const t = useTranslations();
   const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
   const trpc = useTRPC();
   const [filters] = useLaunchpadFilter();
@@ -62,7 +64,7 @@ const LaunchpadList = () => {
               variant="default"
               disabled
             >
-              Load more <LoaderIcon className="size-8 animate-spin" />
+              {t("Load more")} <LoaderIcon className="size-8 animate-spin" />
             </Button>
           )}
         </InfiniteScroll>
@@ -82,10 +84,11 @@ export const LaunchpadListSkeleton = () => {
 };
 
 const LaunchpadListEmpty = () => {
+  const t = useTranslations();
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 w-full rounded-base bg-background border-4 p-8">
       <InboxIcon />
-      <p className="text-base font-medium">No launchpads found</p>
+      <p className="text-base font-medium">{t("No launchpads found")}</p>
     </div>
   );
 };

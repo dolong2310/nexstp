@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
-import React from "react";
 
 interface Props {
   rating: number;
   className?: string;
   iconClassName?: string;
   text?: string;
-};
+}
 
 const MAX_RATING = 5;
 const MIN_RATING = 0;

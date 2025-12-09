@@ -8,6 +8,7 @@ import {
   InfoIcon,
   XIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
 import { toast as sonnerToast } from "sonner";
 import { Button } from "./ui/button";
@@ -90,9 +91,7 @@ const NexstpToast = (props: ToastProps) => {
 
   const descriptionTxt = useMemo(() => {
     if (typeof description === "string") {
-      return (
-        <p className="mt-1 text-sm text-foreground">{description}</p>
-      );
+      return <p className="mt-1 text-sm text-foreground">{description}</p>;
     }
     return description;
   }, [description]);
@@ -151,37 +150,38 @@ const NexstpToast = (props: ToastProps) => {
 };
 
 export default function CustomToast() {
+  const t = useTranslations();
   return (
     <>
       <Button
         variant="default"
         onClick={() => toast.success("This is a success toast")}
       >
-        Success
+        {t("Success")}
       </Button>
       <Button
         variant="default"
         onClick={() => toast.error("This is a error toast")}
       >
-        Error
+        {t("Error")}
       </Button>
       <Button
         variant="default"
         onClick={() => toast.warning("This is a warning toast")}
       >
-        Warning
+        {t("Warning")}
       </Button>
       <Button
         variant="default"
         onClick={() => toast.info("This is a info toast")}
       >
-        Info
+        {t("Info")}
       </Button>
       <Button
         variant="default"
         onClick={() => toast.custom("This is a custom toast")}
       >
-        Custom
+        {t("Custom")}
       </Button>
     </>
   );

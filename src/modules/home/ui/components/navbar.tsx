@@ -1,5 +1,6 @@
 "use client";
 
+import LocaleButton from "@/components/locale-button";
 import Logo from "@/components/logo";
 import LogoutButton from "@/components/logout-button";
 import ThemeButton from "@/components/theme-button";
@@ -10,28 +11,33 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useSession from "@/hooks/use-session";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import useConversationNotifications from "@/modules/conversations/hooks/use-conversation-notifications";
 import { MenuIcon, MessageSquareIcon } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
 import NavbarSidebar from "./navbar-sidebar";
 
 interface Props {
   fixed?: boolean;
 }
 
-const navbarItems = [
-  { href: "/", children: "Home" },
-  { href: "/launchpads", children: "Launchpads" },
-  { href: "/about", children: "About" },
-];
-
 const Navbar = ({ fixed }: Props) => {
+  const t = useTranslations();
   const { user } = useSession();
   const { unreadCount } = useConversationNotifications();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const navbarItems = useMemo(
+    () => [
+      { href: "/", children: t("Home") },
+      { href: "/launchpads", children: t("Launchpads") },
+      { href: "/about", children: t("About") },
+    ],
+    [t]
+  );
 
   // const pathname = usePathname();
   // const _pathname = useMemo(() => {
@@ -63,7 +69,7 @@ const Navbar = ({ fixed }: Props) => {
         {user ? (
           <>
             <Button asChild variant="default">
-              <Link href="/admin">Dashboard</Link>
+              <Link href="/admin">{t("Dashboard")}</Link>
             </Button>
 
             <Tooltip>
@@ -85,7 +91,7 @@ const Navbar = ({ fixed }: Props) => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Conversations</p>
+                <p>{t("Conversations")}</p>
               </TooltipContent>
             </Tooltip>
           </>
@@ -93,16 +99,17 @@ const Navbar = ({ fixed }: Props) => {
           <>
             <Button asChild variant="neutral">
               <Link prefetch href="/sign-in">
-                Sign in
+                {t("Sign in")}
               </Link>
             </Button>
             <Button asChild variant="neutral">
               <Link prefetch href="/sign-up">
-                Sign up
+                {t("Sign up")}
               </Link>
             </Button>
           </>
         )}
+        <LocaleButton />
         <ThemeButton />
         <LogoutButton />
       </div>
@@ -114,6 +121,7 @@ const Navbar = ({ fixed }: Props) => {
       />
 
       <div className="flex lg:hidden items-center justify-center gap-4">
+        <LocaleButton />
         <ThemeButton />
         <Button
           variant="default"

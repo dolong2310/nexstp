@@ -1,5 +1,6 @@
 import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 // OPTIMIZATION: Bundle analyzer for production analysis
 // Run: pnpm analyze
@@ -44,7 +45,7 @@ const nextConfig: NextConfig = {
     //   },
     // },
   },
-  reactStrictMode: true, // Enable for better performance & debugging
+  reactStrictMode: false, // true: Enable for better performance & debugging
   devIndicators: false,
   output: "standalone", // Smaller Docker images
   experimental: {
@@ -66,8 +67,8 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 14400, // Next.js 16 default: 4 hours (14400s) instead of 60s
     qualities: [75], // // Next.js 16: Coerce quality to closest value in qualities array. Default quality for all images
     maximumRedirects: 3, // Next.js 16: Limit redirects for security
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
+    // dangerouslyAllowSVG: true,
+    // contentDispositionType: "attachment",
     remotePatterns: [
       {
         protocol: "https",
@@ -128,4 +129,6 @@ const nextConfig: NextConfig = {
   ],
 };
 
-export default withPayload(withBundleAnalyzer(nextConfig));
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+
+export default withPayload(withBundleAnalyzer(withNextIntl(nextConfig)));

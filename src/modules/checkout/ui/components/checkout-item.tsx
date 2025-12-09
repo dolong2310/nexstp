@@ -1,8 +1,9 @@
 import Media from "@/components/media";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link } from "@/i18n/navigation";
 import { fallbackImageUrl, formatCurrency } from "@/lib/utils";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface Props {
   name: string;
@@ -23,15 +24,18 @@ const CheckoutItem = ({
   tenantName,
   onRemove,
 }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   return (
     <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 bg-background border-2 rounded-base shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all">
-      <Media
-        src={fallbackImageUrl(imageUrl, theme)}
-        alt={name}
-        fill
-        className="object-cover border-r-2 rounded-tl-base rounded-bl-base"
-      />
+      <Link href={productUrl}>
+        <Media
+          src={fallbackImageUrl(imageUrl, theme)}
+          alt={name}
+          fill
+          className="object-cover border-r-2 rounded-tl-base rounded-bl-base"
+        />
+      </Link>
 
       <div className="flex flex-col justify-between py-4">
         <div className="">
@@ -51,7 +55,7 @@ const CheckoutItem = ({
           className="font-medium underline cursor-pointer"
           onClick={onRemove}
         >
-          Remove
+          {t("Remove")}
         </button>
       </div>
     </div>
@@ -59,6 +63,7 @@ const CheckoutItem = ({
 };
 
 export const CheckoutItemSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="grid grid-cols-[8.5rem_1fr_auto] gap-4 pr-4 bg-background border-2 rounded-base shadow-shadow">
       <div className="border-r-2 rounded-tl-base rounded-bl-base overflow-hidden">
@@ -74,7 +79,9 @@ export const CheckoutItemSkeleton = () => {
 
       <div className="flex flex-col justify-between py-4">
         <Skeleton className="w-full h-4 bg-secondary-background animate-pulse" />
-        <p className="font-medium underline cursor-not-allowed">Remove</p>
+        <p className="font-medium underline cursor-not-allowed">
+          {t("Remove")}
+        </p>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { DEFAULT_LIMIT } from "@/constants";
 import { useTRPC } from "@/trpc/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   values?: string[] | null;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const TagsFilter = ({ values = [], onChange }: Props) => {
+  const t = useTranslations();
   const trpc = useTRPC();
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery(
@@ -47,7 +49,9 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
 
     // If no tags are available, show a message
     if (data?.pages?.[0]?.docs.length === 0) {
-      return <p className="text-center text-foreground">No tags available</p>;
+      return (
+        <p className="text-center text-foreground">{t("No tags available")}</p>
+      );
     }
 
     return data?.pages.map((page) => {
@@ -58,7 +62,10 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
             className="flex items-center justify-between gap-2 cursor-pointer"
             onClick={() => onClick(tag.name)}
           >
-            <Label htmlFor={tag.id} className="truncate overflow-hidden cursor-pointer">
+            <Label
+              htmlFor={tag.id}
+              className="truncate overflow-hidden cursor-pointer"
+            >
               {tag.name}
             </Label>
             <Checkbox
@@ -82,7 +89,7 @@ const TagsFilter = ({ values = [], onChange }: Props) => {
           className="underline font-medium justify-start text-start disabled:opacity-50 cursor-pointer"
           onClick={() => fetchNextPage()}
         >
-          Load more...
+          {t("Load more")}...
         </button>
       )}
     </div>

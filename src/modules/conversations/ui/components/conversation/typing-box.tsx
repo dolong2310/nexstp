@@ -1,5 +1,6 @@
 import useSession from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { UserProps } from "./conversation-content";
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const TypingBox = ({ typingUsers }: Props) => {
+  const t = useTranslations();
   const { user } = useSession();
   const myEmail = user?.email;
 
@@ -17,10 +19,10 @@ const TypingBox = ({ typingUsers }: Props) => {
   );
 
   const typingText = useMemo(() => {
-    if (othersTyping.length === 0) return "You are typing...";
+    if (othersTyping.length === 0) return `${t("You are typing")}...`;
     if (othersTyping.length === 1)
-      return `${othersTyping[0]?.name} is typing...`;
-    return "Someone is typing...";
+      return `${othersTyping[0]?.name} ${t("is typing")}...`;
+    return `${t("Someone is typing")}...`;
   }, [othersTyping]);
 
   if (typingUsers.length === 0) return null;

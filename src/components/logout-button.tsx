@@ -12,7 +12,8 @@ import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { useState } from "react";
 import { toast } from "./custom-toast";
 import { Button } from "./ui/button";
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
+  const t = useTranslations();
   const pathname = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -47,8 +49,8 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
       },
       onError: (error) => {
         toast.error(
-          error.message ||
-            "An error occurred while logging out. Please try again."
+          t(error.message) ||
+            t("An error occurred while logging out Please try again")
         );
       },
       onSettled: () => {
@@ -76,7 +78,7 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
   if (isLabel) {
     return (
       <p className={labelClassName} onClick={handleLogout}>
-        Sign out
+        {t("Sign out")}
       </p>
     );
   }
@@ -88,10 +90,14 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
           <LogOutIcon className={iconClassName} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" sideOffset={10} className="bg-secondary-background flex items-center gap-2 w-fit">
-        <span className="font-medium text-center">You want to</span>
+      <PopoverContent
+        align="end"
+        sideOffset={10}
+        className="bg-secondary-background flex items-center gap-2 w-fit"
+      >
+        <span className="font-medium text-center">{t("You want to")}</span>
         <Button variant="default" size="sm" onClick={handleLogout}>
-          sign out
+          {t("sign out")}
         </Button>
       </PopoverContent>
     </Popover>

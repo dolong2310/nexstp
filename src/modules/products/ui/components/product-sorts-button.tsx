@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { ArrowDownNarrowWideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import useProductFilter from "../../hooks/use-product-filter";
 
 type SortType = "curated" | "trending" | "hot_and_new" | "newest" | "oldest";
@@ -20,6 +21,7 @@ const sortList = [
 ];
 
 const ProductSortsButton = () => {
+  const t = useTranslations();
   const [filters, setFilters] = useProductFilter();
 
   return (
@@ -49,7 +51,7 @@ const ProductSortsButton = () => {
                   htmlFor={sort.value}
                   className="truncate overflow-hidden"
                 >
-                  {sort.label}
+                  {t(sort.label)}
                 </Label>
                 <Checkbox
                   id={sort.value}

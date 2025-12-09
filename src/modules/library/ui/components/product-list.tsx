@@ -7,9 +7,11 @@ import { ProductListEmpty } from "@/modules/products/ui/components/product-list"
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
 
 const ProductList = () => {
+  const t = useTranslations();
   const trpc = useTRPC();
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
@@ -65,7 +67,7 @@ const ProductList = () => {
               variant="default"
               disabled
             >
-              Load more <LoaderIcon className="size-8 animate-spin" />
+              {t("Load more")} <LoaderIcon className="size-8 animate-spin" />
             </Button>
           )}
         </InfiniteScroll>

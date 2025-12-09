@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useRouter } from "@/i18n/navigation";
 import { getCurrentImageUrl } from "@/lib/utils";
 import { MAX_FILE_SIZE } from "@/modules/conversations/constants";
 import useUploadMedia from "@/modules/conversations/hooks/use-upload-media";
@@ -27,7 +28,7 @@ import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon, UploadIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -45,6 +46,7 @@ const profileSchema = z.object({
 });
 
 const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   const router = useRouter();
   const trpc = useTRPC();
@@ -62,10 +64,10 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
     trpc.conversations.updateProfile.mutationOptions({
       onSuccess: () => {
         router.refresh();
-        toast.success("Profile updated successfully!");
+        toast.success(t("Profile updated successfully!"));
       },
       onError: (error) => {
-        toast.error(error.message || "Something went wrong!");
+        toast.error(t(error.message) || t("Something went wrong!"));
       },
     })
   );
@@ -75,7 +77,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
     allowedTypes: ["image/*"],
     uploadMode: "manual",
     onUploadError: (error) => {
-      toast.error(error || "Failed to upload avatar");
+      toast.error(t(error as string) || t("Failed to upload avatar"));
     },
   });
 
@@ -117,7 +119,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
       if (uploadMediaHook.previewImage?.file) {
         const uploadedMedia = await uploadMediaHook.handleUpload();
         imageId = uploadedMedia?.id;
-        toast.success("Avatar uploaded successfully!");
+        toast.success(t("Avatar uploaded successfully!"));
       }
 
       await updateProfile.mutateAsync({
@@ -135,9 +137,9 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle className="text-2xl">Profile</DialogTitle>
+              <DialogTitle className="text-2xl">{t("Profile")}</DialogTitle>
               <DialogDescription>
-                Edit your public information
+                {t("Edit your public information")}
               </DialogDescription>
 
               <div className="flex flex-col mt-4 gap-y-6">
@@ -145,7 +147,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base">Name</FormLabel>
+                      <FormLabel className="text-base">{t("Name")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -155,12 +157,12 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                 />
 
                 <FormItem>
-                  <FormLabel className="text-base">Avatar</FormLabel>
+                  <FormLabel className="text-base">{t("Avatar")}</FormLabel>
                   <div className="flex items-center gap-4">
                     <div className="relative">
                       <Media
                         src={avatar}
-                        alt="Avatar"
+                        alt={t("Avatar")}
                         width={64}
                         height={64}
                         isBordered
@@ -184,7 +186,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                         }
                       >
                         <UploadIcon className="size-4" />
-                        Choose Image
+                        {t("Choose Image")}
                       </Button>
 
                       <input
@@ -196,7 +198,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                       />
 
                       <p className="text-xs text-foreground">
-                        JPG, PNG up to 5MB
+                        {t("JPG, PNG up to 5MB")}
                       </p>
                     </div>
                   </div>
@@ -206,7 +208,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
 
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button variant="neutral">Cancel</Button>
+                <Button variant="neutral">{t("Cancel")}</Button>
               </DialogClose>
               <Button
                 type="submit"
@@ -219,7 +221,7 @@ const ProfileModal = ({ currentUser, isOpen, onOpenChange }: Props) => {
                 {updateProfile.isPending || uploadMediaHook.isUploading ? (
                   <LoaderIcon className="size-4 animate-spin" />
                 ) : (
-                  "Save"
+                  t("Save")
                 )}
               </Button>
             </DialogFooter>

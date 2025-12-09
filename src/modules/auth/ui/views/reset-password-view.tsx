@@ -10,11 +10,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "@/i18n/navigation";
 import { useUserStore } from "@/modules/auth/store/use-user-store";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -22,6 +24,7 @@ import { z } from "zod";
 import { resetPasswordFormSchema } from "../../schemas";
 
 const ResetPasswordView = () => {
+  const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -45,18 +48,18 @@ const ResetPasswordView = () => {
       onSuccess: async (data) => {
         addUser(data.user);
         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
-        toast.success("Password reset successfully!");
+        toast.success(t("Password reset successfully!"));
         router.push("/");
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(t(error.message));
       },
     })
   );
 
   const onSubmit = (values: z.infer<typeof resetPasswordFormSchema>) => {
     if (!token) {
-      toast.error("Invalid or missing token");
+      toast.error(t("Invalid or missing token"));
       return;
     }
 
@@ -68,7 +71,7 @@ const ResetPasswordView = () => {
 
   useEffect(() => {
     if (!token) {
-      toast.error("Invalid reset link");
+      toast.error(t("Invalid reset link"));
       router.push("/sign-in");
     }
   }, [token, router]);
@@ -86,9 +89,11 @@ const ResetPasswordView = () => {
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div>
-              <h1 className="text-3xl font-heading">Reset your password</h1>
+              <h1 className="text-3xl font-heading">
+                {t("Reset your password")}
+              </h1>
               <p className="mt-4 text-muted-foreground">
-                Enter your new password below.
+                {t("Enter your new password below")}
               </p>
             </div>
 
@@ -96,7 +101,7 @@ const ResetPasswordView = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Password</FormLabel>
+                  <FormLabel className="text-base">{t("Password")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -113,7 +118,9 @@ const ResetPasswordView = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base">Confirm Password</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("Confirm Password")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -133,8 +140,8 @@ const ResetPasswordView = () => {
               disabled={resetPasswordMutation.isPending}
             >
               {resetPasswordMutation.isPending
-                ? "Resetting..."
-                : "Reset Password"}
+                ? `${t("Resetting")}...`
+                : t("Reset Password")}
             </Button>
           </form>
         </Form>

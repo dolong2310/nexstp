@@ -1,14 +1,15 @@
 "use client";
 
-import { toast } from "sonner";
 import { DEFAULT_LIMIT } from "@/constants";
 import useSession from "@/hooks/use-session";
-import { generateTenantUrl } from "@/lib/utils";
+import { useRouter } from "@/i18n/navigation";
+import { generateTenantPathname } from "@/lib/utils";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import useCheckoutState from "../../hooks/use-checkout-state";
 import CheckoutItem, {
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const CheckoutView = ({ tenantSlug }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -52,7 +54,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
         if (error.data?.code === "UNAUTHORIZED") {
           router.push("/sign-in");
         }
-        toast.error(error.message);
+        toast.error(t(error.message) || t("Purchase failed"));
       },
     })
   );
@@ -80,7 +82,7 @@ const CheckoutView = ({ tenantSlug }: Props) => {
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
       cart.clearCart(tenantSlug);
-      toast.warning("Invalid products in the cart. Please update your cart.");
+      toast.warning(t("Invalid products in the cart Please update your cart"));
     }
   }, [error, cart.clearCart]);
 
@@ -119,10 +121,10 @@ const CheckoutView = ({ tenantSlug }: Props) => {
                   name={product.name}
                   price={product.price}
                   imageUrl={product.image?.url}
-                  productUrl={`${generateTenantUrl(
+                  productUrl={`${generateTenantPathname(
                     product.tenant.slug
                   )}/products/${product.id}`}
-                  tenantUrl={generateTenantUrl(product.tenant.slug)}
+                  tenantUrl={generateTenantPathname(product.tenant.slug)}
                   tenantName={product.tenant.name}
                   onRemove={handleRemoveProduct(
                     product.id,

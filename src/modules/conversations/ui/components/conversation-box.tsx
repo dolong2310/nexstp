@@ -1,17 +1,18 @@
 "use client";
 
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import useSession from "@/hooks/use-session";
+import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import useOtherUser from "../../hooks/use-other-user";
 import { FullConversationType } from "../../types";
 import { CustomAvatarSkeleton } from "./custom-avatar";
 import { CustomAvatarGroupSkeleton } from "./custom-avatar-group";
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const CustomAvatar = dynamic(() => import("./custom-avatar"), {
   ssr: false,
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const ConversationBox = ({ conversation }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const { user } = useSession();
   const otherUser = useOtherUser(conversation);
@@ -55,12 +57,12 @@ const ConversationBox = ({ conversation }: Props) => {
 
   const lastMessageText = useMemo(() => {
     if (lastMessage?.image) {
-      return "Sent an image";
+      return t("Sent an image");
     }
     if (lastMessage?.body) {
       return lastMessage.body;
     }
-    return "Started a conversation";
+    return t("Started a conversation");
   }, [lastMessage]);
 
   return (
@@ -86,7 +88,7 @@ const ConversationBox = ({ conversation }: Props) => {
                 hasSeen && "text-foreground"
               )}
             >
-              {conversation?.name || otherUser?.name || "User"}
+              {conversation?.name || otherUser?.name || t("User")}
             </p>
             {lastMessage?.createdAt && (
               <time

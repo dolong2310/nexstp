@@ -1,6 +1,6 @@
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
-import Link from "next/link";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -20,7 +20,10 @@ const Logo = ({ className, size = "md" }: Props) => {
   };
 
   return (
-    <Link href="/" className={cn("flex items-center justify-center", className)}>
+    <Link
+      href="/"
+      className={cn("flex items-center justify-center", className)}
+    >
       <span
         className={cn(
           poppins.className,

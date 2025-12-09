@@ -11,12 +11,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useRouter } from "@/i18n/navigation";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 import { ThemeMode } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
   const { data } = useQuery(trpc.categories.getMany.queryOptions());
@@ -92,7 +94,7 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
           <SheetClose asChild>
             <Button variant="neutral" size="icon" className="size-8">
               <XIcon />
-              <span className="sr-only">Close panel</span>
+              <span className="sr-only">{t("Close panel")}</span>
             </Button>
           </SheetClose>
         </SheetHeader>
@@ -104,7 +106,7 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
               onClick={handleBackClick}
             >
               <ChevronLeftIcon className="size-4 mr-2" />
-              Back
+              {t("Back")}
             </button>
           )}
 
@@ -114,7 +116,7 @@ const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
               className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center justify-between text-base font-medium cursor-pointer"
               onClick={() => handleCategoryClick(category)}
             >
-              {category.name}
+              {t(category.name)}
               {category.subcategories && category.subcategories.length > 0 && (
                 <ChevronRightIcon className="size-4" />
               )}

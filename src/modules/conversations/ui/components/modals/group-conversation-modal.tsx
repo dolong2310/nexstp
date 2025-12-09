@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { MultiSelect } from "@/components/multi-select";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,13 +18,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "@/i18n/navigation";
 import { ChatUser } from "@/payload-types";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 interface Props {
@@ -34,16 +36,19 @@ interface Props {
   users: ChatUser[];
 }
 
-const conversationSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  members: z
-    .array(z.object({ value: z.string() }))
-    .min(2, "At least 2 members are required"),
-});
-
 const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
+
+  const conversationSchema = useMemo(() => {
+    return z.object({
+      name: z.string().min(1, t("Name is required")),
+      members: z
+        .array(z.object({ value: z.string() }))
+        .min(2, t("At least 2 members are required")),
+    });
+  }, [t]);
 
   const form = useForm<z.infer<typeof conversationSchema>>({
     resolver: zodResolver(conversationSchema),
@@ -61,7 +66,7 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
         onOpenChange(false);
       },
       onError: (error) => {
-        toast.error(error.message || "Something went wrong!");
+        toast.error(t(error.message) || t("Something went wrong!"));
       },
     })
   );
@@ -89,10 +94,10 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle className="text-2xl">
-                Create a group chat
+                {t("Create a group chat")}
               </DialogTitle>
               <DialogDescription>
-                Create a chat with more than 2 people.
+                {t("Create a chat with more than 2 people")}
               </DialogDescription>
 
               <div className="flex flex-col mt-4 gap-y-6">
@@ -100,7 +105,9 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-start text-base">Name</FormLabel>
+                      <FormLabel className="text-start text-base">
+                        {t("Name")}
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -110,7 +117,9 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
                 />
 
                 <FormItem>
-                  <FormLabel className="text-start text-base">Members</FormLabel>
+                  <FormLabel className="text-start text-base">
+                    {t("Members")}
+                  </FormLabel>
                   <MultiSelect
                     // defaultValue={["", ""]}
                     placeholder=""
@@ -121,7 +130,6 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
                       value: user.id,
                     }))}
                     onValueChange={(value) => {
-                      console.log("value: ", value);
                       form.setValue(
                         "members",
                         value.map((v) => ({ value: v })),
@@ -137,7 +145,7 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
 
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button variant="neutral">Cancel</Button>
+                <Button variant="neutral">{t("Cancel")}</Button>
               </DialogClose>
               <Button
                 type="submit"
@@ -152,7 +160,7 @@ const GroupConversationModal = ({ isOpen, onOpenChange, users }: Props) => {
                 {createConversation.isPending ? (
                   <LoaderIcon className="size-4 animate-spin" />
                 ) : (
-                  "Create"
+                  t("Create")
                 )}
               </Button>
             </DialogFooter>

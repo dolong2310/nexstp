@@ -10,10 +10,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LIMIT } from "@/constants";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
   formatCurrency,
   formatName,
-  generateTenantUrl,
+  generateTenantPathname,
   getCurrentImageUrl,
 } from "@/lib/utils";
 import useCheckoutState from "@/modules/checkout/hooks/use-checkout-state";
@@ -23,9 +24,8 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { LoaderIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { LaunchpadProgressSkeleton } from "../components/launchpad-progress";
@@ -67,6 +67,7 @@ interface Props {
 }
 
 const LaunchpadDetailView = ({ launchpadId }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -96,7 +97,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
 
     if (states.cancel) {
       setStates({ success: false, cancel: false });
-      toast.error("Checkout failed. Please try again.");
+      toast.error(t("Checkout failed Please try again"));
     }
   }, [
     states.success,
@@ -149,10 +150,10 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
           <Tabs defaultValue="overview" className="gap-4">
             <TabsList className="w-full shadow-shadow">
               <TabsTrigger className="w-full" value="overview">
-                Overview
+                {t("Overview")}
               </TabsTrigger>
               <TabsTrigger className="w-full" value="content">
-                Content
+                {t("Content")}
               </TabsTrigger>
             </TabsList>
 
@@ -168,13 +169,13 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                     </p>
                   ) : (
                     <p className="font-medium text-foreground italic">
-                      No description available
+                      {t("No description available")}
                     </p>
                   )}
 
                   {launchpad.tags && launchpad.tags.length > 0 && (
                     <div className="mt-4 space-y-2">
-                      <h3 className="font-semibold">Tags</h3>
+                      <h3 className="font-semibold">{t("Tags")}</h3>
                       <div className="flex flex-wrap gap-2">
                         {launchpad.tags.map((tag) => (
                           <Badge key={tag.id}>
@@ -194,7 +195,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                     <RichText data={launchpad.content} />
                   ) : (
                     <p className="font-medium text-foreground italic">
-                      No content available
+                      {t("No content available")}
                     </p>
                   )}
                 </div>
@@ -208,7 +209,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
           <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4 sticky top-4 right-0">
             <div className="px-6">
               <Link
-                href={generateTenantUrl(launchpad.tenant.slug)}
+                href={generateTenantPathname(launchpad.tenant.slug)}
                 className="flex items-center gap-2"
               >
                 <Avatar className="size-6">
@@ -245,13 +246,13 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
               </div>
 
               <p className="flex items-center gap-1 text-sm text-foreground mt-2">
-                <span>Save</span>
+                <span>{t("Save")}</span>
                 <span>
                   {formatCurrency(
                     launchpad.originalPrice - launchpad.launchPrice
                   )}
                 </span>
-                <span>({discountPercentage}% off)</span>
+                <span>({t("Sale off", { discountPercentage })})</span>
               </p>
             </div>
 
@@ -274,7 +275,9 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
             <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Category</span>
+                  <span className="text-sm text-foreground">
+                    {t("Category")}
+                  </span>
                   <Badge>
                     <p className="text-xs font-medium">
                       {launchpad.category.name}
@@ -283,30 +286,38 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Refund Policy</span>
+                  <span className="text-sm text-foreground">
+                    {t("Refund Policy")}
+                  </span>
                   <span className="text-sm font-medium">
                     {RefundPolicy[launchpad.refundPolicy!]}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Launch Date</span>
+                  <span className="text-sm text-foreground">
+                    {t("Launch Date")}
+                  </span>
                   <span className="text-sm font-medium">
                     {format(new Date(launchpad.startTime!), "MMM dd, yyyy")}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">End Date</span>
+                  <span className="text-sm text-foreground">
+                    {t("End Date")}
+                  </span>
                   <span className="text-sm font-medium">
                     {format(new Date(launchpad.endTime!), "MMM dd, yyyy")}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Duration</span>
+                  <span className="text-sm text-foreground">
+                    {t("Duration")}
+                  </span>
                   <span className="text-sm font-medium">
-                    {launchpad.duration} hours
+                    {launchpad.duration} {t("hours")}
                   </span>
                 </div>
               </div>
@@ -335,6 +346,7 @@ const LaunchpadDetailView = ({ launchpadId }: Props) => {
 };
 
 export const LaunchpadDetailViewSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
       <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
@@ -347,10 +359,10 @@ export const LaunchpadDetailViewSkeleton = () => {
           <Tabs defaultValue="overview" className="gap-4">
             <TabsList className="w-full shadow-shadow">
               <TabsTrigger className="w-full" value="overview">
-                Overview
+                {t("Overview")}
               </TabsTrigger>
               <TabsTrigger className="w-full" value="content">
-                Content
+                {t("Content")}
               </TabsTrigger>
             </TabsList>
 
@@ -371,13 +383,17 @@ export const LaunchpadDetailViewSkeleton = () => {
             </TabsContent>
             <TabsContent className="shadow-shadow rounded-base" value="ratings">
               <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-4">
-                <h3 className="text-xl font-medium animate-pulse">Ratings</h3>
+                <h3 className="text-xl font-medium animate-pulse">
+                  {t("Ratings")}
+                </h3>
                 {[5, 4, 3, 2, 1].map((stars) => (
                   <div
                     key={stars}
                     className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
                   >
-                    <span>{stars} stars</span>
+                    <span>
+                      {stars} {t("stars")}
+                    </span>
                     <Progress value={0} className="h-[1lh]" />
                     <span>0%</span>
                   </div>
@@ -421,27 +437,37 @@ export const LaunchpadDetailViewSkeleton = () => {
             <div className="px-6 pt-2">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Category</span>
+                  <span className="text-sm text-foreground">
+                    {t("Category")}
+                  </span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Refund Policy</span>
+                  <span className="text-sm text-foreground">
+                    {t("Refund Policy")}
+                  </span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Launch Date</span>
+                  <span className="text-sm text-foreground">
+                    {t("Launch Date")}
+                  </span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">End Date</span>
+                  <span className="text-sm text-foreground">
+                    {t("End Date")}
+                  </span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">Duration</span>
+                  <span className="text-sm text-foreground">
+                    {t("Duration")}
+                  </span>
                   <Skeleton className="bg-secondary-background w-24 h-4 animate-pulse rounded" />
                 </div>
               </div>

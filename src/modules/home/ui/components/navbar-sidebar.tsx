@@ -11,8 +11,9 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import useSession from "@/hooks/use-session";
+import { Link } from "@/i18n/navigation";
 import { XIcon } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 type NavbarItem = {
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
+  const t = useTranslations();
   const { user } = useSession();
 
   return (
@@ -43,7 +45,7 @@ const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
           <SheetClose asChild>
             <Button variant="neutral" size="icon" className="size-8">
               <XIcon />
-              <span className="sr-only">Close panel</span>
+              <span className="sr-only">{t("Close panel")}</span>
             </Button>
           </SheetClose>
         </SheetHeader>
@@ -67,14 +69,14 @@ const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
                 className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
                 onClick={() => onOpenChange(false)}
               >
-                Dashboard
+                {t("Dashboard")}
               </Link>
               <Link
                 href="/conversations"
                 className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
                 onClick={() => onOpenChange(false)}
               >
-                Conversation
+                {t("Conversation")}
               </Link>
               <Separator className="my-4" />
               <LogoutButton
@@ -89,14 +91,14 @@ const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
                 className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
                 onClick={() => onOpenChange(false)}
               >
-                Sign in
+                {t("Sign in")}
               </Link>
               <Link
                 href="/sign-up"
                 className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
                 onClick={() => onOpenChange(false)}
               >
-                Sign up
+                {t("Sign up")}
               </Link>
             </>
           )}

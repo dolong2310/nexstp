@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { NewspaperIcon, TimerIcon, TrendingUpIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import useLaunchpadFilter, {
   SortValue,
 } from "../../hooks/use-launchpad-filter";
@@ -30,6 +31,7 @@ const sortOptions = [
 ];
 
 const LaunchpadSort = ({ disabled }: Props) => {
+  const t = useTranslations();
   const [filters, setFilters] = useLaunchpadFilter();
 
   const handleSortChange = (value: SortValue) => () => {
@@ -52,7 +54,7 @@ const LaunchpadSort = ({ disabled }: Props) => {
           onClick={handleSortChange(option.value as SortValue)}
         >
           {option.icon}
-          <span className="hidden md:block">{option.label}</span>
+          <span className="hidden md:block">{t(option.label)}</span>
         </Button>
       ))}
     </div>

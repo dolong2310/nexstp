@@ -9,11 +9,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import useScrollHeight from "@/hooks/use-scroll-height";
-import { cn, generateTenantUrl } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import { cn, generateTenantPathname } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const AUTOPLAY_CONFIG = {
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
+  const t = useTranslations();
   const bannerRef = useRef<HTMLDivElement>(null);
   const plugin = useRef(Autoplay(AUTOPLAY_CONFIG));
 
@@ -74,12 +76,12 @@ const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
   const generateBannerUrl = useCallback((banner: (typeof banners)[0]) => {
     if (banner.product) {
       // Link to specific product
-      return `${generateTenantUrl(
+      return `${generateTenantPathname(
         typeof banner.tenant === "string" ? "" : banner.tenant.slug
       )}/products/${banner.product.id}`;
     }
     // Link to tenant homepage
-    return generateTenantUrl(
+    return generateTenantPathname(
       typeof banner.tenant === "string" ? "" : banner.tenant.slug
     );
   }, []);
@@ -147,9 +149,9 @@ const HomeBanner = ({ tenantSlug, containerClassName }: Props) => {
                           </p>
                         )}
                         <p className="text-xs opacity-75 mt-1">
-                          Visit{" "}
+                          {t("Visit")}{" "}
                           {typeof banner.tenant === "string"
-                            ? "Store"
+                            ? t("Store")
                             : banner.tenant.name}
                         </p>
                       </div>

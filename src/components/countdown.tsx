@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 interface CountdownProps {
@@ -48,6 +49,7 @@ const Countdown: React.FC<CountdownProps> = ({
   isExpired,
   expiredContent,
 }) => {
+  const t = useTranslations();
   const [isMounted, setIsMounted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
   const [prevTimeLeft, setPrevTimeLeft] = useState(
@@ -118,7 +120,7 @@ const Countdown: React.FC<CountdownProps> = ({
       <div>{expiredContent}</div>
     ) : (
       <div className="flex items-center justify-center">
-        <span className="">End time!</span>
+        <span className="">{t("End time")}</span>
       </div>
     );
   }

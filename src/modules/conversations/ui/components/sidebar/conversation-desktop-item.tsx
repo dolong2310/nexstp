@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import React from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
+import React from "react";
 
 interface Props {
   label: string;

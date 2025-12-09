@@ -8,19 +8,20 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TABLE_LIMIT } from "@/constants";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link } from "@/i18n/navigation";
 import {
   cn,
   fallbackImageUrl,
   formatCurrency,
   formatName,
-  generateTenantUrl,
+  generateTenantPathname,
 } from "@/lib/utils";
 import { Media as MediaType, Tenant } from "@/payload-types";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import isEqual from "lodash-es/isEqual";
 import { LoaderIcon, StarIcon } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useMemo, useRef } from "react";
 import { ProductsGetManyOutput } from "../../types";
 import CartButton, { CartButtonSkeleton } from "./cart-button";
@@ -61,6 +62,7 @@ const ProductListTable = ({
   isFetchingNextPage,
   fetchNextPage,
 }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   const dataTableRef = useRef<Product[]>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -101,7 +103,7 @@ const ProductListTable = ({
   const columns: Column[] = [
     {
       key: "product",
-      header: "Product",
+      header: t("Product"),
       width: "35%",
       minWidth: "220px",
       render: (value) => {
@@ -112,7 +114,7 @@ const ProductListTable = ({
 
         return (
           <Link
-            href={`${generateTenantUrl(authorUsername)}/products/${id}`}
+            href={`${generateTenantPathname(authorUsername)}/products/${id}`}
             className="flex items-center gap-2 w-full"
           >
             <Media
@@ -130,7 +132,7 @@ const ProductListTable = ({
     },
     {
       key: "tenant",
-      header: "Tenant",
+      header: t("Tenant"),
       width: "30%",
       minWidth: "200px",
       render: (value) => {
@@ -139,7 +141,7 @@ const ProductListTable = ({
 
         return (
           <Link
-            href={generateTenantUrl(authorUsername)}
+            href={generateTenantPathname(authorUsername)}
             className="flex items-center gap-2 cursor-pointer w-full"
           >
             <Avatar className="size-6">
@@ -155,7 +157,7 @@ const ProductListTable = ({
     },
     {
       key: "price",
-      header: "Price",
+      header: t("Price"),
       width: "15%",
       minWidth: "100px",
       render: (value) => {
@@ -170,7 +172,7 @@ const ProductListTable = ({
     },
     {
       key: "reviews",
-      header: "Reviews",
+      header: t("Reviews"),
       width: "15%",
       minWidth: "100px",
       render: (value) => {
@@ -317,7 +319,7 @@ const ProductListTable = ({
               variant="default"
               disabled
             >
-              Load more <LoaderIcon className="size-8 animate-spin" />
+              {t("Load more")} <LoaderIcon className="size-8 animate-spin" />
             </Button>
           )}
         </InfiniteScroll>
@@ -327,11 +329,12 @@ const ProductListTable = ({
 };
 
 export const ProductListTableSkeleton = () => {
+  const t = useTranslations();
   const columns: Column[] = useMemo(() => {
     return [
       {
         key: "product",
-        header: "Product",
+        header: t("Product"),
         width: "35%",
         minWidth: "220px",
         render: () => {
@@ -345,7 +348,7 @@ export const ProductListTableSkeleton = () => {
       },
       {
         key: "tenant",
-        header: "Tenant",
+        header: t("Tenant"),
         width: "30%",
         minWidth: "200px",
         render: () => {
@@ -359,7 +362,7 @@ export const ProductListTableSkeleton = () => {
       },
       {
         key: "price",
-        header: "Price",
+        header: t("Price"),
         width: "15%",
         minWidth: "100px",
         render: () => {
@@ -370,7 +373,7 @@ export const ProductListTableSkeleton = () => {
       },
       {
         key: "reviews",
-        header: "Reviews",
+        header: t("Reviews"),
         width: "15%",
         minWidth: "100px",
         render: () => {

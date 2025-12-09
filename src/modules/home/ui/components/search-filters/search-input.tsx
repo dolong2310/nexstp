@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/use-debounce";
 import useSession from "@/hooks/use-session";
+import { Link } from "@/i18n/navigation";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, useEffect, useState } from "react";
 import CategoriesSidebar from "./categories-sidebar";
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const SearchInput = ({ value, onChange, disabled }: Props) => {
+  const t = useTranslations();
   const { user } = useSession();
 
   const [searchTerm, setSearchTerm] = useState(value || "");
@@ -39,7 +41,7 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
         <Input
           className="pl-8 shadow-shadow"
-          placeholder="Search products"
+          placeholder={t("Search products")}
           disabled={disabled}
           value={searchTerm}
           onChange={handleSearchChange}
@@ -65,7 +67,7 @@ const SearchInput = ({ value, onChange, disabled }: Props) => {
         >
           <Link prefetch href="/library">
             <BookmarkCheckIcon />
-            <span className="hidden md:block">Library</span>
+            <span className="hidden md:block">{t("Library")}</span>
           </Link>
         </Button>
       )}

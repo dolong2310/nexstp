@@ -7,11 +7,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import useProductFilter from "../../hooks/use-product-filter";
 import PriceFilter from "./price-filter";
 
 const ProductFilterPrice = () => {
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
 
   const [filters, setFilters] = useProductFilter();
@@ -38,14 +40,14 @@ const ProductFilterPrice = () => {
       <CollapsibleTrigger asChild>
         <div className="rounded-base shadow-shadow flex items-center justify-between space-x-2 border-2 border-border text-main-foreground bg-main px-4 py-2">
           <div className="flex items-center justify-between flex-1">
-            <h4 className="text-sm font-heading">Price</h4>
+            <h4 className="text-sm font-heading">{t("Price")}</h4>
             {hasPriceFilters && (
               <button
                 type="button"
                 className="underline cursor-pointer"
                 onClick={onClear}
               >
-                Clear
+                {t("Clear")}
               </button>
             )}
           </div>
@@ -57,7 +59,7 @@ const ProductFilterPrice = () => {
             <ChevronDownIcon
               className={isOpen ? "size-4 rotate-180" : "size-4"}
             />
-            <span className="sr-only">Toggle</span>
+            <span className="sr-only">{t("Toggle")}</span>
           </Button>
         </div>
       </CollapsibleTrigger>

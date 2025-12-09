@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 export type ColumnType = {
@@ -115,6 +116,7 @@ const CustomTable = ({
   classNameTable,
   customHeader,
 }: TableProps) => {
+  const t = useTranslations();
   // states
   const [isSortedUp, setIsSortedUp] = useState(false);
   const [tableData, setTableData] = useState(dataTable);
@@ -142,7 +144,7 @@ const CustomTable = ({
     }
 
     if (tableData.length <= 0) {
-      return <div>Data not found</div>;
+      return <div>{t("Data not found")}</div>;
     }
 
     return tableData.map((data, idx) => (

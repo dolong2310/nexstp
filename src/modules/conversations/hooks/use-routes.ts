@@ -1,22 +1,24 @@
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 import { useMemo } from "react";
 import useConversation from "./use-conversation";
 import { MessageSquareIcon, UsersIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const useRoutes = () => {
+  const t = useTranslations();
   const pathname = usePathname();
   const { conversationId } = useConversation();
 
   const routes = useMemo(() => {
     return [
       {
-        label: "Conversations",
+        label: t("Conversations"),
         href: "/conversations",
         icon: MessageSquareIcon,
         active: pathname === "/conversations" || !!conversationId,
       },
       {
-        label: "Users",
+        label: t("Users"),
         href: "/conversations/users",
         icon: UsersIcon,
         active: pathname === "/conversations/users",

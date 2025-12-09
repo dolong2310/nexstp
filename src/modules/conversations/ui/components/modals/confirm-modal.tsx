@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,12 +12,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/navigation";
 import useConversation from "@/modules/conversations/hooks/use-conversation";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
-import { AlertTriangleIcon, LoaderIcon, TrashIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LoaderIcon, TrashIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 interface Props {
   isOpen: boolean;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const ConfirmModal = ({ isOpen, onOpenChange }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
   const { conversationId } = useConversation();
@@ -37,7 +39,7 @@ const ConfirmModal = ({ isOpen, onOpenChange }: Props) => {
         router.refresh();
       },
       onError: (error) => {
-        toast.error(error.message || "Something went wrong.");
+        toast.error(t(error.message) || t("Something went wrong!"));
       },
       onSettled: () => {
         onOpenChange(false);
@@ -60,22 +62,23 @@ const ConfirmModal = ({ isOpen, onOpenChange }: Props) => {
               <TrashIcon />
             </Button>
             <div className="text-sm font-light text-foreground">
-              Delete
+              {t("Delete")}
             </div>
           </div>
         </AlertDialogTrigger>
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete conversation</AlertDialogTitle>
+            <AlertDialogTitle>{t("Delete conversation")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this conversation? This action
-              cannot be undone.
+              {t(
+                "Are you sure you want to delete this conversation? This action cannot be undone"
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <Button asChild variant="neutral">
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
             </Button>
             <Button asChild variant="default">
               <AlertDialogAction
@@ -85,7 +88,7 @@ const ConfirmModal = ({ isOpen, onOpenChange }: Props) => {
                 {deleteConversation.isPending ? (
                   <LoaderIcon className="size-4 animate-spin" />
                 ) : (
-                  "Delete"
+                  t("Delete")
                 )}
               </AlertDialogAction>
             </Button>

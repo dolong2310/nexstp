@@ -1,10 +1,10 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
+import { Link } from "@/i18n/navigation";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { Category } from "@/payload-types";
 import { ThemeMode } from "@/types";
-import Link from "next/link";
 
 interface Props {
   category: CategoriesGetManyOutput[1];

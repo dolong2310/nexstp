@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 import { CircleXIcon } from "lucide-react";
-import React from "react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   totalPrice: number;
@@ -16,10 +16,11 @@ const CheckoutSidebar = ({
   isCanceled,
   onPurchase,
 }: Props) => {
+  const t = useTranslations();
   return (
     <div className="flex flex-col overflow-hidden bg-background border-2 shadow-shadow rounded-base">
       <div className="flex items-center justify-between p-4 border-b-2">
-        <h4 className="font-medium text-lg">Total</h4>
+        <h4 className="font-medium text-lg">{t("Total")}</h4>
         <p className="font-medium text-lg">{formatCurrency(totalPrice)}</p>
       </div>
       <div className="flex items-center justify-between p-4">
@@ -30,7 +31,7 @@ const CheckoutSidebar = ({
           className="text-base w-full"
           onClick={onPurchase}
         >
-          Checkout
+          {t("Checkout")}
         </Button>
       </div>
 
@@ -40,7 +41,7 @@ const CheckoutSidebar = ({
             <div className="flex items-center">
               <CircleXIcon className="size-6 mr-2 fill-red-500 text-red-100" />
               <span className="text-black">
-                Checkout failed. Please try again.
+                {t("Checkout failed Please try again")}
               </span>
             </div>
           </div>

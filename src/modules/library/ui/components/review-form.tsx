@@ -16,7 +16,8 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { LoaderIcon } from "lucide-react";
-import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -26,14 +27,20 @@ interface Props {
   onRefetch: () => void;
 }
 
-const formSchema = z.object({
-  rating: z.number().min(1, { message: "Rating is required" }).max(5),
-  description: z.string().min(1, { message: "Description is required" }),
-});
-
 const ReviewForm = ({ productId, onRefetch }: Props) => {
+  const t = useTranslations();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+
+  const formSchema = useMemo(() => {
+    return z.object({
+      rating: z
+        .number()
+        .min(1, { message: t("Rating is required") })
+        .max(5),
+      description: z.string().min(1, { message: t("Description is required") }),
+    });
+  }, [t]);
 
   const { data: reviewData } = useSuspenseQuery(
     trpc.reviews.getOne.queryOptions({
@@ -49,7 +56,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
         handleSuccess();
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(t(error.message));
       },
     })
   );
@@ -60,7 +67,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
         handleSuccess();
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error(t(error.message));
       },
     })
   );
@@ -108,7 +115,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <p className="font-medium">
-          {isPreview ? "Your rating" : "Liked it? Give it a rating"}
+          {isPreview ? t("Your rating") : t("Liked it? Give it a rating")}
         </p>
 
         <FormField
@@ -138,7 +145,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
               <FormItem>
                 <FormControl>
                   <Textarea
-                    placeholder="Want to leave a written review?"
+                    placeholder={t("Want to leave a written review?")}
                     disabled={isPreview}
                     {...field}
                   />
@@ -161,7 +168,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
               (updateReview.isPending && (
                 <LoaderIcon className="size-4 animate-spin" />
               ))}
-            {reviewData ? "Update review" : "Post review"}
+            {reviewData ? t("Update review") : t("Post review")}
           </Button>
         )}
       </form>
@@ -174,7 +181,7 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
           className="w-fit mt-4"
           onClick={() => setIsPreview(false)}
         >
-          Edit
+          {t("Edit")}
         </Button>
       )}
     </Form>
@@ -182,11 +189,12 @@ const ReviewForm = ({ productId, onRefetch }: Props) => {
 };
 
 export const ReviewFormSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="flex flex-col gap-y-4">
-      <p className="font-medium">Liked it? Give it a rating</p>
+      <p className="font-medium">{t("Liked it? Give it a rating")}</p>
       <StarPicker disabled />
-      <Textarea placeholder="Want to leave a written review?" disabled />
+      <Textarea placeholder={t("Want to leave a written review?")} disabled />
       <Button variant="default" size="lg" disabled>
         <LoaderIcon className="size-4 animate-spin" />
       </Button>

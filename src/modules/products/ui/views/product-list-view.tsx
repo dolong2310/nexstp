@@ -1,17 +1,17 @@
 import RefreshButton, { RefreshQueryKeys } from "@/components/refresh-button";
 import { cn } from "@/lib/utils";
 import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
+import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import ProductFilterPrice from "../components/product-filter-price";
 import ProductFilterTag from "../components/product-filter-tag";
+import ProductFiltersButton from "../components/product-filters-button";
 import ProductGridToggle from "../components/product-grid-toggle";
 import ProductList from "../components/product-list";
 import { ProductListSkeleton } from "../components/product-list-card";
 import { ProductListTableSkeleton } from "../components/product-list-table";
 import ProductSorts from "../components/product-sorts";
-import Logo from "@/components/logo";
 import ProductSortsButton from "../components/product-sorts-button";
-import ProductFiltersButton from "../components/product-filters-button";
 
 interface Props {
   category?: string | null;
@@ -26,6 +26,7 @@ const ProductListView = ({
   narrowView,
   isLayoutTable,
 }: Props) => {
+  const t = useTranslations();
   return (
     <div
       className={cn(
@@ -40,11 +41,11 @@ const ProductListView = ({
           "flex items-center justify-end flex-wrap md:justify-between gap-y-2 lg:gap-y-0 shadow-shadow border-2 rounded-base px-4",
           "sticky top-0 right-0 z-20 bg-secondary-background py-2",
           "px-4 lg:px-8"
-          // tenantSlug ? "top-[calc(40px_+_16px)]" : "top-0"
+          // tenantSlug ? "top-[calc(40px+16px)]" : "top-0"
         )}
       >
         <h3 className="hidden md:block text-2xl font-medium">
-          Curated for you
+          {t("Curated for you")}
         </h3>
         <div className="w-full md:w-auto flex items-center gap-x-4">
           <div className="mr-auto md:mr-0">
@@ -60,9 +61,14 @@ const ProductListView = ({
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-x-8 xl:gap-x-12 gap-y-6">
+      <div className="flex flex-col md:flex-row gap-x-8 gap-y-6">
         {/* Product Filters */}
-        <div className={cn("hidden md:block w-full md:w-2/6 lg:w-2/8 xl:w-2/8", !tenantSlug && "2xl:w-2/10")}>
+        <div
+          className={cn(
+            "hidden md:block w-full md:w-2/6 lg:w-2/8 xl:w-2/8",
+            !tenantSlug && "2xl:w-2/10"
+          )}
+        >
           <div
             className={cn(
               "sticky top-[calc(72px_+_16px)] left-0"
@@ -78,7 +84,12 @@ const ProductListView = ({
         </div>
 
         {/* Product List */}
-        <div className={cn("w-full md:w-4/6 lg:w-6/8 xl:w-6/8", !tenantSlug && "2xl:w-8/10")}>
+        <div
+          className={cn(
+            "w-full md:w-4/6 lg:w-6/8 xl:w-6/8",
+            !tenantSlug && "2xl:w-8/10"
+          )}
+        >
           <Suspense
             fallback={
               isLayoutTable ? (

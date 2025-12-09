@@ -1,27 +1,32 @@
 "use client";
 
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useSession from "@/hooks/use-session";
-import { cn, formatQuantityNumber, generateTenantUrl } from "@/lib/utils";
+import { Link, useRouter } from "@/i18n/navigation";
+import { cn, formatQuantityNumber, generateTenantPathname } from "@/lib/utils";
 import { LoaderIcon, ShoppingCartIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import useCart from "../../hooks/use-cart";
 import { useCartStore } from "../../store/use-cart-store";
 
 interface Props {
   className?: string;
   tenantSlug?: string;
+  hasTotalLabel?: boolean;
 }
 
-const CheckoutButton = ({ className, tenantSlug }: Props) => {
+const CheckoutButton = ({
+  className,
+  tenantSlug,
+  hasTotalLabel = true,
+}: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const cart = useCart();
@@ -30,6 +35,8 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
   const tenantCarts = cart.tenantCarts;
   const tenantCartSlugs = Object.keys(tenantCarts);
   const Component = !user ? Button : Link;
+  const totalLabel =
+    hasTotalLabel && totalItems > 0 ? formatQuantityNumber(totalItems) : "";
 
   const handlePreventUser = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLAnchorElement>
@@ -37,7 +44,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
     if (!user) {
       e.preventDefault();
       e.stopPropagation();
-      toast.info("Please sign in to proceed with checkout");
+      toast.info(t("Please sign in to proceed with checkout"));
       setTimeout(() => router.push("/sign-in"), 2000);
     }
   };
@@ -59,8 +66,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
                 size="sm"
                 className={cn("h-10 shrink-0", className)}
               >
-                <ShoppingCartIcon />{" "}
-                {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
+                <ShoppingCartIcon /> {totalLabel}
               </Button>
             </DropdownMenuTrigger>
 
@@ -78,7 +84,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
                     onClick={handlePreventUser}
                   >
                     <Link
-                      href={`${generateTenantUrl(tenantSlug)}/checkout`}
+                      href={`${generateTenantPathname(tenantSlug)}/checkout`}
                       className="flex items-center justify-between gap-2 text-sm font-heading cursor-pointer"
                     >
                       <p className="truncate overflow-hidden whitespace-nowrap max-w-[300px]">
@@ -101,12 +107,11 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
             className={cn("h-10 shrink-0", className)}
           >
             <Link
-              href={`${generateTenantUrl(
+              href={`${generateTenantPathname(
                 tenantCartSlugs[0] as string
               )}/checkout`}
             >
-              <ShoppingCartIcon />{" "}
-              {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
+              <ShoppingCartIcon /> {totalLabel}
             </Link>
           </Button>
         )}
@@ -122,11 +127,10 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
       className={cn("h-10 shrink-0", className)}
     >
       <Component
-        href={`${generateTenantUrl(tenantSlug)}/checkout`}
+        href={`${generateTenantPathname(tenantSlug)}/checkout`}
         onClick={handlePreventUser}
       >
-        <ShoppingCartIcon />{" "}
-        {totalItems > 0 ? formatQuantityNumber(totalItems) : ""}
+        <ShoppingCartIcon /> {totalLabel}
       </Component>
     </Button>
   );

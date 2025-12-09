@@ -3,7 +3,8 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import { Clock, Timer, Users } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
 interface Props {
   isCardLayout?: boolean;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const LaunchpadProgress = ({ isCardLayout, soldCount, ...props }: Props) => {
+  const t = useTranslations();
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [progress, setProgress] = useState<number>(0);
 
@@ -53,7 +55,7 @@ const LaunchpadProgress = ({ isCardLayout, soldCount, ...props }: Props) => {
         <div className="flex justify-between text-xs text-foreground">
           <p className="flex items-center gap-2">
             <Timer className="size-4" />
-            <span>Launch Progress</span>
+            <span>{t("Launch Progress")}</span>
           </p>
           <span>{Math.round(progress)}%</span>
         </div>
@@ -61,7 +63,9 @@ const LaunchpadProgress = ({ isCardLayout, soldCount, ...props }: Props) => {
         <div className="flex items-center justify-between text-xs text-foreground">
           <div className="flex items-center gap-1">
             <Users className="size-3" />
-            <span>{soldCount} sold</span>
+            <span>
+              {soldCount} {t("sold")}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="size-3" />
@@ -83,8 +87,10 @@ const LaunchpadProgress = ({ isCardLayout, soldCount, ...props }: Props) => {
       </div>
       <Progress value={progress} className="h-3" />
       <div className="flex items-center justify-between text-sm text-foreground">
-        <span>Ends {timeLeft}</span>
-        <span>{soldCount} sold</span>
+        <span>{t("Ends {timeLeft}", { timeLeft })}</span>
+        <span>
+          {soldCount} {t("sold")}
+        </span>
       </div>
     </div>
   );
@@ -95,13 +101,14 @@ export const LaunchpadProgressSkeleton = ({
 }: {
   isCardLayout?: boolean;
 }) => {
+  const t = useTranslations();
   if (isCardLayout) {
     return (
       <div className="space-y-3">
         <div className="flex justify-between text-xs text-foreground">
           <p className="flex items-center gap-2">
             <Timer className="size-4" />
-            <span>Launch Progress</span>
+            <span>{t("Launch Progress")}</span>
           </p>
           <Skeleton className="h-3 bg-secondary-background animate-pulse w-8" />
         </div>
@@ -125,7 +132,7 @@ export const LaunchpadProgressSkeleton = ({
       <div className="flex items-center justify-between text-sm">
         <span className="flex items-center gap-2">
           <Timer className="size-4" />
-          Launch Progress
+          {t("Launch Progress")}
         </span>
         <span className="font-medium">0%</span>
       </div>

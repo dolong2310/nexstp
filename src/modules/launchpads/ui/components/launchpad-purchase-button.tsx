@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import useSession from "@/hooks/use-session";
+import { Link, useRouter } from "@/i18n/navigation";
 import useCheckoutState from "@/modules/checkout/hooks/use-checkout-state";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderIcon, ShoppingCart } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 interface Props {
@@ -19,6 +19,7 @@ const LaunchpadPurchaseButton = ({
   isOwner,
   isPurchased,
 }: Props) => {
+  const t = useTranslations();
   const router = useRouter();
   const trpc = useTRPC();
   const { user } = useSession();
@@ -39,13 +40,13 @@ const LaunchpadPurchaseButton = ({
         if (error.data?.code === "UNAUTHORIZED") {
           router.push("/sign-in");
         }
-        toast.error(error.message || "Purchase failed");
+        toast.error(t(error.message) || t("Purchase failed"));
       },
     })
   );
 
   const renderPurchaseLabel = () => {
-    if (user?.id && isOwner) return "You own this launchpad";
+    if (user?.id && isOwner) return t("You own this launchpad");
     return (
       <>
         {purchaseMutation.isPending ? (
@@ -53,7 +54,7 @@ const LaunchpadPurchaseButton = ({
         ) : (
           <ShoppingCart className="size-5" />
         )}
-        <span>Buy</span>
+        <span>{t("Buy")}</span>
       </>
     );
   };
@@ -69,7 +70,7 @@ const LaunchpadPurchaseButton = ({
         variant="default"
         className="w-full space-x-1 text-lg font-semibold"
       >
-        <Link href={`/library/${launchpadId}`}>View in Library</Link>
+        <Link href={`/library/${launchpadId}`}>{t("View in Library")}</Link>
       </Button>
     );
   }

@@ -24,6 +24,23 @@ export function generateTenantUrl(slug: string) {
   return `${protocol}://${slug}.${domain}`;
 }
 
+/**
+ * Generate tenant pathname for internal routing (without domain)
+ * Use this with Link component from next-intl to preserve locale
+ */
+export function generateTenantPathname(slug: string) {
+  const enableSubdomainRouting =
+    process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING === "true";
+
+  // In development mode or subdomain routing disabled, use normal routing
+  if (IS_DEVELOPMENT || !enableSubdomainRouting) {
+    return `/tenants/${slug}`;
+  }
+
+  // In production with subdomain routing, redirect to root of subdomain
+  return "/";
+}
+
 export function formatCurrency(value: number | string) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",

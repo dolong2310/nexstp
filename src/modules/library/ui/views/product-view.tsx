@@ -9,7 +9,12 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "@/contexts/ThemeContext";
-import { fallbackImageUrl, formatName, generateTenantUrl } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import {
+  fallbackImageUrl,
+  formatName,
+  generateTenantPathname,
+} from "@/lib/utils";
 import ProductReviews, {
   ProductReviewsSkeleton,
 } from "@/modules/products/ui/components/product-reviews";
@@ -18,8 +23,8 @@ import { useTRPC } from "@/trpc/client";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { StarIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { Fragment, Suspense, useState } from "react";
 import ReviewForm, { ReviewFormSkeleton } from "../components/review-form";
 
@@ -49,6 +54,7 @@ const TabOptions = [
 ];
 
 const ProductView = ({ productId }: Props) => {
+  const t = useTranslations();
   const { theme } = useTheme();
   const trpc = useTRPC();
   const { data: product, refetch: refetchProduct } = useSuspenseQuery(
@@ -61,7 +67,7 @@ const ProductView = ({ productId }: Props) => {
 
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="relative">
@@ -85,7 +91,7 @@ const ProductView = ({ productId }: Props) => {
 
             {product.isFromLaunchpad && (
               <Badge className="absolute top-4 left-4">
-                <p className="text-xs font-medium">Launchpad</p>
+                <p className="text-xs font-medium">{t("Launchpad")}</p>
               </Badge>
             )}
 
@@ -114,13 +120,13 @@ const ProductView = ({ productId }: Props) => {
                     </p>
                   ) : (
                     <p className="font-medium text-foreground italic">
-                      No description available
+                      {t("No description available")}
                     </p>
                   )}
 
                   {product.tags && product.tags.length > 0 && (
                     <div className="mt-4 space-y-2">
-                      <h3 className="font-semibold">Tags</h3>
+                      <h3 className="font-semibold">{t("Tags")}</h3>
                       <div className="flex flex-wrap gap-2">
                         {(product.tags as Tag[]).map((tag) => (
                           <Badge key={tag.id}>
@@ -140,7 +146,7 @@ const ProductView = ({ productId }: Props) => {
                     <RichText data={product.content} />
                   ) : (
                     <p className="font-medium text-foreground italic">
-                      No content available
+                      {t("No content available")}
                     </p>
                   )}
                 </div>
@@ -150,11 +156,13 @@ const ProductView = ({ productId }: Props) => {
               <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
                 <div className="p-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-medium">Ratings</h3>
+                    <h3 className="text-xl font-medium">{t("Ratings")}</h3>
                     <div className="flex items-center gap-x-1 font-medium">
                       <StarIcon className="size-4 fill-black dark:fill-white" />
                       <p>({product.reviewRating})</p>
-                      <p className="text-base">{product.reviewCount} ratings</p>
+                      <p className="text-base">
+                        {product.reviewCount} {t("ratings")}
+                      </p>
                     </div>
                   </div>
 
@@ -162,7 +170,7 @@ const ProductView = ({ productId }: Props) => {
                     {[5, 4, 3, 2, 1].map((stars) => (
                       <Fragment key={stars}>
                         <div className="font-medium">
-                          {stars} {stars === 1 ? "star" : "stars"}
+                          {stars} {stars === 1 ? t("star") : t("stars")}
                         </div>
                         <Progress
                           value={product.ratingDistribution[stars]}
@@ -189,7 +197,7 @@ const ProductView = ({ productId }: Props) => {
           <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4">
             <div className="px-6">
               <Link
-                href={generateTenantUrl(product.tenant.slug)}
+                href={generateTenantPathname(product.tenant.slug)}
                 className="flex items-center gap-2"
               >
                 <Avatar className="size-6">
@@ -226,9 +234,10 @@ const ProductView = ({ productId }: Props) => {
 };
 
 export const ProductViewSkeleton = () => {
+  const t = useTranslations();
   return (
     <div className="px-4 lg:px-12 py-6 lg:py-10">
-      <div className="flex flex-col md:flex-row items-start gap-4 md:gap-8">
+      <div className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-8">
         {/* Left Column */}
         <div className="w-full md:w-3/5 space-y-6">
           <div className="border-2 shadow-shadow rounded-base bg-background overflow-hidden">
@@ -265,13 +274,17 @@ export const ProductViewSkeleton = () => {
             </TabsContent>
             <TabsContent className="shadow-shadow rounded-base" value="ratings">
               <div className="border rounded-sm bg-background overflow-hidden p-6 space-y-4">
-                <h3 className="text-xl font-medium animate-pulse">Ratings</h3>
+                <h3 className="text-xl font-medium animate-pulse">
+                  {t("Ratings")}
+                </h3>
                 {[5, 4, 3, 2, 1].map((stars) => (
                   <div
                     key={stars}
                     className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4 animate-pulse"
                   >
-                    <span>{stars} stars</span>
+                    <span>
+                      {stars} {t("star")}
+                    </span>
                     <Progress value={0} className="h-[1lh]" />
                     <span>0%</span>
                   </div>
