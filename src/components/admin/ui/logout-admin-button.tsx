@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "@/i18n/navigation";
 import { useUserStore } from "@/modules/auth/store/use-user-store";
 import { User } from "@/payload-types";
 import { LogOutIcon, useAuth } from "@payloadcms/ui";
+import { useRouter } from "next/navigation";
 
 const LogoutAdminButton = () => {
   const router = useRouter();
