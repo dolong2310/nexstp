@@ -31,6 +31,11 @@ export default function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
+  // Bỏ qua admin/payload khỏi next-intl
+  if (pathname.startsWith("/admin")) {
+    return NextResponse.next();
+  }
+
   //   const theme = req.cookies.get("theme")?.value || "light";
   //   const response = NextResponse.next(); // Clone response để modify headers
   //   response.headers.set("x-theme", theme); // Set theme vào response headers để server component có thể access
@@ -53,7 +58,8 @@ export const config = {
      * 5. /flags (flag icons)
      * 6. /icons (tech icons)
      */
-    "/((?!api/|_next/|_static/|_vercel|media/|flags/|icons/|[\\w-]+\\.\\w+).*)",
+    // "/((?!admin|_payload|api/|_next/|_static/|_vercel|media/|flags/|icons/|[\\w-]+\\.\\w+).*)",
+    "/((?!admin|api/|_next/|_static/|_vercel|media/|flags/|icons/|[\\w-]+\\.\\w+).*)",
     "/library/:path*",
     "/conversations/:path*",
     "/checkout",
