@@ -224,7 +224,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
 
         {/* Right Column */}
         <div className="w-full md:w-2/5">
-          <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4 sticky top-4 right-0">
+          <div className="border-2 shadow-shadow rounded-base bg-background py-6 space-y-4 sticky top-4 right-0 z-10">
             <div className="px-6">
               <Link
                 href={generateTenantPathname(tenantSlug)}
@@ -281,11 +281,7 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
                   customLabel={product.isOwner ? t("You own this product") : ""}
                 />
                 {isProductInCart && (
-                  <CheckoutButton
-                    tenantSlug={tenantSlug}
-                    className="h-11"
-                    hasTotalLabel={false}
-                  />
+                  <CheckoutButton tenantSlug={tenantSlug} className="h-11" />
                 )}
                 <Button
                   disabled={isCopied}
@@ -300,7 +296,9 @@ const ProductView = ({ productId, tenantSlug }: Props) => {
               <p className="text-center font-medium">
                 {product.refundPolicy === "no-refunds"
                   ? t("No refunds")
-                  : `${t(RefundPolicy[product.refundPolicy!])} ${t("money back guarantee")}`}
+                  : `${t(RefundPolicy[product.refundPolicy!])} ${t(
+                      "money back guarantee"
+                    )}`}
               </p>
             </div>
           </div>

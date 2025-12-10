@@ -18,14 +18,9 @@ import { useCartStore } from "../../store/use-cart-store";
 interface Props {
   className?: string;
   tenantSlug?: string;
-  hasTotalLabel?: boolean;
 }
 
-const CheckoutButton = ({
-  className,
-  tenantSlug,
-  hasTotalLabel = true,
-}: Props) => {
+const CheckoutButton = ({ className, tenantSlug }: Props) => {
   const t = useTranslations();
   const router = useRouter();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
@@ -34,9 +29,8 @@ const CheckoutButton = ({
   const totalItems = cart.getTotalItems(tenantSlug);
   const tenantCarts = cart.tenantCarts;
   const tenantCartSlugs = Object.keys(tenantCarts);
-  const Component = !user ? Button : Link;
-  const totalLabel =
-    hasTotalLabel && totalItems > 0 ? formatQuantityNumber(totalItems) : "";
+  const Component = !user || totalItems === 0 ? Button : Link;
+  const totalLabel = totalItems > 0 ? formatQuantityNumber(totalItems) : 0;
 
   const handlePreventUser = (
     e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLAnchorElement>
@@ -51,13 +45,18 @@ const CheckoutButton = ({
 
   if (!hasHydrated) return <CheckoutButtonSkeleton />;
 
-  if (totalItems === 0) return null;
+  // if (totalItems === 0) return null;
 
   // If tenantSlug is provided, show the cart for that specific tenant
   // Otherwise, show a dropdown for all tenant carts
   if (!tenantSlug) {
     return (
-      <>
+      <div
+        className={cn(
+          "fixed bottom-4 left-1/2 -translate-x-1/2",
+          totalItems > 0 ? "animate-raw-slide-up" : "animate-raw-slide-down"
+        )}
+      >
         {tenantCartSlugs.length > 1 ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -65,8 +64,9 @@ const CheckoutButton = ({
                 variant="default"
                 size="sm"
                 className={cn("h-10 shrink-0", className)}
+                disabled={totalItems === 0}
               >
-                <ShoppingCartIcon /> {totalLabel}
+                <ShoppingCartIcon /> {t("Checkout")} ({totalLabel})
               </Button>
             </DropdownMenuTrigger>
 
@@ -105,34 +105,43 @@ const CheckoutButton = ({
             variant="default"
             size="sm"
             className={cn("h-10 shrink-0", className)}
+            disabled={totalItems === 0}
           >
-            <Link
+            <Component
               href={`${generateTenantPathname(
                 tenantCartSlugs[0] as string
               )}/checkout`}
             >
-              <ShoppingCartIcon /> {totalLabel}
-            </Link>
+              <ShoppingCartIcon /> {t("Checkout")} ({totalLabel})
+            </Component>
           </Button>
         )}
-      </>
+      </div>
     );
   }
 
   return (
-    <Button
-      asChild
-      variant="default"
-      size="sm"
-      className={cn("h-10 shrink-0", className)}
+    <div
+      className={cn(
+        "fixed bottom-4 left-1/2 -translate-x-1/2",
+        totalItems > 0 ? "animate-raw-slide-up" : "animate-raw-slide-down"
+      )}
     >
-      <Component
-        href={`${generateTenantPathname(tenantSlug)}/checkout`}
-        onClick={handlePreventUser}
+      <Button
+        asChild
+        variant="default"
+        size="sm"
+        className={cn("h-10 shrink-0", className)}
+        disabled={totalItems === 0}
       >
-        <ShoppingCartIcon /> {totalLabel}
-      </Component>
-    </Button>
+        <Component
+          href={`${generateTenantPathname(tenantSlug)}/checkout`}
+          onClick={handlePreventUser}
+        >
+          <ShoppingCartIcon /> {t("Checkout")} ({totalLabel})
+        </Component>
+      </Button>
+    </div>
   );
 };
 
