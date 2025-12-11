@@ -12,6 +12,9 @@ import { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
+// Force dynamic rendering to support useParams() in client components
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
 }

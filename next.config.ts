@@ -47,9 +47,9 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: false, // true: Enable for better performance & debugging
   devIndicators: false,
-  output: "standalone", // Smaller Docker images
+  // output: "standalone", // Smaller Docker images - DISABLED: Conflicts with "next start"
   experimental: {
-    turbopackFileSystemCacheForDev: true, // Next.js 16: Turbopack filesystem caching for faster dev restarts
+    // turbopackFileSystemCacheForDev: true, // Next.js 16: Turbopack filesystem caching for faster dev restarts
     // Tree-shake multiple packages
     optimizePackageImports: [
       "@radix-ui/*",

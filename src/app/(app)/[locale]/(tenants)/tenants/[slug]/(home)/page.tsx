@@ -24,6 +24,9 @@ import { getTranslations } from "next-intl/server";
 import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
+// Force dynamic rendering to support useParams() in client components
+export const dynamic = "force-dynamic";
+
 interface Props {
   searchParams: Promise<SearchParams>;
   params: Promise<{ slug: string; locale: string }>;

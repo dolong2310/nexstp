@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import useMounted from "@/hooks/use-mounted";
 import { cn } from "@/lib/utils";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { ListFilterIcon } from "lucide-react";
@@ -21,6 +22,7 @@ interface Props {
 const Categories = ({ data }: Props) => {
   const t = useTranslations();
   const params = useParams();
+  const isMounted = useMounted();
 
   const containerRef = useRef<HTMLDivElement>(null); // Container chứa categories hiển thị
   const measureRef = useRef<HTMLDivElement>(null); // Div ẩn dùng để đo kích thước items
@@ -103,7 +105,10 @@ const Categories = ({ data }: Props) => {
       {/* Container hiển thị categories với responsive layout */}
       <div
         ref={containerRef}
-        className="flex flex-nowrap items-center gap-2"
+        className={cn(
+          "flex flex-nowrap items-center gap-2",
+          !isMounted && "overflow-hidden" // fix crash layout khi component chưa mounted
+        )}
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
       >

@@ -17,6 +17,9 @@ import {
 import { getTranslations } from "next-intl/server";
 import { Locale } from "next-intl";
 
+// Force dynamic rendering to support useParams() in client components
+export const dynamic = "force-dynamic";
+
 interface Props {
   searchParams: Promise<SearchParams>;
   params: Promise<{ locale: string }>;
