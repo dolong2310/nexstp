@@ -46,6 +46,7 @@ const CheckoutButton = ({ className, tenantSlug }: Props) => {
   if (!hasHydrated) return <CheckoutButtonSkeleton />;
 
   // if (totalItems === 0) return null;
+  if (!user) return null;
 
   // If tenantSlug is provided, show the cart for that specific tenant
   // Otherwise, show a dropdown for all tenant carts

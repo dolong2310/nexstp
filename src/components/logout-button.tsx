@@ -7,13 +7,14 @@ import {
 } from "@/components/ui/popover";
 import { PRIVATE_PATHS } from "@/constants";
 import useSession from "@/hooks/use-session";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { useUserStore } from "@/modules/auth/store/use-user-store";
+import useCart from "@/modules/checkout/hooks/use-cart";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOutIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
 import { useState } from "react";
 import { toast } from "./custom-toast";
 import { Button } from "./ui/button";
@@ -31,6 +32,7 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const { user, isLoading } = useSession();
+  const cart = useCart();
 
   const setForceLogout = useGlobalStore((state) => state.setForceLogout);
   const removeUser = useUserStore((state) => state.remove);
@@ -40,6 +42,7 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
       onSuccess: async () => {
         setForceLogout(true);
         removeUser();
+        cart.clearAllCarts();
         queryClient.invalidateQueries(trpc.auth.session.queryOptions());
         if (PRIVATE_PATHS.includes(pathname)) {
           router.push("/");
