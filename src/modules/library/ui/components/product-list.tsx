@@ -3,6 +3,7 @@
 import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
+import { useBreakpoints } from "@/hooks/use-breakpoints";
 import { ProductListEmpty } from "@/modules/products/ui/components/product-list";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
@@ -13,6 +14,8 @@ import ProductCard, { ProductCardSkeleton } from "./product-card";
 const ProductList = () => {
   const t = useTranslations();
   const trpc = useTRPC();
+  const { isMobile } = useBreakpoints();
+
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
       trpc.library.getMany.infiniteQueryOptions(
@@ -59,7 +62,8 @@ const ProductList = () => {
           hasMore={hasNextPage}
           isLoading={isFetchingNextPage}
           next={fetchNextPage}
-          threshold={1}
+          threshold={0.5}
+          rootMargin={isMobile ? "200px" : "500px"}
         >
           {hasNextPage && (
             <Button

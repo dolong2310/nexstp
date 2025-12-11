@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TABLE_LIMIT } from "@/constants";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useBreakpoints } from "@/hooks/use-breakpoints";
 import { Link } from "@/i18n/navigation";
 import {
   cn,
@@ -64,6 +65,7 @@ const ProductListTable = ({
 }: Props) => {
   const t = useTranslations();
   const { theme } = useTheme();
+  const { isMobile } = useBreakpoints();
   const dataTableRef = useRef<Product[]>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -311,7 +313,8 @@ const ProductListTable = ({
           hasMore={hasNextPage}
           isLoading={isFetchingNextPage}
           next={fetchNextPage}
-          threshold={1}
+          threshold={0.5}
+          rootMargin={isMobile ? "200px" : "500px"}
         >
           {hasNextPage && (
             <Button

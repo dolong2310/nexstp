@@ -2,11 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT, TABLE_LIMIT } from "@/constants";
+import { useBreakpoints } from "@/hooks/use-breakpoints";
 import { Link } from "@/i18n/navigation";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 import useProductFilter from "../../hooks/use-product-filter";
 import useProductGridLayout from "../../hooks/use-product-grid-layout";
 import { ProductsGetManyOutput } from "../../types";
@@ -22,6 +24,16 @@ interface Props {
 const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
   const [filters] = useProductFilter();
   const [{ layout }] = useProductGridLayout();
+  const { isMobile, isTablet, isDesktop, isDesktopLg, isDesktopXl } =
+    useBreakpoints();
+
+  const limitCalculated = useMemo(() => {
+    if (layout === "table") return TABLE_LIMIT;
+    if (isDesktopXl) return 20;
+    if (isDesktopLg) return 16;
+    if (isDesktop) return 12;
+    return DEFAULT_LIMIT;
+  }, [layout, isMobile, isTablet, isDesktop, isDesktopLg, isDesktopXl]);
 
   const trpc = useTRPC();
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
@@ -31,7 +43,7 @@ const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
           ...filters,
           category,
           tenantSlug,
-          limit: layout === "table" ? TABLE_LIMIT : DEFAULT_LIMIT,
+          limit: limitCalculated,
         },
         {
           getNextPageParam: (lastPage) => {

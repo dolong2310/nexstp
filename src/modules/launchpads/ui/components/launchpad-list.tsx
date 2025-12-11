@@ -3,6 +3,7 @@
 import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
+import { useBreakpoints } from "@/hooks/use-breakpoints";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
@@ -16,6 +17,7 @@ const LaunchpadList = () => {
   const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
   const trpc = useTRPC();
   const [filters] = useLaunchpadFilter();
+  const { isMobile } = useBreakpoints();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSuspenseInfiniteQuery(
@@ -56,7 +58,8 @@ const LaunchpadList = () => {
           hasMore={hasNextPage}
           isLoading={isFetchingNextPage}
           next={fetchNextPage}
-          threshold={1}
+          threshold={0.5}
+          rootMargin={isMobile ? "200px" : "500px"}
         >
           {hasNextPage && (
             <Button

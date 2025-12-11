@@ -3,6 +3,7 @@
 import InfiniteScroll from "@/components/infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
+import { MediaQuerySizes, useBreakpoints } from "@/hooks/use-breakpoints";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/store/use-global-store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
@@ -11,15 +12,6 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { ProductsGetManyOutput } from "../../types";
 import ProductCard, { ProductCardSkeleton } from "./product-card";
-
-export enum MediaQuerySizes {
-  XS = 416,
-  SM = 640,
-  MD = 768,
-  LG = 1024,
-  XL = 1280,
-  "2XL" = 1536,
-}
 
 interface Props {
   productData: ProductsGetManyOutput;
@@ -38,6 +30,7 @@ const ProductListCard = ({
 }: Props) => {
   const t = useTranslations();
   const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
+  const { isMobile } = useBreakpoints();
 
   const [columns, setColumns] = useState<number>(4);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -190,7 +183,8 @@ const ProductListCard = ({
           hasMore={hasNextPage}
           isLoading={isFetchingNextPage}
           next={fetchNextPage}
-          threshold={1}
+          threshold={0.5}
+          rootMargin={isMobile ? "200px" : "500px"}
         >
           {hasNextPage && (
             <Button

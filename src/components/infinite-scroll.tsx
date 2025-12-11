@@ -1,5 +1,31 @@
 import * as React from "react";
 
+/**
+ * InfiniteScroll Component
+ * 
+ * Component hỗ trợ infinite scroll sử dụng Intersection Observer API
+ * để tự động tải thêm dữ liệu khi user scroll đến cuối (hoặc đầu) danh sách.
+ * 
+ * @param {boolean} isLoading - Trạng thái đang tải dữ liệu. Khi true, không trigger load thêm để tránh gọi API trùng lặp
+ * @param {boolean} hasMore - Còn dữ liệu để tải thêm hay không. Khi false, sẽ không trigger hàm next()
+ * @param {() => unknown} next - Hàm callback được gọi khi cần load thêm dữ liệu (thường là fetch API)
+ * @param {number} [threshold=1] - Ngưỡng hiển thị để trigger load (0-1). VD: 0.8 = trigger khi element hiển thị 80%
+ * @param {Element | Document | null} [root=null] - Element container làm root cho Intersection Observer. null = viewport
+ * @param {string} [rootMargin="0px"] - Margin xung quanh root (CSS syntax). VD: "200px" = trigger sớm hơn 200px
+ * @param {boolean} [reverse] - Đảo ngược vị trí observe. false = observe cuối (scroll xuống), true = observe đầu (scroll lên)
+ * @param {React.ReactNode} [children] - Các element con để render. Ref observer sẽ được attach vào element đầu/cuối
+ * 
+ * @example
+ * <InfiniteScroll
+ *   isLoading={loading}
+ *   hasMore={hasNextPage}
+ *   next={fetchMoreData}
+ *   threshold={0.8}
+ *   rootMargin="200px"
+ * >
+ *   {items.map(item => <ItemCard key={item.id} {...item} />)}
+ * </InfiniteScroll>
+ */
 interface InfiniteScrollProps {
   isLoading: boolean;
   hasMore: boolean;
