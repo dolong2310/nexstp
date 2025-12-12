@@ -21,6 +21,38 @@ interface Props {
   fetchNextPage: () => void;
 }
 
+const calculateColumns = (width: number, narrowView: boolean) => {
+  if (narrowView) {
+    switch (true) {
+      case width >= MediaQuerySizes["2XL"]:
+      case width >= MediaQuerySizes.XL:
+        return 3;
+      case width >= MediaQuerySizes.LG:
+      case width >= MediaQuerySizes.MD:
+      case width >= MediaQuerySizes.SM:
+      case width >= MediaQuerySizes.XS:
+        return 2;
+      default:
+        return 1;
+    }
+  }
+
+  switch (true) {
+    case width >= MediaQuerySizes["2XL"]:
+      return 5;
+    case width >= MediaQuerySizes.XL:
+      return 4;
+    case width >= MediaQuerySizes.LG:
+      return 3;
+    case width >= MediaQuerySizes.MD:
+    case width >= MediaQuerySizes.SM:
+    case width >= MediaQuerySizes.XS:
+      return 2;
+    default:
+      return 1;
+  }
+};
+
 const ProductListCard = ({
   productData,
   hasNextPage,
@@ -32,7 +64,9 @@ const ProductListCard = ({
   const loadingGlobal = useGlobalStore((state) => state.loadingGlobal);
   const { isMobile } = useBreakpoints();
 
-  const [columns, setColumns] = useState<number>(4);
+  const [columns, setColumns] = useState<number>(() =>
+    calculateColumns(window.innerWidth, !!narrowView)
+  );
   const parentRef = useRef<HTMLDivElement>(null);
   const rowsLength = Math.ceil(productData.length / columns);
 
@@ -62,45 +96,7 @@ const ProductListCard = ({
 
   useEffect(() => {
     const updateColumns = () => {
-      const width = window.innerWidth;
-      if (narrowView) {
-        switch (true) {
-          case width >= MediaQuerySizes["2XL"]:
-          case width >= MediaQuerySizes.XL:
-            setColumns(3);
-            break;
-          case width >= MediaQuerySizes.LG:
-          case width >= MediaQuerySizes.MD:
-          case width >= MediaQuerySizes.SM:
-          case width >= MediaQuerySizes.XS:
-            setColumns(2);
-            break;
-          default:
-            setColumns(1);
-            break;
-        }
-        return;
-      }
-
-      switch (true) {
-        case width >= MediaQuerySizes["2XL"]:
-          setColumns(5);
-          break;
-        case width >= MediaQuerySizes.XL:
-          setColumns(4);
-          break;
-        case width >= MediaQuerySizes.LG:
-          setColumns(3);
-          break;
-        case width >= MediaQuerySizes.MD:
-        case width >= MediaQuerySizes.SM:
-        case width >= MediaQuerySizes.XS:
-          setColumns(2);
-          break;
-        default:
-          setColumns(1);
-          break;
-      }
+      setColumns(calculateColumns(window.innerWidth, !!narrowView));
     };
 
     updateColumns();
@@ -116,12 +112,8 @@ const ProductListCard = ({
     <>
       <div ref={parentRef} className="w-full">
         <div
-          className="w-full relative will-change-transform contain-layout contain-style contain-paint content-visibility-auto"
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-            // contain: "layout style paint", // CSS containment để tối ưu rendering
-            // contentVisibility: "auto", // Content-visibility cho better performance
-          }}
+          className="w-full relative will-change-transform"
+          style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             return (
