@@ -69,14 +69,14 @@ const LogoutButton = ({ iconClassName, isLabel, labelClassName }: Props) => {
     setIsOpen(false);
   };
 
-  if (isLoading)
-    return (
-      <Button variant="default" size="icon" disabled>
-        <LogOutIcon className={iconClassName} />
-      </Button>
-    );
+  // if (isLoading)
+  //   return (
+  //     <Button variant="default" size="icon" disabled>
+  //       <LogOutIcon className={iconClassName} />
+  //     </Button>
+  //   );
 
-  if (!user && !isLoading) return null;
+  if ((!user && !isLoading) || isLoading) return null;
 
   if (isLabel) {
     return (

@@ -116,11 +116,11 @@ const ProductListCard = ({
     <>
       <div ref={parentRef} className="w-full">
         <div
-          className="w-full relative will-change-transform"
+          className="w-full relative will-change-transform contain-layout contain-style contain-paint content-visibility-auto"
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
-            contain: "layout style paint", // CSS containment để tối ưu rendering
-            contentVisibility: "auto", // Content-visibility cho better performance
+            // contain: "layout style paint", // CSS containment để tối ưu rendering
+            // contentVisibility: "auto", // Content-visibility cho better performance
           }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
@@ -138,11 +138,6 @@ const ProductListCard = ({
                   transform: `translateY(${
                     virtualRow.start - rowVirtualizer.options.scrollMargin
                   }px)`,
-                  // CSS optimization cho smooth scrolling
-                  willChange: "transform",
-                  backfaceVisibility: "hidden",
-                  WebkitBackfaceVisibility: "hidden",
-                  contain: "layout style paint",
                 }}
               >
                 {columnVirtualizer.getVirtualItems().map((virtualColumn) => {
@@ -160,11 +155,6 @@ const ProductListCard = ({
                       key={virtualColumn.key}
                       data-index={virtualColumn.index}
                       ref={columnVirtualizer.measureElement}
-                      style={{
-                        // CSS containment cho mỗi item
-                        contain: "layout style paint",
-                        contentVisibility: "auto",
-                      }}
                     >
                       <ProductCard
                         key={product.id}

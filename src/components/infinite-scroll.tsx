@@ -1,11 +1,19 @@
-import * as React from "react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 
 /**
  * InfiniteScroll Component
- * 
+ *
  * Component hỗ trợ infinite scroll sử dụng Intersection Observer API
  * để tự động tải thêm dữ liệu khi user scroll đến cuối (hoặc đầu) danh sách.
- * 
+ *
  * @param {boolean} isLoading - Trạng thái đang tải dữ liệu. Khi true, không trigger load thêm để tránh gọi API trùng lặp
  * @param {boolean} hasMore - Còn dữ liệu để tải thêm hay không. Khi false, sẽ không trigger hàm next()
  * @param {() => unknown} next - Hàm callback được gọi khi cần load thêm dữ liệu (thường là fetch API)
@@ -14,7 +22,7 @@ import * as React from "react";
  * @param {string} [rootMargin="0px"] - Margin xung quanh root (CSS syntax). VD: "200px" = trigger sớm hơn 200px
  * @param {boolean} [reverse] - Đảo ngược vị trí observe. false = observe cuối (scroll xuống), true = observe đầu (scroll lên)
  * @param {React.ReactNode} [children] - Các element con để render. Ref observer sẽ được attach vào element đầu/cuối
- * 
+ *
  * @example
  * <InfiniteScroll
  *   isLoading={loading}
@@ -47,10 +55,13 @@ const InfiniteScroll = ({
   reverse,
   children,
 }: InfiniteScrollProps) => {
-  const observer = React.useRef<IntersectionObserver>(null);
+  const observer = useRef<IntersectionObserver>(null);
+  const rafRef = useRef<number>(0);
+  const nextCalledRef = useRef(false);
+
   // This callback ref will be called when it is dispatched to an element or detached from an element,
   // or when the callback function changes.
-  const observerRef = React.useCallback(
+  const observerRef = useCallback(
     (element: HTMLElement | null) => {
       let safeThreshold = threshold;
       if (threshold < 0 || threshold > 1) {
@@ -67,11 +78,29 @@ const InfiniteScroll = ({
       if (observer.current) observer.current.disconnect();
       if (!element) return;
 
+      // Reset flag khi tạo observer mới
+      nextCalledRef.current = false;
+
       // Create a new IntersectionObserver instance because hasMore or next may be changed.
       observer.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0]?.isIntersecting && hasMore) {
-            next();
+          if (entries[0]?.isIntersecting && hasMore && !nextCalledRef.current) {
+            // Sử dụng requestAnimationFrame để tối ưu performance
+            // Đảm bảo next() chỉ được gọi 1 lần
+            if (rafRef.current) {
+              cancelAnimationFrame(rafRef.current);
+            }
+
+            rafRef.current = requestAnimationFrame(() => {
+              if (!nextCalledRef.current) {
+                nextCalledRef.current = true;
+                next();
+                // Reset flag sau 100ms để cho phép gọi lại nếu cần
+                setTimeout(() => {
+                  nextCalledRef.current = false;
+                }, 100);
+              }
+            });
           }
         },
         { threshold: safeThreshold, root, rootMargin }
@@ -81,15 +110,21 @@ const InfiniteScroll = ({
     [hasMore, isLoading, next, threshold, root, rootMargin]
   );
 
-  const flattenChildren = React.useMemo(
-    () => React.Children.toArray(children),
-    [children]
-  );
+  // Cleanup RAF on unmount
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
+
+  const flattenChildren = useMemo(() => Children.toArray(children), [children]);
 
   return (
     <>
       {flattenChildren.map((child, index) => {
-        if (!React.isValidElement(child)) {
+        if (!isValidElement(child)) {
           process.env.NODE_ENV === "development" &&
             console.warn("You should use a valid element with InfiniteScroll");
           return child;
@@ -100,7 +135,7 @@ const InfiniteScroll = ({
           : index === flattenChildren.length - 1;
         const ref = isObserveTarget ? observerRef : null;
         // @ts-ignore ignore ref type
-        return React.cloneElement(child, { ref });
+        return cloneElement(child, { ref });
       })}
     </>
   );
