@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 
-function useDebounce<T>(value: T, delay: number): T {
+/**
+ * Custom hook để debounce một giá trị
+ * Giúp giảm số lần re-render và tối ưu performance
+ *
+ * @param value - Giá trị cần debounce
+ * @param delay - Thời gian delay (ms)
+ * @returns Giá trị đã được debounced
+ */
+function useDebounce<T>(value: T, delay: number = 300): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {

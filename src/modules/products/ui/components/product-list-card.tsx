@@ -119,6 +119,8 @@ const ProductListCard = ({
           className="w-full relative will-change-transform"
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
+            contain: "layout style paint", // CSS containment để tối ưu rendering
+            contentVisibility: "auto", // Content-visibility cho better performance
           }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
@@ -136,6 +138,11 @@ const ProductListCard = ({
                   transform: `translateY(${
                     virtualRow.start - rowVirtualizer.options.scrollMargin
                   }px)`,
+                  // CSS optimization cho smooth scrolling
+                  willChange: "transform",
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  contain: "layout style paint",
                 }}
               >
                 {columnVirtualizer.getVirtualItems().map((virtualColumn) => {
@@ -145,14 +152,19 @@ const ProductListCard = ({
 
                   if (!product) return null;
 
-                  // Priority loading cho images above the fold (first 8 products)
-                  const isPriority = productIndex < 8;
+                  // Priority loading cho images above the fold (first 10 products)
+                  const isPriority = productIndex < 10;
 
                   return (
                     <div
                       key={virtualColumn.key}
                       data-index={virtualColumn.index}
                       ref={columnVirtualizer.measureElement}
+                      style={{
+                        // CSS containment cho mỗi item
+                        contain: "layout style paint",
+                        contentVisibility: "auto",
+                      }}
                     >
                       <ProductCard
                         key={product.id}
