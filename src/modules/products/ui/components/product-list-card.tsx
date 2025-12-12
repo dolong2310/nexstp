@@ -65,7 +65,7 @@ const ProductListCard = ({
   const { isMobile } = useBreakpoints();
 
   const [columns, setColumns] = useState<number>(() =>
-    calculateColumns(window.innerWidth, !!narrowView)
+    calculateColumns(window?.innerWidth, !!narrowView)
   );
   const parentRef = useRef<HTMLDivElement>(null);
   const rowsLength = Math.ceil(productData.length / columns);
