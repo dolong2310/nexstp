@@ -6,42 +6,42 @@ const LIST_PACKAGE = [
   {
     icon: "/icons/tRPC.svg",
     name: "@trpc/client",
-    version: "11.0.3",
+    version: "11.7.2",
   },
   {
     icon: "/icons/payload.svg",
     name: "payloadcms",
-    version: "3.49.1",
+    version: "3.68.2",
   },
   {
     icon: "/icons/next.svg",
     name: "next",
-    version: "15.2.4",
+    version: "16.0.8",
   },
   {
     icon: "/icons/react.svg",
     name: "react",
-    version: "^19.0.0",
+    version: "^19.2.1",
   },
   {
     icon: "/icons/tailwindcss.svg",
     name: "tailwindcss",
-    version: "^4",
+    version: "^4.1.17",
   },
   {
     icon: "/icons/react-query.svg",
     name: "react-query",
-    version: "5.84.2",
+    version: "5.90.12",
   },
   {
     icon: "/icons/react-query.svg",
     name: "react-virtual",
-    version: "^3.13.12",
+    version: "^3.13.13",
   },
   {
     icon: "/icons/zod.svg",
     name: "zod",
-    version: "^4.0.5",
+    version: "^4.1.13",
   },
   {
     icon: "/icons/shadcn.svg",
@@ -51,12 +51,12 @@ const LIST_PACKAGE = [
   {
     icon: "/icons/react-hook-form.svg",
     name: "react-hook-form",
-    version: "7.53.1",
+    version: "7.68.0",
   },
   {
     icon: "/icons/stripe.svg",
     name: "stripe",
-    version: "^18.0.0",
+    version: "^20.0.0",
   },
   {
     icon: "/icons/pusher.svg",
@@ -66,12 +66,12 @@ const LIST_PACKAGE = [
   {
     icon: "/icons/mongodb.svg",
     name: "mongodb",
-    version: "3.49.1",
+    version: "3.68.2",
   },
   {
     icon: "/icons/zustand.svg",
     name: "zustand",
-    version: "^5.0.3",
+    version: "^5.0.9",
   },
   {
     icon: "/icons/date-fns.svg",
@@ -81,12 +81,12 @@ const LIST_PACKAGE = [
   {
     icon: "/icons/nuqs.svg",
     name: "nuqs",
-    version: "^2.4.1",
+    version: "^2.8.5",
   },
   {
     icon: "/icons/typescript.svg",
     name: "typescript",
-    version: "^5",
+    version: "^5.9.3",
   },
 ];
 
