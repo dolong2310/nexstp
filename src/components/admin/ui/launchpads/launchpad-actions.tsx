@@ -3,7 +3,7 @@
 import { isSuperAdmin as isSuperAdminHelper } from "@/lib/access";
 import { Tenant } from "@/payload-types";
 import { Button, useAuth, useDocumentInfo } from "@payloadcms/ui";
-import { useRouter } from "@/i18n/navigation";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -11,7 +11,7 @@ export const LaunchpadActions = () => {
   const { user } = useAuth();
   const document = useDocumentInfo();
   // console.log("document: ", document);
-  const { initialData, savedDocumentData } = document;
+  const { initialData } = document;
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);

@@ -1,5 +1,4 @@
 import { UserIcon } from "lucide-react";
-import React from "react";
 
 const ProfileInfo = () => {
   return (
