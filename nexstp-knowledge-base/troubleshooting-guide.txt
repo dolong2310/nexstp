@@ -1,0 +1,807 @@
+Troubleshooting Guide - Nexstp Marketplace
+
+Common Issues and Solutions
+
+=============================================
+LOGIN AND AUTHENTICATION ISSUES
+=============================================
+
+PROBLEM: Cannot log in - "Invalid credentials" error
+SOLUTIONS:
+1. Verify your email and password are correct
+2. Check that Caps Lock is OFF
+3. Ensure you're using the email you registered with
+4. Try copying and pasting password from password manager
+5. Clear browser cookies for nexstp.com
+6. Try incognito/private browsing mode
+7. Reset your password using "Forgot your password?" link
+8. Check if email is verified (check inbox for verification email)
+
+PROBLEM: "Please verify your email before signing in"
+SOLUTIONS:
+1. Check your email inbox for verification link
+2. Check spam/junk folder
+3. Search for emails from noreply@nexstp.com
+4. Click "Resend Verification Email" on sign-in page
+5. Wait a few minutes for email to arrive
+6. Try a different email if issue persists
+7. Contact support: support@nexstp.com
+
+PROBLEM: Password reset email not received
+SOLUTIONS:
+1. Wait 5-10 minutes (may be delayed)
+2. Check spam/junk/promotions folders
+3. Search inbox for "Nexstp" or "Password Reset"
+4. Add noreply@nexstp.com to contacts
+5. Try resending reset email
+6. Check email address is correct
+7. Ask IT to whitelist our domain (work emails)
+8. Try different email address
+9. Contact support if still not received
+
+PROBLEM: Reset link says "Invalid or expired token"
+SOLUTIONS:
+1. Reset links expire after 24 hours - request new one
+2. Use the most recent reset email
+3. Copy full URL from email (may be cut off)
+4. Don't click link multiple times
+5. Request fresh reset link
+6. Complete reset within 24 hours
+
+PROBLEM: "Session expired" keeps appearing
+SOLUTIONS:
+1. Enable cookies in browser settings
+2. Clear browser cache and cookies
+3. Disable aggressive privacy settings
+4. Add nexstp.com to browser exceptions
+5. Try different browser
+6. Disable VPN temporarily
+7. Check browser extensions aren't blocking cookies
+8. Update browser to latest version
+
+PROBLEM: Cannot sign up - "Username already taken"
+SOLUTIONS:
+1. Choose a different username
+2. Try adding numbers or underscores
+3. Username must be unique across platform
+4. Check if you already have an account
+5. Try "Sign In" if you forgot you registered
+
+PROBLEM: Logged out unexpectedly
+SOLUTIONS:
+1. Session timeout after period of inactivity
+2. Browser cleared cookies
+3. Someone else logged into your account (change password!)
+4. Server maintenance (temporary)
+5. Check https://status.nexstp.com for platform status
+
+=============================================
+PAYMENT & CHECKOUT ISSUES
+=============================================
+
+PROBLEM: Checkout button not working
+SOLUTIONS:
+1. Ensure you're signed in
+2. Check cart has items
+3. Disable ad blockers for nexstp.com
+4. Enable pop-ups for Stripe checkout
+5. Clear browser cache
+6. Try different browser (Chrome recommended)
+7. Check internet connection
+8. Wait for page to fully load
+9. Hard refresh page (Ctrl/Cmd + Shift + R)
+
+PROBLEM: Payment declined or failed
+SOLUTIONS:
+1. Verify card details are correct
+2. Check card has sufficient funds
+3. Check card is not expired
+4. Contact your bank (may be blocking transaction)
+5. Try different payment method
+6. Check card supports international transactions (we use Stripe)
+7. Disable VPN (some cards block VPN transactions)
+8. Try a different card
+9. Use alternative payment (Apple Pay, Google Pay)
+
+PROBLEM: Payment succeeded but product not in Library
+SOLUTIONS:
+1. Wait 1-2 minutes for processing
+2. Hard refresh Library page
+3. Check your email for order confirmation
+4. Log out and log back in
+5. Check Orders page to verify purchase
+6. Clear browser cache
+7. Contact support with order number
+8. Check spam folder for confirmation email
+
+PROBLEM: Charged multiple times
+SOLUTIONS:
+1. Check if these are pending authorizations (will drop off)
+2. Don't click "Pay" button multiple times
+3. Contact support immediately: support@nexstp.com
+4. Include: Order numbers, amount charged, payment method
+5. We'll investigate and refund duplicates within 24-48 hours
+6. Check with your bank about pending vs. completed charges
+
+PROBLEM: Cannot add to cart
+SOLUTIONS:
+1. Make sure you're signed in
+2. Check product is still available
+3. Launchpad may have expired
+4. Clear browser cache and cookies
+5. Try different browser
+6. Disable browser extensions
+7. Check JavaScript is enabled
+8. Hard refresh the page
+
+PROBLEM: "Invalid products in cart" error
+SOLUTIONS:
+1. Product may have been removed by seller
+2. Launchpad may have expired
+3. Price may have changed
+4. Clear cart and re-add products
+5. Refresh product page to see current status
+6. Contact seller if product disappeared
+7. Check Library - you may already own it
+
+PROBLEM: Stripe checkout page won't load
+SOLUTIONS:
+1. Allow pop-ups for nexstp.com
+2. Disable ad blockers
+3. Disable browser extensions
+4. Check firewall settings
+5. Try different browser
+6. Check internet connection
+7. Ensure Stripe.com is not blocked
+8. Try incognito mode
+9. Contact support if consistently failing
+
+=============================================
+SELLER & STRIPE ISSUES
+=============================================
+
+PROBLEM: Cannot start selling - Stripe not connected
+SOLUTIONS:
+1. Complete Stripe Connect onboarding
+2. Go to Dashboard > Settings > Stripe
+3. Click "Connect Stripe Account"
+4. Complete all required information
+5. Verify identity with government ID
+6. Add bank account details
+7. Wait for Stripe approval (1-2 days usually)
+8. Check email for Stripe verification requests
+9. Contact Stripe support if rejected
+
+PROBLEM: Stripe verification pending or rejected
+SOLUTIONS:
+1. Check email from Stripe for additional requirements
+2. Ensure all information is accurate
+3. Provide clear, unedited ID photos
+4. Business name must match legal documents
+5. Bank account must be in your name
+6. Some countries have additional requirements
+7. Contact Stripe support: https://support.stripe.com
+8. Re-submit verification with correct info
+9. Cannot sell until verified
+
+PROBLEM: Not receiving payouts
+SOLUTIONS:
+1. Check Stripe dashboard for payout status
+2. Verify bank account is correct
+3. Payouts take 2-7 business days
+4. Check for negative balance
+5. Verify your account is not on hold
+6. Check if payout method is valid
+7. Contact Stripe for payout issues
+8. Ensure no disputes or chargebacks pending
+9. Verify you met minimum payout amount (if any)
+
+PROBLEM: Payout amount seems wrong
+SOLUTIONS:
+1. Remember 10% platform fee is deducted
+2. Stripe processing fees (~2.9% + $0.30) also deducted
+3. Currency conversion may apply
+4. Check Dashboard > Earnings for breakdown
+5. Refunds reduce payout amount
+6. Disputed transactions may be held
+7. View detailed transaction history
+8. Contact support for payout calculations
+
+PROBLEM: Cannot create product
+SOLUTIONS:
+1. Ensure Stripe account is verified and approved
+2. Check all required fields are filled
+3. Upload at least one product image
+4. Price must be minimum $1
+5. Product title required (max length check)
+6. Category must be selected
+7. Description must be filled
+8. Check file size limits for images
+9. Try saving draft first
+10. Clear browser cache and retry
+
+PROBLEM: Product images not uploading
+SOLUTIONS:
+1. Check file size (max 5MB per image)
+2. Use supported formats: JPG, PNG, GIF, WEBP
+3. Ensure stable internet connection
+4. Try uploading one image at a time
+5. Compress images if too large
+6. Clear browser cache
+7. Try different browser
+8. Disable browser extensions
+9. Check firewall/antivirus settings
+10. Try incognito mode
+
+=============================================
+LIBRARY & DOWNLOAD ISSUES
+=============================================
+
+PROBLEM: Purchased product not in Library
+SOLUTIONS:
+1. Wait 1-2 minutes for processing
+2. Hard refresh Library page (Ctrl/Cmd + Shift + R)
+3. Log out and log back in
+4. Clear browser cache
+5. Check email for order confirmation
+6. Go to Dashboard > Orders to verify purchase
+7. Check payment was completed (not declined)
+8. Contact support with order number
+
+PROBLEM: Cannot download product
+SOLUTIONS:
+1. Check internet connection
+2. Right-click and "Save link as" instead of clicking
+3. Disable download managers
+4. Check available disk space
+5. Try different browser
+6. Disable antivirus temporarily
+7. Clear browser cache
+8. Try incognito mode
+9. Check firewall isn't blocking downloads
+
+PROBLEM: Downloaded file is corrupted
+SOLUTIONS:
+1. Try downloading again
+2. Use different browser
+3. Download in incognito mode
+4. Disable browser extensions
+5. Check file completed downloading (check file size)
+6. Scan for malware (may have quarantined it)
+7. Try different internet connection
+8. Contact seller if consistently corrupt
+9. Contact support with product details
+
+PROBLEM: Product disappeared from Library
+SOLUTIONS:
+1. Check if you're logged into correct account
+2. Seller may have removed product (you keep access though)
+3. Search Library using search function
+4. Check filter settings in Library
+5. Sort by purchase date
+6. Log out and back in
+7. Clear browser cache
+8. Contact support - should never disappear
+
+=============================================
+LAUNCHPAD ISSUES
+=============================================
+
+PROBLEM: Cannot purchase Launchpad
+SOLUTIONS:
+1. Check if launchpad has ended (timer at 0)
+2. Verify you're signed in
+3. Check if you already purchased it
+4. Launchpad may be sold out (if limited quantity)
+5. Launchpad may have been cancelled by seller
+6. Clear browser cache and refresh
+7. Try different browser
+8. Check payment method is valid
+
+PROBLEM: Launchpad timer seems wrong
+SOLUTIONS:
+1. Check your device time/timezone is correct
+2. Timer is in your local timezone
+3. Hard refresh page for accurate time
+4. Count down continues until exactly 0
+5. Server time is authoritative
+
+PROBLEM: Purchased but paid regular price, not launch price
+SOLUTIONS:
+1. Check timestamp of purchase vs. launchpad end time
+2. Launchpad may have ended exactly when you purchased
+3. Price shown at checkout is price you pay
+4. Check order confirmation email
+5. Contact support within 24 hours if error
+6. Provide order number and screenshot
+
+PROBLEM: Cannot create Launchpad (seller)
+SOLUTIONS:
+1. Must have existing product to create launchpad
+2. Launch price must be less than regular price
+3. Duration must be at least 24 hours
+4. Start date cannot be in the past
+5. Check all required fields
+6. Ensure product has all required info
+7. Try creating from product page
+8. Clear cache and retry
+
+=============================================
+CHAT & MESSAGING ISSUES
+=============================================
+
+PROBLEM: Messages not sending
+SOLUTIONS:
+1. Check internet connection
+2. Message must have text or image
+3. Image must be under 5MB
+4. Refresh the page
+5. Log out and back in
+6. Clear browser cache
+7. Try different browser
+8. Check if conversation was deleted
+9. Check if user blocked you
+
+PROBLEM: Not receiving message notifications
+SOLUTIONS:
+1. Check notification settings in Profile
+2. Allow browser notifications when prompted
+3. Check browser notification settings
+4. Enable notifications in OS settings
+5. Check email notification settings
+6. Notifications may be in spam folder
+7. Ensure browser has permission
+8. Try enabling desktop notifications
+9. Refresh the page
+
+PROBLEM: Cannot start conversation with seller
+SOLUTIONS:
+1. Ensure you're signed in
+2. Go to seller's store page
+3. Click "Message" button (may be in menu)
+4. If button missing, seller may have disabled messages
+5. Check if you're viewing the correct store
+6. Try from a product page instead
+7. Clear cache and retry
+
+PROBLEM: Images not showing in chat
+SOLUTIONS:
+1. Hard refresh the page
+2. Check internet connection
+3. Image may be loading slowly
+4. Click image to view full size
+5. Clear browser cache
+6. Try different browser
+7. Image may have been deleted
+8. Disable image blocking extensions
+
+PROBLEM: "Seen by" not updating
+SOLUTIONS:
+1. Recipient needs to open the conversation
+2. May take a few seconds to update
+3. Refresh the page
+4. Recipient may be offline
+5. Real-time updates require WebSocket connection
+6. Check internet connection
+7. Disable VPN if interfering
+
+=============================================
+SEARCH & BROWSING ISSUES
+=============================================
+
+PROBLEM: Search not working or no results
+SOLUTIONS:
+1. Check spelling of search terms
+2. Try different or fewer keywords
+3. Use broader search terms
+4. Clear search filters
+5. Product may not exist
+6. Try browsing categories instead
+7. Clear browser cache
+8. Hard refresh the page
+
+PROBLEM: Products not loading
+SOLUTIONS:
+1. Check internet connection
+2. Wait for page to fully load
+3. Scroll down to trigger load more
+4. Clear browser cache
+5. Disable browser extensions
+6. Try different browser
+7. Check https://status.nexstp.com
+8. Hard refresh page
+
+PROBLEM: Filters not working
+SOLUTIONS:
+1. Click "Apply" after selecting filters
+2. Clear existing filters first
+3. Refresh the page
+4. Some filters may have no matching products
+5. Try fewer filters
+6. Clear browser cache
+7. Try different browser
+
+PROBLEM: Images not loading
+SOLUTIONS:
+1. Check internet connection
+2. Wait a few seconds for images to load
+3. Hard refresh page
+4. Clear browser cache
+5. Disable ad blockers
+6. Image may be broken (report to seller)
+7. Try different browser
+8. Check firewall settings
+
+=============================================
+REVIEW & RATING ISSUES
+=============================================
+
+PROBLEM: Cannot leave review
+SOLUTIONS:
+1. Must purchase product first
+2. Must be signed in
+3. Check if you already reviewed this product
+4. Rating (stars) is required
+5. Written review is optional
+6. Ensure product is in your Library
+7. Order must be completed (not pending)
+8. Clear cache and retry
+
+PROBLEM: Review not appearing
+SOLUTIONS:
+1. Wait 1-2 minutes for processing
+2. Refresh product page
+3. Reviews may be under moderation
+4. Check if review violates policies
+5. Inappropriate reviews may be removed
+6. Check your review on your profile
+7. Contact support if missing after 24 hours
+
+PROBLEM: Cannot edit review
+SOLUTIONS:
+1. Go to Library > Product > Your Review
+2. Click "Edit" button
+3. Make changes and click "Update"
+4. Must be signed in
+5. Can only edit your own reviews
+6. Some reviews may be locked after time period
+7. Clear cache if edit button not showing
+
+PROBLEM: "Verified Purchase" badge missing
+SOLUTIONS:
+1. Badge only shows if you purchased the product
+2. May take a few minutes to appear
+3. Refresh the page
+4. Contact support if you purchased but no badge
+5. Order must be completed
+
+=============================================
+PERFORMANCE ISSUES
+=============================================
+
+PROBLEM: Website loading slowly
+SOLUTIONS:
+1. Check your internet speed (minimum 5 Mbps recommended)
+2. Close other tabs and applications
+3. Clear browser cache and cookies
+4. Disable unnecessary browser extensions
+5. Try different browser
+6. Check https://status.nexstp.com for platform issues
+7. Update browser to latest version
+8. Restart your device
+9. Try different internet connection
+
+PROBLEM: Features not loading or buttons not working
+SOLUTIONS:
+1. Hard refresh page (Ctrl/Cmd + Shift + R)
+2. Clear browser cache completely
+3. Disable ad blockers for nexstp.com
+4. Check JavaScript is enabled
+5. Update your browser
+6. Try incognito mode
+7. Check firewall settings
+8. Disable all browser extensions
+9. Try different browser
+
+PROBLEM: Real-time features not working (chat, notifications)
+SOLUTIONS:
+1. Check WebSocket connection (browser console)
+2. Disable VPN temporarily
+3. Check corporate firewall rules
+4. Refresh page to re-establish connection
+5. Ensure browser supports WebSockets
+6. Try different network
+7. Contact IT about WebSocket blocking
+8. Try different browser
+
+PROBLEM: Mobile site not working properly
+SOLUTIONS:
+1. Update mobile browser
+2. Clear mobile browser cache
+3. Try Chrome or Safari mobile
+4. Rotate device orientation
+5. Zoom out if layout is broken
+6. Enable JavaScript
+7. Check internet connection
+8. Try desktop mode temporarily
+
+=============================================
+ACCOUNT & PROFILE ISSUES
+=============================================
+
+PROBLEM: Cannot update profile
+SOLUTIONS:
+1. Check all required fields are filled
+2. Username must be unique
+3. Email must be valid format
+4. Clear browser cache
+5. Try different browser
+6. Check image file size (max 5MB for avatar)
+7. Refresh page and try again
+8. Log out and back in
+
+PROBLEM: Avatar/profile picture not uploading
+SOLUTIONS:
+1. Check file size (max 5MB)
+2. Use supported formats: JPG, PNG, GIF, WEBP
+3. Try a different image
+4. Compress image if too large
+5. Clear browser cache
+6. Try different browser
+7. Crop image to square aspect ratio
+8. Try incognito mode
+
+PROBLEM: Cannot change email
+SOLUTIONS:
+1. Enter current password
+2. New email must not be in use
+3. Check for typos in new email
+4. Verify new email through link sent
+5. Check spam folder for verification email
+6. Email change requires verification
+7. Contact support if issues persist
+
+PROBLEM: Cannot delete account
+SOLUTIONS:
+1. Go to Settings > Account > Delete Account
+2. Confirm deletion
+3. Outstanding orders must be fulfilled first
+4. Seller accounts with pending payouts may be delayed
+5. Account deletion is permanent
+6. Download your data first
+7. Contact support if unable to delete
+
+=============================================
+SELLER DASHBOARD ISSUES
+=============================================
+
+PROBLEM: Sales/analytics not updating
+SOLUTIONS:
+1. Refresh the page
+2. Analytics update every few minutes (not instant)
+3. Clear browser cache
+4. Select correct date range
+5. Check timezone settings
+6. Wait 5-10 minutes after sale
+7. Log out and back in
+
+PROBLEM: Cannot see orders
+SOLUTIONS:
+1. Check filter settings (status, date range)
+2. You may not have any orders yet
+3. Clear filters and search
+4. Try different date range
+5. Refresh the page
+6. Orders appear after payment completes
+7. Check Orders tab (not Products tab)
+
+PROBLEM: Product not appearing on marketplace
+SOLUTIONS:
+1. Product must be published (not draft)
+2. Check product has all required info
+3. Stripe account must be verified
+4. Product approval may be required (check notifications)
+5. Search for your product by exact name
+6. May take a few minutes to appear
+7. Check product isn't archived
+8. Contact support if still invisible
+
+=============================================
+REFUND ISSUES
+=============================================
+
+PROBLEM: Cannot request refund
+SOLUTIONS:
+1. Check seller's refund policy
+2. Ensure within refund window (7, 14, or 30 days)
+3. Go to Orders > Order Details > Request Refund
+4. Must be signed in
+5. Provide reason for refund
+6. Can only request once per order
+7. "No refunds" products cannot be refunded
+8. Contact seller first
+
+PROBLEM: Refund request denied
+SOLUTIONS:
+1. Review seller's refund policy
+2. You may be outside refund window
+3. Digital products downloaded may not be eligible
+4. Contact seller to discuss
+5. Escalate to support if policy not honored
+6. Provide evidence if product was not as described
+7. May dispute via payment method
+
+PROBLEM: Refund not received
+SOLUTIONS:
+1. Refunds take 5-10 business days
+2. Refunded to original payment method
+3. Check with your bank/card issuer
+4. Verify refund was approved (check email)
+5. Contact support with refund ID
+6. May take longer for international cards
+7. Check order status shows "Refunded"
+
+=============================================
+TECHNICAL & BROWSER ISSUES
+=============================================
+
+PROBLEM: "Something went wrong" error
+SOLUTIONS:
+1. Refresh the page
+2. Clear browser cache and cookies
+3. Try incognito mode
+4. Check internet connection
+5. Try different browser
+6. Log out and back in
+7. Check https://status.nexstp.com
+8. Wait a few minutes and retry
+9. Contact support if persists
+
+PROBLEM: 404 Page Not Found error
+SOLUTIONS:
+1. Check URL for typos
+2. Product/page may have been removed
+3. Store may have been deleted
+4. Clear browser cache
+5. Try searching for the item
+6. Link may be outdated
+7. Contact seller if it's their product
+8. Contact support if platform page
+
+PROBLEM: CORS or network errors (in console)
+SOLUTIONS:
+1. Clear browser cache completely
+2. Disable browser extensions
+3. Check firewall settings
+4. Try different network
+5. Disable VPN
+6. Try incognito mode
+7. Update browser
+8. Contact IT if on corporate network
+
+PROBLEM: Cannot upload files
+SOLUTIONS:
+1. Check file size limits
+2. Check file format is supported
+3. Ensure stable internet connection
+4. Try smaller files first
+5. Compress files if too large
+6. Disable browser extensions
+7. Try different browser
+8. Check firewall/antivirus settings
+
+=============================================
+IF ALL ELSE FAILS
+=============================================
+
+CONTACT SUPPORT
+---------------
+
+If none of these solutions work, contact our support team:
+
+Email Support:
+- support@nexstp.com
+- Response within 24 hours
+- Include: Account email, issue description, screenshots
+
+Live Chat:
+- Available 9 AM - 6 PM EST (Mon-Fri)
+- Click chat icon (bottom right)
+- Instant responses for urgent issues
+
+When contacting support, provide:
+1. Your account email/username
+2. Detailed description of the issue
+3. Steps you've already tried
+4. Screenshots or screen recording (if applicable)
+5. Browser and OS information
+6. Error messages (exact text)
+7. Order/product/conversation IDs (if applicable)
+8. Timestamp when issue occurred
+
+CHECK PLATFORM STATUS
+--------------------
+
+Visit: https://status.nexstp.com
+- Real-time platform status
+- Current incidents
+- Scheduled maintenance
+- Historical uptime
+- Subscribe to status updates
+- Follow @nexstpstatus on Twitter
+
+COMMUNITY HELP
+--------------
+
+Get help from other users:
+- Forum: https://community.nexstp.com
+- Discord: https://discord.gg/nexstp
+- Search existing solutions
+- Post your question
+- Help others with their issues
+
+BROWSER INFORMATION
+------------------
+
+To find your browser and OS info:
+1. Go to https://www.whatsmybrowser.org
+2. Screenshot the information
+3. Include in support request
+
+CLEAR CACHE (ALL BROWSERS)
+-------------------------
+
+Chrome:
+- Ctrl/Cmd + Shift + Delete
+- Select "All time"
+- Check "Cookies" and "Cached images"
+- Click "Clear data"
+
+Firefox:
+- Ctrl/Cmd + Shift + Delete
+- Select "Everything"
+- Check all boxes
+- Click "Clear Now"
+
+Safari:
+- Safari > Clear History
+- Select "All history"
+- Click "Clear History"
+
+Edge:
+- Ctrl + Shift + Delete
+- Select "All time"
+- Check all boxes
+- Click "Clear now"
+
+=============================================
+
+PREVENTION TIPS
+---------------
+
+To avoid issues:
+✓ Keep browser updated
+✓ Use modern browsers (Chrome, Firefox, Safari, Edge)
+✓ Enable cookies for nexstp.com
+✓ Disable aggressive ad blockers
+✓ Keep antivirus updated but configure exceptions
+✓ Use strong, unique password
+✓ Enable email notifications
+✓ Bookmark important pages
+✓ Download purchases immediately
+✓ Keep order confirmations
+✓ Read product descriptions carefully
+✓ Review seller refund policies before buying
+✓ Communicate with sellers promptly
+✓ Report issues quickly
+
+Most issues can be resolved by:
+1. Clearing browser cache
+2. Using a different browser
+3. Checking our status page
+4. Waiting a few minutes and retrying
+
+We're here to help! Don't hesitate to reach out to support@nexstp.com
+
+Happy shopping and selling on Nexstp! 🚀
+

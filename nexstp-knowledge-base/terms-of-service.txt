@@ -1,0 +1,687 @@
+Terms of Service - Nexstp Marketplace
+
+Last Updated: January 1, 2024
+Effective Date: January 1, 2024
+
+=============================================
+AGREEMENT TO TERMS
+=============================================
+
+These Terms of Service ("Terms") govern your use of Nexstp Marketplace ("Nexstp", "Service", "Platform") operated by Nexstp Inc. ("Company", "we", "us", or "our").
+
+By accessing or using our Service, you agree to be bound by these Terms. If you disagree with any part of these terms, you may not access the Service.
+
+The Service is offered subject to your acceptance without modification of all terms and conditions contained herein and all other operating rules, policies, and procedures that may be published by us on the Platform.
+
+=============================================
+DEFINITIONS
+=============================================
+
+- **Buyer**: A user who purchases products on Nexstp
+- **Seller**: A user who lists and sells products on Nexstp (also "Tenant")
+- **Product**: Digital or physical items listed for sale
+- **Launchpad**: Time-limited special offer on products
+- **Library**: Collection of purchased products accessible to buyers
+- **Platform Fee**: 10% commission charged on sales
+- **Content**: All materials posted on the platform including text, images, files
+- **User**: Any person accessing or using the Service (Buyer or Seller)
+
+=============================================
+ACCOUNT TERMS
+=============================================
+
+ELIGIBILITY
+-----------
+
+1. Age Requirement
+   - You must be at least 18 years old to use this Service
+   - Or at least 13 years old with parental consent
+   - If under 18, parent/guardian must agree to these Terms
+
+2. Account Creation
+   - You must provide accurate and complete information
+   - You must maintain current and accurate information
+   - One person or legal entity per account
+   - Business accounts must provide valid business information
+
+3. Account Security
+   - You are responsible for maintaining account security
+   - You must safeguard your password
+   - You must not share account credentials
+   - You must immediately notify us of unauthorized use
+   - We are not liable for losses from unauthorized use
+
+ACCOUNT RESPONSIBILITIES
+------------------------
+
+1. You are responsible for:
+   - All activity under your account
+   - Content you post or upload
+   - Compliance with all applicable laws
+   - Actions taken by anyone using your account
+
+2. You must not:
+   - Use the Service for illegal purposes
+   - Violate any laws in your jurisdiction
+   - Share your account with others
+   - Create multiple accounts (without permission)
+   - Use false or misleading information
+   - Impersonate others
+
+ACCOUNT TERMINATION
+-------------------
+
+1. By You:
+   - You may cancel your account at any time
+   - Go to Settings > Account > Delete Account
+   - Deletion is permanent after 30 days
+   - Downloaded content is lost after deletion
+   - Outstanding orders must be fulfilled
+
+2. By Us:
+   - We reserve the right to suspend or terminate accounts
+   - Reasons include: Terms violation, illegal activity, abuse
+   - We may terminate without notice for severe violations
+   - Content may be deleted immediately upon termination
+   - Termination does not relieve payment obligations
+
+3. Effects of Termination:
+   - Loss of access to Library
+   - Loss of all purchased products
+   - Loss of seller earnings (if in violation)
+   - No refund for remaining balance (if terminated for cause)
+   - Outstanding orders will be processed or refunded
+
+=============================================
+SELLER TERMS
+=============================================
+
+BECOMING A SELLER
+-----------------
+
+1. Seller Requirements:
+   - Must complete Stripe Connect onboarding
+   - Must verify identity with Stripe
+   - Must provide valid bank account
+   - Must comply with Stripe's terms of service
+   - Must be legally able to sell products
+
+2. Store Setup:
+   - Create unique store name and URL slug
+   - Provide accurate store information
+   - Set clear policies (refunds, shipping, etc.)
+   - Maintain professional communication
+
+LISTING PRODUCTS
+----------------
+
+1. Product Requirements:
+   - Must own or have rights to sell the product
+   - Must accurately describe product
+   - Must use honest images and previews
+   - Must not infringe on intellectual property
+   - Must comply with applicable laws
+
+2. Prohibited Products:
+   - Illegal items or services
+   - Stolen or counterfeit goods
+   - Adult or explicit content (NSFW)
+   - Weapons, drugs, or controlled substances
+   - Items violating intellectual property rights
+   - Malware, viruses, or harmful code
+   - Pyramid schemes or scams
+   - Unauthorized brand items
+   - Services requiring professional licenses
+   - Items prohibited by payment processors
+
+3. Product Accuracy:
+   - Description must match actual product
+   - Images must represent actual product
+   - Price must be clearly stated
+   - Refund policy must be honored
+   - Delivery method must be accurate
+
+SALES & PAYMENTS
+---------------
+
+1. Platform Fee:
+   - 10% fee on all sales
+   - Automatically deducted via Stripe Connect
+   - Non-negotiable and non-refundable
+   - Applied to sale price before Stripe fees
+
+2. Payment Processing:
+   - All payments processed via Stripe
+   - You agree to Stripe's terms and fees
+   - Stripe fees are separate from platform fee
+   - Payment disputes handled by Stripe
+
+3. Payouts:
+   - Automatic rolling payouts (2-7 business days)
+   - Payouts to verified bank account only
+   - You're responsible for payout accuracy
+   - Currency conversion at Stripe rates
+   - Payout delays for fraud prevention
+
+4. Refunds:
+   - You must honor your stated refund policy
+   - Platform fee is refunded to you
+   - Stripe processing fee is NOT refunded
+   - Partial refunds allowed
+   - Refund disputes may be mediated by us
+
+5. Taxes:
+   - You're responsible for all taxes on income
+   - Sales tax collection varies by location
+   - You must comply with local tax laws
+   - We provide transaction reports
+   - Consult a tax professional
+
+SELLER OBLIGATIONS
+------------------
+
+1. You must:
+   - Deliver products as described
+   - Respond to buyer inquiries promptly
+   - Honor refund policies
+   - Maintain professional conduct
+   - Comply with all laws
+   - Report suspicious activity
+   - Keep store information current
+
+2. You must not:
+   - Sell prohibited items
+   - Misrepresent products
+   - Manipulate reviews or ratings
+   - Spam or harass buyers
+   - Artificially inflate prices
+   - Circumvent platform fees
+   - Contact buyers outside platform (without consent)
+   - Engage in fraud or deception
+
+=============================================
+BUYER TERMS
+=============================================
+
+PURCHASING
+----------
+
+1. Buyer Responsibilities:
+   - Provide accurate payment information
+   - Review product details before purchase
+   - Understand seller's refund policy
+   - Communicate issues with sellers first
+   - Leave honest reviews
+
+2. Payment:
+   - All sales are final unless refund policy states otherwise
+   - Prices are in USD unless specified
+   - Taxes may apply based on location
+   - Payment is processed immediately
+
+3. Delivery:
+   - Digital products: Instant access in Library
+   - Physical products: Per seller's shipping policy
+   - No delivery guaranteed for digital content
+   - Downloads are buyer's responsibility
+
+LIBRARY ACCESS
+--------------
+
+1. Your Library contains purchased products
+2. Lifetime access to purchased products
+3. Access may be revoked for Terms violation
+4. Products remain accessible even if seller removes listing
+5. Download and backup your products
+6. No guarantee of perpetual availability
+
+REFUNDS
+-------
+
+1. Refund policies set by individual sellers
+2. Contact seller first for refund requests
+3. Request refunds through order page
+4. Refunds processed to original payment method
+5. Refunds take 5-10 business days
+6. Disputes may be escalated to support
+7. Chargebacks may result in account termination
+
+=============================================
+ACCEPTABLE USE POLICY
+=============================================
+
+You agree NOT to:
+
+1. Legal Violations:
+   - Violate any laws or regulations
+   - Infringe on intellectual property rights
+   - Engage in fraud or deception
+   - Facilitate illegal activities
+
+2. Platform Abuse:
+   - Transmit malware or harmful code
+   - Attempt unauthorized access
+   - Scrape or harvest data
+   - Reverse engineer the platform
+   - Interfere with service operation
+   - Exceed usage limits or quotas
+   - Create fake accounts or reviews
+
+3. User Conduct:
+   - Harass, abuse, or harm others
+   - Send spam or unsolicited messages
+   - Misrepresent identity or affiliation
+   - Post offensive or inappropriate content
+   - Manipulate ratings or reviews
+   - Engage in price manipulation
+
+4. Business Conduct:
+   - Resell platform access
+   - Circumvent platform fees
+   - Use platform to compete with Nexstp
+   - Solicit users to other platforms
+   - Engage in affiliate abuse
+
+Violations may result in:
+- Warning
+- Content removal
+- Account suspension
+- Account termination
+- Legal action
+- Loss of earnings
+
+=============================================
+INTELLECTUAL PROPERTY
+=============================================
+
+YOUR CONTENT
+------------
+
+1. Ownership:
+   - You retain all rights to your content
+   - Products, descriptions, images remain yours
+   - You warrant you have rights to upload content
+   - You're responsible for content legality
+
+2. License to Nexstp:
+   - You grant us license to host and display your content
+   - We can reproduce, modify, and distribute as needed to operate
+   - License is worldwide, non-exclusive, royalty-free
+   - License continues while content is on platform
+   - License terminates when you remove content
+
+3. User Responsibilities:
+   - You must own or have rights to content
+   - You must not infringe on others' IP
+   - You must not upload copyrighted material without permission
+   - You're liable for IP infringement claims
+
+OUR PROPERTY
+------------
+
+1. Platform Ownership:
+   - Service and its contents are our property
+   - Includes software, design, text, graphics, logos
+   - Trademarks and logos are protected
+   - "Nexstp" name and brand are our property
+
+2. Restrictions:
+   - You may not copy or distribute our software
+   - You may not use our trademarks without permission
+   - You may not modify or reverse engineer
+   - You may not create derivative works
+
+3. Feedback:
+   - Feedback and suggestions may be used freely
+   - No compensation for feedback
+   - We're not obligated to implement suggestions
+
+DMCA / COPYRIGHT CLAIMS
+-----------------------
+
+If you believe content infringes your copyright:
+
+1. Send DMCA notice to: legal@nexstp.com
+2. Include:
+   - Your contact information
+   - Description of copyrighted work
+   - Location of infringing material
+   - Statement of good faith belief
+   - Statement of accuracy
+   - Your signature
+
+3. We will:
+   - Review claim promptly
+   - Remove infringing content if valid
+   - Notify the uploader
+   - Terminate repeat infringers
+
+Counter-notices:
+- If you believe content was wrongly removed
+- Send counter-notice to legal@nexstp.com
+- Content may be restored if no legal action filed
+
+=============================================
+LAUNCHPADS
+=============================================
+
+LAUNCHPAD TERMS
+---------------
+
+1. For Sellers:
+   - Create time-limited special offers
+   - Set launch price below regular price
+   - Set duration (minimum 24 hours)
+   - Cannot cancel once started
+   - Must fulfill all purchases
+   - Platform fee applies to launch price
+
+2. For Buyers:
+   - Purchase at advertised price
+   - Price valid until timer ends
+   - Access continues after launchpad ends
+   - Same refund policy applies
+   - No price guarantee if you hesitate
+
+3. Platform Rights:
+   - We may feature launchpads on homepage
+   - We may remove inappropriate launchpads
+   - We may set minimum/maximum durations
+   - We don't guarantee sales or visibility
+
+=============================================
+REVIEWS & RATINGS
+=============================================
+
+REVIEW POLICY
+-------------
+
+1. Buyers may review purchased products
+2. Reviews must be:
+   - Honest and truthful
+   - Based on actual experience
+   - Relevant to the product
+   - Free from profanity or abuse
+   - Not incentivized or paid for
+
+3. Prohibited review activity:
+   - Fake or paid reviews
+   - Reviews by sellers of own products
+   - Competing seller reviews
+   - Abusive or offensive reviews
+   - Reviews manipulated for compensation
+   - Review exchange schemes
+
+4. Seller responsibilities:
+   - Cannot edit or delete reviews
+   - Cannot incentivize positive reviews
+   - Cannot pressure buyers
+   - Can report inappropriate reviews
+   - Should address issues professionally
+
+5. Nexstp may:
+   - Remove reviews violating policy
+   - Verify review authenticity
+   - Moderate review content
+   - Suspend users manipulating reviews
+   - Display "Verified Purchase" badges
+
+=============================================
+PAYMENT TERMS
+=============================================
+
+GENERAL
+-------
+
+1. All payments processed via Stripe
+2. You agree to Stripe's terms of service
+3. We don't store payment information
+4. All prices in USD unless specified
+5. Prices subject to change with notice
+
+BUYER PAYMENTS
+--------------
+
+1. Payment due at time of purchase
+2. Payment authorization is immediate
+3. Failed payments result in order cancellation
+4. Payment disputes handled by Stripe
+5. Chargebacks may result in account suspension
+
+SELLER PAYOUTS
+--------------
+
+1. Payouts via Stripe Connect only
+2. Rolling 2-7 day payout schedule
+3. Bank account verification required
+4. Payouts may be delayed for fraud prevention
+5. Payouts may be held for disputed transactions
+6. Negative balance must be repaid
+
+FEES & TAXES
+------------
+
+1. Platform fee: 10% of sale price
+2. Stripe fees: Variable, paid by seller
+3. Taxes: Buyer and seller responsibility
+4. International transactions may incur additional fees
+5. Currency conversion at market rates
+
+=============================================
+LIMITATION OF LIABILITY
+=============================================
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW:
+
+1. Service Warranty:
+   - Service provided "AS IS" and "AS AVAILABLE"
+   - No warranties of any kind, express or implied
+   - No guarantee of uninterrupted service
+   - No guarantee of error-free operation
+   - No guarantee of security
+
+2. Liability Limits:
+   - We're not liable for indirect or consequential damages
+   - Total liability limited to fees paid in past 12 months
+   - Maximum liability: $100 (if no fees paid)
+   - Not liable for user content or conduct
+   - Not liable for third-party actions
+   - Not liable for lost profits or data
+
+3. Indemnification:
+   - You indemnify us from claims arising from your use
+   - You indemnify us from your content
+   - You indemnify us from Terms violations
+   - You cover legal fees and costs
+   - Indemnification survives account termination
+
+4. Exceptions:
+   - Liability for gross negligence
+   - Liability for intentional misconduct
+   - Liability where law prohibits limitation
+   - Consumer rights under applicable law
+
+=============================================
+DISPUTE RESOLUTION
+=============================================
+
+INFORMAL RESOLUTION
+-------------------
+
+1. Contact support first: support@nexstp.com
+2. Good faith effort to resolve
+3. 60 days to attempt resolution
+4. Describe dispute clearly
+5. Provide relevant documentation
+
+ARBITRATION
+-----------
+
+1. Binding Arbitration:
+   - Disputes resolved through binding arbitration
+   - Individual claims only (no class actions)
+   - Arbitration in San Francisco, CA (or online)
+   - Rules: American Arbitration Association
+   - Each party bears own costs (unless law requires otherwise)
+   - Arbitrator's decision is final
+
+2. Exceptions to Arbitration:
+   - Small claims court disputes
+   - Intellectual property disputes
+   - Injunctive relief for Terms violations
+   - Claims not subject to arbitration by law
+
+3. Class Action Waiver:
+   - No class or representative actions
+   - No consolidation of disputes
+   - No private attorney general actions
+   - Individual arbitration only
+
+GOVERNING LAW
+-------------
+
+1. Laws of California govern these Terms
+2. Excluding conflict of law provisions
+3. UN Convention on Contracts excluded
+4. Disputes in San Francisco County courts
+5. You consent to personal jurisdiction
+
+=============================================
+GENERAL PROVISIONS
+=============================================
+
+MODIFICATIONS
+-------------
+
+1. We may modify these Terms at any time
+2. Material changes notified via email
+3. Continued use constitutes acceptance
+4. Review Terms periodically
+5. Changes effective upon posting
+
+ENTIRE AGREEMENT
+----------------
+
+1. These Terms constitute entire agreement
+2. Supersede prior agreements or communications
+3. Amendments must be in writing
+4. Other policies incorporated by reference
+
+SEVERABILITY
+------------
+
+1. Invalid provisions will be modified
+2. Remainder of Terms still apply
+3. Intent preserved where possible
+4. No waiver of other provisions
+
+ASSIGNMENT
+----------
+
+1. You may not assign these Terms
+2. We may assign in merger, sale, or reorganization
+3. Terms binding on successors
+4. Assignment doesn't affect your rights
+
+NO WAIVER
+---------
+
+1. Failure to enforce doesn't waive rights
+2. Waiver must be in writing
+3. Single waiver doesn't waive future violations
+
+NOTICES
+-------
+
+1. Notices to you: Email to registered address
+2. Notices to us: legal@nexstp.com
+3. Changes posted on website
+4. Physical mail to our address
+
+FORCE MAJEURE
+-------------
+
+We're not liable for delays or failures due to:
+- Natural disasters
+- War or terrorism
+- Government actions
+- Internet or network failures
+- Strikes or labor disputes
+- Other events beyond our control
+
+=============================================
+SPECIFIC SERVICE TERMS
+=============================================
+
+API USAGE
+---------
+
+1. Subject to rate limits
+2. Must not abuse or overload
+3. Commercial use with permission only
+4. API keys must be kept confidential
+5. API terms apply
+
+THIRD-PARTY INTEGRATIONS
+------------------------
+
+1. Subject to third-party terms
+2. We're not responsible for third parties
+3. Integration may be discontinued
+4. Data sharing at your risk
+5. We don't endorse third parties
+
+BETA FEATURES
+-------------
+
+1. Provided as-is without warranty
+2. May be discontinued anytime
+3. Feedback may be used freely
+4. Not for production use
+5. May have bugs or issues
+
+REAL-TIME CHAT
+--------------
+
+1. For buyer-seller communication
+2. Subject to monitoring for abuse
+3. No expectation of privacy
+4. May be used for support purposes
+5. Abusive chat may result in suspension
+
+=============================================
+CONTACT INFORMATION
+=============================================
+
+For questions about these Terms:
+
+Nexstp Inc.
+Legal Department
+548 Market Street, Suite 500
+San Francisco, CA 94104
+United States
+
+Email: legal@nexstp.com
+Phone: +1 (555) 123-4567
+
+For support: support@nexstp.com
+For sales: sales@nexstp.com
+For privacy: privacy@nexstp.com
+
+=============================================
+ACKNOWLEDGMENT
+=============================================
+
+By using Nexstp Marketplace, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
+
+If you have questions or concerns about these Terms, please contact us before using the Service.
+
+Your use of Nexstp constitutes acceptance of these Terms and all policies incorporated by reference.
+
+Thank you for being part of the Nexstp community!
+
+Last Updated: January 1, 2024
+Version: 1.0
+
+© 2024 Nexstp Inc. All rights reserved.
+

@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import {
@@ -46,7 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       default: "Nexstp",
       template: "%s | Nexstp",
     },
-    description: t("Discover amazing products from various stores in our multi-tenant marketplace"),
+    description: t(
+      "Discover amazing products from various stores in our multi-tenant marketplace"
+    ),
     authors: [{ name: "Nexstp" }],
     creator: "Nexstp",
     publisher: "Nexstp",
@@ -100,6 +103,13 @@ export default async function RootLayout({ children, params }: Props) {
           {children}
           <Toaster />
         </Providers>
+
+      {/* Emo Widget - AI support widget */}
+        <Script
+          src="https://emo-widget.vercel.app/widget.js"
+          data-organization-id="org_37UHOLo4xEgdB2TTplXOQGMSXD7"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

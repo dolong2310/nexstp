@@ -1,0 +1,645 @@
+API Documentation - Nexstp Marketplace API Reference
+
+=============================================
+GETTING STARTED WITH THE API
+=============================================
+
+Base URL: https://api.nexstp.com/v1
+Rate Limits: 
+- Free Buyers: 100 requests/hour
+- Sellers (Basic): 500 requests/hour  
+- Sellers (Pro): 2,000 requests/hour
+- Enterprise: 10,000 requests/hour
+
+All responses return JSON format.
+Authentication required for most endpoints.
+
+=============================================
+AUTHENTICATION
+=============================================
+
+Authentication Methods:
+1. Session-based (Web application)
+2. API Key (Programmatic access)
+
+Getting Your API Key:
+1. Log into your seller account
+2. Navigate to Dashboard > Settings > API Access
+3. Click "Generate New API Key"
+4. Copy the key immediately (shown only once)
+5. Store securely in environment variables
+
+Using Your API Key:
+Include in request header:
+Authorization: Bearer YOUR_API_KEY
+
+Example:
+curl -H "Authorization: Bearer sk_live_abc123xyz789" \
+     -H "Content-Type: application/json" \
+     https://api.nexstp.com/v1/products
+
+=============================================
+CORE ENDPOINTS
+=============================================
+
+PRODUCTS
+--------
+
+GET /products
+List all products (public endpoint)
+Parameters:
+- page (optional): Page number, default 1
+- limit (optional): Items per page, default 20, max 100
+- category (optional): Filter by category ID
+- tenant (optional): Filter by tenant/store ID
+- minPrice (optional): Minimum price filter
+- maxPrice (optional): Maximum price filter
+- tags (optional): Comma-separated tag IDs
+- sort (optional): newest, oldest, price_asc, price_desc, trending
+- search (optional): Search term
+
+Response:
+{
+  "data": [
+    {
+      "id": "prod_123",
+      "title": "MacBook Pro 14",
+      "description": "Powerful laptop for professionals",
+      "price": 1999.99,
+      "images": ["url1", "url2"],
+      "category": {
+        "id": "cat_456",
+        "name": "Electronics"
+      },
+      "tenant": {
+        "id": "tenant_789",
+        "name": "Tech Store",
+        "slug": "tech-store"
+      },
+      "tags": ["laptop", "apple"],
+      "rating": 4.5,
+      "reviewCount": 23,
+      "createdAt": "2024-01-15T10:00:00Z"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "totalPages": 5,
+    "totalCount": 98
+  }
+}
+
+GET /products/{id}
+Get specific product details
+
+Response includes:
+- Full product information
+- Related products
+- Reviews preview
+- Seller information
+
+POST /products (Seller only)
+Create new product
+Body:
+{
+  "title": "Product Name",
+  "description": "Product description",
+  "price": 99.99,
+  "category": "cat_123",
+  "tags": ["tag1", "tag2"],
+  "images": ["media_id1", "media_id2"],
+  "refundPolicy": "30 days" // "no_refunds", "7 days", "14 days", "30 days"
+}
+
+PUT /products/{id} (Seller only)
+Update product
+
+DELETE /products/{id} (Seller only)
+Delete product
+
+=============================================
+
+CATEGORIES
+----------
+
+GET /categories
+List all categories
+Response:
+{
+  "data": [
+    {
+      "id": "cat_123",
+      "name": "Business & Money",
+      "slug": "business-money",
+      "parent": null,
+      "subcategories": [
+        {
+          "id": "cat_124",
+          "name": "Entrepreneurship",
+          "slug": "entrepreneurship"
+        }
+      ]
+    }
+  ]
+}
+
+GET /categories/{slug}
+Get category details with products
+
+=============================================
+
+LAUNCHPADS
+----------
+
+GET /launchpads
+List active launchpads (time-limited special offers)
+Parameters:
+- page, limit, category, sort
+
+Response:
+{
+  "data": [
+    {
+      "id": "launch_123",
+      "product": {...},
+      "originalPrice": 199.99,
+      "launchPrice": 149.99,
+      "discountPercent": 25,
+      "startDate": "2024-01-20T00:00:00Z",
+      "endDate": "2024-01-27T23:59:59Z",
+      "duration": 168, // hours
+      "soldCount": 45,
+      "status": "active" // active, ended, expired
+    }
+  ]
+}
+
+GET /launchpads/{id}
+Get specific launchpad details
+
+POST /launchpads/{id}/purchase (Buyer only)
+Purchase a launchpad product
+Response: Returns Stripe checkout session URL
+
+=============================================
+
+ORDERS
+------
+
+GET /orders (Authenticated)
+List user's orders
+Parameters:
+- page, limit
+- status: pending, processing, completed, cancelled
+
+Response:
+{
+  "data": [
+    {
+      "id": "order_123",
+      "orderNumber": "ORD-2024-001847",
+      "items": [
+        {
+          "product": {...},
+          "price": 99.99,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 99.99,
+      "platformFee": 9.99, // 10%
+      "total": 109.99,
+      "status": "completed",
+      "tenant": {...},
+      "stripePaymentIntent": "pi_123",
+      "createdAt": "2024-01-15T10:00:00Z"
+    }
+  ]
+}
+
+GET /orders/{id} (Authenticated)
+Get specific order details
+
+=============================================
+
+REVIEWS
+-------
+
+GET /products/{id}/reviews
+List product reviews
+Parameters:
+- page, limit
+- rating: Filter by star rating (1-5)
+
+POST /reviews (Buyer only, must own product)
+Create review
+Body:
+{
+  "product": "prod_123",
+  "rating": 5,
+  "description": "Great product! Highly recommended."
+}
+
+PUT /reviews/{id} (Review owner only)
+Update review
+
+DELETE /reviews/{id} (Review owner only)
+Delete review
+
+=============================================
+
+CART & CHECKOUT
+---------------
+
+POST /checkout/create-session (Authenticated)
+Create Stripe checkout session
+Body:
+{
+  "items": [
+    {
+      "productId": "prod_123",
+      "quantity": 1
+    }
+  ],
+  "tenantId": "tenant_789"
+}
+
+Response:
+{
+  "sessionId": "cs_test_123",
+  "url": "https://checkout.stripe.com/..."
+}
+
+=============================================
+
+CONVERSATIONS (Real-time Chat)
+------------------------------
+
+GET /conversations (Authenticated)
+List user's conversations
+
+POST /conversations (Authenticated)
+Create new conversation
+Body:
+{
+  "type": "private", // private or group
+  "userId": "user_123", // for private chat
+  "name": "Group Name", // for group chat
+  "memberIds": ["user1", "user2"] // for group chat
+}
+
+GET /conversations/{id}/messages
+Get conversation messages
+Parameters:
+- limit: default 50
+- before: cursor for pagination
+
+POST /conversations/{id}/messages
+Send message
+Body:
+{
+  "text": "Hello!",
+  "image": "media_id" // optional
+}
+
+DELETE /conversations/{id}
+Delete conversation
+
+POST /conversations/{id}/typing
+Send typing indicator
+
+=============================================
+
+TENANTS (STORES)
+----------------
+
+GET /tenants
+List all stores
+Parameters:
+- page, limit, search
+
+GET /tenants/{slug}
+Get store details with products
+
+POST /tenants (Authenticated)
+Create new store (requires Stripe verification)
+Body:
+{
+  "name": "My Store",
+  "slug": "my-store",
+  "description": "Store description",
+  "logo": "media_id"
+}
+
+PUT /tenants/{id} (Store owner only)
+Update store information
+
+=============================================
+
+MEDIA UPLOAD
+------------
+
+POST /media/upload (Authenticated)
+Upload media file
+Content-Type: multipart/form-data
+Fields:
+- file: File data (max 5MB for images)
+- alt: Alt text (optional)
+
+Supported formats:
+- Images: JPG, PNG, GIF, WEBP
+- Documents: PDF
+- Archives: ZIP
+
+Response:
+{
+  "id": "media_123",
+  "url": "https://cdn.nexstp.com/...",
+  "filename": "product-image.jpg",
+  "mimeType": "image/jpeg",
+  "filesize": 245678
+}
+
+=============================================
+
+USER ACCOUNT
+------------
+
+GET /user/profile (Authenticated)
+Get current user profile
+
+PUT /user/profile (Authenticated)
+Update user profile
+Body:
+{
+  "name": "John Doe",
+  "bio": "Digital creator",
+  "avatar": "media_id"
+}
+
+GET /user/library (Authenticated)
+Get user's purchased products
+
+GET /user/stats (Authenticated, Seller only)
+Get seller statistics
+Response:
+{
+  "totalRevenue": 5432.10,
+  "totalOrders": 145,
+  "totalProducts": 23,
+  "averageRating": 4.7
+}
+
+=============================================
+ERROR HANDLING
+=============================================
+
+All errors return consistent format:
+
+{
+  "error": {
+    "code": "resource_not_found",
+    "message": "The requested product does not exist",
+    "details": {
+      "resourceType": "product",
+      "resourceId": "prod_123"
+    }
+  }
+}
+
+Common Error Codes:
+- invalid_api_key: Authentication failed
+- rate_limit_exceeded: Too many requests
+- resource_not_found: Item doesn't exist
+- permission_denied: Insufficient permissions
+- validation_error: Invalid input data
+- payment_failed: Payment processing error
+- tenant_not_allowed: Store not verified to sell
+- already_purchased: Item already in library
+- already_reviewed: Product already reviewed
+- must_own_product: Must purchase to review
+- server_error: Internal server error
+
+HTTP Status Codes:
+- 200: Success
+- 201: Created
+- 204: No content (successful delete)
+- 400: Bad request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Not found
+- 409: Conflict (duplicate)
+- 429: Rate limit exceeded
+- 500: Server error
+
+=============================================
+PAGINATION
+=============================================
+
+List endpoints support cursor-based pagination:
+
+Request:
+GET /products?page=2&limit=50
+
+Response includes meta:
+{
+  "data": [...],
+  "meta": {
+    "page": 2,
+    "limit": 50,
+    "totalPages": 10,
+    "totalCount": 487,
+    "hasNext": true,
+    "hasPrev": true
+  }
+}
+
+=============================================
+WEBHOOKS (Seller Feature)
+=============================================
+
+Configure webhooks to receive real-time events:
+
+POST /webhooks
+Create webhook
+Body:
+{
+  "url": "https://your-store.com/webhook",
+  "events": ["order.created", "product.review"],
+  "secret": "your_webhook_secret"
+}
+
+Events Available:
+- order.created
+- order.completed
+- order.cancelled
+- product.review
+- product.rating_updated
+- launchpad.started
+- launchpad.ended
+- message.received
+
+Webhook Payload Example:
+{
+  "event": "order.created",
+  "createdAt": "2024-01-20T15:30:00Z",
+  "data": {
+    "orderId": "order_789",
+    "tenantId": "tenant_123",
+    "total": 199.99,
+    "items": [...]
+  }
+}
+
+Verify webhook signatures using HMAC-SHA256 with your secret.
+
+=============================================
+REAL-TIME EVENTS (Pusher)
+=============================================
+
+Nexstp uses Pusher for real-time features:
+
+Channels:
+- private-conversation-{conversationId}: Chat messages
+- private-user-{userId}: User notifications
+- presence-store-{tenantId}: Store activity
+
+Events:
+- message:new: New chat message
+- message:seen: Message marked as seen
+- typing:start: User started typing
+- typing:stop: User stopped typing
+- order:new: New order received
+
+Subscribe using Pusher client library with auth endpoint:
+POST /api/pusher/auth
+
+=============================================
+RATE LIMITING
+=============================================
+
+Rate limit info included in headers:
+- X-RateLimit-Limit: Request limit
+- X-RateLimit-Remaining: Requests remaining
+- X-RateLimit-Reset: Unix timestamp when limit resets
+
+When rate limited, response includes:
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "API rate limit exceeded",
+    "retryAfter": 3600
+  }
+}
+
+Rate Limits by Plan:
+- Free Buyers: 100/hour
+- Basic Sellers: 500/hour
+- Pro Sellers: 2,000/hour
+- Enterprise: 10,000/hour
+
+=============================================
+TRPC API (Alternative)
+=============================================
+
+Nexstp also provides a tRPC API for TypeScript applications:
+
+Installation:
+npm install @trpc/client @trpc/server
+
+Example (TypeScript):
+```typescript
+import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import type { AppRouter } from '@/server/routers';
+
+const client = createTRPCClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: 'https://nexstp.com/api/trpc',
+    }),
+  ],
+});
+
+// List products
+const products = await client.products.list.query({
+  page: 1,
+  limit: 20
+});
+
+// Create product (seller)
+const product = await client.products.create.mutate({
+  title: 'New Product',
+  price: 99.99,
+  category: 'cat_123'
+});
+```
+
+=============================================
+PAYMENT INTEGRATION
+=============================================
+
+Nexstp uses Stripe for payment processing:
+
+Checkout Flow:
+1. Create checkout session via API
+2. Redirect user to Stripe checkout URL
+3. Stripe processes payment
+4. Webhook confirms payment
+5. User redirected to success page
+6. Product added to user's library
+
+Seller Onboarding:
+1. Create tenant account
+2. Complete Stripe Connect onboarding
+3. Verify account
+4. Start selling
+
+Platform Fee:
+- 10% platform fee on all sales
+- Automatically deducted by Stripe Connect
+- Sellers receive 90% of sale price
+
+=============================================
+API CHANGELOG
+=============================================
+
+v1.2 (Current)
+- Added launchpad purchase endpoint
+- Improved real-time chat performance
+- Added product search with filters
+- Enhanced seller analytics
+
+v1.1
+- Added review system
+- Multi-language support
+- Webhook support for sellers
+- Improved error handling
+
+v1.0
+- Initial release
+- Core CRUD operations
+- Stripe integration
+- Basic real-time chat
+
+=============================================
+SUPPORT
+=============================================
+
+API Support:
+- Email: api@nexstp.com
+- Developer Forum: https://developers.nexstp.com
+- API Status: https://status.nexstp.com
+- Documentation: https://docs.nexstp.com
+
+For enterprise API access:
+- Contact: enterprise@nexstp.com
+- Custom rate limits available
+- Dedicated support team
+- SLA guarantees
+
+Report API issues:
+- GitHub: https://github.com/nexstp/api-issues
+- Status page: https://status.nexstp.com
+
+Need higher rate limits? Upgrade your seller plan or contact enterprise@nexstp.com
+

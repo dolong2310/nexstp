@@ -1,0 +1,688 @@
+Getting Started Guide - Welcome to Nexstp Marketplace
+
+=============================================
+WELCOME TO NEXSTP
+=============================================
+
+Welcome to Nexstp - your premier multi-tenant marketplace for digital products and creative works! Whether you're a buyer looking for amazing products or a creator ready to start selling, this guide will help you get started in just 15 minutes.
+
+What is Nexstp?
+- Multi-tenant marketplace with individual store fronts
+- Buy and sell digital products, courses, templates, and more
+- Exclusive Launchpad deals with time-limited discounts
+- Real-time chat between buyers and sellers
+- Secure payments via Stripe
+- Lifetime access to purchased products
+
+=============================================
+FOR BUYERS: GETTING STARTED
+=============================================
+
+STEP 1: CREATE YOUR ACCOUNT
+----------------------------
+
+1. Visit https://nexstp.com
+2. Click "Sign Up" in the top navigation
+3. Fill in registration form:
+   - Email address (required)
+   - Username (your unique identifier)
+   - Password (minimum 8 characters)
+4. Click "Create account"
+5. Check your email inbox
+6. Click the verification link
+7. You're in! Start shopping
+
+Account Benefits:
+✓ Free forever - no subscription fees
+✓ Access to thousands of products
+✓ Build your digital library
+✓ Chat with sellers
+✓ Leave reviews on purchases
+✓ Save favorites and wishlists (coming soon)
+
+STEP 2: COMPLETE YOUR PROFILE
+-----------------------------
+
+Make your account yours:
+
+1. Click your avatar (top right) > "Profile"
+2. Add your information:
+   - Full name
+   - Profile picture (optional)
+   - Bio (optional)
+   - Location (optional)
+3. Set your preferences:
+   - Language (English/Vietnamese)
+   - Email notifications
+   - Theme (Light/Dark mode)
+4. Click "Save"
+
+STEP 3: EXPLORE PRODUCTS
+------------------------
+
+Discover amazing products:
+
+**Browse by Category:**
+1. Click "Products" in navigation
+2. Select a category:
+   - Business & Money
+   - Software Development
+   - Design
+   - Education
+   - Self Improvement
+   - Photography
+   - Music
+   - And many more!
+
+**Search for Products:**
+1. Use search bar at top
+2. Enter keywords
+3. Filter results:
+   - Price range
+   - Category
+   - Tags
+   - Ratings
+   - Sort by: Newest, Price, Trending
+
+**Explore Stores:**
+1. Browse different seller stores
+2. Each seller has their own storefront
+3. Click "Visit Store" on any product
+4. See all products from that seller
+5. Click "Message" to chat with seller
+
+STEP 4: CHECK OUT LAUNCHPADS
+----------------------------
+
+Get exclusive early access deals!
+
+1. Click "Launchpads" in navigation
+2. Browse time-limited special offers
+3. See countdown timers
+4. View discount percentages (up to 50% off!)
+5. Purchase before timer ends
+6. After expiry, products return to regular price
+
+Why Launchpads?
+🚀 Early access to new products
+💰 Special launch pricing
+⏰ Limited time offers
+🎯 Exclusive deals
+
+STEP 5: MAKE YOUR FIRST PURCHASE
+--------------------------------
+
+Ready to buy? It's easy:
+
+1. Find a product you like
+2. Click "Add to Cart" (or "Buy Now" for immediate checkout)
+3. Review your cart
+4. Click "Checkout"
+5. Sign in if not already
+6. Complete payment via Stripe:
+   - Enter card information
+   - Or use Apple Pay/Google Pay
+   - Or save payment methods for future
+7. Click "Pay"
+8. Redirected to success page
+9. Product instantly added to your Library!
+
+Payment is secure via Stripe:
+- 256-bit SSL encryption
+- PCI-compliant processing
+- We never store your card info
+- Support for all major cards
+
+STEP 6: ACCESS YOUR LIBRARY
+---------------------------
+
+Your purchased products live here:
+
+1. Click "Library" in navigation
+2. View all your purchases
+3. Click any product to:
+   - View details
+   - Download files
+   - Access content
+   - Leave a review
+4. Access anytime, anywhere
+5. Lifetime access - no expiration!
+
+Your Library Features:
+- All purchases in one place
+- Unlimited downloads
+- Filter by category
+- Search your products
+- Quick access links
+
+STEP 7: LEAVE REVIEWS
+---------------------
+
+Share your experience:
+
+1. Go to Library
+2. Find your purchased product
+3. Click "Post review"
+4. Rate 1-5 stars
+5. Write review (optional but helpful!)
+6. Click "Submit"
+
+Your review shows "✓ Verified Purchase" badge
+
+Benefits of reviewing:
+- Help other buyers make decisions
+- Support sellers you love
+- Build your reputation
+- Contribute to community
+
+STEP 8: COMMUNICATE WITH SELLERS
+--------------------------------
+
+Have questions? Chat with sellers:
+
+1. Go to any store page
+2. Click "Message" button
+3. Type your message
+4. Seller receives notification
+5. Real-time conversation
+6. Send text or images
+7. Get support and answers
+
+Chat Features:
+- Real-time messaging
+- Image sharing
+- Read receipts
+- Typing indicators
+- Message history
+- Group chats (for multiple people)
+
+Access your conversations:
+- Click "Conversations" in navigation
+- View all your chats
+- Continue conversations
+- Delete old chats
+
+=============================================
+FOR SELLERS: GETTING STARTED
+=============================================
+
+STEP 1: SIGN UP & VERIFY
+------------------------
+
+Start your selling journey:
+
+1. Create Nexstp account (see Buyer Step 1)
+2. Log into your account
+3. Go to Dashboard
+4. Click "Start Selling"
+5. Complete Stripe Connect onboarding:
+   - Business type (individual/company)
+   - Personal information
+   - Business details (if applicable)
+   - Bank account for payouts
+   - Identity verification (government ID)
+6. Wait for Stripe approval (usually 1-2 days)
+7. Receive confirmation email
+8. Ready to sell!
+
+Why Stripe Connect?
+- Secure payment processing
+- Automatic payouts
+- Handle taxes and compliance
+- Support multiple currencies
+- Industry standard for marketplaces
+
+STEP 2: SET UP YOUR STORE
+-------------------------
+
+Create your brand:
+
+1. Go to Dashboard > Store Settings
+2. Store Information:
+   - Store name
+   - Store slug (URL: nexstp.com/store/your-slug)
+   - Description (tell your story!)
+   - Store logo (recommended: 400x400px)
+   - Banner image (optional: 1200x400px)
+   - Contact email
+3. Store Policies:
+   - Default refund policy
+   - Shipping info (if applicable)
+   - Terms and conditions
+4. Social Links (optional):
+   - Website
+   - Twitter
+   - Instagram
+   - LinkedIn
+5. Click "Save Store"
+
+Your store URL: https://nexstp.com/store/[your-slug]
+Share this link to promote your store!
+
+STEP 3: CREATE YOUR FIRST PRODUCT
+---------------------------------
+
+List your first product:
+
+1. Go to Dashboard > Products
+2. Click "Create Product"
+3. Product Details:
+   - Title (clear and descriptive)
+   - Description (sell the benefits!)
+   - Price (USD, minimum $1)
+   - Category (select appropriate)
+   - Tags (help buyers find it)
+4. Product Images:
+   - Upload 1-5 images
+   - First image is thumbnail
+   - Recommended: 1200x800px
+   - Max 5MB per image
+5. Product Files (digital products):
+   - Upload downloadable files
+   - ZIP files for multiple items
+   - Max file size: check current limits
+6. Refund Policy:
+   - No refunds
+   - 7 days
+   - 14 days
+   - 30 days money-back guarantee
+7. Click "Publish Product"
+
+Product Tips:
+- Use high-quality images
+- Write compelling descriptions
+- Price competitively
+- Choose relevant categories
+- Add helpful tags
+- Offer fair refund policy
+
+STEP 4: CREATE A LAUNCHPAD
+--------------------------
+
+Launch with special pricing:
+
+1. Go to Dashboard > Products
+2. Select an existing product
+3. Click "Create Launchpad"
+4. Launchpad Settings:
+   - Launch price (must be less than regular price)
+   - Duration in hours (24-168 hours)
+   - Start date and time
+   - Optional: Limited quantity
+5. Preview your launchpad
+6. Click "Launch"
+7. Launchpad goes live at scheduled time
+8. Appears on Launchpads page
+9. Countdown begins!
+10. Auto-ends when timer expires
+
+Launchpad Benefits:
+- Generate buzz for new products
+- Early revenue from eager buyers
+- Build customer base quickly
+- Test pricing strategies
+- Create urgency with timers
+
+Launchpad Best Practices:
+- 20-50% discount is attractive
+- 48-72 hours duration works well
+- Promote before launch
+- Engage with buyers during launchpad
+- Follow up after launch ends
+
+STEP 5: MANAGE ORDERS
+---------------------
+
+Handle your sales:
+
+1. Go to Dashboard > Orders
+2. View all orders:
+   - Order number
+   - Buyer information
+   - Order date
+   - Amount
+   - Status
+   - Platform fee
+3. Order details:
+   - Click any order to view
+   - See buyer contact info
+   - View items purchased
+   - Check payment status
+   - Track payouts
+4. Order statuses:
+   - Pending: Payment processing
+   - Completed: Payment successful
+   - Refunded: Refund issued
+   - Cancelled: Order cancelled
+
+For digital products:
+- Delivery is automatic
+- Buyer gets instant access
+- No shipping required
+- Product added to buyer's Library
+
+For physical products:
+- Mark as shipped
+- Add tracking number
+- Update order status
+- Communicate with buyer
+
+STEP 6: COMMUNICATE WITH BUYERS
+-------------------------------
+
+Build relationships:
+
+1. Go to Dashboard > Conversations
+2. View all messages
+3. Respond to buyer questions:
+   - Pre-sale inquiries
+   - Support requests
+   - Product questions
+   - Feedback
+4. Be responsive:
+   - Aim for < 24 hour response
+   - Professional and friendly
+   - Helpful and informative
+   - Build trust and reputation
+
+Chat Tips:
+- Enable notifications
+- Respond promptly
+- Be courteous
+- Solve problems
+- Ask for feedback
+- Thank buyers
+
+STEP 7: TRACK YOUR EARNINGS
+---------------------------
+
+Monitor your success:
+
+1. Go to Dashboard > Analytics
+2. View key metrics:
+   - Total revenue
+   - Number of orders
+   - Product views
+   - Conversion rate
+   - Best-selling products
+   - Revenue by time period
+3. Payout Information:
+   - View pending payouts
+   - Payout history
+   - Payout schedule (2-7 days)
+   - Bank account details
+
+Understanding Platform Fees:
+- Platform fee: 10% of each sale
+- Stripe processing: ~2.9% + $0.30
+- Example: $100 sale
+  * Buyer pays: $100
+  * Platform fee: $10
+  * Stripe fee: ~$3.20
+  * You receive: ~$86.80
+
+Payouts:
+- Automatic via Stripe Connect
+- Rolling 2-7 day schedule
+- Direct to your bank account
+- View in Dashboard > Payouts
+
+STEP 8: GROW YOUR BUSINESS
+--------------------------
+
+Scale your store:
+
+**Marketing Your Store:**
+- Share your store URL on social media
+- Create content about your products
+- Engage with buyers in chat
+- Offer launch deals via Launchpads
+- Build email list (external)
+- Collaborate with other sellers
+
+**Optimize Your Listings:**
+- Update product descriptions
+- Add new high-quality images
+- Adjust pricing based on market
+- Add more products regularly
+- Bundle products together
+- Create product variations
+
+**Provide Great Service:**
+- Respond quickly to messages
+- Honor refund policies
+- Deliver quality products
+- Ask for reviews
+- Address issues promptly
+- Build loyal customer base
+
+**Use Launchpads Strategically:**
+- Launch new products with discount
+- Re-launch seasonal products
+- Create urgency and excitement
+- Drive traffic to your store
+- Build momentum
+
+**Monitor Analytics:**
+- Track what's working
+- Identify best-sellers
+- Optimize pricing
+- Understand your audience
+- Test and iterate
+
+=============================================
+PLATFORM FEATURES GUIDE
+=============================================
+
+REAL-TIME CHAT
+-------------
+
+Connect instantly:
+- Buyer to seller messaging
+- Real-time notifications
+- Image sharing
+- Read receipts
+- Typing indicators
+- Conversation history
+- Group chats
+
+CATEGORIES
+----------
+
+Organized marketplace:
+- Main categories
+- Subcategories
+- Browse by category
+- Category pages
+- Filter by category
+- Multiple categorization
+
+REVIEWS & RATINGS
+-----------------
+
+Build trust:
+- 5-star rating system
+- Written reviews
+- Verified purchase badges
+- Seller cannot edit/delete
+- Reviews impact ranking
+- Honest feedback encouraged
+
+SEARCH & FILTERS
+---------------
+
+Find anything:
+- Global search
+- Search by keyword
+- Filter by:
+  * Price range
+  * Category
+  * Tags
+  * Rating
+  * Store
+- Sort by:
+  * Newest/Oldest
+  * Price (high/low)
+  * Trending
+  * Rating
+
+MULTI-LANGUAGE
+-------------
+
+Global marketplace:
+- English (default)
+- Vietnamese
+- More languages coming
+- Auto-detect browser language
+- Manual language switcher
+- Translated interface
+
+RESPONSIVE DESIGN
+----------------
+
+Works everywhere:
+- Desktop optimized
+- Tablet friendly
+- Mobile responsive
+- Touch-friendly
+- Fast loading
+- Progressive Web App features
+
+=============================================
+BEST PRACTICES
+=============================================
+
+FOR BUYERS:
+----------
+✓ Read product descriptions carefully
+✓ Check seller ratings and reviews
+✓ Ask questions before buying
+✓ Review refund policies
+✓ Leave honest reviews
+✓ Support sellers you love
+✓ Report issues promptly
+✓ Keep account secure
+
+FOR SELLERS:
+-----------
+✓ Create detailed product listings
+✓ Use high-quality images
+✓ Price fairly and competitively
+✓ Respond to messages quickly
+✓ Honor your refund policies
+✓ Deliver quality products
+✓ Build your reputation
+✓ Engage with your customers
+✓ Use Launchpads strategically
+✓ Update products regularly
+
+=============================================
+KEYBOARD SHORTCUTS
+=============================================
+
+Make navigation faster:
+
+Global:
+- Cmd/Ctrl + K: Quick search
+- Cmd/Ctrl + /: Toggle command menu
+- Esc: Close modals/dialogs
+
+Chat:
+- Enter: Send message
+- Shift + Enter: New line
+- Cmd/Ctrl + Enter: Send message
+
+Navigation:
+- G + H: Go to Home
+- G + L: Go to Launchpads
+- G + P: Go to Products
+- G + D: Go to Dashboard (sellers)
+- G + C: Go to Conversations
+
+=============================================
+GETTING HELP
+=============================================
+
+We're here to support you:
+
+Help Center:
+- https://help.nexstp.com
+- Comprehensive guides
+- Video tutorials
+- Step-by-step instructions
+- FAQ database
+
+Email Support:
+- support@nexstp.com
+- Response within 24 hours
+- Include: account email, issue details, screenshots
+
+Live Chat:
+- Click chat icon (bottom right)
+- Available 9 AM - 6 PM EST
+- Instant responses
+- Technical support
+
+Community:
+- Forum: https://community.nexstp.com
+- Discord: https://discord.gg/nexstp
+- Connect with other users
+- Share tips and tricks
+- Get peer support
+
+Social Media:
+- Twitter: @nexstp
+- Instagram: @nexstp
+- LinkedIn: Nexstp Marketplace
+- Updates and announcements
+
+Documentation:
+- API docs: https://docs.nexstp.com/api
+- Developer resources
+- Integration guides
+- Technical specifications
+
+Status Page:
+- https://status.nexstp.com
+- Real-time platform status
+- Scheduled maintenance
+- Incident reports
+
+=============================================
+NEXT STEPS
+=============================================
+
+You're all set! Here's what to do next:
+
+FOR BUYERS:
+1. ✓ Browse products in your favorite categories
+2. ✓ Check out current Launchpad deals
+3. ✓ Make your first purchase
+4. ✓ Leave a review
+5. ✓ Follow sellers you like
+
+FOR SELLERS:
+1. ✓ Complete Stripe verification
+2. ✓ Set up your store
+3. ✓ Create your first product
+4. ✓ Launch a Launchpad
+5. ✓ Promote your store
+
+Join our community:
+- Newsletter: Subscribe on homepage
+- Blog: Read seller success stories
+- Webinars: Learn best practices
+- Beta program: Test new features
+
+=============================================
+
+Welcome to Nexstp! 🚀
+
+We're excited to have you here. Whether you're buying or selling, you're now part of a growing community of creators and customers.
+
+Questions? Feedback? We'd love to hear from you!
+Email: hello@nexstp.com
+
+Happy shopping and selling!
+- The Nexstp Team
+

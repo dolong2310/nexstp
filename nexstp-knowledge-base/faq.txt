@@ -1,0 +1,512 @@
+Frequently Asked Questions - Nexstp Marketplace
+
+=============================================
+GENERAL QUESTIONS
+=============================================
+
+Q: What is Nexstp?
+A: Nexstp is a multi-tenant marketplace platform where creators and sellers can sell digital and physical products. Buyers can discover amazing products from various stores, access exclusive launchpad deals, and build their digital library. We support real-time chat, reviews, and secure payments via Stripe.
+
+Q: Is Nexstp free to use?
+A: Yes! Creating a buyer account is completely free. Sellers pay a 10% platform fee on sales. There are no monthly subscription fees for buyers or sellers.
+
+Q: What types of products can I buy on Nexstp?
+A: You can find products across many categories:
+- Business & Money (courses, templates, guides)
+- Software Development (code, tools, plugins)
+- Design (UI kits, graphics, templates)
+- Education (online courses, tutorials)
+- Music & Photography (presets, samples)
+- Self Improvement (guides, workbooks)
+- And many more!
+
+Q: How does Nexstp differ from other marketplaces?
+A: Nexstp offers unique features:
+- **Launchpads**: Early access to products at special prices
+- **Multi-tenant**: Each seller has their own branded store
+- **Real-time Chat**: Communicate directly with sellers
+- **Digital Library**: Lifetime access to purchased products
+- **Fair Platform Fee**: Only 10% commission
+
+=============================================
+ACCOUNT MANAGEMENT
+=============================================
+
+Q: How do I create an account?
+A: To create an account:
+1. Click "Sign Up" in the top navigation
+2. Enter your email, username, and password
+3. Click "Create account"
+4. Check your email for verification link
+5. Click the link to verify your email
+6. Start shopping!
+
+Your store URL will be: https://nexstp.com/store/your-username
+
+Q: How do I reset my password?
+A: To reset your password:
+1. Go to https://nexstp.com/sign-in
+2. Click "Forgot your password?"
+3. Enter your registered email address
+4. Check your inbox for reset link (check spam if not received)
+5. Click the reset link within 24 hours
+6. Create a new password (minimum 8 characters)
+7. Click "Reset Password"
+
+Q: How do I verify my email?
+A: Email verification is automatic:
+1. After sign-up, check your inbox
+2. Click the verification link in the email
+3. You'll be redirected to confirmation page
+4. Email is now verified!
+
+If you didn't receive the email:
+- Check spam/junk folder
+- Click "Resend Verification Email" on sign-in page
+- Contact support if still not received
+
+Q: Can I change my username?
+A: Yes, you can change your username:
+1. Go to Dashboard > Profile Settings
+2. Update your username
+3. Click "Save"
+
+Note: Your store URL will change to the new username. Update any links you've shared.
+
+Q: How do I enable two-factor authentication?
+A: Currently, Nexstp uses email-based verification for security. Two-factor authentication via authenticator apps is coming soon!
+
+=============================================
+BUYING & SHOPPING
+=============================================
+
+Q: How do I buy a product?
+A: To purchase a product:
+1. Browse products or use search
+2. Click on a product you like
+3. Click "Add to Cart" or "Buy Now"
+4. Review your cart
+5. Click "Checkout"
+6. Complete payment via Stripe
+7. Product is added to your Library instantly!
+
+Q: What payment methods do you accept?
+A: We accept all major payment methods via Stripe:
+- Credit cards (Visa, Mastercard, American Express, Discover)
+- Debit cards
+- Apple Pay
+- Google Pay
+- Link (Stripe's one-click checkout)
+- Bank transfers (in some countries)
+
+Q: Is my payment information secure?
+A: Absolutely! We use Stripe for all payment processing. Nexstp never stores your credit card information. All payments are processed securely via Stripe's PCI-compliant infrastructure with 256-bit SSL encryption.
+
+Q: Where can I find my purchased products?
+A: All your purchases are in your Library:
+1. Click "Library" in the main navigation
+2. View all your purchased products
+3. Download or access products anytime
+4. Access is lifetime - no expiration!
+
+Q: Can I get a refund?
+A: Refund policies vary by product and seller:
+- **30 days**: Money-back guarantee
+- **14 days**: Limited refund period
+- **7 days**: Short refund period
+- **No refunds**: Digital products, once accessed
+
+To request a refund:
+1. Go to Library > Your Orders
+2. Find the order
+3. Click "Request Refund"
+4. Provide reason
+5. Wait for seller approval (24-48 hours)
+
+Approved refunds are processed in 5-10 business days to your original payment method.
+
+Q: What if a product doesn't work or is not as described?
+A: We're here to help:
+1. Contact the seller directly via chat
+2. If unresolved, open a dispute:
+   - Go to order details
+   - Click "Report Issue"
+   - Describe the problem
+3. Our support team will mediate
+4. Resolution within 3-5 business days
+
+Q: Can I gift a product to someone?
+A: Gift purchases are coming soon! Currently, you can:
+1. Purchase the product
+2. Share the download with the recipient
+Note: This is against our terms for most products. Wait for our official gift feature!
+
+=============================================
+LAUNCHPADS
+=============================================
+
+Q: What are Launchpads?
+A: Launchpads are time-limited special offers where sellers launch new products at discounted prices. Think of it as early access deals before products return to regular pricing.
+
+Features:
+- 🎯 Up to 50% off regular price
+- ⏰ Limited time (24 hours to 7 days)
+- 🚀 Early access to new products
+- 📊 Limited quantities sometimes
+
+Q: How do Launchpads work?
+A: Launchpad lifecycle:
+1. Seller creates a launchpad with special price
+2. Launchpad goes live for set duration
+3. Buyers purchase at launch price
+4. Timer counts down
+5. Launchpad ends - price returns to regular
+6. Product remains available at regular price
+
+Q: Can I buy a Launchpad product after it ends?
+A: Yes! The product remains available at its regular price after the launchpad ends. You just won't get the special launch discount.
+
+Q: Do I keep access if I buy during Launchpad?
+A: Absolutely! You get lifetime access just like any other purchase. The only difference is you paid the special launch price.
+
+Q: How do I know when new Launchpads start?
+A: Stay updated:
+- Visit https://nexstp.com/launchpads
+- Follow stores you like
+- Enable email notifications
+- Check the homepage for featured launchpads
+
+=============================================
+SELLING ON NEXSTP
+=============================================
+
+Q: How do I become a seller?
+A: To start selling:
+1. Sign up for a Nexstp account
+2. Go to Dashboard
+3. Click "Start Selling"
+4. Complete Stripe Connect onboarding
+5. Verify your identity (required by Stripe)
+6. Create your store profile
+7. Start listing products!
+
+Q: What are the seller fees?
+A: Simple and transparent:
+- **Platform Fee**: 10% of each sale
+- **Payment Processing**: Handled by Stripe (~2.9% + $0.30)
+- **No Monthly Fees**: Pay only when you sell
+- **No Listing Fees**: List unlimited products free
+
+Example: You sell a product for $100
+- Buyer pays: $100
+- Platform fee (10%): $10
+- You receive: $90 (minus Stripe fees)
+
+Q: How do I get paid?
+A: Payouts are automatic via Stripe Connect:
+- Frequency: Rolling basis (2-7 days after sale)
+- Method: Direct deposit to your bank account
+- Currency: Your local currency
+- Minimum: No minimum payout amount
+- Dashboard: View earnings in real-time
+
+Q: What can I sell on Nexstp?
+A: You can sell:
+✓ Digital products (ebooks, courses, templates)
+✓ Software & plugins
+✓ Design assets (graphics, UI kits)
+✓ Music & audio (beats, samples)
+✓ Photography (presets, photos)
+✓ Business resources
+✓ Educational content
+✓ Creative works
+
+You CANNOT sell:
+✗ Illegal or prohibited items
+✗ Stolen or pirated content
+✗ Adult/explicit content
+✗ Weapons or drugs
+✗ Items violating intellectual property
+
+Q: How do I create a Launchpad?
+A: To create a launchpad offer:
+1. Go to Dashboard > Products
+2. Click on a product
+3. Click "Create Launchpad"
+4. Set launch price (must be lower than regular price)
+5. Set duration (in hours)
+6. Set start date/time
+7. Click "Launch"
+
+Your launchpad will appear on the Launchpads page!
+
+Q: Can I chat with buyers?
+A: Yes! Nexstp has built-in real-time chat:
+- Buyers can message you with questions
+- Respond via Conversations page
+- Get notifications for new messages
+- Build relationships with customers
+- Provide support
+
+Q: How do I verify my Stripe account?
+A: Stripe verification is required to receive payments:
+1. Complete Stripe Connect onboarding
+2. Provide business/personal information
+3. Verify identity (government ID)
+4. Add bank account details
+5. Wait for Stripe approval (usually 1-2 days)
+6. You'll receive email when approved
+
+=============================================
+LIBRARY & DOWNLOADS
+=============================================
+
+Q: How do I access my Library?
+A: Your Library contains all purchased products:
+1. Click "Library" in navigation
+2. View all your products
+3. Click product to view/download
+4. Access anytime, anywhere
+
+Q: How long do I have access to purchased products?
+A: Lifetime access! Once you purchase a product, it stays in your Library forever. No expiration dates.
+
+Q: Can I download products multiple times?
+A: Yes! Download as many times as you need. Your purchases never expire.
+
+Q: What if a seller deletes their product?
+A: If you already purchased it, you keep access. The product remains in your Library even if the seller removes it from the marketplace.
+
+=============================================
+REVIEWS & RATINGS
+=============================================
+
+Q: How do I leave a review?
+A: To review a product (must be purchased):
+1. Go to Library
+2. Click on the product
+3. Click "Post review"
+4. Select star rating (1-5)
+5. Write your review (optional)
+6. Click "Submit"
+
+Your review will be marked with "✓ Verified Purchase"
+
+Q: Can I edit or delete my review?
+A: Yes! You can edit or delete anytime:
+1. Go to your review
+2. Click "Edit" or "Delete"
+3. Make changes
+4. Click "Update review"
+
+Q: Can sellers respond to reviews?
+A: Currently, sellers cannot respond publicly. They can reach out to you via chat if needed.
+
+Q: What if I see a fake or inappropriate review?
+A: Report it:
+1. Click the review
+2. Click "Report"
+3. Select reason
+4. Submit report
+
+We'll investigate within 24-48 hours.
+
+=============================================
+CONVERSATIONS & CHAT
+=============================================
+
+Q: How do I message a seller?
+A: To start a conversation:
+1. Go to a seller's store page
+2. Click "Message" button
+3. Type your message
+4. Click "Send"
+
+Seller will receive notification and can respond.
+
+Q: Can I send images in chat?
+A: Yes! You can send images:
+1. Click the image icon in chat
+2. Select image (max 5MB)
+3. Add optional message
+4. Click "Send"
+
+Q: How do I know if someone read my message?
+A: Messages show status:
+- ✓ Sent
+- ✓✓ Delivered
+- "Seen by [name]" when read
+
+Q: Can I create group conversations?
+A: Yes! Create group chats:
+1. Go to Conversations
+2. Click "Create group chat"
+3. Add name and members (2+ people)
+4. Click "Create"
+
+Q: How do I delete a conversation?
+A: To delete a conversation:
+1. Open the conversation
+2. Click menu (three dots)
+3. Click "Delete conversation"
+4. Confirm deletion
+
+Note: This only deletes from your view.
+
+=============================================
+TECHNICAL & TROUBLESHOOTING
+=============================================
+
+Q: What browsers do you support?
+A: Nexstp works best on modern browsers:
+- Google Chrome (latest)
+- Mozilla Firefox (latest)
+- Safari (latest)
+- Microsoft Edge (latest)
+- Opera (latest)
+
+For best experience, keep your browser updated.
+
+Q: Is there a mobile app?
+A: Nexstp is fully mobile-responsive! Access via your mobile browser. Native iOS and Android apps coming soon!
+
+Q: Why is my image upload failing?
+A: Image upload issues are usually due to:
+- File too large (max 5MB)
+- Unsupported format (use JPG, PNG, GIF, WEBP)
+- Slow internet connection
+- Browser cache issues
+
+Solutions:
+- Compress your image
+- Try a different format
+- Clear browser cache
+- Use a different browser
+
+Q: Why can't I checkout?
+A: Common checkout issues:
+- Not signed in (sign in required)
+- Payment method declined (contact your bank)
+- Browser blocking pop-ups (allow for Stripe)
+- Ad blocker interfering (disable for checkout)
+
+Q: How do I report a bug?
+A: Report bugs or technical issues:
+- Email: support@nexstp.com
+- Include: Browser, OS, steps to reproduce
+- Screenshots if possible
+- Response within 24 hours
+
+=============================================
+SECURITY & PRIVACY
+=============================================
+
+Q: Is my data secure?
+A: Yes! We take security seriously:
+- 256-bit SSL encryption
+- Secure password hashing
+- PCI-compliant payment processing (Stripe)
+- Regular security audits
+- GDPR compliant
+- No credit card data stored on our servers
+
+Q: How do you use my data?
+A: We use your data to:
+- Process orders and payments
+- Provide customer support
+- Send order confirmations
+- Improve our platform
+- Marketing (with your consent)
+
+We NEVER:
+- Sell your data to third parties
+- Share data without consent
+- Access your Stripe payment info
+
+Read our Privacy Policy: https://nexstp.com/privacy
+
+Q: Can I delete my account?
+A: Yes, you can delete your account:
+1. Go to Settings > Account
+2. Click "Delete Account"
+3. Confirm deletion
+4. Account deleted within 30 days
+
+Note: Purchased products are lost after deletion. Download everything first!
+
+=============================================
+SUPPORT & CONTACT
+=============================================
+
+Q: How do I contact support?
+A: Multiple ways to reach us:
+
+Email Support:
+- support@nexstp.com
+- Response within 24 hours
+
+Live Chat:
+- Available 9 AM - 6 PM EST
+- Click chat icon (bottom right)
+
+Help Center:
+- https://help.nexstp.com
+- Guides, tutorials, documentation
+
+Social Media:
+- Twitter: @nexstp
+- Instagram: @nexstp
+- LinkedIn: Nexstp Marketplace
+
+Q: What should I include in a support request?
+A: Help us help you faster:
+- Account email/username
+- Order number (if applicable)
+- Detailed description of issue
+- Steps you've already tried
+- Screenshots (if applicable)
+- Browser and device info
+
+Q: How long does support take to respond?
+A: Response times:
+- Email: Within 24 hours
+- Live chat: Immediate (business hours)
+- Urgent issues: Within 6 hours
+- Weekends: May be slower
+
+Q: Do you offer phone support?
+A: Currently, we offer email and live chat support. Phone support is available for enterprise sellers. Contact enterprise@nexstp.com
+
+=============================================
+COMMUNITY & RESOURCES
+=============================================
+
+Q: Is there a Nexstp community?
+A: Join our growing community:
+- Community Forum: https://community.nexstp.com
+- Discord: https://discord.gg/nexstp
+- Blog: https://blog.nexstp.com
+- Newsletter: Subscribe on homepage
+
+Q: Do you have tutorials?
+A: Yes! Comprehensive resources:
+- Getting Started Guide
+- Video tutorials on YouTube
+- Help Center articles
+- Seller success guides
+- Buyer tips and tricks
+
+Q: Can I suggest new features?
+A: Absolutely! We love feedback:
+- Feature requests: feedback@nexstp.com
+- Vote on roadmap: https://roadmap.nexstp.com
+- Join beta testing program
+- Participate in surveys
+
+Your input shapes Nexstp!
+
+=============================================
+
+Still have questions? Contact support@nexstp.com
+We're here to help! 🚀
+

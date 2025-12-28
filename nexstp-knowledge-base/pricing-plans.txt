@@ -1,0 +1,550 @@
+Pricing & Fees - Nexstp Marketplace
+
+Last Updated: January 2024
+
+=============================================
+OVERVIEW
+=============================================
+
+Nexstp operates on a simple and transparent fee structure:
+
+✓ FREE for buyers - No subscription or membership fees
+✓ FREE to list - Unlimited product listings for sellers
+✓ 10% platform fee - Only when you make a sale
+✓ No hidden fees - What you see is what you pay
+
+Our mission: Make it easy and affordable for creators to sell and buyers to discover amazing products.
+
+=============================================
+FOR BUYERS: COMPLETELY FREE
+=============================================
+
+BUYER ACCOUNT - $0/forever
+---------------------------
+
+Everything you need to shop:
+
+✓ Free account creation
+✓ Unlimited product browsing
+✓ Access to all Launchpad deals
+✓ Build your digital library
+✓ Lifetime access to purchases
+✓ Real-time chat with sellers
+✓ Leave reviews and ratings
+✓ Download purchased products unlimited times
+✓ Secure checkout via Stripe
+✓ Email support
+✓ Mobile-friendly access
+
+What You Pay:
+- Only the product price
+- No membership fees
+- No browsing fees
+- No download limits
+- No hidden charges
+
+Payment Processing:
+- All payment processing is included
+- Secure via Stripe
+- No extra buyer fees
+- Prices shown are final (+ applicable taxes)
+
+=============================================
+FOR SELLERS: PAY ONLY WHEN YOU SELL
+=============================================
+
+SELLER ACCOUNT - FREE TO START
+-------------------------------
+
+No upfront costs or monthly fees!
+
+INCLUDED FREE:
+✓ Create unlimited products
+✓ Your own branded store page
+✓ Real-time analytics dashboard
+✓ Order management system
+✓ Customer messaging/chat
+✓ Product image hosting
+✓ File storage for digital products
+✓ Automatic payment processing (Stripe)
+✓ Automatic payouts to your bank
+✓ Create Launchpad campaigns
+✓ Multi-language support
+✓ Email notifications
+✓ Customer reviews system
+✓ Basic seller support
+
+WHEN YOU MAKE A SALE:
+--------------------
+
+Platform Fee: 10% per transaction
+Stripe Processing: ~2.9% + $0.30 per transaction
+
+Example Calculation:
+
+Product Price: $100.00
+-----------------------------------
+Buyer Pays: $100.00
+
+Breakdown:
+- Platform Fee (10%):      -$10.00
+- Stripe Fee (~2.9%+$0.30): -$3.20
+-----------------------------------
+You Receive:               ~$86.80
+
+Another Example:
+
+Product Price: $50.00
+-----------------------------------
+Buyer Pays: $50.00
+
+Breakdown:
+- Platform Fee (10%):      -$5.00
+- Stripe Fee (~2.9%+$0.30): -$1.75
+-----------------------------------
+You Receive:               ~$43.25
+
+Quick Reference:
+$10 sale → You receive ~$8.50
+$25 sale → You receive ~$21.50
+$50 sale → You receive ~$43.25
+$100 sale → You receive ~$86.80
+$250 sale → You receive ~$217.30
+$500 sale → You receive ~$435.05
+
+Note: Stripe fees vary by country, payment method, and currency. International cards may incur additional fees.
+
+=============================================
+FEE STRUCTURE DETAILS
+=============================================
+
+PLATFORM FEE: 10%
+-----------------
+
+What it covers:
+- Marketplace infrastructure
+- Hosting and servers
+- Payment processing integration
+- Customer support
+- Platform development
+- Marketing and promotion
+- Fraud protection
+- Security and compliance
+- Bandwidth and storage
+- Platform maintenance
+
+When it's charged:
+- Automatically deducted via Stripe Connect
+- Only on completed sales
+- No charge for refunds
+- No charge for failed payments
+
+STRIPE PROCESSING FEES
+----------------------
+
+Standard Rates (US):
+- 2.9% + $0.30 per successful card charge
+- Slightly higher for international cards
+- Additional fees for currency conversion
+- Lower rates for high volume (contact Stripe)
+
+What Stripe handles:
+- Payment processing
+- Card network fees
+- Fraud prevention
+- PCI compliance
+- Chargebacks protection
+- Payout management
+- Tax collection (where applicable)
+
+REFUNDS & FEES
+--------------
+
+If you issue a refund:
+- Platform fee is refunded to you
+- Stripe processing fee is NOT refunded
+- You bear the Stripe fee cost
+
+Example:
+$100 sale → You received $86.80
+Refund issued:
+- Buyer receives full $100 back
+- You pay back $90 (product price - platform fee)
+- You lose ~$3.20 (Stripe processing fee)
+
+Partial refunds:
+- Fees calculated proportionally
+- Platform fee refunded proportionally
+- Original Stripe fee not refunded
+
+=============================================
+NO SELLER SUBSCRIPTION PLANS
+=============================================
+
+We keep it simple - one fee structure for everyone!
+
+WHY NO TIERS?
+- We believe in equal opportunity
+- All sellers get full features
+- No advantage for big sellers
+- No disadvantage for small sellers
+- Fair and transparent for all
+
+WHAT YOU DON'T PAY:
+✗ No monthly subscription
+✗ No annual fees
+✗ No listing fees
+✗ No setup fees
+✗ No success fees
+✗ No withdrawal fees
+✗ No account maintenance fees
+✗ No feature unlock fees
+✗ No premium tier pricing
+
+Everyone gets:
+- Same 10% platform fee
+- Same full feature access
+- Same support quality
+- Same promotion opportunities
+- Same payout schedule
+
+=============================================
+ADD-ON SERVICES (OPTIONAL)
+=============================================
+
+While core selling is free, we offer optional add-ons:
+
+FEATURED PLACEMENT (Coming Soon)
+--------------------------------
+Boost your product visibility:
+- Homepage featured slot: $50/week
+- Category featured slot: $25/week
+- Launchpad featured: $30/launch
+- Store spotlight: $40/week
+
+Priority placement increases:
+- Product views by 5-10x
+- Sales conversion
+- Store followers
+- Brand visibility
+
+PREMIUM SUPPORT (Coming Soon)
+-----------------------------
+Enhanced support for busy sellers:
+- $49/month
+- Priority support queue
+- Phone support
+- Dedicated account manager
+- Advanced analytics
+- Early access to features
+- Monthly strategy calls
+
+CUSTOM DOMAIN (Coming Soon)
+---------------------------
+Use your own domain:
+- $15/month
+- yourstore.com instead of nexstp.com/store/yourname
+- Custom branding
+- Professional appearance
+- SSL included
+- Easy setup
+
+ADVANCED ANALYTICS (Coming Soon)
+--------------------------------
+Deep insights:
+- $29/month
+- Visitor tracking
+- Conversion funnels
+- Customer behavior
+- Revenue forecasting
+- Competitor analysis
+- Export data
+
+MARKETING TOOLS (Coming Soon)
+-----------------------------
+Grow your business:
+- $39/month
+- Email campaigns
+- Discount code system
+- Customer segments
+- Abandoned cart recovery
+- Newsletter builder
+- Campaign analytics
+
+Note: All add-ons are completely optional. Core selling features remain free forever!
+
+=============================================
+PAYOUT DETAILS
+=============================================
+
+PAYOUT SCHEDULE
+---------------
+
+Automatic rolling payouts via Stripe Connect:
+- Frequency: 2-7 business days after sale
+- Method: Direct bank transfer
+- No minimum payout amount
+- No maximum payout amount
+- No payout fees
+
+Payout timing by country:
+- US: 2 business days (standard)
+- Europe: 2-3 business days
+- Other countries: 5-7 business days
+
+Instant payouts (if available):
+- Some accounts eligible for instant
+- Small fee charged by Stripe
+- Contact Stripe for eligibility
+
+PAYOUT CURRENCIES
+-----------------
+
+Receive payouts in your local currency:
+- USD (US Dollar)
+- EUR (Euro)
+- GBP (British Pound)
+- CAD (Canadian Dollar)
+- AUD (Australian Dollar)
+- 130+ other currencies
+
+Currency conversion:
+- Automatic conversion by Stripe
+- Competitive exchange rates
+- Small conversion fee applies
+- Rates updated daily
+
+BANK ACCOUNTS
+-------------
+
+Add your bank account during setup:
+- Required for receiving payouts
+- Secure verification process
+- Direct deposit
+- Change anytime in settings
+
+Supported account types:
+- Checking accounts
+- Savings accounts
+- Business accounts
+- International bank accounts
+
+=============================================
+TAX INFORMATION
+=============================================
+
+SELLER TAX RESPONSIBILITIES
+---------------------------
+
+As a seller, you're responsible for:
+- Income tax on earnings
+- Sales tax (if applicable in your region)
+- VAT (if applicable in your region)
+- Business licenses (if required)
+- Record keeping
+
+Nexstp provides:
+- Transaction history
+- Earnings reports
+- Payout statements
+- Annual 1099-K forms (US sellers, if applicable)
+
+BUYER TAXES
+-----------
+
+Buyers may be charged:
+- Sales tax (based on location)
+- VAT (in applicable countries)
+- GST (in applicable countries)
+
+Tax is calculated automatically at checkout and added to the final price.
+
+TAX DOCUMENTS
+-------------
+
+Access tax documents:
+- Dashboard > Reports > Tax Documents
+- Transaction history export
+- Annual statements
+- Payout summaries
+
+Consult your accountant:
+We recommend consulting a tax professional for guidance specific to your situation.
+
+=============================================
+PAYMENT METHODS SUPPORTED
+=============================================
+
+FOR BUYERS
+----------
+
+Purchase with:
+✓ Credit cards (Visa, Mastercard, Amex, Discover)
+✓ Debit cards
+✓ Apple Pay
+✓ Google Pay
+✓ Link (Stripe's 1-click checkout)
+✓ Bank transfers (select countries)
+✓ Local payment methods (varies by country)
+
+All processed securely via Stripe.
+
+FOR SELLERS
+-----------
+
+Receive payouts via:
+- Bank transfer (ACH, SEPA, etc.)
+- Direct deposit
+- International wire transfer
+
+=============================================
+REFUND COST CALCULATOR
+=============================================
+
+Understanding refund costs:
+
+Scenario 1: Full Refund on $100 sale
+- Original sale: $100
+- You received: ~$86.80
+- Buyer refunded: $100
+- Platform fee returned: $10
+- You pay back: $90
+- Net cost to you: $3.20 (Stripe fee)
+
+Scenario 2: Partial Refund ($50 on $100 sale)
+- Original sale: $100
+- You received: ~$86.80
+- Buyer refunded: $50
+- Platform fee returned: $5
+- You pay back: $45
+- Net cost to you: ~$8.20
+
+Tips to minimize refunds:
+- Clear product descriptions
+- High-quality previews
+- Accurate pricing
+- Good communication
+- Fair refund policies
+- Quality products
+
+=============================================
+COMPARISON WITH OTHER MARKETPLACES
+=============================================
+
+How Nexstp stacks up:
+
+NEXSTP:
+- 10% platform fee
+- No monthly fee
+- Unlimited products
+- All features included
+
+GUMROAD:
+- 10% fee (free plan)
+- Or $10/month + 3.5% fee
+- Similar features
+
+ETSY:
+- 6.5% transaction fee
+- $0.20 listing fee per item
+- Payment processing fees separate
+- Additional advertising fees
+
+CREATIVE MARKET:
+- 30-50% marketplace fee
+- Free to join
+- High fees for small sellers
+
+AMAZON:
+- 15% referral fee (typical)
+- Or $39.99/month + lower fees
+- Fulfillment fees additional
+
+SHOPIFY:
+- $29-299/month subscription
+- Plus payment processing fees
+- Plus app/plugin costs
+- Full control of store
+
+Nexstp Advantages:
+✓ Simple, transparent pricing
+✓ No subscription required
+✓ All features included
+✓ Fair to all sellers
+✓ Pay only when you sell
+
+=============================================
+FREQUENTLY ASKED QUESTIONS
+=============================================
+
+Q: Is there a free trial?
+A: The entire platform is free to use! No trial needed. You only pay when you make sales.
+
+Q: Can I upgrade for lower fees?
+A: Currently, we have one fair rate for everyone: 10%. Volume discounts may be introduced for enterprise sellers.
+
+Q: What if I want to close my store?
+A: You can close anytime, no fees. You keep access to order history and can reopen anytime.
+
+Q: Do you take a cut of tips?
+A: Tips feature coming soon. When available, no platform fee on tips!
+
+Q: How do Launchpads affect fees?
+A: Same 10% fee applies regardless of launch price or regular price.
+
+Q: What about fees for physical products?
+A: Same 10% fee. Shipping costs set by you (no fee on shipping).
+
+Q: Can I offer discount codes?
+A: Coming soon! No fee on the discount amount.
+
+Q: Do you charge for chargebacks?
+A: Stripe may charge a chargeback fee ($15-20). We don't add extra fees.
+
+Q: Can I see fee breakdown before listing?
+A: Yes! Fee calculator available in Dashboard.
+
+Q: Are there fees for international sales?
+A: Standard 10% platform fee. Stripe may add currency conversion fees.
+
+=============================================
+GETTING STARTED
+=============================================
+
+Ready to start selling?
+
+1. Sign up for free at https://nexstp.com
+2. Complete Stripe Connect onboarding
+3. Set up your store
+4. List your first product
+5. Make your first sale
+6. Receive automatic payout in 2-7 days
+
+Questions about pricing?
+- Email: sales@nexstp.com
+- Chat: Available on website
+- Help: https://help.nexstp.com/pricing
+
+FOR HIGH-VOLUME SELLERS
+-----------------------
+
+Selling 1000+ products or $100k+ annually?
+Contact our enterprise team:
+- Email: enterprise@nexstp.com
+- Custom pricing may be available
+- Dedicated support
+- Advanced features
+- Priority payouts
+
+=============================================
+
+Start selling today - Free forever!
+
+No credit card required.
+No monthly fees.
+Cancel anytime.
+
+Sign up: https://nexstp.com/sign-up
+
+© 2024 Nexstp Inc. All rights reserved.
+
